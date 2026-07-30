@@ -88,7 +88,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest",
@@ -1092,10 +1092,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -2513,7 +2510,7 @@
     {
       "id": "spec/observables/interval-spec.ts:32:interval > should emit when relative interval set to zero",
       "group": "interval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2521,16 +2518,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/observables/interval-spec.ts:42:interval > should consider negative interval as zero",
       "group": "interval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2538,10 +2532,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
@@ -3104,7 +3095,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: take"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values",
@@ -3121,7 +3112,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: take"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values",
@@ -3138,7 +3129,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: take"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done",
@@ -3172,7 +3163,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: take"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'",
@@ -3226,7 +3217,7 @@
     {
       "id": "spec/observables/timer-spec.ts:153:timer > should accept 0 as the second argument",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3234,10 +3225,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
@@ -4185,7 +4173,7 @@
     {
       "id": "spec/operators/buffer-spec.ts:295:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed",
       "group": "buffer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4193,10 +4181,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
@@ -4655,7 +4640,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: tap"
+      "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
       "id": "spec/operators/bufferToggle-spec.ts:15:bufferToggle operator > should emit buffers using hot openings and hot closings",
@@ -5079,7 +5064,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:53:catchError operator > should catch error and replace it with a cold Observable",
@@ -5215,7 +5200,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:240:catchError operator > should catch and allow the hot observable to proceed with the third (caught) argument",
@@ -5232,7 +5217,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:271:catchError operator > should catch and replace a Observable.throw() as the source",
@@ -6359,7 +6344,7 @@
     {
       "id": "spec/operators/combineLatestWith-spec.ts:14:combineLatestWith > should combine events from two cold observables",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6367,10 +6352,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -6388,7 +6370,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty",
@@ -6405,7 +6387,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never",
@@ -6422,12 +6404,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:95:combineLatestWith > should work with empty and empty",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6435,16 +6417,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:114:combineLatestWith > should work with hot-empty and hot-single",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6452,16 +6431,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:139:combineLatestWith > should work with hot-single and hot-empty",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6469,10 +6445,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -6490,7 +6463,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single",
@@ -6507,12 +6480,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:208:combineLatestWith > should work with hot and hot",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6520,16 +6493,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:227:combineLatestWith > should work with empty and error",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6537,16 +6507,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:246:combineLatestWith > should work with error and empty",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6554,16 +6521,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:265:combineLatestWith > should work with hot and throw",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6571,16 +6535,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:284:combineLatestWith > should work with throw and hot",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6588,16 +6549,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:303:combineLatestWith > should work with throw and throw",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6605,16 +6563,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:322:combineLatestWith > should work with error and throw",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6622,16 +6577,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:341:combineLatestWith > should work with throw and error",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6639,16 +6591,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:360:combineLatestWith > should work with never and throw",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6656,16 +6605,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:379:combineLatestWith > should work with throw and never",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6673,16 +6619,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:398:combineLatestWith > should work with some and throw",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6690,16 +6633,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:417:combineLatestWith > should work with throw and some",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6707,16 +6647,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:436:combineLatestWith > should handle throw after complete left",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6724,16 +6661,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:455:combineLatestWith > should handle throw after complete right",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6741,16 +6675,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:474:combineLatestWith > should handle interleaved with tail",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6758,16 +6689,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:493:combineLatestWith > should handle two consecutive hot observables",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6775,16 +6703,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:512:combineLatestWith > should handle two consecutive hot observables with error left",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6792,16 +6717,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:531:combineLatestWith > should handle two consecutive hot observables with error right",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6809,16 +6731,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:550:combineLatestWith > should allow unsubscribing early and explicitly",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6826,16 +6745,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6843,10 +6759,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -7158,7 +7071,7 @@
     {
       "id": "spec/operators/concatAll-spec.ts:130:concatAll operator > should concat all observables in an observable",
       "group": "concatAll",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7166,16 +7079,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/concatAll-spec.ts:139:concatAll operator > should throw if any child observable throws",
       "group": "concatAll",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7183,10 +7093,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
@@ -7324,7 +7231,7 @@
     {
       "id": "spec/operators/concatMap-spec.ts:15:Observable.prototype.concatMap > should map-and-flatten each item to an Observable",
       "group": "concatMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7332,10 +7239,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7879,7 +7783,7 @@
     {
       "id": "spec/operators/count-spec.ts:15:count > should count the values of an observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7896,7 +7800,7 @@
     {
       "id": "spec/operators/count-spec.ts:26:count > should be never when source is never",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7913,7 +7817,7 @@
     {
       "id": "spec/operators/count-spec.ts:37:count > should be zero when source is empty",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7930,7 +7834,7 @@
     {
       "id": "spec/operators/count-spec.ts:48:count > should be never when source doesn't complete",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7947,7 +7851,7 @@
     {
       "id": "spec/operators/count-spec.ts:59:count > should be zero when source doesn't have values",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7964,7 +7868,7 @@
     {
       "id": "spec/operators/count-spec.ts:70:count > should count the unique value of an observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7981,7 +7885,7 @@
     {
       "id": "spec/operators/count-spec.ts:81:count > should count the values of an ongoing hot observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7998,7 +7902,7 @@
     {
       "id": "spec/operators/count-spec.ts:140:count > should work with error",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8015,7 +7919,7 @@
     {
       "id": "spec/operators/count-spec.ts:151:count > should work with throw",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8032,7 +7936,7 @@
     {
       "id": "spec/operators/count-spec.ts:162:count > should handle an always-true predicate on an empty hot observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8049,7 +7953,7 @@
     {
       "id": "spec/operators/count-spec.ts:176:count > should handle an always-false predicate on an empty hot observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8066,7 +7970,7 @@
     {
       "id": "spec/operators/count-spec.ts:190:count > should handle an always-true predicate on a simple hot observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8083,7 +7987,7 @@
     {
       "id": "spec/operators/count-spec.ts:204:count > should handle an always-false predicate on a simple hot observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8100,7 +8004,7 @@
     {
       "id": "spec/operators/count-spec.ts:218:count > should allow unsubscribing early and explicitly",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8117,7 +8021,7 @@
     {
       "id": "spec/operators/count-spec.ts:232:count > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8134,7 +8038,7 @@
     {
       "id": "spec/operators/count-spec.ts:250:count > should handle a match-all predicate on observable with many values",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8151,7 +8055,7 @@
     {
       "id": "spec/operators/count-spec.ts:262:count > should handle a match-none predicate on observable with many values",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8168,7 +8072,7 @@
     {
       "id": "spec/operators/count-spec.ts:274:count > should handle an always-true predicate on observable that throws",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8185,7 +8089,7 @@
     {
       "id": "spec/operators/count-spec.ts:286:count > should handle an always-false predicate on observable that throws",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8202,7 +8106,7 @@
     {
       "id": "spec/operators/count-spec.ts:298:count > should handle an always-true predicate on a hot never-observable",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8219,7 +8123,7 @@
     {
       "id": "spec/operators/count-spec.ts:310:count > should handle a predicate that throws, on observable with many values",
       "group": "count",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9055,7 +8959,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: dematerialize"
     },
     {
       "id": "spec/operators/dematerialize-spec.ts:44:dematerialize > should dematerialize a happy stream",
@@ -9604,7 +9508,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:15:distinctUntilChanged > should distinguish between values",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9621,7 +9525,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:26:distinctUntilChanged > should distinguish between values",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9638,7 +9542,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:37:distinctUntilChanged > should distinguish between values and does not complete",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9655,7 +9559,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:48:distinctUntilChanged > should not complete if source never completes",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9672,7 +9576,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:59:distinctUntilChanged > should not complete if source does not complete",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9689,7 +9593,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:70:distinctUntilChanged > should complete if source is empty",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9706,7 +9610,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:81:distinctUntilChanged > should complete if source does not emit",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9723,7 +9627,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:92:distinctUntilChanged > should emit if source emits single element only",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9740,7 +9644,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:103:distinctUntilChanged > should emit if source is scalar",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9757,7 +9661,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:112:distinctUntilChanged > should raise error if source raises error",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9774,7 +9678,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:123:distinctUntilChanged > should raise error if source throws",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9791,7 +9695,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:134:distinctUntilChanged > should not omit if source elements are all different",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9808,7 +9712,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:145:distinctUntilChanged > should allow unsubscribing early and explicitly",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9825,7 +9729,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:159:distinctUntilChanged > should not break unsubscription chains when unsubscribed explicitly",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9842,7 +9746,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:177:distinctUntilChanged > should emit once if source elements are all same",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9859,7 +9763,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:188:distinctUntilChanged > should emit once if comparator returns true always regardless of source emits",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9876,7 +9780,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:200:distinctUntilChanged > should emit all if comparator returns false always regardless of source emits",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9893,7 +9797,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:212:distinctUntilChanged > should distinguish values by comparator",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9910,7 +9814,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:224:distinctUntilChanged > should raise error when comparator throws",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9927,7 +9831,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:241:distinctUntilChanged > should use the keySelector to pick comparator values",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9944,7 +9848,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:254:distinctUntilChanged > should use the keySelector even for the first emit",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9961,7 +9865,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:266:distinctUntilChanged > should raise error when keySelector throws",
       "group": "distinctUntilChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10641,7 +10545,7 @@
     {
       "id": "spec/operators/every-spec.ts:23:every > should return false if only one of elements does not match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10658,7 +10562,7 @@
     {
       "id": "spec/operators/every-spec.ts:92:every > should emit true if source is empty",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10675,7 +10579,7 @@
     {
       "id": "spec/operators/every-spec.ts:103:every > should emit false if single source element does not match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10692,7 +10596,7 @@
     {
       "id": "spec/operators/every-spec.ts:114:every > should emit false if none of elements match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10709,7 +10613,7 @@
     {
       "id": "spec/operators/every-spec.ts:125:every > should return false if only some of elements matches with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10726,7 +10630,7 @@
     {
       "id": "spec/operators/every-spec.ts:137:every > should allow unsubscribing early and explicitly",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10743,7 +10647,7 @@
     {
       "id": "spec/operators/every-spec.ts:152:every > should not break unsubscription chains when result observable is unsubscribed",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10760,7 +10664,7 @@
     {
       "id": "spec/operators/every-spec.ts:171:every > should propagate error if predicate eventually throws",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10777,7 +10681,7 @@
     {
       "id": "spec/operators/every-spec.ts:190:every > should emit true if single source element matches with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10794,7 +10698,7 @@
     {
       "id": "spec/operators/every-spec.ts:202:every > should emit true if scalar source matches with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10811,7 +10715,7 @@
     {
       "id": "spec/operators/every-spec.ts:211:every > should emit false if scalar source does not match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10828,7 +10732,7 @@
     {
       "id": "spec/operators/every-spec.ts:220:every > should propagate error if predicate throws on scalar source",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10845,7 +10749,7 @@
     {
       "id": "spec/operators/every-spec.ts:233:every > should emit true if scalar array source matches with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10862,7 +10766,7 @@
     {
       "id": "spec/operators/every-spec.ts:242:every > should emit false if scalar array source does not match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10879,7 +10783,7 @@
     {
       "id": "spec/operators/every-spec.ts:251:every > should propagate error if predicate eventually throws on scalar array source",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10896,7 +10800,7 @@
     {
       "id": "spec/operators/every-spec.ts:267:every > should emit true if all source elements match with predicate",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10913,7 +10817,7 @@
     {
       "id": "spec/operators/every-spec.ts:279:every > should raise error if source raises error",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10930,7 +10834,7 @@
     {
       "id": "spec/operators/every-spec.ts:290:every > should not complete if source never emits",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10947,7 +10851,7 @@
     {
       "id": "spec/operators/every-spec.ts:301:every > should emit true if source element matches with predicate after subscription",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10964,7 +10868,7 @@
     {
       "id": "spec/operators/every-spec.ts:313:every > should emit false if source element does not match with predicate after subscription",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10981,7 +10885,7 @@
     {
       "id": "spec/operators/every-spec.ts:325:every > should raise error if source raises error after subscription",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10998,7 +10902,7 @@
     {
       "id": "spec/operators/every-spec.ts:336:every > should emit true if source does not emit after subscription",
       "group": "every",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11169,7 +11073,7 @@
     {
       "id": "spec/operators/exhaustMap-spec.ts:16:exhaustMap > should map-and-flatten each item to an Observable",
       "group": "exhaustMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11177,10 +11081,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -11589,7 +11490,7 @@
     {
       "id": "spec/operators/filter-spec.ts:32:filter > should filter out even values",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11597,16 +11498,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:43:filter > should filter in only prime numbers",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11614,16 +11512,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:54:filter > should filter with an always-true predicate",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11631,16 +11526,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:69:filter > should filter with an always-false predicate",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11648,16 +11540,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:84:filter > should filter in only prime numbers, source unsubscribes early",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11665,16 +11554,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:96:filter > should filter in only prime numbers, source throws",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11682,16 +11568,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:107:filter > should filter in only prime numbers, but predicate throws",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11699,16 +11582,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:127:filter > should filter in only prime numbers, predicate with index",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11716,16 +11596,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:142:filter > should invoke predicate once for each checked value",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11733,16 +11610,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: filter"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/filter-spec.ts:168:filter > should filter in only prime numbers, predicate with index, source unsubscribes early",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11750,16 +11624,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:184:filter > should filter in only prime numbers, predicate with index, source throws",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11767,16 +11638,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:199:filter > should filter in only prime numbers, predicate with index and throws",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11784,16 +11652,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:219:filter > should compose with another filter to allow multiples of six",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11801,16 +11666,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11818,16 +11680,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:265:filter > should be able to use filter and map composed",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11835,16 +11694,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:282:filter > should propagate errors from the source",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11852,16 +11708,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:293:filter > should handle empty",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11869,10 +11722,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
@@ -11890,12 +11740,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: filter"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/filter-spec.ts:315:filter > should handle throw",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11903,16 +11753,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11920,16 +11767,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
       "id": "spec/operators/filter-spec.ts:425:filter > should support Boolean as a predicate",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11937,10 +11781,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: filter"
     },
     {
@@ -11954,10 +11795,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -11975,7 +11813,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: finalize"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/finalize-spec.ts:116:finalize > should handle throw",
@@ -11988,10 +11826,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -12005,10 +11840,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -12022,10 +11854,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -12039,10 +11868,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -12056,10 +11882,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -13636,7 +13459,7 @@
     {
       "id": "spec/operators/map-spec.ts:18:map > should map multiple values",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13644,16 +13467,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:31:map > should map one value",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13661,16 +13481,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:45:map > should map multiple values",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13678,16 +13495,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:58:map > should propagate errors from map function",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13695,16 +13509,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "TODO",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13712,16 +13523,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:89:map > should propagate errors from observable that emit values",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13729,16 +13537,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:103:map > should not map an empty observable",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13746,16 +13551,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: map"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/map-spec.ts:127:map > should allow unsubscribing explicitly and early",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13763,16 +13565,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:141:map > should map with index",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13780,16 +13579,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: map"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/map-spec.ts:166:map > should map with index until completed",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13797,16 +13593,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: map"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/map-spec.ts:191:map > should map with index until an error occurs",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13814,16 +13607,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: map"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/map-spec.ts:216:map > should map using a custom thisArg",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13831,16 +13621,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:238:map > should map twice",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13848,16 +13635,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: map"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13865,16 +13649,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
       "id": "spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly",
       "group": "map",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13882,10 +13663,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -14457,7 +14235,6 @@
       ],
       "lastObservedAt": "2026-07-30",
       "failingModes": [
-        "cold",
         "polyfill"
       ],
       "diagnostic": "rxTest observable assertion failed."
@@ -14528,10 +14305,9 @@
       ],
       "lastObservedAt": "2026-07-30",
       "failingModes": [
-        "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/mergeMap-spec.ts:318:mergeMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly",
@@ -14807,10 +14583,9 @@
       ],
       "lastObservedAt": "2026-07-30",
       "failingModes": [
-        "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes",
@@ -15277,7 +15052,7 @@
     {
       "id": "spec/operators/mergeWith-spec.ts:148:merge operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "mergeWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15285,10 +15060,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -16392,7 +16164,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: pluck"
     },
     {
       "id": "spec/operators/pluck-spec.ts:37:pluck > should work for one array",
@@ -18362,7 +18134,7 @@
     {
       "id": "spec/operators/repeat-spec.ts:304:repeat operator > should raise error after first emit succeed",
       "group": "repeat",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -18370,10 +18142,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: map"
     },
     {
@@ -19190,7 +18959,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: map"
+      "diagnostic": "Missing operator capability: retryWhen"
     },
     {
       "id": "spec/operators/retryWhen-spec.ts:312:retryWhen > should tear down resources when result is unsubscribed early",
@@ -19761,7 +19530,7 @@
     {
       "id": "spec/operators/scan-spec.ts:245:scan > should pass current index to accumulator",
       "group": "scan",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19769,10 +19538,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: finalize"
     },
     {
@@ -23526,7 +23292,7 @@
     {
       "id": "spec/operators/skipWhile-spec.ts:183:skipWhile > should invoke predicate while its false and never again",
       "group": "skipWhile",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23534,10 +23300,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -24004,7 +23767,7 @@
     {
       "id": "spec/operators/switchMap-spec.ts:16:switchMap > should map-and-flatten each item to an Observable",
       "group": "switchMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24012,10 +23775,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -24481,7 +24241,7 @@
     {
       "id": "spec/operators/take-spec.ts:15:take > should take two values of an observable with many values",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24489,16 +24249,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:26:take > should work with empty",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24506,10 +24263,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
@@ -24527,12 +24281,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: take"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/take-spec.ts:48:take > should be empty on take(0)",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24540,16 +24294,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:59:take > should be empty if provided with negative value",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24557,16 +24308,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:70:take > should take one value of an observable with one value",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24574,16 +24322,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:81:take > should take one values of an observable with many values",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24591,16 +24336,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:92:take > should error on empty",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24608,16 +24350,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:103:take > should propagate error from the source observable",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24625,16 +24364,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:114:take > should propagate error from an observable with values",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24642,16 +24378,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:125:take > should allow unsubscribing explicitly and early",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24659,16 +24392,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:137:take > should work with throw",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24676,16 +24406,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24693,16 +24420,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:209:take > should complete even if the parameter is a string",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24710,16 +24434,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: take"
     },
     {
       "id": "spec/operators/take-spec.ts:222:take > should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24727,11 +24448,8 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
-      "diagnostic": "Missing operator capability: take"
+      "failingModes": [],
+      "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/takeLast-spec.ts:58:takeLast operator > should not take any values",
@@ -25235,7 +24953,7 @@
     {
       "id": "spec/operators/takeWhile-spec.ts:214:takeWhile > should invoke predicate until return false",
       "group": "takeWhile",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25243,10 +24961,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -25288,10 +25003,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -25305,10 +25017,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -25322,16 +25031,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete",
       "group": "tap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25339,10 +25045,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -25356,10 +25059,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -31152,7 +30852,7 @@
     {
       "id": "spec/subjects/BehaviorSubject-spec.ts:144:BehaviorSubject > should replay the previous value when subscribed",
       "group": "BehaviorSubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -31160,16 +30860,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/subjects/BehaviorSubject-spec.ts:176:BehaviorSubject > should emit complete when subscribed after completed",
       "group": "BehaviorSubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -31177,16 +30874,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
       "id": "spec/subjects/ReplaySubject-spec.ts:117:ReplaySubject > with bufferSize=2 > should replay 2 previous values when subscribed",
       "group": "ReplaySubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -31194,10 +30888,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: tap"
     },
     {
@@ -31215,7 +30906,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: tap"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed",

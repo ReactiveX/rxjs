@@ -7,12 +7,12 @@ This ledger records every RxJS 7 ported test that failed in the authoritative co
 - **RxJS 7 source:** `7.x` at `e5351d02e225e275ac0e497c7b66eaa5f0c88791`
 - **Evidence captured:** 2026-07-30
 - **Manifest coverage:** 2,338 cases in each mode
-- **Cold:** 865 passed; 1,473 failed
-- **Polyfill:** 865 passed; 1,473 failed
+- **Cold:** 970 passed; 1,368 failed
+- **Polyfill:** 967 passed; 1,371 failed
 - **Unique tracked failures:** 1,921 across 140 owner groups
-- **Current failure overlap:** 1,472 both modes; 1 cold only; 1 polyfill only
-- **Fixed since first capture:** 428
-- **Recommended next work packet:** [RX7-ANIMATION-FRAMES](#rx7-animation-frames--animationframes) (`animationFrames`)
+- **Current failure overlap:** 1,367 both modes; 1 cold only; 4 polyfill only
+- **Fixed since first capture:** 518
+- **Recommended next work packet:** [RX7-FROM-EVENT](#rx7-from-event--fromevent) (`fromEvent`)
 
 The audit commands intentionally exit nonzero while parity failures remain:
 
@@ -129,32 +129,32 @@ Owner source: `spec/operators/auditTime-spec.ts`
 
 Owner source: `spec/subjects/BehaviorSubject-spec.ts`
 
-| Case ID                                                                                                            | Behavioral test                                      | Source                                      | Failing mode    | Classification       | Disposition   | Concise failure                  | Status |
-| ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------- | --------------- | -------------------- | ------------- | -------------------------------- | ------ |
-| `spec/subjects/BehaviorSubject-spec.ts:144:BehaviorSubject > should replay the previous value when subscribed`     | should replay the previous value when subscribed     | `spec/subjects/BehaviorSubject-spec.ts:144` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: tap | `TODO` |
-| `spec/subjects/BehaviorSubject-spec.ts:176:BehaviorSubject > should emit complete when subscribed after completed` | should emit complete when subscribed after completed | `spec/subjects/BehaviorSubject-spec.ts:176` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: tap | `TODO` |
+| Case ID                                                                                                            | Behavioral test                                      | Source                                      | Failing mode | Classification    | Disposition        | Concise failure                  | Status  |
+| ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------- | ------------ | ----------------- | ------------------ | -------------------------------- | ------- |
+| `spec/subjects/BehaviorSubject-spec.ts:144:BehaviorSubject > should replay the previous value when subscribed`     | should replay the previous value when subscribed     | `spec/subjects/BehaviorSubject-spec.ts:144` | —            | `harness-rewrite` | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/subjects/BehaviorSubject-spec.ts:176:BehaviorSubject > should emit complete when subscribed after completed` | should emit complete when subscribed after completed | `spec/subjects/BehaviorSubject-spec.ts:176` | —            | `harness-rewrite` | `expected-failure` | Missing operator capability: tap | `FIXED` |
 
 ### `buffer`
 
 Owner source: `spec/operators/buffer-spec.ts`
 
-| Case ID                                                                                                                                                  | Behavioral test                                                                         | Source                              | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector`                                              | should work with never and empty selector                                               | `spec/operators/buffer-spec.ts:103` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/buffer-spec.ts:130:Observable.prototype.buffer > should work with throw and non-empty selector`                                          | should work with throw and non-empty selector                                           | `spec/operators/buffer-spec.ts:130` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:139:Observable.prototype.buffer > should work with error`                                                                 | should work with error                                                                  | `spec/operators/buffer-spec.ts:139` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:148:Observable.prototype.buffer > should work with error and non-empty selector`                                          | should work with error and non-empty selector                                           | `spec/operators/buffer-spec.ts:148` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:194:Observable.prototype.buffer > should allow unsubscribing the result Observable early`                                 | should allow unsubscribing the result Observable early                                  | `spec/operators/buffer-spec.ts:194` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:210:Observable.prototype.buffer > should not break unsubscription chains when unsubscribed explicitly`                    | should not break unsubscription chains when unsubscribed explicitly                     | `spec/operators/buffer-spec.ts:210` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:233:Observable.prototype.buffer > should work with non-empty and selector error`                                          | should work with non-empty and selector error                                           | `spec/operators/buffer-spec.ts:233` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/buffer-spec.ts:276:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`                                   | should unsubscribe notifier when source unsubscribed                                    | `spec/operators/buffer-spec.ts:276` | —               | `portable`           | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
-| `spec/operators/buffer-spec.ts:295:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`                                   | should unsubscribe notifier when source unsubscribed                                    | `spec/operators/buffer-spec.ts:295` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take                                                                    | `TODO`  |
-| `spec/operators/buffer-spec.ts:384:should be equivalent for case 0 [buffer-case-0]`                                                                      | should be equivalent for case 0                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite`    | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
-| `spec/operators/buffer-spec.ts:384:should be equivalent for case 1 [buffer-case-1]`                                                                      | should be equivalent for case 1                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite`    | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
-| `spec/operators/buffer-spec.ts:384:should be equivalent for case 2 [buffer-case-2]`                                                                      | should be equivalent for case 2                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite`    | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
-| `spec/operators/buffer-spec.ts:384:should be equivalent for case 3 [buffer-case-3]`                                                                      | should be equivalent for case 3                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite`    | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
-| `spec/operators/buffer-spec.ts:44:Observable.prototype.buffer > should emit all buffered values if the source completes before the closingNotifier does` | should emit all buffered values if the source completes before the closingNotifier does | `spec/operators/buffer-spec.ts:44`  | —               | `portable`           | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
-| `spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector`                                               | should work with never and never selector                                               | `spec/operators/buffer-spec.ts:94`  | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| Case ID                                                                                                                                                  | Behavioral test                                                                         | Source                              | Failing mode    | Classification    | Disposition        | Concise failure                                                                                      | Status  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------- | --------------- | ----------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector`                                              | should work with never and empty selector                                               | `spec/operators/buffer-spec.ts:103` | —               | `portable`        | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/buffer-spec.ts:130:Observable.prototype.buffer > should work with throw and non-empty selector`                                          | should work with throw and non-empty selector                                           | `spec/operators/buffer-spec.ts:130` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:139:Observable.prototype.buffer > should work with error`                                                                 | should work with error                                                                  | `spec/operators/buffer-spec.ts:139` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:148:Observable.prototype.buffer > should work with error and non-empty selector`                                          | should work with error and non-empty selector                                           | `spec/operators/buffer-spec.ts:148` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:194:Observable.prototype.buffer > should allow unsubscribing the result Observable early`                                 | should allow unsubscribing the result Observable early                                  | `spec/operators/buffer-spec.ts:194` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:210:Observable.prototype.buffer > should not break unsubscription chains when unsubscribed explicitly`                    | should not break unsubscription chains when unsubscribed explicitly                     | `spec/operators/buffer-spec.ts:210` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:233:Observable.prototype.buffer > should work with non-empty and selector error`                                          | should work with non-empty and selector error                                           | `spec/operators/buffer-spec.ts:233` | —               | `portable`        | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/buffer-spec.ts:276:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`                                   | should unsubscribe notifier when source unsubscribed                                    | `spec/operators/buffer-spec.ts:276` | —               | `portable`        | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/buffer-spec.ts:295:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`                                   | should unsubscribe notifier when source unsubscribed                                    | `spec/operators/buffer-spec.ts:295` | —               | `portable`        | `expected-failure` | Missing operator capability: take                                                                    | `FIXED` |
+| `spec/operators/buffer-spec.ts:384:should be equivalent for case 0 [buffer-case-0]`                                                                      | should be equivalent for case 0                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite` | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
+| `spec/operators/buffer-spec.ts:384:should be equivalent for case 1 [buffer-case-1]`                                                                      | should be equivalent for case 1                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite` | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
+| `spec/operators/buffer-spec.ts:384:should be equivalent for case 2 [buffer-case-2]`                                                                      | should be equivalent for case 2                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite` | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
+| `spec/operators/buffer-spec.ts:384:should be equivalent for case 3 [buffer-case-3]`                                                                      | should be equivalent for case 3                                                         | `spec/operators/buffer-spec.ts:384` | cold + polyfill | `harness-rewrite` | `missing-api`      | Missing operator capability: window                                                                  | `TODO`  |
+| `spec/operators/buffer-spec.ts:44:Observable.prototype.buffer > should emit all buffered values if the source completes before the closingNotifier does` | should emit all buffered values if the source completes before the closingNotifier does | `spec/operators/buffer-spec.ts:44`  | —               | `portable`        | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector`                                               | should work with never and never selector                                               | `spec/operators/buffer-spec.ts:94`  | —               | `portable`        | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
 
 ### `bufferCount`
 
@@ -173,26 +173,26 @@ Owner source: `spec/operators/bufferCount-spec.ts`
 
 Owner source: `spec/operators/bufferTime-spec.ts`
 
-| Case ID                                                                                                                                                                              | Behavioral test                                                                                                        | Source                                  | Failing mode    | Classification       | Disposition        | Concise failure                  | Status |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------- | -------------------- | ------------------ | -------------------------------- | ------ |
-| `spec/operators/bufferTime-spec.ts:103:bufferTime operator > should emit buffers at intervals or when the buffer is full test 2`                                                     | should emit buffers at intervals or when the buffer is full test 2                                                     | `spec/operators/bufferTime-spec.ts:103` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:124:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay`                            | should emit buffers that have been created at intervals and close after the specified delay                            | `spec/operators/bufferTime-spec.ts:124` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:146:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full` | should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full | `spec/operators/bufferTime-spec.ts:146` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:15:bufferTime operator > should emit buffers at intervals`                                                                                        | should emit buffers at intervals                                                                                       | `spec/operators/bufferTime-spec.ts:15`  | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:168:bufferTime operator > should emit buffers with timeSpan 10 and creationInterval 7`                                                            | should emit buffers with timeSpan 10 and creationInterval 7                                                            | `spec/operators/bufferTime-spec.ts:168` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:198:bufferTime operator > should emit buffers but handle source ending with an error`                                                             | should emit buffers but handle source ending with an error                                                             | `spec/operators/bufferTime-spec.ts:198` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:225:bufferTime operator > should emit buffers and allow result to unsubscribed early`                                                             | should emit buffers and allow result to unsubscribed early                                                             | `spec/operators/bufferTime-spec.ts:225` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly`                                          | should not break unsubscription chains when result is unsubscribed explicitly                                          | `spec/operators/bufferTime-spec.ts:248` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:275:bufferTime operator > should handle empty`                                                                                                    | should handle empty                                                                                                    | `spec/operators/bufferTime-spec.ts:275` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:290:bufferTime operator > should handle never`                                                                                                    | should handle never                                                                                                    | `spec/operators/bufferTime-spec.ts:290` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:303:bufferTime operator > should handle throw`                                                                                                    | should handle throw                                                                                                    | `spec/operators/bufferTime-spec.ts:303` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:315:bufferTime operator > should handle errors`                                                                                                   | should handle errors                                                                                                   | `spec/operators/bufferTime-spec.ts:315` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:332:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay with errors`                | should emit buffers that have been created at intervals and close after the specified delay with errors                | `spec/operators/bufferTime-spec.ts:332` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:35:bufferTime operator > should emit buffers at intervals test 2`                                                                                 | should emit buffers at intervals test 2                                                                                | `spec/operators/bufferTime-spec.ts:35`  | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:355:bufferTime operator > should not throw when subscription synchronously unsubscribed after emit`                                               | should not throw when subscription synchronously unsubscribed after emit                                               | `spec/operators/bufferTime-spec.ts:355` | cold + polyfill | `compatibility-only` | `missing-api`      | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:373:bufferTime operator > should not have errors when take follows and maxBufferSize is provided`                                                 | should not have errors when take follows and maxBufferSize is provided                                                 | `spec/operators/bufferTime-spec.ts:373` | cold + polyfill | `compatibility-only` | `missing-api`      | testScheduler is not defined     | `TODO` |
-| `spec/operators/bufferTime-spec.ts:392:bufferTime operator > should not mutate the buffer on reentrant next`                                                                         | should not mutate the buffer on reentrant next                                                                         | `spec/operators/bufferTime-spec.ts:392` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: tap | `TODO` |
-| `spec/operators/bufferTime-spec.ts:52:bufferTime operator > should emit buffers at intervals or when the buffer is full`                                                             | should emit buffers at intervals or when the buffer is full                                                            | `spec/operators/bufferTime-spec.ts:52`  | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined     | `TODO` |
+| Case ID                                                                                                                                                                              | Behavioral test                                                                                                        | Source                                  | Failing mode    | Classification | Disposition        | Concise failure                             | Status |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------- | -------------- | ------------------ | ------------------------------------------- | ------ |
+| `spec/operators/bufferTime-spec.ts:103:bufferTime operator > should emit buffers at intervals or when the buffer is full test 2`                                                     | should emit buffers at intervals or when the buffer is full test 2                                                     | `spec/operators/bufferTime-spec.ts:103` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:124:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay`                            | should emit buffers that have been created at intervals and close after the specified delay                            | `spec/operators/bufferTime-spec.ts:124` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:146:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full` | should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full | `spec/operators/bufferTime-spec.ts:146` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:15:bufferTime operator > should emit buffers at intervals`                                                                                        | should emit buffers at intervals                                                                                       | `spec/operators/bufferTime-spec.ts:15`  | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:168:bufferTime operator > should emit buffers with timeSpan 10 and creationInterval 7`                                                            | should emit buffers with timeSpan 10 and creationInterval 7                                                            | `spec/operators/bufferTime-spec.ts:168` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:198:bufferTime operator > should emit buffers but handle source ending with an error`                                                             | should emit buffers but handle source ending with an error                                                             | `spec/operators/bufferTime-spec.ts:198` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:225:bufferTime operator > should emit buffers and allow result to unsubscribed early`                                                             | should emit buffers and allow result to unsubscribed early                                                             | `spec/operators/bufferTime-spec.ts:225` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly`                                          | should not break unsubscription chains when result is unsubscribed explicitly                                          | `spec/operators/bufferTime-spec.ts:248` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:275:bufferTime operator > should handle empty`                                                                                                    | should handle empty                                                                                                    | `spec/operators/bufferTime-spec.ts:275` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:290:bufferTime operator > should handle never`                                                                                                    | should handle never                                                                                                    | `spec/operators/bufferTime-spec.ts:290` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:303:bufferTime operator > should handle throw`                                                                                                    | should handle throw                                                                                                    | `spec/operators/bufferTime-spec.ts:303` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:315:bufferTime operator > should handle errors`                                                                                                   | should handle errors                                                                                                   | `spec/operators/bufferTime-spec.ts:315` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:332:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay with errors`                | should emit buffers that have been created at intervals and close after the specified delay with errors                | `spec/operators/bufferTime-spec.ts:332` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:35:bufferTime operator > should emit buffers at intervals test 2`                                                                                 | should emit buffers at intervals test 2                                                                                | `spec/operators/bufferTime-spec.ts:35`  | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:355:bufferTime operator > should not throw when subscription synchronously unsubscribed after emit`                                               | should not throw when subscription synchronously unsubscribed after emit                                               | `spec/operators/bufferTime-spec.ts:355` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:373:bufferTime operator > should not have errors when take follows and maxBufferSize is provided`                                                 | should not have errors when take follows and maxBufferSize is provided                                                 | `spec/operators/bufferTime-spec.ts:373` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
+| `spec/operators/bufferTime-spec.ts:392:bufferTime operator > should not mutate the buffer on reentrant next`                                                                         | should not mutate the buffer on reentrant next                                                                         | `spec/operators/bufferTime-spec.ts:392` | cold + polyfill | `portable`     | `expected-failure` | rxTest exceeded maxTaskExecutions (100000). | `TODO` |
+| `spec/operators/bufferTime-spec.ts:52:bufferTime operator > should emit buffers at intervals or when the buffer is full`                                                             | should emit buffers at intervals or when the buffer is full                                                            | `spec/operators/bufferTime-spec.ts:52`  | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                | `TODO` |
 
 ### `bufferToggle`
 
@@ -243,12 +243,12 @@ Owner source: `spec/operators/catchError-spec.ts`
 | `spec/operators/catchError-spec.ts:141:catchError operator > should unsubscribe from a caught cold caught interop observable when unsubscribed explicitly` | should unsubscribe from a caught cold caught interop observable when unsubscribed explicitly | `spec/operators/catchError-spec.ts:141` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:18:catchError operator > should catch error and replace with a cold Observable`                                         | should catch error and replace with a cold Observable                                        | `spec/operators/catchError-spec.ts:18`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:193:catchError operator > should catch error and replace it with a hot Observable`                                      | should catch error and replace it with a hot Observable                                      | `spec/operators/catchError-spec.ts:193` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
-| `spec/operators/catchError-spec.ts:209:catchError operator > should catch and allow the cold observable to be repeated with the third (caught) argument`   | should catch and allow the cold observable to be repeated with the third (caught) argument   | `spec/operators/catchError-spec.ts:209` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map        | `TODO` |
-| `spec/operators/catchError-spec.ts:240:catchError operator > should catch and allow the hot observable to proceed with the third (caught) argument`        | should catch and allow the hot observable to proceed with the third (caught) argument        | `spec/operators/catchError-spec.ts:240` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map        | `TODO` |
+| `spec/operators/catchError-spec.ts:209:catchError operator > should catch and allow the cold observable to be repeated with the third (caught) argument`   | should catch and allow the cold observable to be repeated with the third (caught) argument   | `spec/operators/catchError-spec.ts:209` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
+| `spec/operators/catchError-spec.ts:240:catchError operator > should catch and allow the hot observable to proceed with the third (caught) argument`        | should catch and allow the hot observable to proceed with the third (caught) argument        | `spec/operators/catchError-spec.ts:240` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:271:catchError operator > should catch and replace a Observable.throw() as the source`                                  | should catch and replace a Observable.throw() as the source                                  | `spec/operators/catchError-spec.ts:271` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:284:catchError operator > should mirror the source if it does not raise errors`                                         | should mirror the source if it does not raise errors                                         | `spec/operators/catchError-spec.ts:284` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:297:catchError operator > should complete if you return Observable.empty()`                                             | should complete if you return Observable.empty()                                             | `spec/operators/catchError-spec.ts:297` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
-| `spec/operators/catchError-spec.ts:30:catchError operator > should catch error and replace it with Observable.of()`                                        | should catch error and replace it with Observable.of()                                       | `spec/operators/catchError-spec.ts:30`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map        | `TODO` |
+| `spec/operators/catchError-spec.ts:30:catchError operator > should catch error and replace it with Observable.of()`                                        | should catch error and replace it with Observable.of()                                       | `spec/operators/catchError-spec.ts:30`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:313:catchError operator > should raise error if you return Observable.throw()`                                          | should raise error if you return Observable.throw()                                          | `spec/operators/catchError-spec.ts:313` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:329:catchError operator > should never terminate if you return NEVER`                                                   | should never terminate if you return NEVER                                                   | `spec/operators/catchError-spec.ts:329` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
 | `spec/operators/catchError-spec.ts:382:catchError operator > should catch errors throw from within the constructor`                                        | should catch errors throw from within the constructor                                        | `spec/operators/catchError-spec.ts:382` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: catchError | `TODO` |
@@ -263,7 +263,7 @@ Owner sources: `spec/observables/combineLatest-spec.ts`, `spec/operators/combine
 | Case ID                                                                                                                                 | Behavioral test                                                     | Source                                       | Failing mode    | Classification       | Disposition    | Concise failure                                                                                      | Status |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------- | --------------- | -------------------- | -------------- | ---------------------------------------------------------------------------------------------------- | ------ |
 | `spec/observables/combineLatest-spec.ts:100:static combineLatest > should accept array of observables`                                  | should accept array of observables                                  | `spec/observables/combineLatest-spec.ts:100` | cold + polyfill | `compatibility-only` | `missing-api`  | rxTest observable assertion failed.                                                                  | `TODO` |
-| `spec/observables/combineLatest-spec.ts:112:static combineLatest > should accept a dictionary of observables`                           | should accept a dictionary of observables                           | `spec/observables/combineLatest-spec.ts:112` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: map                                                                     | `TODO` |
+| `spec/observables/combineLatest-spec.ts:112:static combineLatest > should accept a dictionary of observables`                           | should accept a dictionary of observables                           | `spec/observables/combineLatest-spec.ts:112` | —               | `compatibility-only` | `missing-api`  | Missing operator capability: map                                                                     | `TODO` |
 | `spec/observables/combineLatest-spec.ts:126:static combineLatest > should work with two nevers`                                         | should work with two nevers                                         | `spec/observables/combineLatest-spec.ts:126` | cold + polyfill | `compatibility-only` | `missing-api`  | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO` |
 | `spec/observables/combineLatest-spec.ts:142:static combineLatest > should work with never and empty`                                    | should work with never and empty                                    | `spec/observables/combineLatest-spec.ts:142` | cold + polyfill | `compatibility-only` | `missing-api`  | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO` |
 | `spec/observables/combineLatest-spec.ts:158:static combineLatest > should work with empty and never`                                    | should work with empty and never                                    | `spec/observables/combineLatest-spec.ts:158` | cold + polyfill | `compatibility-only` | `missing-api`  | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO` |
@@ -360,38 +360,38 @@ Owner source: `spec/operators/combineLatestAll-spec.ts`
 
 Owner source: `spec/operators/combineLatestWith-spec.ts`
 
-| Case ID                                                                                                                                | Behavioral test                                                     | Source                                         | Failing mode    | Classification       | Disposition   | Concise failure                       | Status |
-| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------- | ------ |
-| `spec/operators/combineLatestWith-spec.ts:114:combineLatestWith > should work with hot-empty and hot-single`                           | should work with hot-empty and hot-single                           | `spec/operators/combineLatestWith-spec.ts:114` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:139:combineLatestWith > should work with hot-single and hot-empty`                           | should work with hot-single and hot-empty                           | `spec/operators/combineLatestWith-spec.ts:139` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:14:combineLatestWith > should combine events from two cold observables`                      | should combine events from two cold observables                     | `spec/operators/combineLatestWith-spec.ts:14`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never`                               | should work with hot-single and never                               | `spec/operators/combineLatestWith-spec.ts:163` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single`                               | should work with never and hot-single                               | `spec/operators/combineLatestWith-spec.ts:185` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:208:combineLatestWith > should work with hot and hot`                                        | should work with hot and hot                                        | `spec/operators/combineLatestWith-spec.ts:208` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:227:combineLatestWith > should work with empty and error`                                    | should work with empty and error                                    | `spec/operators/combineLatestWith-spec.ts:227` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:246:combineLatestWith > should work with error and empty`                                    | should work with error and empty                                    | `spec/operators/combineLatestWith-spec.ts:246` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:265:combineLatestWith > should work with hot and throw`                                      | should work with hot and throw                                      | `spec/operators/combineLatestWith-spec.ts:265` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:284:combineLatestWith > should work with throw and hot`                                      | should work with throw and hot                                      | `spec/operators/combineLatestWith-spec.ts:284` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:303:combineLatestWith > should work with throw and throw`                                    | should work with throw and throw                                    | `spec/operators/combineLatestWith-spec.ts:303` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:322:combineLatestWith > should work with error and throw`                                    | should work with error and throw                                    | `spec/operators/combineLatestWith-spec.ts:322` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:341:combineLatestWith > should work with throw and error`                                    | should work with throw and error                                    | `spec/operators/combineLatestWith-spec.ts:341` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:360:combineLatestWith > should work with never and throw`                                    | should work with never and throw                                    | `spec/operators/combineLatestWith-spec.ts:360` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:379:combineLatestWith > should work with throw and never`                                    | should work with throw and never                                    | `spec/operators/combineLatestWith-spec.ts:379` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers`                                          | should work with two nevers                                         | `spec/operators/combineLatestWith-spec.ts:38`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:398:combineLatestWith > should work with some and throw`                                     | should work with some and throw                                     | `spec/operators/combineLatestWith-spec.ts:398` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:417:combineLatestWith > should work with throw and some`                                     | should work with throw and some                                     | `spec/operators/combineLatestWith-spec.ts:417` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:436:combineLatestWith > should handle throw after complete left`                             | should handle throw after complete left                             | `spec/operators/combineLatestWith-spec.ts:436` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:455:combineLatestWith > should handle throw after complete right`                            | should handle throw after complete right                            | `spec/operators/combineLatestWith-spec.ts:455` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:474:combineLatestWith > should handle interleaved with tail`                                 | should handle interleaved with tail                                 | `spec/operators/combineLatestWith-spec.ts:474` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:493:combineLatestWith > should handle two consecutive hot observables`                       | should handle two consecutive hot observables                       | `spec/operators/combineLatestWith-spec.ts:493` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:512:combineLatestWith > should handle two consecutive hot observables with error left`       | should handle two consecutive hot observables with error left       | `spec/operators/combineLatestWith-spec.ts:512` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:531:combineLatestWith > should handle two consecutive hot observables with error right`      | should handle two consecutive hot observables with error right      | `spec/operators/combineLatestWith-spec.ts:531` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:550:combineLatestWith > should allow unsubscribing early and explicitly`                     | should allow unsubscribing early and explicitly                     | `spec/operators/combineLatestWith-spec.ts:550` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty`                                     | should work with never and empty                                    | `spec/operators/combineLatestWith-spec.ts:57`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/combineLatestWith-spec.ts:571` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:594:combineLatestWith > should emit unique array instances with the default projection`      | should emit unique array instances with the default projection      | `spec/operators/combineLatestWith-spec.ts:594` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinct | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never`                                     | should work with empty and never                                    | `spec/operators/combineLatestWith-spec.ts:76`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
-| `spec/operators/combineLatestWith-spec.ts:95:combineLatestWith > should work with empty and empty`                                     | should work with empty and empty                                    | `spec/operators/combineLatestWith-spec.ts:95`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map      | `TODO` |
+| Case ID                                                                                                                                | Behavioral test                                                     | Source                                         | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/combineLatestWith-spec.ts:114:combineLatestWith > should work with hot-empty and hot-single`                           | should work with hot-empty and hot-single                           | `spec/operators/combineLatestWith-spec.ts:114` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:139:combineLatestWith > should work with hot-single and hot-empty`                           | should work with hot-single and hot-empty                           | `spec/operators/combineLatestWith-spec.ts:139` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:14:combineLatestWith > should combine events from two cold observables`                      | should combine events from two cold observables                     | `spec/operators/combineLatestWith-spec.ts:14`  | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never`                               | should work with hot-single and never                               | `spec/operators/combineLatestWith-spec.ts:163` | cold + polyfill | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single`                               | should work with never and hot-single                               | `spec/operators/combineLatestWith-spec.ts:185` | cold + polyfill | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:208:combineLatestWith > should work with hot and hot`                                        | should work with hot and hot                                        | `spec/operators/combineLatestWith-spec.ts:208` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:227:combineLatestWith > should work with empty and error`                                    | should work with empty and error                                    | `spec/operators/combineLatestWith-spec.ts:227` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:246:combineLatestWith > should work with error and empty`                                    | should work with error and empty                                    | `spec/operators/combineLatestWith-spec.ts:246` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:265:combineLatestWith > should work with hot and throw`                                      | should work with hot and throw                                      | `spec/operators/combineLatestWith-spec.ts:265` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:284:combineLatestWith > should work with throw and hot`                                      | should work with throw and hot                                      | `spec/operators/combineLatestWith-spec.ts:284` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:303:combineLatestWith > should work with throw and throw`                                    | should work with throw and throw                                    | `spec/operators/combineLatestWith-spec.ts:303` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:322:combineLatestWith > should work with error and throw`                                    | should work with error and throw                                    | `spec/operators/combineLatestWith-spec.ts:322` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:341:combineLatestWith > should work with throw and error`                                    | should work with throw and error                                    | `spec/operators/combineLatestWith-spec.ts:341` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:360:combineLatestWith > should work with never and throw`                                    | should work with never and throw                                    | `spec/operators/combineLatestWith-spec.ts:360` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:379:combineLatestWith > should work with throw and never`                                    | should work with throw and never                                    | `spec/operators/combineLatestWith-spec.ts:379` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers`                                          | should work with two nevers                                         | `spec/operators/combineLatestWith-spec.ts:38`  | cold + polyfill | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:398:combineLatestWith > should work with some and throw`                                     | should work with some and throw                                     | `spec/operators/combineLatestWith-spec.ts:398` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:417:combineLatestWith > should work with throw and some`                                     | should work with throw and some                                     | `spec/operators/combineLatestWith-spec.ts:417` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:436:combineLatestWith > should handle throw after complete left`                             | should handle throw after complete left                             | `spec/operators/combineLatestWith-spec.ts:436` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:455:combineLatestWith > should handle throw after complete right`                            | should handle throw after complete right                            | `spec/operators/combineLatestWith-spec.ts:455` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:474:combineLatestWith > should handle interleaved with tail`                                 | should handle interleaved with tail                                 | `spec/operators/combineLatestWith-spec.ts:474` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:493:combineLatestWith > should handle two consecutive hot observables`                       | should handle two consecutive hot observables                       | `spec/operators/combineLatestWith-spec.ts:493` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:512:combineLatestWith > should handle two consecutive hot observables with error left`       | should handle two consecutive hot observables with error left       | `spec/operators/combineLatestWith-spec.ts:512` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:531:combineLatestWith > should handle two consecutive hot observables with error right`      | should handle two consecutive hot observables with error right      | `spec/operators/combineLatestWith-spec.ts:531` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:550:combineLatestWith > should allow unsubscribing early and explicitly`                     | should allow unsubscribing early and explicitly                     | `spec/operators/combineLatestWith-spec.ts:550` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty`                                     | should work with never and empty                                    | `spec/operators/combineLatestWith-spec.ts:57`  | cold + polyfill | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly` | should not break unsubscription chains when unsubscribed explicitly | `spec/operators/combineLatestWith-spec.ts:571` | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/combineLatestWith-spec.ts:594:combineLatestWith > should emit unique array instances with the default projection`      | should emit unique array instances with the default projection      | `spec/operators/combineLatestWith-spec.ts:594` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: distinct                                                                | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never`                                     | should work with empty and never                                    | `spec/operators/combineLatestWith-spec.ts:76`  | cold + polyfill | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `TODO`  |
+| `spec/operators/combineLatestWith-spec.ts:95:combineLatestWith > should work with empty and empty`                                     | should work with empty and empty                                    | `spec/operators/combineLatestWith-spec.ts:95`  | —               | `portable`           | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
 
 ### `concat`
 
@@ -439,37 +439,37 @@ Owner source: `spec/operators/concat-legacy-spec.ts`
 
 Owner source: `spec/operators/concatAll-spec.ts`
 
-| Case ID                                                                                                                                                        | Behavioral test                                                                                    | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/concatAll-spec.ts:130:concatAll operator > should concat all observables in an observable`                                                     | should concat all observables in an observable                                                     | `spec/operators/concatAll-spec.ts:130` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take                                                                    | `TODO`  |
-| `spec/operators/concatAll-spec.ts:139:concatAll operator > should throw if any child observable throws`                                                        | should throw if any child observable throws                                                        | `spec/operators/concatAll-spec.ts:139` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take                                                                    | `TODO`  |
-| `spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes`                                             | should not complete if first source does not completes                                             | `spec/operators/concatAll-spec.ts:206` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes`                                            | should not complete if second source does not completes                                            | `spec/operators/concatAll-spec.ts:222` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete`                                                | should not complete if both sources do not complete                                                | `spec/operators/concatAll-spec.ts:238` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes` | should emit element from first source, and should not complete if second source does not completes | `spec/operators/concatAll-spec.ts:334` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete`                                              | should not complete if first source does not complete                                              | `spec/operators/concatAll-spec.ts:350` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatAll-spec.ts:382:concatAll operator > should unsubscribe to inner source if outer is unsubscribed early`                                  | should unsubscribe to inner source if outer is unsubscribed early                                  | `spec/operators/concatAll-spec.ts:382` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/concatAll-spec.ts:399:concatAll operator > should not break unsubscription chains when result is unsubscribed explicitly`                      | should not break unsubscription chains when result is unsubscribed explicitly                      | `spec/operators/concatAll-spec.ts:399` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler`                                                    | should be able to work on a different scheduler                                                    | `spec/operators/concatAll-spec.ts:500` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined                                                                         | `TODO`  |
-| `spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler`               | should concatAll a nested observable with a single inner observable, and a scheduler               | `spec/operators/concatAll-spec.ts:532` | cold + polyfill | `portable`           | `expected-failure` | testScheduler is not defined                                                                         | `TODO`  |
+| Case ID                                                                                                                                                        | Behavioral test                                                                                    | Source                                 | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/concatAll-spec.ts:130:concatAll operator > should concat all observables in an observable`                                                     | should concat all observables in an observable                                                     | `spec/operators/concatAll-spec.ts:130` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED` |
+| `spec/operators/concatAll-spec.ts:139:concatAll operator > should throw if any child observable throws`                                                        | should throw if any child observable throws                                                        | `spec/operators/concatAll-spec.ts:139` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED` |
+| `spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes`                                             | should not complete if first source does not completes                                             | `spec/operators/concatAll-spec.ts:206` | —               | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes`                                            | should not complete if second source does not completes                                            | `spec/operators/concatAll-spec.ts:222` | —               | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete`                                                | should not complete if both sources do not complete                                                | `spec/operators/concatAll-spec.ts:238` | —               | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes` | should emit element from first source, and should not complete if second source does not completes | `spec/operators/concatAll-spec.ts:334` | —               | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete`                                              | should not complete if first source does not complete                                              | `spec/operators/concatAll-spec.ts:350` | —               | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatAll-spec.ts:382:concatAll operator > should unsubscribe to inner source if outer is unsubscribed early`                                  | should unsubscribe to inner source if outer is unsubscribed early                                  | `spec/operators/concatAll-spec.ts:382` | —               | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatAll-spec.ts:399:concatAll operator > should not break unsubscription chains when result is unsubscribed explicitly`                      | should not break unsubscription chains when result is unsubscribed explicitly                      | `spec/operators/concatAll-spec.ts:399` | —               | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler`                                                    | should be able to work on a different scheduler                                                    | `spec/operators/concatAll-spec.ts:500` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                                                                         | `TODO`  |
+| `spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler`               | should concatAll a nested observable with a single inner observable, and a scheduler               | `spec/operators/concatAll-spec.ts:532` | cold + polyfill | `portable`     | `expected-failure` | testScheduler is not defined                                                                         | `TODO`  |
 
 ### `concatMap`
 
 Owner source: `spec/operators/concatMap-spec.ts`
 
-| Case ID                                                                                                                                       | Behavioral test                                                       | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source`                                          | should handle a never source                                          | `spec/operators/concatMap-spec.ts:145` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:15:Observable.prototype.concatMap > should map-and-flatten each item to an Observable`                      | should map-and-flatten each item to an Observable                     | `spec/operators/concatMap-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api`      | rxTest observable assertion failed.                                                                  | `TODO`  |
-| `spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never`                    | should return a never if the mapped inner is never                    | `spec/operators/concatMap-spec.ts:210` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes`      | should concatMap many outer to many inner, outer never completes      | `spec/operators/concatMap-spec.ts:272` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes`      | should concatMap many outer to many inner, inner never completes      | `spec/operators/concatMap-spec.ts:294` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one`           | should concatMap many complex, all inners finite except one           | `spec/operators/concatMap-spec.ts:401` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete` | should concatMap many complex, inners finite, outer does not complete | `spec/operators/concatMap-spec.ts:436` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/concatMap-spec.ts:726:Observable.prototype.concatMap > should concatMap many outer to an array for each value`                | should concatMap many outer to an array for each value                | `spec/operators/concatMap-spec.ts:726` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/concatMap-spec.ts:739:Observable.prototype.concatMap > should concatMap many outer to inner arrays, outer unsubscribed early` | should concatMap many outer to inner arrays, outer unsubscribed early | `spec/operators/concatMap-spec.ts:739` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/concatMap-spec.ts:753:Observable.prototype.concatMap > should concatMap many outer to inner arrays, project throws`           | should concatMap many outer to inner arrays, project throws           | `spec/operators/concatMap-spec.ts:753` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/concatMap-spec.ts:81:Observable.prototype.concatMap > should concatenate many regular interval inners`                        | should concatenate many regular interval inners                       | `spec/operators/concatMap-spec.ts:81`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| Case ID                                                                                                                                       | Behavioral test                                                       | Source                                 | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source`                                          | should handle a never source                                          | `spec/operators/concatMap-spec.ts:145` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:15:Observable.prototype.concatMap > should map-and-flatten each item to an Observable`                      | should map-and-flatten each item to an Observable                     | `spec/operators/concatMap-spec.ts:15`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never`                    | should return a never if the mapped inner is never                    | `spec/operators/concatMap-spec.ts:210` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes`      | should concatMap many outer to many inner, outer never completes      | `spec/operators/concatMap-spec.ts:272` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes`      | should concatMap many outer to many inner, inner never completes      | `spec/operators/concatMap-spec.ts:294` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one`           | should concatMap many complex, all inners finite except one           | `spec/operators/concatMap-spec.ts:401` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete` | should concatMap many complex, inners finite, outer does not complete | `spec/operators/concatMap-spec.ts:436` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/concatMap-spec.ts:726:Observable.prototype.concatMap > should concatMap many outer to an array for each value`                | should concatMap many outer to an array for each value                | `spec/operators/concatMap-spec.ts:726` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatMap-spec.ts:739:Observable.prototype.concatMap > should concatMap many outer to inner arrays, outer unsubscribed early` | should concatMap many outer to inner arrays, outer unsubscribed early | `spec/operators/concatMap-spec.ts:739` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatMap-spec.ts:753:Observable.prototype.concatMap > should concatMap many outer to inner arrays, project throws`           | should concatMap many outer to inner arrays, project throws           | `spec/operators/concatMap-spec.ts:753` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/concatMap-spec.ts:81:Observable.prototype.concatMap > should concatenate many regular interval inners`                        | should concatenate many regular interval inners                       | `spec/operators/concatMap-spec.ts:81`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
 
 ### `concatMapTo`
 
@@ -533,29 +533,29 @@ Owner source: `spec/observables/connectable-spec.ts`
 
 Owner source: `spec/operators/count-spec.ts`
 
-| Case ID                                                                                                                  | Behavioral test                                                               | Source                             | Failing mode    | Classification       | Disposition   | Concise failure                    | Status |
-| ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ---------------------------------- | --------------- | -------------------- | ------------- | ---------------------------------- | ------ |
-| `spec/operators/count-spec.ts:140:count > should work with error`                                                        | should work with error                                                        | `spec/operators/count-spec.ts:140` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:15:count > should count the values of an observable`                                       | should count the values of an observable                                      | `spec/operators/count-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:151:count > should work with throw`                                                        | should work with throw                                                        | `spec/operators/count-spec.ts:151` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:162:count > should handle an always-true predicate on an empty hot observable`             | should handle an always-true predicate on an empty hot observable             | `spec/operators/count-spec.ts:162` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:176:count > should handle an always-false predicate on an empty hot observable`            | should handle an always-false predicate on an empty hot observable            | `spec/operators/count-spec.ts:176` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:190:count > should handle an always-true predicate on a simple hot observable`             | should handle an always-true predicate on a simple hot observable             | `spec/operators/count-spec.ts:190` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:204:count > should handle an always-false predicate on a simple hot observable`            | should handle an always-false predicate on a simple hot observable            | `spec/operators/count-spec.ts:204` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:218:count > should allow unsubscribing early and explicitly`                               | should allow unsubscribing early and explicitly                               | `spec/operators/count-spec.ts:218` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:232:count > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/count-spec.ts:232` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:250:count > should handle a match-all predicate on observable with many values`            | should handle a match-all predicate on observable with many values            | `spec/operators/count-spec.ts:250` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:26:count > should be never when source is never`                                           | should be never when source is never                                          | `spec/operators/count-spec.ts:26`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:262:count > should handle a match-none predicate on observable with many values`           | should handle a match-none predicate on observable with many values           | `spec/operators/count-spec.ts:262` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:274:count > should handle an always-true predicate on observable that throws`              | should handle an always-true predicate on observable that throws              | `spec/operators/count-spec.ts:274` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:286:count > should handle an always-false predicate on observable that throws`             | should handle an always-false predicate on observable that throws             | `spec/operators/count-spec.ts:286` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:298:count > should handle an always-true predicate on a hot never-observable`              | should handle an always-true predicate on a hot never-observable              | `spec/operators/count-spec.ts:298` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:310:count > should handle a predicate that throws, on observable with many values`         | should handle a predicate that throws, on observable with many values         | `spec/operators/count-spec.ts:310` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:37:count > should be zero when source is empty`                                            | should be zero when source is empty                                           | `spec/operators/count-spec.ts:37`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:48:count > should be never when source doesn't complete`                                   | should be never when source doesn't complete                                  | `spec/operators/count-spec.ts:48`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:59:count > should be zero when source doesn't have values`                                 | should be zero when source doesn't have values                                | `spec/operators/count-spec.ts:59`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:70:count > should count the unique value of an observable`                                 | should count the unique value of an observable                                | `spec/operators/count-spec.ts:70`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
-| `spec/operators/count-spec.ts:81:count > should count the values of an ongoing hot observable`                           | should count the values of an ongoing hot observable                          | `spec/operators/count-spec.ts:81`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `TODO` |
+| Case ID                                                                                                                  | Behavioral test                                                               | Source                             | Failing mode    | Classification       | Disposition   | Concise failure                    | Status       |
+| ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ---------------------------------- | --------------- | -------------------- | ------------- | ---------------------------------- | ------------ |
+| `spec/operators/count-spec.ts:140:count > should work with error`                                                        | should work with error                                                        | `spec/operators/count-spec.ts:140` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:15:count > should count the values of an observable`                                       | should count the values of an observable                                      | `spec/operators/count-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:151:count > should work with throw`                                                        | should work with throw                                                        | `spec/operators/count-spec.ts:151` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:162:count > should handle an always-true predicate on an empty hot observable`             | should handle an always-true predicate on an empty hot observable             | `spec/operators/count-spec.ts:162` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:176:count > should handle an always-false predicate on an empty hot observable`            | should handle an always-false predicate on an empty hot observable            | `spec/operators/count-spec.ts:176` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:190:count > should handle an always-true predicate on a simple hot observable`             | should handle an always-true predicate on a simple hot observable             | `spec/operators/count-spec.ts:190` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:204:count > should handle an always-false predicate on a simple hot observable`            | should handle an always-false predicate on a simple hot observable            | `spec/operators/count-spec.ts:204` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:218:count > should allow unsubscribing early and explicitly`                               | should allow unsubscribing early and explicitly                               | `spec/operators/count-spec.ts:218` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:232:count > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/count-spec.ts:232` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:250:count > should handle a match-all predicate on observable with many values`            | should handle a match-all predicate on observable with many values            | `spec/operators/count-spec.ts:250` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:26:count > should be never when source is never`                                           | should be never when source is never                                          | `spec/operators/count-spec.ts:26`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:262:count > should handle a match-none predicate on observable with many values`           | should handle a match-none predicate on observable with many values           | `spec/operators/count-spec.ts:262` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:274:count > should handle an always-true predicate on observable that throws`              | should handle an always-true predicate on observable that throws              | `spec/operators/count-spec.ts:274` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:286:count > should handle an always-false predicate on observable that throws`             | should handle an always-false predicate on observable that throws             | `spec/operators/count-spec.ts:286` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:298:count > should handle an always-true predicate on a hot never-observable`              | should handle an always-true predicate on a hot never-observable              | `spec/operators/count-spec.ts:298` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:310:count > should handle a predicate that throws, on observable with many values`         | should handle a predicate that throws, on observable with many values         | `spec/operators/count-spec.ts:310` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:37:count > should be zero when source is empty`                                            | should be zero when source is empty                                           | `spec/operators/count-spec.ts:37`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:48:count > should be never when source doesn't complete`                                   | should be never when source doesn't complete                                  | `spec/operators/count-spec.ts:48`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:59:count > should be zero when source doesn't have values`                                 | should be zero when source doesn't have values                                | `spec/operators/count-spec.ts:59`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:70:count > should count the unique value of an observable`                                 | should count the unique value of an observable                                | `spec/operators/count-spec.ts:70`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
+| `spec/operators/count-spec.ts:81:count > should count the values of an ongoing hot observable`                           | should count the values of an ongoing hot observable                          | `spec/operators/count-spec.ts:81`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: count | `IN-PROCESS` |
 
 ### `debounce`
 
@@ -662,7 +662,7 @@ Owner source: `spec/operators/dematerialize-spec.ts`
 | `spec/operators/dematerialize-spec.ts:113:dematerialize > should dematerialize empty stream`                                                   | should dematerialize empty stream                                                   | `spec/operators/dematerialize-spec.ts:113` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: dematerialize                     | `TODO` |
 | `spec/operators/dematerialize-spec.ts:124:dematerialize > should dematerialize stream throws`                                                  | should dematerialize stream throws                                                  | `spec/operators/dematerialize-spec.ts:124` | cold + polyfill | `compatibility-only` | `missing-api` | Cannot read properties of undefined (reading 'createError')    | `TODO` |
 | `spec/operators/dematerialize-spec.ts:136:dematerialize > should allow unsubscribing early and explicitly`                                     | should allow unsubscribing early and explicitly                                     | `spec/operators/dematerialize-spec.ts:136` | cold + polyfill | `compatibility-only` | `missing-api` | Cannot read properties of undefined (reading 'createNext')     | `TODO` |
-| `spec/operators/dematerialize-spec.ts:15:dematerialize > should dematerialize an Observable`                                                   | should dematerialize an Observable                                                  | `spec/operators/dematerialize-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map                               | `TODO` |
+| `spec/operators/dematerialize-spec.ts:15:dematerialize > should dematerialize an Observable`                                                   | should dematerialize an Observable                                                  | `spec/operators/dematerialize-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: dematerialize                     | `TODO` |
 | `spec/operators/dematerialize-spec.ts:155:dematerialize > should not break unsubscription chains when unsubscribed explicitly`                 | should not break unsubscription chains when unsubscribed explicitly                 | `spec/operators/dematerialize-spec.ts:155` | cold + polyfill | `compatibility-only` | `missing-api` | Cannot read properties of undefined (reading 'createNext')     | `TODO` |
 | `spec/operators/dematerialize-spec.ts:178:dematerialize > should dematerialize and completes when stream completes with complete notification` | should dematerialize and completes when stream completes with complete notification | `spec/operators/dematerialize-spec.ts:178` | cold + polyfill | `compatibility-only` | `missing-api` | Cannot read properties of undefined (reading 'createComplete') | `TODO` |
 | `spec/operators/dematerialize-spec.ts:189:dematerialize > should dematerialize and completes when stream emits complete notification`          | should dematerialize and completes when stream emits complete notification          | `spec/operators/dematerialize-spec.ts:189` | cold + polyfill | `compatibility-only` | `missing-api` | Cannot read properties of undefined (reading 'createComplete') | `TODO` |
@@ -703,30 +703,30 @@ Owner source: `spec/operators/distinct-spec.ts`
 
 Owner source: `spec/operators/distinctUntilChanged-spec.ts`
 
-| Case ID                                                                                                                                                | Behavioral test                                                               | Source                                            | Failing mode    | Classification       | Disposition   | Concise failure                                   | Status |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------------------- | ------ |
-| `spec/operators/distinctUntilChanged-spec.ts:103:distinctUntilChanged > should emit if source is scalar`                                               | should emit if source is scalar                                               | `spec/operators/distinctUntilChanged-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:112:distinctUntilChanged > should raise error if source raises error`                                     | should raise error if source raises error                                     | `spec/operators/distinctUntilChanged-spec.ts:112` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:123:distinctUntilChanged > should raise error if source throws`                                           | should raise error if source throws                                           | `spec/operators/distinctUntilChanged-spec.ts:123` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:134:distinctUntilChanged > should not omit if source elements are all different`                          | should not omit if source elements are all different                          | `spec/operators/distinctUntilChanged-spec.ts:134` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:145:distinctUntilChanged > should allow unsubscribing early and explicitly`                               | should allow unsubscribing early and explicitly                               | `spec/operators/distinctUntilChanged-spec.ts:145` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:15:distinctUntilChanged > should distinguish between values`                                              | should distinguish between values                                             | `spec/operators/distinctUntilChanged-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:159:distinctUntilChanged > should not break unsubscription chains when unsubscribed explicitly`           | should not break unsubscription chains when unsubscribed explicitly           | `spec/operators/distinctUntilChanged-spec.ts:159` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:177:distinctUntilChanged > should emit once if source elements are all same`                              | should emit once if source elements are all same                              | `spec/operators/distinctUntilChanged-spec.ts:177` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:188:distinctUntilChanged > should emit once if comparator returns true always regardless of source emits` | should emit once if comparator returns true always regardless of source emits | `spec/operators/distinctUntilChanged-spec.ts:188` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:200:distinctUntilChanged > should emit all if comparator returns false always regardless of source emits` | should emit all if comparator returns false always regardless of source emits | `spec/operators/distinctUntilChanged-spec.ts:200` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:212:distinctUntilChanged > should distinguish values by comparator`                                       | should distinguish values by comparator                                       | `spec/operators/distinctUntilChanged-spec.ts:212` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:224:distinctUntilChanged > should raise error when comparator throws`                                     | should raise error when comparator throws                                     | `spec/operators/distinctUntilChanged-spec.ts:224` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:241:distinctUntilChanged > should use the keySelector to pick comparator values`                          | should use the keySelector to pick comparator values                          | `spec/operators/distinctUntilChanged-spec.ts:241` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:254:distinctUntilChanged > should use the keySelector even for the first emit`                            | should use the keySelector even for the first emit                            | `spec/operators/distinctUntilChanged-spec.ts:254` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:26:distinctUntilChanged > should distinguish between values`                                              | should distinguish between values                                             | `spec/operators/distinctUntilChanged-spec.ts:26`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:266:distinctUntilChanged > should raise error when keySelector throws`                                    | should raise error when keySelector throws                                    | `spec/operators/distinctUntilChanged-spec.ts:266` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:37:distinctUntilChanged > should distinguish between values and does not complete`                        | should distinguish between values and does not complete                       | `spec/operators/distinctUntilChanged-spec.ts:37`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:48:distinctUntilChanged > should not complete if source never completes`                                  | should not complete if source never completes                                 | `spec/operators/distinctUntilChanged-spec.ts:48`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:59:distinctUntilChanged > should not complete if source does not complete`                                | should not complete if source does not complete                               | `spec/operators/distinctUntilChanged-spec.ts:59`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:70:distinctUntilChanged > should complete if source is empty`                                             | should complete if source is empty                                            | `spec/operators/distinctUntilChanged-spec.ts:70`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:81:distinctUntilChanged > should complete if source does not emit`                                        | should complete if source does not emit                                       | `spec/operators/distinctUntilChanged-spec.ts:81`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
-| `spec/operators/distinctUntilChanged-spec.ts:92:distinctUntilChanged > should emit if source emits single element only`                                | should emit if source emits single element only                               | `spec/operators/distinctUntilChanged-spec.ts:92`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `TODO` |
+| Case ID                                                                                                                                                | Behavioral test                                                               | Source                                            | Failing mode    | Classification       | Disposition   | Concise failure                                   | Status       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------------------- | ------------ |
+| `spec/operators/distinctUntilChanged-spec.ts:103:distinctUntilChanged > should emit if source is scalar`                                               | should emit if source is scalar                                               | `spec/operators/distinctUntilChanged-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:112:distinctUntilChanged > should raise error if source raises error`                                     | should raise error if source raises error                                     | `spec/operators/distinctUntilChanged-spec.ts:112` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:123:distinctUntilChanged > should raise error if source throws`                                           | should raise error if source throws                                           | `spec/operators/distinctUntilChanged-spec.ts:123` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:134:distinctUntilChanged > should not omit if source elements are all different`                          | should not omit if source elements are all different                          | `spec/operators/distinctUntilChanged-spec.ts:134` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:145:distinctUntilChanged > should allow unsubscribing early and explicitly`                               | should allow unsubscribing early and explicitly                               | `spec/operators/distinctUntilChanged-spec.ts:145` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:15:distinctUntilChanged > should distinguish between values`                                              | should distinguish between values                                             | `spec/operators/distinctUntilChanged-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:159:distinctUntilChanged > should not break unsubscription chains when unsubscribed explicitly`           | should not break unsubscription chains when unsubscribed explicitly           | `spec/operators/distinctUntilChanged-spec.ts:159` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:177:distinctUntilChanged > should emit once if source elements are all same`                              | should emit once if source elements are all same                              | `spec/operators/distinctUntilChanged-spec.ts:177` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:188:distinctUntilChanged > should emit once if comparator returns true always regardless of source emits` | should emit once if comparator returns true always regardless of source emits | `spec/operators/distinctUntilChanged-spec.ts:188` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:200:distinctUntilChanged > should emit all if comparator returns false always regardless of source emits` | should emit all if comparator returns false always regardless of source emits | `spec/operators/distinctUntilChanged-spec.ts:200` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:212:distinctUntilChanged > should distinguish values by comparator`                                       | should distinguish values by comparator                                       | `spec/operators/distinctUntilChanged-spec.ts:212` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:224:distinctUntilChanged > should raise error when comparator throws`                                     | should raise error when comparator throws                                     | `spec/operators/distinctUntilChanged-spec.ts:224` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:241:distinctUntilChanged > should use the keySelector to pick comparator values`                          | should use the keySelector to pick comparator values                          | `spec/operators/distinctUntilChanged-spec.ts:241` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:254:distinctUntilChanged > should use the keySelector even for the first emit`                            | should use the keySelector even for the first emit                            | `spec/operators/distinctUntilChanged-spec.ts:254` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:26:distinctUntilChanged > should distinguish between values`                                              | should distinguish between values                                             | `spec/operators/distinctUntilChanged-spec.ts:26`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:266:distinctUntilChanged > should raise error when keySelector throws`                                    | should raise error when keySelector throws                                    | `spec/operators/distinctUntilChanged-spec.ts:266` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:37:distinctUntilChanged > should distinguish between values and does not complete`                        | should distinguish between values and does not complete                       | `spec/operators/distinctUntilChanged-spec.ts:37`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:48:distinctUntilChanged > should not complete if source never completes`                                  | should not complete if source never completes                                 | `spec/operators/distinctUntilChanged-spec.ts:48`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:59:distinctUntilChanged > should not complete if source does not complete`                                | should not complete if source does not complete                               | `spec/operators/distinctUntilChanged-spec.ts:59`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:70:distinctUntilChanged > should complete if source is empty`                                             | should complete if source is empty                                            | `spec/operators/distinctUntilChanged-spec.ts:70`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:81:distinctUntilChanged > should complete if source does not emit`                                        | should complete if source does not emit                                       | `spec/operators/distinctUntilChanged-spec.ts:81`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
+| `spec/operators/distinctUntilChanged-spec.ts:92:distinctUntilChanged > should emit if source emits single element only`                                | should emit if source emits single element only                               | `spec/operators/distinctUntilChanged-spec.ts:92`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: distinctUntilChanged | `IN-PROCESS` |
 
 ### `distinctUntilKeyChanged`
 
@@ -795,30 +795,30 @@ Owner source: `spec/operators/endWith-spec.ts`
 
 Owner source: `spec/operators/every-spec.ts`
 
-| Case ID                                                                                                                         | Behavioral test                                                                      | Source                             | Failing mode    | Classification       | Disposition   | Concise failure                    | Status |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- | --------------- | -------------------- | ------------- | ---------------------------------- | ------ |
-| `spec/operators/every-spec.ts:103:every > should emit false if single source element does not match with predicate`             | should emit false if single source element does not match with predicate             | `spec/operators/every-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:114:every > should emit false if none of elements match with predicate`                           | should emit false if none of elements match with predicate                           | `spec/operators/every-spec.ts:114` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:125:every > should return false if only some of elements matches with predicate`                  | should return false if only some of elements matches with predicate                  | `spec/operators/every-spec.ts:125` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:137:every > should allow unsubscribing early and explicitly`                                      | should allow unsubscribing early and explicitly                                      | `spec/operators/every-spec.ts:137` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:152:every > should not break unsubscription chains when result observable is unsubscribed`        | should not break unsubscription chains when result observable is unsubscribed        | `spec/operators/every-spec.ts:152` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:171:every > should propagate error if predicate eventually throws`                                | should propagate error if predicate eventually throws                                | `spec/operators/every-spec.ts:171` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:190:every > should emit true if single source element matches with predicate`                     | should emit true if single source element matches with predicate                     | `spec/operators/every-spec.ts:190` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:202:every > should emit true if scalar source matches with predicate`                             | should emit true if scalar source matches with predicate                             | `spec/operators/every-spec.ts:202` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:211:every > should emit false if scalar source does not match with predicate`                     | should emit false if scalar source does not match with predicate                     | `spec/operators/every-spec.ts:211` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:220:every > should propagate error if predicate throws on scalar source`                          | should propagate error if predicate throws on scalar source                          | `spec/operators/every-spec.ts:220` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:23:every > should return false if only one of elements does not match with predicate`             | should return false if only one of elements does not match with predicate            | `spec/operators/every-spec.ts:23`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:233:every > should emit true if scalar array source matches with predicate`                       | should emit true if scalar array source matches with predicate                       | `spec/operators/every-spec.ts:233` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:242:every > should emit false if scalar array source does not match with predicate`               | should emit false if scalar array source does not match with predicate               | `spec/operators/every-spec.ts:242` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:251:every > should propagate error if predicate eventually throws on scalar array source`         | should propagate error if predicate eventually throws on scalar array source         | `spec/operators/every-spec.ts:251` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:267:every > should emit true if all source elements match with predicate`                         | should emit true if all source elements match with predicate                         | `spec/operators/every-spec.ts:267` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:279:every > should raise error if source raises error`                                            | should raise error if source raises error                                            | `spec/operators/every-spec.ts:279` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:290:every > should not complete if source never emits`                                            | should not complete if source never emits                                            | `spec/operators/every-spec.ts:290` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:301:every > should emit true if source element matches with predicate after subscription`         | should emit true if source element matches with predicate after subscription         | `spec/operators/every-spec.ts:301` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:313:every > should emit false if source element does not match with predicate after subscription` | should emit false if source element does not match with predicate after subscription | `spec/operators/every-spec.ts:313` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:325:every > should raise error if source raises error after subscription`                         | should raise error if source raises error after subscription                         | `spec/operators/every-spec.ts:325` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:336:every > should emit true if source does not emit after subscription`                          | should emit true if source does not emit after subscription                          | `spec/operators/every-spec.ts:336` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
-| `spec/operators/every-spec.ts:92:every > should emit true if source is empty`                                                   | should emit true if source is empty                                                  | `spec/operators/every-spec.ts:92`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `TODO` |
+| Case ID                                                                                                                         | Behavioral test                                                                      | Source                             | Failing mode    | Classification       | Disposition   | Concise failure                    | Status       |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- | --------------- | -------------------- | ------------- | ---------------------------------- | ------------ |
+| `spec/operators/every-spec.ts:103:every > should emit false if single source element does not match with predicate`             | should emit false if single source element does not match with predicate             | `spec/operators/every-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:114:every > should emit false if none of elements match with predicate`                           | should emit false if none of elements match with predicate                           | `spec/operators/every-spec.ts:114` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:125:every > should return false if only some of elements matches with predicate`                  | should return false if only some of elements matches with predicate                  | `spec/operators/every-spec.ts:125` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:137:every > should allow unsubscribing early and explicitly`                                      | should allow unsubscribing early and explicitly                                      | `spec/operators/every-spec.ts:137` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:152:every > should not break unsubscription chains when result observable is unsubscribed`        | should not break unsubscription chains when result observable is unsubscribed        | `spec/operators/every-spec.ts:152` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:171:every > should propagate error if predicate eventually throws`                                | should propagate error if predicate eventually throws                                | `spec/operators/every-spec.ts:171` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:190:every > should emit true if single source element matches with predicate`                     | should emit true if single source element matches with predicate                     | `spec/operators/every-spec.ts:190` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:202:every > should emit true if scalar source matches with predicate`                             | should emit true if scalar source matches with predicate                             | `spec/operators/every-spec.ts:202` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:211:every > should emit false if scalar source does not match with predicate`                     | should emit false if scalar source does not match with predicate                     | `spec/operators/every-spec.ts:211` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:220:every > should propagate error if predicate throws on scalar source`                          | should propagate error if predicate throws on scalar source                          | `spec/operators/every-spec.ts:220` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:23:every > should return false if only one of elements does not match with predicate`             | should return false if only one of elements does not match with predicate            | `spec/operators/every-spec.ts:23`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:233:every > should emit true if scalar array source matches with predicate`                       | should emit true if scalar array source matches with predicate                       | `spec/operators/every-spec.ts:233` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:242:every > should emit false if scalar array source does not match with predicate`               | should emit false if scalar array source does not match with predicate               | `spec/operators/every-spec.ts:242` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:251:every > should propagate error if predicate eventually throws on scalar array source`         | should propagate error if predicate eventually throws on scalar array source         | `spec/operators/every-spec.ts:251` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:267:every > should emit true if all source elements match with predicate`                         | should emit true if all source elements match with predicate                         | `spec/operators/every-spec.ts:267` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:279:every > should raise error if source raises error`                                            | should raise error if source raises error                                            | `spec/operators/every-spec.ts:279` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:290:every > should not complete if source never emits`                                            | should not complete if source never emits                                            | `spec/operators/every-spec.ts:290` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:301:every > should emit true if source element matches with predicate after subscription`         | should emit true if source element matches with predicate after subscription         | `spec/operators/every-spec.ts:301` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:313:every > should emit false if source element does not match with predicate after subscription` | should emit false if source element does not match with predicate after subscription | `spec/operators/every-spec.ts:313` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:325:every > should raise error if source raises error after subscription`                         | should raise error if source raises error after subscription                         | `spec/operators/every-spec.ts:325` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:336:every > should emit true if source does not emit after subscription`                          | should emit true if source does not emit after subscription                          | `spec/operators/every-spec.ts:336` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
+| `spec/operators/every-spec.ts:92:every > should emit true if source is empty`                                                   | should emit true if source is empty                                                  | `spec/operators/every-spec.ts:92`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: every | `IN-PROCESS` |
 
 ### `exhaustAll`
 
@@ -842,22 +842,22 @@ Owner source: `spec/operators/exhaustAll-spec.ts`
 
 Owner source: `spec/operators/exhaustMap-spec.ts`
 
-| Case ID                                                                                                                                                | Behavioral test                                                                                   | Source                                  | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never`                                                                         | should handle outer never                                                                         | `spec/operators/exhaustMap-spec.ts:116` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:149:exhaustMap > should switch with a selector function`                                                            | should switch with a selector function                                                            | `spec/operators/exhaustMap-spec.ts:149` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:16:exhaustMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/exhaustMap-spec.ts:16`  | cold + polyfill | `compatibility-only` | `missing-api`      | rxTest observable assertion failed.                                                                  | `TODO`  |
-| `spec/operators/exhaustMap-spec.ts:173:exhaustMap > should switch inner cold observables, outer is unsubscribed early`                                 | should switch inner cold observables, outer is unsubscribed early                                 | `spec/operators/exhaustMap-spec.ts:173` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:198:exhaustMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/exhaustMap-spec.ts:198` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:227:exhaustMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly` | should not break unsubscription chains with interop inners when result is unsubscribed explicitly | `spec/operators/exhaustMap-spec.ts:227` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes`                                       | should switch inner cold observables, inner never completes                                       | `spec/operators/exhaustMap-spec.ts:291` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:315:exhaustMap > should handle a synchronous switch and stay on the first inner observable`                         | should handle a synchronous switch and stay on the first inner observable                         | `spec/operators/exhaustMap-spec.ts:315` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:336:exhaustMap > should switch inner cold observables, one inner throws`                                            | should switch inner cold observables, one inner throws                                            | `spec/operators/exhaustMap-spec.ts:336` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:357:exhaustMap > should switch inner hot observables`                                                               | should switch inner hot observables                                                               | `spec/operators/exhaustMap-spec.ts:357` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:381:exhaustMap > should switch inner empty and empty`                                                               | should switch inner empty and empty                                                               | `spec/operators/exhaustMap-spec.ts:381` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never`                                                               | should switch inner empty and never                                                               | `spec/operators/exhaustMap-spec.ts:402` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never`                                                                   | should never switch inner never                                                                   | `spec/operators/exhaustMap-spec.ts:423` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/exhaustMap-spec.ts:465:exhaustMap > should handle outer error`                                                                         | should handle outer error                                                                         | `spec/operators/exhaustMap-spec.ts:465` | —               | `portable`           | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| Case ID                                                                                                                                                | Behavioral test                                                                                   | Source                                  | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | --------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never`                                                                         | should handle outer never                                                                         | `spec/operators/exhaustMap-spec.ts:116` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:149:exhaustMap > should switch with a selector function`                                                            | should switch with a selector function                                                            | `spec/operators/exhaustMap-spec.ts:149` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:16:exhaustMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/exhaustMap-spec.ts:16`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:173:exhaustMap > should switch inner cold observables, outer is unsubscribed early`                                 | should switch inner cold observables, outer is unsubscribed early                                 | `spec/operators/exhaustMap-spec.ts:173` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:198:exhaustMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/exhaustMap-spec.ts:198` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:227:exhaustMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly` | should not break unsubscription chains with interop inners when result is unsubscribed explicitly | `spec/operators/exhaustMap-spec.ts:227` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes`                                       | should switch inner cold observables, inner never completes                                       | `spec/operators/exhaustMap-spec.ts:291` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:315:exhaustMap > should handle a synchronous switch and stay on the first inner observable`                         | should handle a synchronous switch and stay on the first inner observable                         | `spec/operators/exhaustMap-spec.ts:315` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:336:exhaustMap > should switch inner cold observables, one inner throws`                                            | should switch inner cold observables, one inner throws                                            | `spec/operators/exhaustMap-spec.ts:336` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:357:exhaustMap > should switch inner hot observables`                                                               | should switch inner hot observables                                                               | `spec/operators/exhaustMap-spec.ts:357` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:381:exhaustMap > should switch inner empty and empty`                                                               | should switch inner empty and empty                                                               | `spec/operators/exhaustMap-spec.ts:381` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never`                                                               | should switch inner empty and never                                                               | `spec/operators/exhaustMap-spec.ts:402` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never`                                                                   | should never switch inner never                                                                   | `spec/operators/exhaustMap-spec.ts:423` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/exhaustMap-spec.ts:465:exhaustMap > should handle outer error`                                                                         | should handle outer error                                                                         | `spec/operators/exhaustMap-spec.ts:465` | —            | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
 
 ### `expand`
 
@@ -883,43 +883,43 @@ Owner source: `spec/operators/expand-spec.ts`
 
 Owner source: `spec/operators/filter-spec.ts`
 
-| Case ID                                                                                                                           | Behavioral test                                                                      | Source                              | Failing mode    | Classification       | Disposition   | Concise failure                     | Status       |
-| --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------- | --------------- | -------------------- | ------------- | ----------------------------------- | ------------ |
-| `spec/operators/filter-spec.ts:107:filter > should filter in only prime numbers, but predicate throws`                            | should filter in only prime numbers, but predicate throws                            | `spec/operators/filter-spec.ts:107` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:127:filter > should filter in only prime numbers, predicate with index`                            | should filter in only prime numbers, predicate with index                            | `spec/operators/filter-spec.ts:127` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:142:filter > should invoke predicate once for each checked value`                                  | should invoke predicate once for each checked value                                  | `spec/operators/filter-spec.ts:142` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:168:filter > should filter in only prime numbers, predicate with index, source unsubscribes early` | should filter in only prime numbers, predicate with index, source unsubscribes early | `spec/operators/filter-spec.ts:168` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:184:filter > should filter in only prime numbers, predicate with index, source throws`             | should filter in only prime numbers, predicate with index, source throws             | `spec/operators/filter-spec.ts:184` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:199:filter > should filter in only prime numbers, predicate with index and throws`                 | should filter in only prime numbers, predicate with index and throws                 | `spec/operators/filter-spec.ts:199` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:219:filter > should compose with another filter to allow multiples of six`                         | should compose with another filter to allow multiples of six                         | `spec/operators/filter-spec.ts:219` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg`                                           | should be able to accept and use a thisArg                                           | `spec/operators/filter-spec.ts:235` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:265:filter > should be able to use filter and map composed`                                        | should be able to use filter and map composed                                        | `spec/operators/filter-spec.ts:265` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:282:filter > should propagate errors from the source`                                              | should propagate errors from the source                                              | `spec/operators/filter-spec.ts:282` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:293:filter > should handle empty`                                                                  | should handle empty                                                                  | `spec/operators/filter-spec.ts:293` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:304:filter > should handle never`                                                                  | should handle never                                                                  | `spec/operators/filter-spec.ts:304` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:315:filter > should handle throw`                                                                  | should handle throw                                                                  | `spec/operators/filter-spec.ts:315` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:32:filter > should filter out even values`                                                         | should filter out even values                                                        | `spec/operators/filter-spec.ts:32`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly`                   | should not break unsubscription chain when unsubscribed explicitly                   | `spec/operators/filter-spec.ts:347` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:425:filter > should support Boolean as a predicate`                                                | should support Boolean as a predicate                                                | `spec/operators/filter-spec.ts:425` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:43:filter > should filter in only prime numbers`                                                   | should filter in only prime numbers                                                  | `spec/operators/filter-spec.ts:43`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:54:filter > should filter with an always-true predicate`                                           | should filter with an always-true predicate                                          | `spec/operators/filter-spec.ts:54`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:69:filter > should filter with an always-false predicate`                                          | should filter with an always-false predicate                                         | `spec/operators/filter-spec.ts:69`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:84:filter > should filter in only prime numbers, source unsubscribes early`                        | should filter in only prime numbers, source unsubscribes early                       | `spec/operators/filter-spec.ts:84`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
-| `spec/operators/filter-spec.ts:96:filter > should filter in only prime numbers, source throws`                                    | should filter in only prime numbers, source throws                                   | `spec/operators/filter-spec.ts:96`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: filter | `IN-PROCESS` |
+| Case ID                                                                                                                           | Behavioral test                                                                      | Source                              | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
+| --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
+| `spec/operators/filter-spec.ts:107:filter > should filter in only prime numbers, but predicate throws`                            | should filter in only prime numbers, but predicate throws                            | `spec/operators/filter-spec.ts:107` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:127:filter > should filter in only prime numbers, predicate with index`                            | should filter in only prime numbers, predicate with index                            | `spec/operators/filter-spec.ts:127` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:142:filter > should invoke predicate once for each checked value`                                  | should invoke predicate once for each checked value                                  | `spec/operators/filter-spec.ts:142` | —               | `portable`     | `expected-failure` | Missing operator capability: tap                                                                     | `FIXED`      |
+| `spec/operators/filter-spec.ts:168:filter > should filter in only prime numbers, predicate with index, source unsubscribes early` | should filter in only prime numbers, predicate with index, source unsubscribes early | `spec/operators/filter-spec.ts:168` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:184:filter > should filter in only prime numbers, predicate with index, source throws`             | should filter in only prime numbers, predicate with index, source throws             | `spec/operators/filter-spec.ts:184` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:199:filter > should filter in only prime numbers, predicate with index and throws`                 | should filter in only prime numbers, predicate with index and throws                 | `spec/operators/filter-spec.ts:199` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:219:filter > should compose with another filter to allow multiples of six`                         | should compose with another filter to allow multiples of six                         | `spec/operators/filter-spec.ts:219` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg`                                           | should be able to accept and use a thisArg                                           | `spec/operators/filter-spec.ts:235` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:265:filter > should be able to use filter and map composed`                                        | should be able to use filter and map composed                                        | `spec/operators/filter-spec.ts:265` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:282:filter > should propagate errors from the source`                                              | should propagate errors from the source                                              | `spec/operators/filter-spec.ts:282` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:293:filter > should handle empty`                                                                  | should handle empty                                                                  | `spec/operators/filter-spec.ts:293` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:304:filter > should handle never`                                                                  | should handle never                                                                  | `spec/operators/filter-spec.ts:304` | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `IN-PROCESS` |
+| `spec/operators/filter-spec.ts:315:filter > should handle throw`                                                                  | should handle throw                                                                  | `spec/operators/filter-spec.ts:315` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:32:filter > should filter out even values`                                                         | should filter out even values                                                        | `spec/operators/filter-spec.ts:32`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly`                   | should not break unsubscription chain when unsubscribed explicitly                   | `spec/operators/filter-spec.ts:347` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:425:filter > should support Boolean as a predicate`                                                | should support Boolean as a predicate                                                | `spec/operators/filter-spec.ts:425` | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:43:filter > should filter in only prime numbers`                                                   | should filter in only prime numbers                                                  | `spec/operators/filter-spec.ts:43`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:54:filter > should filter with an always-true predicate`                                           | should filter with an always-true predicate                                          | `spec/operators/filter-spec.ts:54`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:69:filter > should filter with an always-false predicate`                                          | should filter with an always-false predicate                                         | `spec/operators/filter-spec.ts:69`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:84:filter > should filter in only prime numbers, source unsubscribes early`                        | should filter in only prime numbers, source unsubscribes early                       | `spec/operators/filter-spec.ts:84`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
+| `spec/operators/filter-spec.ts:96:filter > should filter in only prime numbers, source throws`                                    | should filter in only prime numbers, source throws                                   | `spec/operators/filter-spec.ts:96`  | —               | `portable`     | `expected-failure` | Missing operator capability: filter                                                                  | `FIXED`      |
 
 ### `finalize`
 
 Owner source: `spec/operators/finalize-spec.ts`
 
-| Case ID                                                                              | Behavioral test                     | Source                                | Failing mode    | Classification       | Disposition   | Concise failure                       | Status       |
-| ------------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------- | ------------ |
-| `spec/operators/finalize-spec.ts:116:finalize > should handle throw`                 | should handle throw                 | `spec/operators/finalize-spec.ts:116` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`  | should handle basic hot observable  | `spec/operators/finalize-spec.ts:135` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable` | should handle basic cold observable | `spec/operators/finalize-spec.ts:154` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`           | should handle basic error           | `spec/operators/finalize-spec.ts:173` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`        | should handle unsubscription        | `spec/operators/finalize-spec.ts:192` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:78:finalize > should handle empty`                  | should handle empty                 | `spec/operators/finalize-spec.ts:78`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
-| `spec/operators/finalize-spec.ts:97:finalize > should handle never`                  | should handle never                 | `spec/operators/finalize-spec.ts:97`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| Case ID                                                                              | Behavioral test                     | Source                                | Failing mode    | Classification    | Disposition   | Concise failure                                                                                      | Status       |
+| ------------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------- | --------------- | ----------------- | ------------- | ---------------------------------------------------------------------------------------------------- | ------------ |
+| `spec/operators/finalize-spec.ts:116:finalize > should handle throw`                 | should handle throw                 | `spec/operators/finalize-spec.ts:116` | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`  | should handle basic hot observable  | `spec/operators/finalize-spec.ts:135` | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable` | should handle basic cold observable | `spec/operators/finalize-spec.ts:154` | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`           | should handle basic error           | `spec/operators/finalize-spec.ts:173` | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`        | should handle unsubscription        | `spec/operators/finalize-spec.ts:192` | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:78:finalize > should handle empty`                  | should handle empty                 | `spec/operators/finalize-spec.ts:78`  | —               | `harness-rewrite` | `missing-api` | Missing operator capability: finalize                                                                | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:97:finalize > should handle never`                  | should handle never                 | `spec/operators/finalize-spec.ts:97`  | cold + polyfill | `harness-rewrite` | `missing-api` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `IN-PROCESS` |
 
 ### `find`
 
@@ -1038,9 +1038,9 @@ Owner source: `spec/observables/from-spec.ts`
 
 Owner source: `spec/observables/fromEvent-spec.ts`
 
-| Case ID                                                                                                 | Behavioral test                                     | Source                                  | Failing mode    | Classification       | Disposition   | Concise failure                                                                    | Status |
-| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | --------------------------------------- | --------------- | -------------------- | ------------- | ---------------------------------------------------------------------------------- | ------ |
-| `spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element` | should create an observable of click on the element | `spec/observables/fromEvent-spec.ts:16` | cold + polyfill | `compatibility-only` | `missing-api` | Unsupported RxJS 7 fromEvent target: the platform mapping requires an EventTarget. | `TODO` |
+| Case ID                                                                                                 | Behavioral test                                     | Source                                  | Failing mode    | Classification | Disposition        | Concise failure                                                                    | Status |
+| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | --------------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------- | ------ |
+| `spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element` | should create an observable of click on the element | `spec/observables/fromEvent-spec.ts:16` | cold + polyfill | `portable`     | `expected-failure` | Unsupported RxJS 7 fromEvent target: the platform mapping requires an EventTarget. | `TODO` |
 
 ### `fromEventPattern`
 
@@ -1127,11 +1127,11 @@ Owner source: `spec/operators/ignoreElements-spec.ts`
 
 Owner source: `spec/observables/interval-spec.ts`
 
-| Case ID                                                                                          | Behavioral test                                | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                     | Status  |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ----------------------------------- | ------- |
-| `spec/observables/interval-spec.ts:17:interval > should set up an interval`                      | should set up an interval                      | `spec/observables/interval-spec.ts:17` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed. | `FIXED` |
-| `spec/observables/interval-spec.ts:32:interval > should emit when relative interval set to zero` | should emit when relative interval set to zero | `spec/observables/interval-spec.ts:32` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take   | `TODO`  |
-| `spec/observables/interval-spec.ts:42:interval > should consider negative interval as zero`      | should consider negative interval as zero      | `spec/observables/interval-spec.ts:42` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take   | `TODO`  |
+| Case ID                                                                                          | Behavioral test                                | Source                                 | Failing mode | Classification | Disposition        | Concise failure                     | Status  |
+| ------------------------------------------------------------------------------------------------ | ---------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ----------------------------------- | ------- |
+| `spec/observables/interval-spec.ts:17:interval > should set up an interval`                      | should set up an interval                      | `spec/observables/interval-spec.ts:17` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed. | `FIXED` |
+| `spec/observables/interval-spec.ts:32:interval > should emit when relative interval set to zero` | should emit when relative interval set to zero | `spec/observables/interval-spec.ts:32` | —            | `portable`     | `expected-failure` | Missing operator capability: take   | `FIXED` |
+| `spec/observables/interval-spec.ts:42:interval > should consider negative interval as zero`      | should consider negative interval as zero      | `spec/observables/interval-spec.ts:42` | —            | `portable`     | `expected-failure` | Missing operator capability: take   | `FIXED` |
 
 ### `isEmpty`
 
@@ -1168,23 +1168,23 @@ Owner source: `spec/operators/last-spec.ts`
 
 Owner source: `spec/operators/map-spec.ts`
 
-| Case ID                                                                                                   | Behavioral test                                                    | Source                           | Failing mode    | Classification       | Disposition   | Concise failure                  | Status       |
-| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------- | --------------- | -------------------- | ------------- | -------------------------------- | ------------ |
-| `spec/operators/map-spec.ts:103:map > should not map an empty observable`                                 | should not map an empty observable                                 | `spec/operators/map-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:127:map > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/map-spec.ts:127` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:141:map > should map with index`                                              | should map with index                                              | `spec/operators/map-spec.ts:141` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:166:map > should map with index until completed`                              | should map with index until completed                              | `spec/operators/map-spec.ts:166` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:18:map > should map multiple values`                                          | should map multiple values                                         | `spec/operators/map-spec.ts:18`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:191:map > should map with index until an error occurs`                        | should map with index until an error occurs                        | `spec/operators/map-spec.ts:191` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:216:map > should map using a custom thisArg`                                  | should map using a custom thisArg                                  | `spec/operators/map-spec.ts:216` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:238:map > should map twice`                                                   | should map twice                                                   | `spec/operators/map-spec.ts:238` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg`                     | should do multiple maps using a custom thisArg                     | `spec/operators/map-spec.ts:269` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/map-spec.ts:299` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:31:map > should map one value`                                                | should map one value                                               | `spec/operators/map-spec.ts:31`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:45:map > should map multiple values`                                          | should map multiple values                                         | `spec/operators/map-spec.ts:45`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:58:map > should propagate errors from map function`                           | should propagate errors from map function                          | `spec/operators/map-spec.ts:58`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors`      | should propagate errors from observable that emits only errors     | `spec/operators/map-spec.ts:76`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
-| `spec/operators/map-spec.ts:89:map > should propagate errors from observable that emit values`            | should propagate errors from observable that emit values           | `spec/operators/map-spec.ts:89`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map | `IN-PROCESS` |
+| Case ID                                                                                                   | Behavioral test                                                    | Source                           | Failing mode | Classification       | Disposition        | Concise failure                  | Status  |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------- | ------------ | -------------------- | ------------------ | -------------------------------- | ------- |
+| `spec/operators/map-spec.ts:103:map > should not map an empty observable`                                 | should not map an empty observable                                 | `spec/operators/map-spec.ts:103` | —            | `portable`           | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/operators/map-spec.ts:127:map > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/map-spec.ts:127` | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:141:map > should map with index`                                              | should map with index                                              | `spec/operators/map-spec.ts:141` | —            | `portable`           | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/operators/map-spec.ts:166:map > should map with index until completed`                              | should map with index until completed                              | `spec/operators/map-spec.ts:166` | —            | `portable`           | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/operators/map-spec.ts:18:map > should map multiple values`                                          | should map multiple values                                         | `spec/operators/map-spec.ts:18`  | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:191:map > should map with index until an error occurs`                        | should map with index until an error occurs                        | `spec/operators/map-spec.ts:191` | —            | `portable`           | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/operators/map-spec.ts:216:map > should map using a custom thisArg`                                  | should map using a custom thisArg                                  | `spec/operators/map-spec.ts:216` | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:238:map > should map twice`                                                   | should map twice                                                   | `spec/operators/map-spec.ts:238` | —            | `portable`           | `expected-failure` | Missing operator capability: tap | `FIXED` |
+| `spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg`                     | should do multiple maps using a custom thisArg                     | `spec/operators/map-spec.ts:269` | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly` | should not break unsubscription chain when unsubscribed explicitly | `spec/operators/map-spec.ts:299` | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:31:map > should map one value`                                                | should map one value                                               | `spec/operators/map-spec.ts:31`  | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:45:map > should map multiple values`                                          | should map multiple values                                         | `spec/operators/map-spec.ts:45`  | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:58:map > should propagate errors from map function`                           | should propagate errors from map function                          | `spec/operators/map-spec.ts:58`  | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
+| `spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors`      | should propagate errors from observable that emits only errors     | `spec/operators/map-spec.ts:76`  | —            | `compatibility-only` | `missing-api`      | Missing operator capability: map | `TODO`  |
+| `spec/operators/map-spec.ts:89:map > should propagate errors from observable that emit values`            | should propagate errors from observable that emit values           | `spec/operators/map-spec.ts:89`  | —            | `portable`           | `expected-failure` | Missing operator capability: map | `FIXED` |
 
 ### `mapTo`
 
@@ -1267,11 +1267,11 @@ Owner source: `spec/operators/mergeMap-spec.ts`
 | Case ID                                                                                                                                            | Behavioral test                                                                                   | Source                                | Failing mode    | Classification       | Disposition        | Concise failure                                                                                                                                           | Status  |
 | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------- | -------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | `spec/operators/mergeMap-spec.ts:108:mergeMap > should mergeMap many regular interval inners`                                                      | should mergeMap many regular interval inners                                                      | `spec/operators/mergeMap-spec.ts:108` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/mergeMap-spec.ts:16`  | cold + polyfill | `compatibility-only` | `missing-api`      | rxTest observable assertion failed.                                                                                                                       | `TODO`  |
+| `spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/mergeMap-spec.ts:16`  | polyfill        | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `TODO`  |
 | `spec/operators/mergeMap-spec.ts:208:mergeMap > should mergeMap many outer values to many inner values`                                            | should mergeMap many outer values to many inner values                                            | `spec/operators/mergeMap-spec.ts:208` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
 | `spec/operators/mergeMap-spec.ts:232:mergeMap > should mergeMap many outer to many inner, complete late`                                           | should mergeMap many outer to many inner, complete late                                           | `spec/operators/mergeMap-spec.ts:232` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
 | `spec/operators/mergeMap-spec.ts:256:mergeMap > should mergeMap many outer to many inner, outer never completes`                                   | should mergeMap many outer to many inner, outer never completes                                   | `spec/operators/mergeMap-spec.ts:256` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/mergeMap-spec.ts:285` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: map                                                                                                                          | `TODO`  |
+| `spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/mergeMap-spec.ts:285` | polyfill        | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `TODO`  |
 | `spec/operators/mergeMap-spec.ts:318:mergeMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly` | should not break unsubscription chains with interop inners when result is unsubscribed explicitly | `spec/operators/mergeMap-spec.ts:318` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
 | `spec/operators/mergeMap-spec.ts:350:mergeMap > should mergeMap many outer to many inner, inner never completes`                                   | should mergeMap many outer to many inner, inner never completes                                   | `spec/operators/mergeMap-spec.ts:350` | —               | `portable`           | `expected-failure` | cold: rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble.; polyfill: rxTest observable assertion failed. | `FIXED` |
 | `spec/operators/mergeMap-spec.ts:374:mergeMap > should mergeMap many outer to many inner, and inner throws`                                        | should mergeMap many outer to many inner, and inner throws                                        | `spec/operators/mergeMap-spec.ts:374` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
@@ -1291,22 +1291,22 @@ Owner source: `spec/operators/mergeMap-spec.ts`
 
 Owner source: `spec/operators/mergeMapTo-spec.ts`
 
-| Case ID                                                                                                                                              | Behavioral test                                                                                 | Source                                  | Failing mode    | Classification       | Disposition        | Concise failure                                                                                                                                           | Status  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------- | --------------- | -------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values`                                        | should mergeMapTo many outer values to many inner values                                        | `spec/operators/mergeMapTo-spec.ts:143` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable`                                                | should map-and-flatten each item to an Observable                                               | `spec/operators/mergeMapTo-spec.ts:15`  | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late`                                       | should mergeMapTo many outer to many inner, complete late                                       | `spec/operators/mergeMapTo-spec.ts:165` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes`                               | should mergeMapTo many outer to many inner, outer never completes                               | `spec/operators/mergeMapTo-spec.ts:187` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly`                   | should not break unsubscription chains when result is unsubscribed explicitly                   | `spec/operators/mergeMapTo-spec.ts:216` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: map                                                                                                                          | `TODO`  |
-| `spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes`                               | should mergeMapTo many outer to many inner, inner never completes                               | `spec/operators/mergeMapTo-spec.ts:249` | —               | `portable`           | `expected-failure` | cold: rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble.; polyfill: rxTest observable assertion failed. | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws`                                    | should mergeMapTo many outer to many inner, and inner throws                                    | `spec/operators/mergeMapTo-spec.ts:271` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws`                                    | should mergeMapTo many outer to many inner, and outer throws                                    | `spec/operators/mergeMapTo-spec.ts:292` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw`                          | should mergeMapTo many outer to many inner, both inner and outer throw                          | `spec/operators/mergeMapTo-spec.ts:314` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector` | should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector | `spec/operators/mergeMapTo-spec.ts:356` | —               | `portable`           | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:378:mergeMapTo > should mergeMapTo many outer to arrays`                                                          | should mergeMapTo many outer to arrays                                                          | `spec/operators/mergeMapTo-spec.ts:378` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:391:mergeMapTo > should mergeMapTo many outer to inner arrays, and outer throws`                                  | should mergeMapTo many outer to inner arrays, and outer throws                                  | `spec/operators/mergeMapTo-spec.ts:391` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:404:mergeMapTo > should mergeMapTo many outer to inner arrays, outer gets unsubscribed`                           | should mergeMapTo many outer to inner arrays, outer gets unsubscribed                           | `spec/operators/mergeMapTo-spec.ts:404` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
-| `spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners`                                                   | should mergeMapTo many regular interval inners                                                  | `spec/operators/mergeMapTo-spec.ts:84`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| Case ID                                                                                                                                              | Behavioral test                                                                                 | Source                                  | Failing mode | Classification | Disposition        | Concise failure                                                                                                                                           | Status  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------- | ------------ | -------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values`                                        | should mergeMapTo many outer values to many inner values                                        | `spec/operators/mergeMapTo-spec.ts:143` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable`                                                | should map-and-flatten each item to an Observable                                               | `spec/operators/mergeMapTo-spec.ts:15`  | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late`                                       | should mergeMapTo many outer to many inner, complete late                                       | `spec/operators/mergeMapTo-spec.ts:165` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes`                               | should mergeMapTo many outer to many inner, outer never completes                               | `spec/operators/mergeMapTo-spec.ts:187` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly`                   | should not break unsubscription chains when result is unsubscribed explicitly                   | `spec/operators/mergeMapTo-spec.ts:216` | polyfill     | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `TODO`  |
+| `spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes`                               | should mergeMapTo many outer to many inner, inner never completes                               | `spec/operators/mergeMapTo-spec.ts:249` | —            | `portable`     | `expected-failure` | cold: rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble.; polyfill: rxTest observable assertion failed. | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws`                                    | should mergeMapTo many outer to many inner, and inner throws                                    | `spec/operators/mergeMapTo-spec.ts:271` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws`                                    | should mergeMapTo many outer to many inner, and outer throws                                    | `spec/operators/mergeMapTo-spec.ts:292` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw`                          | should mergeMapTo many outer to many inner, both inner and outer throw                          | `spec/operators/mergeMapTo-spec.ts:314` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector` | should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector | `spec/operators/mergeMapTo-spec.ts:356` | —            | `portable`     | `active`           | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:378:mergeMapTo > should mergeMapTo many outer to arrays`                                                          | should mergeMapTo many outer to arrays                                                          | `spec/operators/mergeMapTo-spec.ts:378` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:391:mergeMapTo > should mergeMapTo many outer to inner arrays, and outer throws`                                  | should mergeMapTo many outer to inner arrays, and outer throws                                  | `spec/operators/mergeMapTo-spec.ts:391` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:404:mergeMapTo > should mergeMapTo many outer to inner arrays, outer gets unsubscribed`                           | should mergeMapTo many outer to inner arrays, outer gets unsubscribed                           | `spec/operators/mergeMapTo-spec.ts:404` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
+| `spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners`                                                   | should mergeMapTo many regular interval inners                                                  | `spec/operators/mergeMapTo-spec.ts:84`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                                                                       | `FIXED` |
 
 ### `mergeScan`
 
@@ -1339,12 +1339,12 @@ Owner source: `spec/operators/mergeScan-spec.ts`
 
 Owner source: `spec/operators/mergeWith-spec.ts`
 
-| Case ID                                                                                                                               | Behavioral test                                                               | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/mergeWith-spec.ts:131:merge operator > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/mergeWith-spec.ts:131` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/mergeWith-spec.ts:148:merge operator > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/mergeWith-spec.ts:148` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: map                                                                     | `TODO`  |
-| `spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty`                                                  | should merge never and empty                                                  | `spec/operators/mergeWith-spec.ts:202` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never`                                                  | should merge never and never                                                  | `spec/operators/mergeWith-spec.ts:217` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| Case ID                                                                                                                               | Behavioral test                                                               | Source                                 | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/mergeWith-spec.ts:131:merge operator > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/mergeWith-spec.ts:131` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/mergeWith-spec.ts:148:merge operator > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/mergeWith-spec.ts:148` | —            | `portable`     | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty`                                                  | should merge never and empty                                                  | `spec/operators/mergeWith-spec.ts:202` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never`                                                  | should merge never and never                                                  | `spec/operators/mergeWith-spec.ts:217` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
 
 ### `min`
 
@@ -1485,7 +1485,7 @@ Owner source: `spec/Observable-spec.ts`
 | `spec/Observable-spec.ts:1380:Observable.lift > should compose through race`                               | should compose through race                                      | `spec/Observable-spec.ts:1380` | cold + polyfill | `compatibility-only` | `missing-api`      | expected false to be true                                                        | `TODO` |
 | `spec/Observable-spec.ts:1400:Observable.lift > should compose through zip`                                | should compose through zip                                       | `spec/Observable-spec.ts:1400` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: zip                                                 | `TODO` |
 | `spec/Observable-spec.ts:50:Observable > should allow empty ctor, which is effectively a never-observable` | should allow empty ctor, which is effectively a never-observable | `spec/Observable-spec.ts:50`   | cold + polyfill | `portable`           | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: this.init is not a function | `TODO` |
-| `spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler`               | should handle sync errors within a test scheduler                | `spec/Observable-spec.ts:903`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: map                                                 | `TODO` |
+| `spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler`               | should handle sync errors within a test scheduler                | `spec/Observable-spec.ts:903`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: catchError                                          | `TODO` |
 
 ### `observeOn`
 
@@ -1573,7 +1573,7 @@ Owner source: `spec/operators/pluck-spec.ts`
 | `spec/operators/pluck-spec.ts:105:pluck > should work with edge cases of deep nested properties`              | should work with edge cases of deep nested properties              | `spec/operators/pluck-spec.ts:105` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
 | `spec/operators/pluck-spec.ts:132:pluck > should propagate errors from observable that emits only errors`     | should propagate errors from observable that emits only errors     | `spec/operators/pluck-spec.ts:132` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
 | `spec/operators/pluck-spec.ts:145:pluck > should propagate errors from observable that emit values`           | should propagate errors from observable that emit values           | `spec/operators/pluck-spec.ts:145` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
-| `spec/operators/pluck-spec.ts:15:pluck > should dematerialize an Observable`                                  | should dematerialize an Observable                                 | `spec/operators/pluck-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map   | `TODO` |
+| `spec/operators/pluck-spec.ts:15:pluck > should dematerialize an Observable`                                  | should dematerialize an Observable                                 | `spec/operators/pluck-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
 | `spec/operators/pluck-spec.ts:159:pluck > should not pluck an empty observable`                               | should not pluck an empty observable                               | `spec/operators/pluck-spec.ts:159` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
 | `spec/operators/pluck-spec.ts:172:pluck > should allow unsubscribing explicitly and early`                    | should allow unsubscribing explicitly and early                    | `spec/operators/pluck-spec.ts:172` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
 | `spec/operators/pluck-spec.ts:186:pluck > should pluck twice`                                                 | should pluck twice                                                 | `spec/operators/pluck-spec.ts:186` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: pluck | `TODO` |
@@ -1768,28 +1768,28 @@ Owner source: `spec/operators/refCount-spec.ts`
 
 Owner source: `spec/operators/repeat-spec.ts`
 
-| Case ID                                                                                                                                        | Behavioral test                                                                          | Source                              | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/repeat-spec.ts:102:repeat operator > should not break unsubscription chain when unsubscribed explicitly`                       | should not break unsubscription chain when unsubscribed explicitly                       | `spec/operators/repeat-spec.ts:102` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:127:repeat operator > should consider negative count as no repeat, and return EMPTY`                            | should consider negative count as no repeat, and return EMPTY                            | `spec/operators/repeat-spec.ts:127` | —               | `portable`           | `expected-failure` | rxTest exceeded maxTaskExecutions (100000).                                                          | `FIXED` |
-| `spec/operators/repeat-spec.ts:15:repeat operator > should resubscribe count number of times`                                                  | should resubscribe count number of times                                                 | `spec/operators/repeat-spec.ts:15`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:178:repeat operator > should not complete when source never completes`                                          | should not complete when source never completes                                          | `spec/operators/repeat-spec.ts:178` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/repeat-spec.ts:189:repeat operator > should not complete when source does not completes`                                       | should not complete when source does not completes                                       | `spec/operators/repeat-spec.ts:189` | —               | `portable`           | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
-| `spec/operators/repeat-spec.ts:201:repeat operator > should complete immediately when source does not complete without emit but count is zero` | should complete immediately when source does not complete without emit but count is zero | `spec/operators/repeat-spec.ts:201` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:212:repeat operator > should complete immediately when source does not complete but count is zero`              | should complete immediately when source does not complete but count is zero              | `spec/operators/repeat-spec.ts:212` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:223:repeat operator > should emit source once and does not complete when source emits but does not complete`    | should emit source once and does not complete when source emits but does not complete    | `spec/operators/repeat-spec.ts:223` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/repeat-spec.ts:234:repeat operator > should complete when source is empty`                                                     | should complete when source is empty                                                     | `spec/operators/repeat-spec.ts:234` | —               | `portable`           | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
-| `spec/operators/repeat-spec.ts:245:repeat operator > should complete when source does not emit`                                                | should complete when source does not emit                                                | `spec/operators/repeat-spec.ts:245` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:260:repeat operator > should complete immediately when source does not emit but count is zero`                  | should complete immediately when source does not emit but count is zero                  | `spec/operators/repeat-spec.ts:260` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:30:repeat operator > should resubscribe multiple times`                                                         | should resubscribe multiple times                                                        | `spec/operators/repeat-spec.ts:30`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:304:repeat operator > should raise error after first emit succeed`                                              | should raise error after first emit succeed                                              | `spec/operators/repeat-spec.ts:304` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: map                                                                     | `TODO`  |
-| `spec/operators/repeat-spec.ts:365:repeat operator > should allow count configuration`                                                         | should allow count configuration                                                         | `spec/operators/repeat-spec.ts:365` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:380:repeat operator > should allow delay time configuration`                                                    | should allow delay time configuration                                                    | `spec/operators/repeat-spec.ts:380` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:396:repeat operator > should allow delay function configuration`                                                | should allow delay function configuration                                                | `spec/operators/repeat-spec.ts:396` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:46:repeat operator > should complete without emit when count is zero`                                           | should complete without emit when count is zero                                          | `spec/operators/repeat-spec.ts:46`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:57:repeat operator > should emit source once when count is one`                                                 | should emit source once when count is one                                                | `spec/operators/repeat-spec.ts:57`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:68:repeat operator > should repeat until gets unsubscribed`                                                     | should repeat until gets unsubscribed                                                    | `spec/operators/repeat-spec.ts:68`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/repeat-spec.ts:83:repeat operator > should be able to repeat indefinitely until unsubscribed`                                  | should be able to repeat indefinitely until unsubscribed                                 | `spec/operators/repeat-spec.ts:83`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| Case ID                                                                                                                                        | Behavioral test                                                                          | Source                              | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/repeat-spec.ts:102:repeat operator > should not break unsubscription chain when unsubscribed explicitly`                       | should not break unsubscription chain when unsubscribed explicitly                       | `spec/operators/repeat-spec.ts:102` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:127:repeat operator > should consider negative count as no repeat, and return EMPTY`                            | should consider negative count as no repeat, and return EMPTY                            | `spec/operators/repeat-spec.ts:127` | —            | `portable`     | `expected-failure` | rxTest exceeded maxTaskExecutions (100000).                                                          | `FIXED` |
+| `spec/operators/repeat-spec.ts:15:repeat operator > should resubscribe count number of times`                                                  | should resubscribe count number of times                                                 | `spec/operators/repeat-spec.ts:15`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:178:repeat operator > should not complete when source never completes`                                          | should not complete when source never completes                                          | `spec/operators/repeat-spec.ts:178` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/repeat-spec.ts:189:repeat operator > should not complete when source does not completes`                                       | should not complete when source does not completes                                       | `spec/operators/repeat-spec.ts:189` | —            | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/repeat-spec.ts:201:repeat operator > should complete immediately when source does not complete without emit but count is zero` | should complete immediately when source does not complete without emit but count is zero | `spec/operators/repeat-spec.ts:201` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:212:repeat operator > should complete immediately when source does not complete but count is zero`              | should complete immediately when source does not complete but count is zero              | `spec/operators/repeat-spec.ts:212` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:223:repeat operator > should emit source once and does not complete when source emits but does not complete`    | should emit source once and does not complete when source emits but does not complete    | `spec/operators/repeat-spec.ts:223` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/repeat-spec.ts:234:repeat operator > should complete when source is empty`                                                     | should complete when source is empty                                                     | `spec/operators/repeat-spec.ts:234` | —            | `portable`     | `expected-failure` | rxTest subscriptions assertion failed.                                                               | `FIXED` |
+| `spec/operators/repeat-spec.ts:245:repeat operator > should complete when source does not emit`                                                | should complete when source does not emit                                                | `spec/operators/repeat-spec.ts:245` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:260:repeat operator > should complete immediately when source does not emit but count is zero`                  | should complete immediately when source does not emit but count is zero                  | `spec/operators/repeat-spec.ts:260` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:30:repeat operator > should resubscribe multiple times`                                                         | should resubscribe multiple times                                                        | `spec/operators/repeat-spec.ts:30`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:304:repeat operator > should raise error after first emit succeed`                                              | should raise error after first emit succeed                                              | `spec/operators/repeat-spec.ts:304` | —            | `portable`     | `expected-failure` | Missing operator capability: map                                                                     | `FIXED` |
+| `spec/operators/repeat-spec.ts:365:repeat operator > should allow count configuration`                                                         | should allow count configuration                                                         | `spec/operators/repeat-spec.ts:365` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:380:repeat operator > should allow delay time configuration`                                                    | should allow delay time configuration                                                    | `spec/operators/repeat-spec.ts:380` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:396:repeat operator > should allow delay function configuration`                                                | should allow delay function configuration                                                | `spec/operators/repeat-spec.ts:396` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:46:repeat operator > should complete without emit when count is zero`                                           | should complete without emit when count is zero                                          | `spec/operators/repeat-spec.ts:46`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:57:repeat operator > should emit source once when count is one`                                                 | should emit source once when count is one                                                | `spec/operators/repeat-spec.ts:57`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:68:repeat operator > should repeat until gets unsubscribed`                                                     | should repeat until gets unsubscribed                                                    | `spec/operators/repeat-spec.ts:68`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/repeat-spec.ts:83:repeat operator > should be able to repeat indefinitely until unsubscribed`                                  | should be able to repeat indefinitely until unsubscribed                                 | `spec/operators/repeat-spec.ts:83`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
 
 ### `repeatWhen`
 
@@ -1821,13 +1821,13 @@ Owner source: `spec/operators/repeatWhen-spec.ts`
 
 Owner source: `spec/subjects/ReplaySubject-spec.ts`
 
-| Case ID                                                                                                                                                   | Behavioral test                                                             | Source                                    | Failing mode    | Classification       | Disposition   | Concise failure                  | Status |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------- | --------------- | -------------------- | ------------- | -------------------------------- | ------ |
-| `spec/subjects/ReplaySubject-spec.ts:117:ReplaySubject > with bufferSize=2 > should replay 2 previous values when subscribed`                             | should replay 2 previous values when subscribed                             | `spec/subjects/ReplaySubject-spec.ts:117` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: tap | `TODO` |
-| `spec/subjects/ReplaySubject-spec.ts:149:ReplaySubject > with bufferSize=2 > should replay 2 last values for when subscribed after completed`             | should replay 2 last values for when subscribed after completed             | `spec/subjects/ReplaySubject-spec.ts:149` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: tap | `TODO` |
-| `spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed`        | should replay previous values since 4 time units ago when subscribed        | `spec/subjects/ReplaySubject-spec.ts:247` | cold + polyfill | `compatibility-only` | `missing-api` | rxTestScheduler is not defined   | `TODO` |
-| `spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed`            | should replay last values since 4 time units ago when subscribed            | `spec/subjects/ReplaySubject-spec.ts:279` | cold + polyfill | `compatibility-only` | `missing-api` | rxTestScheduler is not defined   | `TODO` |
-| `spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted` | should only replay bufferSize items when 4 time units ago more were emitted | `spec/subjects/ReplaySubject-spec.ts:303` | cold + polyfill | `compatibility-only` | `missing-api` | rxTestScheduler is not defined   | `TODO` |
+| Case ID                                                                                                                                                   | Behavioral test                                                             | Source                                    | Failing mode    | Classification    | Disposition        | Concise failure                     | Status  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------- | --------------- | ----------------- | ------------------ | ----------------------------------- | ------- |
+| `spec/subjects/ReplaySubject-spec.ts:117:ReplaySubject > with bufferSize=2 > should replay 2 previous values when subscribed`                             | should replay 2 previous values when subscribed                             | `spec/subjects/ReplaySubject-spec.ts:117` | —               | `harness-rewrite` | `expected-failure` | Missing operator capability: tap    | `FIXED` |
+| `spec/subjects/ReplaySubject-spec.ts:149:ReplaySubject > with bufferSize=2 > should replay 2 last values for when subscribed after completed`             | should replay 2 last values for when subscribed after completed             | `spec/subjects/ReplaySubject-spec.ts:149` | cold + polyfill | `harness-rewrite` | `expected-failure` | rxTest observable assertion failed. | `TODO`  |
+| `spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed`        | should replay previous values since 4 time units ago when subscribed        | `spec/subjects/ReplaySubject-spec.ts:247` | cold + polyfill | `harness-rewrite` | `expected-failure` | rxTestScheduler is not defined      | `TODO`  |
+| `spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed`            | should replay last values since 4 time units ago when subscribed            | `spec/subjects/ReplaySubject-spec.ts:279` | cold + polyfill | `harness-rewrite` | `expected-failure` | rxTestScheduler is not defined      | `TODO`  |
+| `spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted` | should only replay bufferSize items when 4 time units ago more were emitted | `spec/subjects/ReplaySubject-spec.ts:303` | cold + polyfill | `harness-rewrite` | `expected-failure` | rxTestScheduler is not defined      | `TODO`  |
 
 ### `retry`
 
@@ -1869,7 +1869,7 @@ Owner source: `spec/operators/retryWhen-spec.ts`
 | `spec/operators/retryWhen-spec.ts:243:retryWhen > should mirror a basic cold source with complete, given an empty notifier`                                | should mirror a basic cold source with complete, given an empty notifier                                | `spec/operators/retryWhen-spec.ts:243` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
 | `spec/operators/retryWhen-spec.ts:257:retryWhen > should mirror a basic cold source with no termination, given an empty notifier`                          | should mirror a basic cold source with no termination, given an empty notifier                          | `spec/operators/retryWhen-spec.ts:257` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
 | `spec/operators/retryWhen-spec.ts:271:retryWhen > should mirror a basic hot source with complete, given an empty notifier`                                 | should mirror a basic hot source with complete, given an empty notifier                                 | `spec/operators/retryWhen-spec.ts:271` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
-| `spec/operators/retryWhen-spec.ts:285:retryWhen > should handle a hot source that raises error but eventually completes`                                   | should handle a hot source that raises error but eventually completes                                   | `spec/operators/retryWhen-spec.ts:285` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: map       | `TODO` |
+| `spec/operators/retryWhen-spec.ts:285:retryWhen > should handle a hot source that raises error but eventually completes`                                   | should handle a hot source that raises error but eventually completes                                   | `spec/operators/retryWhen-spec.ts:285` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
 | `spec/operators/retryWhen-spec.ts:312:retryWhen > should tear down resources when result is unsubscribed early`                                            | should tear down resources when result is unsubscribed early                                            | `spec/operators/retryWhen-spec.ts:312` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
 | `spec/operators/retryWhen-spec.ts:335:retryWhen > should not break unsubscription chains when unsubscribed explicitly`                                     | should not break unsubscription chains when unsubscribed explicitly                                     | `spec/operators/retryWhen-spec.ts:335` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
 | `spec/operators/retryWhen-spec.ts:35:retryWhen > should handle a source with eventual error using a hot notifier that raises error`                        | should handle a source with eventual error using a hot notifier that raises error                       | `spec/operators/retryWhen-spec.ts:35`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: retryWhen | `TODO` |
@@ -1920,13 +1920,13 @@ Owner source: `spec/operators/sampleTime-spec.ts`
 
 Owner source: `spec/operators/scan-spec.ts`
 
-| Case ID                                                                                                                | Behavioral test                                                               | Source                            | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/scan-spec.ts:171:scan > handle never`                                                                  | handle never                                                                  | `spec/operators/scan-spec.ts:171` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/scan-spec.ts:197:scan > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/scan-spec.ts:197` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/scan-spec.ts:219:scan > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/scan-spec.ts:219` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/scan-spec.ts:245:scan > should pass current index to accumulator`                                      | should pass current index to accumulator                                      | `spec/operators/scan-spec.ts:245` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: finalize                                                                | `TODO`  |
-| `spec/operators/scan-spec.ts:91:scan > should scan without seed`                                                       | should scan without seed                                                      | `spec/operators/scan-spec.ts:91`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| Case ID                                                                                                                | Behavioral test                                                               | Source                            | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/scan-spec.ts:171:scan > handle never`                                                                  | handle never                                                                  | `spec/operators/scan-spec.ts:171` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/scan-spec.ts:197:scan > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/scan-spec.ts:197` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/scan-spec.ts:219:scan > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/scan-spec.ts:219` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/scan-spec.ts:245:scan > should pass current index to accumulator`                                      | should pass current index to accumulator                                      | `spec/operators/scan-spec.ts:245` | —            | `portable`     | `expected-failure` | Missing operator capability: finalize                                                                | `FIXED` |
+| `spec/operators/scan-spec.ts:91:scan > should scan without seed`                                                       | should scan without seed                                                      | `spec/operators/scan-spec.ts:91`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
 
 ### `scheduled`
 
@@ -2213,13 +2213,13 @@ Owner source: `spec/operators/skipUntil-spec.ts`
 
 Owner source: `spec/operators/skipWhile-spec.ts`
 
-| Case ID                                                                                                                          | Behavioral test                                                               | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/skipWhile-spec.ts:122:skipWhile > should skip using index with source unsubscribes early`                        | should skip using index with source unsubscribes early                        | `spec/operators/skipWhile-spec.ts:122` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/skipWhile-spec.ts:140` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/skipWhile-spec.ts:183:skipWhile > should invoke predicate while its false and never again`                       | should invoke predicate while its false and never again                       | `spec/operators/skipWhile-spec.ts:183` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: tap                                                                     | `TODO`  |
-| `spec/operators/skipWhile-spec.ts:243:skipWhile > should handle Observable.never`                                                | should handle Observable.never                                                | `spec/operators/skipWhile-spec.ts:243` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/skipWhile-spec.ts:88:skipWhile > should skip elements on hot source`                                             | should skip elements on hot source                                            | `spec/operators/skipWhile-spec.ts:88`  | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| Case ID                                                                                                                          | Behavioral test                                                               | Source                                 | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/skipWhile-spec.ts:122:skipWhile > should skip using index with source unsubscribes early`                        | should skip using index with source unsubscribes early                        | `spec/operators/skipWhile-spec.ts:122` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/skipWhile-spec.ts:140` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/skipWhile-spec.ts:183:skipWhile > should invoke predicate while its false and never again`                       | should invoke predicate while its false and never again                       | `spec/operators/skipWhile-spec.ts:183` | —            | `portable`     | `expected-failure` | Missing operator capability: tap                                                                     | `FIXED` |
+| `spec/operators/skipWhile-spec.ts:243:skipWhile > should handle Observable.never`                                                | should handle Observable.never                                                | `spec/operators/skipWhile-spec.ts:243` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/skipWhile-spec.ts:88:skipWhile > should skip elements on hot source`                                             | should skip elements on hot source                                            | `spec/operators/skipWhile-spec.ts:88`  | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
 
 ### `startWith`
 
@@ -2284,15 +2284,15 @@ Owner source: `spec/operators/switchAll-spec.ts`
 
 Owner source: `spec/operators/switchMap-spec.ts`
 
-| Case ID                                                                                                                                              | Behavioral test                                                                                   | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/switchMap-spec.ts:139:switchMap > should switch inner cold observables, outer is unsubscribed early`                                 | should switch inner cold observables, outer is unsubscribed early                                 | `spec/operators/switchMap-spec.ts:139` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/switchMap-spec.ts:16:switchMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/switchMap-spec.ts:16`  | cold + polyfill | `compatibility-only` | `missing-api`      | rxTest observable assertion failed.                                                                  | `TODO`  |
-| `spec/operators/switchMap-spec.ts:161:switchMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/switchMap-spec.ts:161` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/switchMap-spec.ts:187:switchMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly` | should not break unsubscription chains with interop inners when result is unsubscribed explicitly | `spec/operators/switchMap-spec.ts:187` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes`                                       | should switch inner cold observables, inner never completes                                       | `spec/operators/switchMap-spec.ts:248` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never`                                                               | should switch inner empty and never                                                               | `spec/operators/switchMap-spec.ts:353` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never`                                                                         | should handle outer never                                                                         | `spec/operators/switchMap-spec.ts:450` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| Case ID                                                                                                                                              | Behavioral test                                                                                   | Source                                 | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/switchMap-spec.ts:139:switchMap > should switch inner cold observables, outer is unsubscribed early`                                 | should switch inner cold observables, outer is unsubscribed early                                 | `spec/operators/switchMap-spec.ts:139` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/switchMap-spec.ts:16:switchMap > should map-and-flatten each item to an Observable`                                                  | should map-and-flatten each item to an Observable                                                 | `spec/operators/switchMap-spec.ts:16`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/switchMap-spec.ts:161:switchMap > should not break unsubscription chains when result is unsubscribed explicitly`                     | should not break unsubscription chains when result is unsubscribed explicitly                     | `spec/operators/switchMap-spec.ts:161` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/switchMap-spec.ts:187:switchMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly` | should not break unsubscription chains with interop inners when result is unsubscribed explicitly | `spec/operators/switchMap-spec.ts:187` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes`                                       | should switch inner cold observables, inner never completes                                       | `spec/operators/switchMap-spec.ts:248` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never`                                                               | should switch inner empty and never                                                               | `spec/operators/switchMap-spec.ts:353` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never`                                                                         | should handle outer never                                                                         | `spec/operators/switchMap-spec.ts:450` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
 
 ### `switchMapTo`
 
@@ -2335,23 +2335,23 @@ Owner source: `spec/operators/switchScan-spec.ts`
 
 Owner source: `spec/operators/take-spec.ts`
 
-| Case ID                                                                                                                                                         | Behavioral test                                                                                                        | Source                            | Failing mode    | Classification       | Disposition   | Concise failure                   | Status       |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------- | --------------- | -------------------- | ------------- | --------------------------------- | ------------ |
-| `spec/operators/take-spec.ts:103:take > should propagate error from the source observable`                                                                      | should propagate error from the source observable                                                                      | `spec/operators/take-spec.ts:103` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:114:take > should propagate error from an observable with values`                                                                  | should propagate error from an observable with values                                                                  | `spec/operators/take-spec.ts:114` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:125:take > should allow unsubscribing explicitly and early`                                                                        | should allow unsubscribing explicitly and early                                                                        | `spec/operators/take-spec.ts:125` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:137:take > should work with throw`                                                                                                 | should work with throw                                                                                                 | `spec/operators/take-spec.ts:137` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly`                                                     | should not break unsubscription chain when unsubscribed explicitly                                                     | `spec/operators/take-spec.ts:148` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:15:take > should take two values of an observable with many values`                                                                | should take two values of an observable with many values                                                               | `spec/operators/take-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:209:take > should complete even if the parameter is a string`                                                                      | should complete even if the parameter is a string                                                                      | `spec/operators/take-spec.ts:209` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:222:take > should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified` | should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified | `spec/operators/take-spec.ts:222` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:26:take > should work with empty`                                                                                                  | should work with empty                                                                                                 | `spec/operators/take-spec.ts:26`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:37:take > should go on forever on never`                                                                                           | should go on forever on never                                                                                          | `spec/operators/take-spec.ts:37`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:48:take > should be empty on take(0)`                                                                                              | should be empty on take(0)                                                                                             | `spec/operators/take-spec.ts:48`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:59:take > should be empty if provided with negative value`                                                                         | should be empty if provided with negative value                                                                        | `spec/operators/take-spec.ts:59`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:70:take > should take one value of an observable with one value`                                                                   | should take one value of an observable with one value                                                                  | `spec/operators/take-spec.ts:70`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:81:take > should take one values of an observable with many values`                                                                | should take one values of an observable with many values                                                               | `spec/operators/take-spec.ts:81`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
-| `spec/operators/take-spec.ts:92:take > should error on empty`                                                                                                   | should error on empty                                                                                                  | `spec/operators/take-spec.ts:92`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: take | `IN-PROCESS` |
+| Case ID                                                                                                                                                         | Behavioral test                                                                                                        | Source                            | Failing mode    | Classification | Disposition        | Concise failure                                                                                      | Status       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------- | --------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------------ |
+| `spec/operators/take-spec.ts:103:take > should propagate error from the source observable`                                                                      | should propagate error from the source observable                                                                      | `spec/operators/take-spec.ts:103` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:114:take > should propagate error from an observable with values`                                                                  | should propagate error from an observable with values                                                                  | `spec/operators/take-spec.ts:114` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:125:take > should allow unsubscribing explicitly and early`                                                                        | should allow unsubscribing explicitly and early                                                                        | `spec/operators/take-spec.ts:125` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:137:take > should work with throw`                                                                                                 | should work with throw                                                                                                 | `spec/operators/take-spec.ts:137` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly`                                                     | should not break unsubscription chain when unsubscribed explicitly                                                     | `spec/operators/take-spec.ts:148` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:15:take > should take two values of an observable with many values`                                                                | should take two values of an observable with many values                                                               | `spec/operators/take-spec.ts:15`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:209:take > should complete even if the parameter is a string`                                                                      | should complete even if the parameter is a string                                                                      | `spec/operators/take-spec.ts:209` | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:222:take > should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified` | should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified | `spec/operators/take-spec.ts:222` | —               | `portable`     | `expected-failure` | Missing operator capability: tap                                                                     | `FIXED`      |
+| `spec/operators/take-spec.ts:26:take > should work with empty`                                                                                                  | should work with empty                                                                                                 | `spec/operators/take-spec.ts:26`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:37:take > should go on forever on never`                                                                                           | should go on forever on never                                                                                          | `spec/operators/take-spec.ts:37`  | cold + polyfill | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `IN-PROCESS` |
+| `spec/operators/take-spec.ts:48:take > should be empty on take(0)`                                                                                              | should be empty on take(0)                                                                                             | `spec/operators/take-spec.ts:48`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:59:take > should be empty if provided with negative value`                                                                         | should be empty if provided with negative value                                                                        | `spec/operators/take-spec.ts:59`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:70:take > should take one value of an observable with one value`                                                                   | should take one value of an observable with one value                                                                  | `spec/operators/take-spec.ts:70`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:81:take > should take one values of an observable with many values`                                                                | should take one values of an observable with many values                                                               | `spec/operators/take-spec.ts:81`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
+| `spec/operators/take-spec.ts:92:take > should error on empty`                                                                                                   | should error on empty                                                                                                  | `spec/operators/take-spec.ts:92`  | —               | `portable`     | `expected-failure` | Missing operator capability: take                                                                    | `FIXED`      |
 
 ### `takeLast`
 
@@ -2394,32 +2394,32 @@ Owner source: `spec/operators/takeUntil-spec.ts`
 
 Owner source: `spec/operators/takeWhile-spec.ts`
 
-| Case ID                                                                                                                                          | Behavioral test                                                                               | Source                                 | Failing mode    | Classification       | Disposition        | Concise failure                                                                                      | Status  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------- | --------------- | -------------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
-| `spec/operators/takeWhile-spec.ts:101:takeWhile > should take all elements up to and including the element that made the predicate return false` | should take all elements up to and including the element that made the predicate return false | `spec/operators/takeWhile-spec.ts:101` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:119:takeWhile > should take elements with predicate when source does not complete`                             | should take elements with predicate when source does not complete                             | `spec/operators/takeWhile-spec.ts:119` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:132:takeWhile > should not complete when source never completes`                                               | should not complete when source never completes                                               | `spec/operators/takeWhile-spec.ts:132` | —               | `portable`           | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:145:takeWhile > should complete when source does not emit`                                                     | should complete when source does not emit                                                     | `spec/operators/takeWhile-spec.ts:145` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:158:takeWhile > should complete when source is empty`                                                          | should complete when source is empty                                                          | `spec/operators/takeWhile-spec.ts:158` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:188:takeWhile > should raise error when source raises error`                                                   | should raise error when source raises error                                                   | `spec/operators/takeWhile-spec.ts:188` | —               | `portable`           | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: error                                           | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:201:takeWhile > should raise error when source throws`                                                         | should raise error when source throws                                                         | `spec/operators/takeWhile-spec.ts:201` | —               | `portable`           | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: error                                           | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:214:takeWhile > should invoke predicate until return false`                                                    | should invoke predicate until return false                                                    | `spec/operators/takeWhile-spec.ts:214` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: tap                                                                     | `TODO`  |
-| `spec/operators/takeWhile-spec.ts:256:takeWhile > should take elements until unsubscribed`                                                       | should take elements until unsubscribed                                                       | `spec/operators/takeWhile-spec.ts:256` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly`                            | should not break unsubscription chain when unsubscribed explicitly                            | `spec/operators/takeWhile-spec.ts:274` | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:28:takeWhile > should take all elements with predicate returns true`                                           | should take all elements with predicate returns true                                          | `spec/operators/takeWhile-spec.ts:28`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
-| `spec/operators/takeWhile-spec.ts:41:takeWhile > should take all elements with truthy predicate`                                                 | should take all elements with truthy predicate                                                | `spec/operators/takeWhile-spec.ts:41`  | —               | `portable`           | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| Case ID                                                                                                                                          | Behavioral test                                                                               | Source                                 | Failing mode | Classification | Disposition        | Concise failure                                                                                      | Status  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------- | ------------ | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- | ------- |
+| `spec/operators/takeWhile-spec.ts:101:takeWhile > should take all elements up to and including the element that made the predicate return false` | should take all elements up to and including the element that made the predicate return false | `spec/operators/takeWhile-spec.ts:101` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:119:takeWhile > should take elements with predicate when source does not complete`                             | should take elements with predicate when source does not complete                             | `spec/operators/takeWhile-spec.ts:119` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:132:takeWhile > should not complete when source never completes`                                               | should not complete when source never completes                                               | `spec/operators/takeWhile-spec.ts:132` | —            | `portable`     | `expected-failure` | rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble. | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:145:takeWhile > should complete when source does not emit`                                                     | should complete when source does not emit                                                     | `spec/operators/takeWhile-spec.ts:145` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:158:takeWhile > should complete when source is empty`                                                          | should complete when source is empty                                                          | `spec/operators/takeWhile-spec.ts:158` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:188:takeWhile > should raise error when source raises error`                                                   | should raise error when source raises error                                                   | `spec/operators/takeWhile-spec.ts:188` | —            | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: error                                           | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:201:takeWhile > should raise error when source throws`                                                         | should raise error when source throws                                                         | `spec/operators/takeWhile-spec.ts:201` | —            | `portable`     | `expected-failure` | cold: rxTest observable assertion failed.; polyfill: error                                           | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:214:takeWhile > should invoke predicate until return false`                                                    | should invoke predicate until return false                                                    | `spec/operators/takeWhile-spec.ts:214` | —            | `portable`     | `expected-failure` | Missing operator capability: tap                                                                     | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:256:takeWhile > should take elements until unsubscribed`                                                       | should take elements until unsubscribed                                                       | `spec/operators/takeWhile-spec.ts:256` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly`                            | should not break unsubscription chain when unsubscribed explicitly                            | `spec/operators/takeWhile-spec.ts:274` | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:28:takeWhile > should take all elements with predicate returns true`                                           | should take all elements with predicate returns true                                          | `spec/operators/takeWhile-spec.ts:28`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
+| `spec/operators/takeWhile-spec.ts:41:takeWhile > should take all elements with truthy predicate`                                                 | should take all elements with truthy predicate                                                | `spec/operators/takeWhile-spec.ts:41`  | —            | `portable`     | `expected-failure` | rxTest observable assertion failed.                                                                  | `FIXED` |
 
 ### `tap`
 
 Owner source: `spec/operators/tap-spec.ts`
 
-| Case ID                                                                                                              | Behavioral test                                                               | Source                           | Failing mode    | Classification       | Disposition    | Concise failure                  | Status       |
-| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------- | --------------- | -------------------- | -------------- | -------------------------------- | ------------ |
-| `spec/operators/tap-spec.ts:15:tap > should mirror multiple values and complete`                                     | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
-| `spec/operators/tap-spec.ts:223:tap > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/tap-spec.ts:223` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
-| `spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/tap-spec.ts:240` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
-| `spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete`                                    | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:260` | cold + polyfill | `compatibility-only` | `deduplicated` | Missing operator capability: tap | `IN-PROCESS` |
-| `spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error`                        | should mirror multiple values and terminate with error                        | `spec/operators/tap-spec.ts:276` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| Case ID                                                                                                              | Behavioral test                                                               | Source                           | Failing mode | Classification       | Disposition    | Concise failure                  | Status       |
+| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------- | ------------ | -------------------- | -------------- | -------------------------------- | ------------ |
+| `spec/operators/tap-spec.ts:15:tap > should mirror multiple values and complete`                                     | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:15`  | —            | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:223:tap > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/tap-spec.ts:223` | —            | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/tap-spec.ts:240` | —            | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete`                                    | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:260` | —            | `compatibility-only` | `deduplicated` | Missing operator capability: tap | `FIXED`      |
+| `spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error`                        | should mirror multiple values and terminate with error                        | `spec/operators/tap-spec.ts:276` | —            | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
 
 ### `TestScheduler`
 
@@ -2630,17 +2630,17 @@ Owner source: `spec/operators/timeoutWith-spec.ts`
 
 Owner source: `spec/observables/timer-spec.ts`
 
-| Case ID                                                                                                                                      | Behavioral test                                                                                 | Source                               | Failing mode    | Classification       | Disposition        | Concise failure                             | Status |
-| -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------ | --------------- | -------------------- | ------------------ | ------------------------------------------- | ------ |
-| `spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'` | 'should still target the same date if a date is provided even for the ' + 'second subscription' | `spec/observables/timer-spec.ts:112` | cold            | `portable`           | `expected-failure` | rxTest observable assertion failed.         | `TODO` |
-| `spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument`                                                    | should accept Infinity as the first argument                                                    | `spec/observables/timer-spec.ts:128` | cold + polyfill | `portable`           | `expected-failure` | rxTest observable assertion failed.         | `TODO` |
-| `spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument`                                                   | should accept Infinity as the second argument                                                   | `spec/observables/timer-spec.ts:136` | cold + polyfill | `portable`           | `expected-failure` | rxTest exceeded maxTaskExecutions (100000). | `TODO` |
-| `spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically`                                                | should create an observable emitting periodically                                               | `spec/observables/timer-spec.ts:14`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take           | `TODO` |
-| `spec/observables/timer-spec.ts:153:timer > should accept 0 as the second argument`                                                          | should accept 0 as the second argument                                                          | `spec/observables/timer-spec.ts:153` | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take           | `TODO` |
-| `spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values`                                            | should start after delay and periodically emit values                                           | `spec/observables/timer-spec.ts:51`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take           | `TODO` |
-| `spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values`                                            | should start immediately and periodically emit values                                           | `spec/observables/timer-spec.ts:63`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take           | `TODO` |
-| `spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done`                                            | should stop emitting values when subscription is done                                           | `spec/observables/timer-spec.ts:75`  | cold + polyfill | `portable`           | `expected-failure` | rxTest exceeded maxTaskExecutions (100000). | `TODO` |
-| `spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values`                                            | should start after delay and periodically emit values                                           | `spec/observables/timer-spec.ts:99`  | cold + polyfill | `compatibility-only` | `missing-api`      | Missing operator capability: take           | `TODO` |
+| Case ID                                                                                                                                      | Behavioral test                                                                                 | Source                               | Failing mode    | Classification | Disposition        | Concise failure                             | Status  |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------ | --------------- | -------------- | ------------------ | ------------------------------------------- | ------- |
+| `spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'` | 'should still target the same date if a date is provided even for the ' + 'second subscription' | `spec/observables/timer-spec.ts:112` | cold            | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
+| `spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument`                                                    | should accept Infinity as the first argument                                                    | `spec/observables/timer-spec.ts:128` | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
+| `spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument`                                                   | should accept Infinity as the second argument                                                   | `spec/observables/timer-spec.ts:136` | cold + polyfill | `portable`     | `expected-failure` | rxTest exceeded maxTaskExecutions (100000). | `TODO`  |
+| `spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically`                                                | should create an observable emitting periodically                                               | `spec/observables/timer-spec.ts:14`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
+| `spec/observables/timer-spec.ts:153:timer > should accept 0 as the second argument`                                                          | should accept 0 as the second argument                                                          | `spec/observables/timer-spec.ts:153` | —               | `portable`     | `expected-failure` | Missing operator capability: take           | `FIXED` |
+| `spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values`                                            | should start after delay and periodically emit values                                           | `spec/observables/timer-spec.ts:51`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
+| `spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values`                                            | should start immediately and periodically emit values                                           | `spec/observables/timer-spec.ts:63`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
+| `spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done`                                            | should stop emitting values when subscription is done                                           | `spec/observables/timer-spec.ts:75`  | cold + polyfill | `portable`     | `expected-failure` | rxTest exceeded maxTaskExecutions (100000). | `TODO`  |
+| `spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values`                                            | should start after delay and periodically emit values                                           | `spec/observables/timer-spec.ts:99`  | cold + polyfill | `portable`     | `expected-failure` | rxTest observable assertion failed.         | `TODO`  |
 
 ### `timestamp`
 
@@ -2976,6 +2976,41 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-FROM-EVENT — `fromEvent`
+
+- **Packet status:** `TODO`
+- **Evidence:** 1 tracked case(s); 1 cold failures; 1 polyfill failures; 0 fixed.
+- **Current surface/gap:** 1 known mapped mismatch(es).
+- **Required classification review:** 1 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (1)</summary>
+
+- `spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element`
+
+</details>
+
+### RX7-BEHAVIOR-SUBJECT — `BehaviorSubject`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 2 tracked case(s); 0 cold failures; 0 polyfill failures; 2 fixed.
+- **Current surface/gap:** 2 known mapped mismatch(es).
+- **Required classification review:** 2 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (2)</summary>
+
+- `spec/subjects/BehaviorSubject-spec.ts:144:BehaviorSubject > should replay the previous value when subscribed`
+- `spec/subjects/BehaviorSubject-spec.ts:176:BehaviorSubject > should emit complete when subscribed after completed`
+
+</details>
+
 ### RX7-DEFAULT-IF-EMPTY — `defaultIfEmpty`
 
 - **Packet status:** `FIXED`
@@ -3046,6 +3081,45 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/ignoreElements-spec.ts:25:ignoreElements > should allow unsubscribing early and explicitly`
 - `spec/operators/ignoreElements-spec.ts:39:ignoreElements > should allow unsubscribing early and explicitly with higher order`
 - `spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never`
+
+</details>
+
+### RX7-INTERVAL — `interval`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 3 tracked case(s); 0 cold failures; 0 polyfill failures; 3 fixed.
+- **Current surface/gap:** 3 known mapped mismatch(es).
+- **Required classification review:** 3 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (3)</summary>
+
+- `spec/observables/interval-spec.ts:17:interval > should set up an interval`
+- `spec/observables/interval-spec.ts:32:interval > should emit when relative interval set to zero`
+- `spec/observables/interval-spec.ts:42:interval > should consider negative interval as zero`
+
+</details>
+
+### RX7-MERGE-WITH — `mergeWith`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 4 tracked case(s); 0 cold failures; 0 polyfill failures; 4 fixed.
+- **Current surface/gap:** 4 known mapped mismatch(es).
+- **Required classification review:** 4 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (4)</summary>
+
+- `spec/operators/mergeWith-spec.ts:131:merge operator > should allow unsubscribing explicitly and early`
+- `spec/operators/mergeWith-spec.ts:148:merge operator > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty`
+- `spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never`
 
 </details>
 
@@ -3151,6 +3225,48 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-REPLAY-SUBJECT — `ReplaySubject`
+
+- **Packet status:** `TODO`
+- **Evidence:** 5 tracked case(s); 4 cold failures; 4 polyfill failures; 1 fixed.
+- **Current surface/gap:** 5 known mapped mismatch(es).
+- **Required classification review:** 5 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (5)</summary>
+
+- `spec/subjects/ReplaySubject-spec.ts:117:ReplaySubject > with bufferSize=2 > should replay 2 previous values when subscribed`
+- `spec/subjects/ReplaySubject-spec.ts:149:ReplaySubject > with bufferSize=2 > should replay 2 last values for when subscribed after completed`
+- `spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed`
+- `spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed`
+- `spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted`
+
+</details>
+
+### RX7-SCAN — `scan`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 5 tracked case(s); 0 cold failures; 0 polyfill failures; 5 fixed.
+- **Current surface/gap:** 5 known mapped mismatch(es).
+- **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (5)</summary>
+
+- `spec/operators/scan-spec.ts:171:scan > handle never`
+- `spec/operators/scan-spec.ts:197:scan > should allow unsubscribing explicitly and early`
+- `spec/operators/scan-spec.ts:219:scan > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/scan-spec.ts:245:scan > should pass current index to accumulator`
+- `spec/operators/scan-spec.ts:91:scan > should scan without seed`
+
+</details>
+
 ### RX7-SKIP-LAST — `skipLast`
 
 - **Packet status:** `FIXED`
@@ -3169,6 +3285,27 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/skipLast-spec.ts:59:skipLast operator > should not skip any values`
 - `spec/operators/skipLast-spec.ts:70:skipLast operator > should not skip any values if provided with negative value`
 - `spec/operators/skipLast-spec.ts:92:skipLast operator > should go on forever on never`
+
+</details>
+
+### RX7-SKIP-WHILE — `skipWhile`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 5 tracked case(s); 0 cold failures; 0 polyfill failures; 5 fixed.
+- **Current surface/gap:** 5 known mapped mismatch(es).
+- **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (5)</summary>
+
+- `spec/operators/skipWhile-spec.ts:122:skipWhile > should skip using index with source unsubscribes early`
+- `spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/skipWhile-spec.ts:183:skipWhile > should invoke predicate while its false and never again`
+- `spec/operators/skipWhile-spec.ts:243:skipWhile > should handle Observable.never`
+- `spec/operators/skipWhile-spec.ts:88:skipWhile > should skip elements on hot source`
 
 </details>
 
@@ -3303,6 +3440,29 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-FINALIZE — `finalize`
+
+- **Packet status:** `IN-PROCESS`
+- **Evidence:** 7 tracked case(s); 1 cold failures; 1 polyfill failures; 0 fixed.
+- **Current surface/gap:** 7 missing-capability case(s).
+- **Required classification review:** 7 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (7)</summary>
+
+- `spec/operators/finalize-spec.ts:116:finalize > should handle throw`
+- `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`
+- `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable`
+- `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`
+- `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`
+- `spec/operators/finalize-spec.ts:78:finalize > should handle empty`
+- `spec/operators/finalize-spec.ts:97:finalize > should handle never`
+
+</details>
+
 ### RX7-RACE — `race`
 
 - **Packet status:** `FIXED`
@@ -3323,6 +3483,29 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/observables/race-spec.ts:207:race > handle empty`
 - `spec/observables/race-spec.ts:220:race > handle never`
 - `spec/observables/race-spec.ts:45:race > should race with array of observable`
+
+</details>
+
+### RX7-SWITCH-MAP — `switchMap`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 7 tracked case(s); 0 cold failures; 0 polyfill failures; 7 fixed.
+- **Current surface/gap:** 7 known mapped mismatch(es).
+- **Required classification review:** 7 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (7)</summary>
+
+- `spec/operators/switchMap-spec.ts:139:switchMap > should switch inner cold observables, outer is unsubscribed early`
+- `spec/operators/switchMap-spec.ts:16:switchMap > should map-and-flatten each item to an Observable`
+- `spec/operators/switchMap-spec.ts:161:switchMap > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/switchMap-spec.ts:187:switchMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly`
+- `spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes`
+- `spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never`
+- `spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never`
 
 </details>
 
@@ -3374,6 +3557,31 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-TIMER — `timer`
+
+- **Packet status:** `TODO`
+- **Evidence:** 9 tracked case(s); 8 cold failures; 7 polyfill failures; 1 fixed.
+- **Current surface/gap:** 9 known mapped mismatch(es).
+- **Required classification review:** 9 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (9)</summary>
+
+- `spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'`
+- `spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument`
+- `spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument`
+- `spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically`
+- `spec/observables/timer-spec.ts:153:timer > should accept 0 as the second argument`
+- `spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values`
+- `spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values`
+- `spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done`
+- `spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values`
+
+</details>
+
 ### RX7-AUDIT-TIME — `auditTime`
 
 - **Packet status:** `FIXED`
@@ -3397,6 +3605,60 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/auditTime-spec.ts:54:auditTime > should delay the source if values are not emitted often enough`
 - `spec/operators/auditTime-spec.ts:68:auditTime > should handle a busy producer emitting a regular repeating sequence`
 - `spec/operators/auditTime-spec.ts:84:auditTime > should complete when source does not emit`
+
+</details>
+
+### RX7-CONCAT-ALL — `concatAll`
+
+- **Packet status:** `TODO`
+- **Evidence:** 11 tracked case(s); 2 cold failures; 2 polyfill failures; 9 fixed.
+- **Current surface/gap:** 11 known mapped mismatch(es).
+- **Required classification review:** 11 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (11)</summary>
+
+- `spec/operators/concatAll-spec.ts:130:concatAll operator > should concat all observables in an observable`
+- `spec/operators/concatAll-spec.ts:139:concatAll operator > should throw if any child observable throws`
+- `spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes`
+- `spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes`
+- `spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete`
+- `spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes`
+- `spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete`
+- `spec/operators/concatAll-spec.ts:382:concatAll operator > should unsubscribe to inner source if outer is unsubscribed early`
+- `spec/operators/concatAll-spec.ts:399:concatAll operator > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler`
+- `spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler`
+
+</details>
+
+### RX7-CONCAT-MAP — `concatMap`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 11 tracked case(s); 0 cold failures; 0 polyfill failures; 11 fixed.
+- **Current surface/gap:** 11 known mapped mismatch(es).
+- **Required classification review:** 11 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (11)</summary>
+
+- `spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source`
+- `spec/operators/concatMap-spec.ts:15:Observable.prototype.concatMap > should map-and-flatten each item to an Observable`
+- `spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never`
+- `spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes`
+- `spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes`
+- `spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one`
+- `spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete`
+- `spec/operators/concatMap-spec.ts:726:Observable.prototype.concatMap > should concatMap many outer to an array for each value`
+- `spec/operators/concatMap-spec.ts:739:Observable.prototype.concatMap > should concatMap many outer to inner arrays, outer unsubscribed early`
+- `spec/operators/concatMap-spec.ts:753:Observable.prototype.concatMap > should concatMap many outer to inner arrays, project throws`
+- `spec/operators/concatMap-spec.ts:81:Observable.prototype.concatMap > should concatenate many regular interval inners`
 
 </details>
 
@@ -3509,6 +3771,34 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-TAKE-WHILE — `takeWhile`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 12 tracked case(s); 0 cold failures; 0 polyfill failures; 12 fixed.
+- **Current surface/gap:** 12 known mapped mismatch(es).
+- **Required classification review:** 12 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (12)</summary>
+
+- `spec/operators/takeWhile-spec.ts:101:takeWhile > should take all elements up to and including the element that made the predicate return false`
+- `spec/operators/takeWhile-spec.ts:119:takeWhile > should take elements with predicate when source does not complete`
+- `spec/operators/takeWhile-spec.ts:132:takeWhile > should not complete when source never completes`
+- `spec/operators/takeWhile-spec.ts:145:takeWhile > should complete when source does not emit`
+- `spec/operators/takeWhile-spec.ts:158:takeWhile > should complete when source is empty`
+- `spec/operators/takeWhile-spec.ts:188:takeWhile > should raise error when source raises error`
+- `spec/operators/takeWhile-spec.ts:201:takeWhile > should raise error when source throws`
+- `spec/operators/takeWhile-spec.ts:214:takeWhile > should invoke predicate until return false`
+- `spec/operators/takeWhile-spec.ts:256:takeWhile > should take elements until unsubscribed`
+- `spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly`
+- `spec/operators/takeWhile-spec.ts:28:takeWhile > should take all elements with predicate returns true`
+- `spec/operators/takeWhile-spec.ts:41:takeWhile > should take all elements with truthy predicate`
+
+</details>
+
 ### RX7-THROTTLE-TIME — `throttleTime`
 
 - **Packet status:** `FIXED`
@@ -3595,6 +3885,66 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-EXHAUST-MAP — `exhaustMap`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 14 tracked case(s); 0 cold failures; 0 polyfill failures; 14 fixed.
+- **Current surface/gap:** 14 known mapped mismatch(es).
+- **Required classification review:** 14 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (14)</summary>
+
+- `spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never`
+- `spec/operators/exhaustMap-spec.ts:149:exhaustMap > should switch with a selector function`
+- `spec/operators/exhaustMap-spec.ts:16:exhaustMap > should map-and-flatten each item to an Observable`
+- `spec/operators/exhaustMap-spec.ts:173:exhaustMap > should switch inner cold observables, outer is unsubscribed early`
+- `spec/operators/exhaustMap-spec.ts:198:exhaustMap > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/exhaustMap-spec.ts:227:exhaustMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly`
+- `spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes`
+- `spec/operators/exhaustMap-spec.ts:315:exhaustMap > should handle a synchronous switch and stay on the first inner observable`
+- `spec/operators/exhaustMap-spec.ts:336:exhaustMap > should switch inner cold observables, one inner throws`
+- `spec/operators/exhaustMap-spec.ts:357:exhaustMap > should switch inner hot observables`
+- `spec/operators/exhaustMap-spec.ts:381:exhaustMap > should switch inner empty and empty`
+- `spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never`
+- `spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never`
+- `spec/operators/exhaustMap-spec.ts:465:exhaustMap > should handle outer error`
+
+</details>
+
+### RX7-MERGE-MAP-TO — `mergeMapTo`
+
+- **Packet status:** `TODO`
+- **Evidence:** 14 tracked case(s); 0 cold failures; 1 polyfill failures; 13 fixed.
+- **Current surface/gap:** 7 known mapped mismatch(es); 7 active-registration failure(s).
+- **Required classification review:** 14 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (14)</summary>
+
+- `spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values`
+- `spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable`
+- `spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late`
+- `spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes`
+- `spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes`
+- `spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws`
+- `spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws`
+- `spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw`
+- `spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector`
+- `spec/operators/mergeMapTo-spec.ts:378:mergeMapTo > should mergeMapTo many outer to arrays`
+- `spec/operators/mergeMapTo-spec.ts:391:mergeMapTo > should mergeMapTo many outer to inner arrays, and outer throws`
+- `spec/operators/mergeMapTo-spec.ts:404:mergeMapTo > should mergeMapTo many outer to inner arrays, outer gets unsubscribed`
+- `spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners`
+
+</details>
+
 ### RX7-RETRY — `retry`
 
 - **Packet status:** `FIXED`
@@ -3622,6 +3972,68 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/retry-spec.ts:584:retry > with delay config > of a function > should error if the notifier errors`
 - `spec/operators/retry-spec.ts:607:retry > with delay config > of a function > should error if the delay function throws`
 - `spec/operators/retry-spec.ts:634:retry > with delay config > of a function > should be usable for exponential backoff`
+
+</details>
+
+### RX7-BUFFER — `buffer`
+
+- **Packet status:** `TODO`
+- **Evidence:** 15 tracked case(s); 4 cold failures; 4 polyfill failures; 11 fixed.
+- **Current surface/gap:** 4 missing-capability case(s); 11 known mapped mismatch(es).
+- **Required classification review:** 11 portable; 4 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (15)</summary>
+
+- `spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector`
+- `spec/operators/buffer-spec.ts:130:Observable.prototype.buffer > should work with throw and non-empty selector`
+- `spec/operators/buffer-spec.ts:139:Observable.prototype.buffer > should work with error`
+- `spec/operators/buffer-spec.ts:148:Observable.prototype.buffer > should work with error and non-empty selector`
+- `spec/operators/buffer-spec.ts:194:Observable.prototype.buffer > should allow unsubscribing the result Observable early`
+- `spec/operators/buffer-spec.ts:210:Observable.prototype.buffer > should not break unsubscription chains when unsubscribed explicitly`
+- `spec/operators/buffer-spec.ts:233:Observable.prototype.buffer > should work with non-empty and selector error`
+- `spec/operators/buffer-spec.ts:276:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`
+- `spec/operators/buffer-spec.ts:295:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`
+- `spec/operators/buffer-spec.ts:384:should be equivalent for case 0 [buffer-case-0]`
+- `spec/operators/buffer-spec.ts:384:should be equivalent for case 1 [buffer-case-1]`
+- `spec/operators/buffer-spec.ts:384:should be equivalent for case 2 [buffer-case-2]`
+- `spec/operators/buffer-spec.ts:384:should be equivalent for case 3 [buffer-case-3]`
+- `spec/operators/buffer-spec.ts:44:Observable.prototype.buffer > should emit all buffered values if the source completes before the closingNotifier does`
+- `spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector`
+
+</details>
+
+### RX7-TAKE — `take`
+
+- **Packet status:** `IN-PROCESS`
+- **Evidence:** 15 tracked case(s); 1 cold failures; 1 polyfill failures; 14 fixed.
+- **Current surface/gap:** 15 known mapped mismatch(es).
+- **Required classification review:** 15 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (15)</summary>
+
+- `spec/operators/take-spec.ts:103:take > should propagate error from the source observable`
+- `spec/operators/take-spec.ts:114:take > should propagate error from an observable with values`
+- `spec/operators/take-spec.ts:125:take > should allow unsubscribing explicitly and early`
+- `spec/operators/take-spec.ts:137:take > should work with throw`
+- `spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly`
+- `spec/operators/take-spec.ts:15:take > should take two values of an observable with many values`
+- `spec/operators/take-spec.ts:209:take > should complete even if the parameter is a string`
+- `spec/operators/take-spec.ts:222:take > should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified`
+- `spec/operators/take-spec.ts:26:take > should work with empty`
+- `spec/operators/take-spec.ts:37:take > should go on forever on never`
+- `spec/operators/take-spec.ts:48:take > should be empty on take(0)`
+- `spec/operators/take-spec.ts:59:take > should be empty if provided with negative value`
+- `spec/operators/take-spec.ts:70:take > should take one value of an observable with one value`
+- `spec/operators/take-spec.ts:81:take > should take one values of an observable with many values`
+- `spec/operators/take-spec.ts:92:take > should error on empty`
 
 </details>
 
@@ -3653,6 +4065,40 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/timeoutWith-spec.ts:50:timeoutWith operator > should timeout after a specified period between emit then subscribe to the passed observable when source emits`
 - `spec/operators/timeoutWith-spec.ts:67:timeoutWith operator > should allow unsubscribing explicitly and early`
 - `spec/operators/timeoutWith-spec.ts:85:timeoutWith operator > should not break unsubscription chain when unsubscribed explicitly`
+
+</details>
+
+### RX7-BUFFER-TIME — `bufferTime`
+
+- **Packet status:** `TODO`
+- **Evidence:** 18 tracked case(s); 18 cold failures; 18 polyfill failures; 0 fixed.
+- **Current surface/gap:** 18 known mapped mismatch(es).
+- **Required classification review:** 18 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (18)</summary>
+
+- `spec/operators/bufferTime-spec.ts:103:bufferTime operator > should emit buffers at intervals or when the buffer is full test 2`
+- `spec/operators/bufferTime-spec.ts:124:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay`
+- `spec/operators/bufferTime-spec.ts:146:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full`
+- `spec/operators/bufferTime-spec.ts:15:bufferTime operator > should emit buffers at intervals`
+- `spec/operators/bufferTime-spec.ts:168:bufferTime operator > should emit buffers with timeSpan 10 and creationInterval 7`
+- `spec/operators/bufferTime-spec.ts:198:bufferTime operator > should emit buffers but handle source ending with an error`
+- `spec/operators/bufferTime-spec.ts:225:bufferTime operator > should emit buffers and allow result to unsubscribed early`
+- `spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly`
+- `spec/operators/bufferTime-spec.ts:275:bufferTime operator > should handle empty`
+- `spec/operators/bufferTime-spec.ts:290:bufferTime operator > should handle never`
+- `spec/operators/bufferTime-spec.ts:303:bufferTime operator > should handle throw`
+- `spec/operators/bufferTime-spec.ts:315:bufferTime operator > should handle errors`
+- `spec/operators/bufferTime-spec.ts:332:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay with errors`
+- `spec/operators/bufferTime-spec.ts:35:bufferTime operator > should emit buffers at intervals test 2`
+- `spec/operators/bufferTime-spec.ts:355:bufferTime operator > should not throw when subscription synchronously unsubscribed after emit`
+- `spec/operators/bufferTime-spec.ts:373:bufferTime operator > should not have errors when take follows and maxBufferSize is provided`
+- `spec/operators/bufferTime-spec.ts:392:bufferTime operator > should not mutate the buffer on reentrant next`
+- `spec/operators/bufferTime-spec.ts:52:bufferTime operator > should emit buffers at intervals or when the buffer is full`
 
 </details>
 
@@ -3761,6 +4207,79 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
+### RX7-REPEAT — `repeat`
+
+- **Packet status:** `FIXED`
+- **Evidence:** 20 tracked case(s); 0 cold failures; 0 polyfill failures; 20 fixed.
+- **Current surface/gap:** 20 known mapped mismatch(es).
+- **Required classification review:** 20 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (20)</summary>
+
+- `spec/operators/repeat-spec.ts:102:repeat operator > should not break unsubscription chain when unsubscribed explicitly`
+- `spec/operators/repeat-spec.ts:127:repeat operator > should consider negative count as no repeat, and return EMPTY`
+- `spec/operators/repeat-spec.ts:15:repeat operator > should resubscribe count number of times`
+- `spec/operators/repeat-spec.ts:178:repeat operator > should not complete when source never completes`
+- `spec/operators/repeat-spec.ts:189:repeat operator > should not complete when source does not completes`
+- `spec/operators/repeat-spec.ts:201:repeat operator > should complete immediately when source does not complete without emit but count is zero`
+- `spec/operators/repeat-spec.ts:212:repeat operator > should complete immediately when source does not complete but count is zero`
+- `spec/operators/repeat-spec.ts:223:repeat operator > should emit source once and does not complete when source emits but does not complete`
+- `spec/operators/repeat-spec.ts:234:repeat operator > should complete when source is empty`
+- `spec/operators/repeat-spec.ts:245:repeat operator > should complete when source does not emit`
+- `spec/operators/repeat-spec.ts:260:repeat operator > should complete immediately when source does not emit but count is zero`
+- `spec/operators/repeat-spec.ts:30:repeat operator > should resubscribe multiple times`
+- `spec/operators/repeat-spec.ts:304:repeat operator > should raise error after first emit succeed`
+- `spec/operators/repeat-spec.ts:365:repeat operator > should allow count configuration`
+- `spec/operators/repeat-spec.ts:380:repeat operator > should allow delay time configuration`
+- `spec/operators/repeat-spec.ts:396:repeat operator > should allow delay function configuration`
+- `spec/operators/repeat-spec.ts:46:repeat operator > should complete without emit when count is zero`
+- `spec/operators/repeat-spec.ts:57:repeat operator > should emit source once when count is one`
+- `spec/operators/repeat-spec.ts:68:repeat operator > should repeat until gets unsubscribed`
+- `spec/operators/repeat-spec.ts:83:repeat operator > should be able to repeat indefinitely until unsubscribed`
+
+</details>
+
+### RX7-FILTER — `filter`
+
+- **Packet status:** `IN-PROCESS`
+- **Evidence:** 21 tracked case(s); 1 cold failures; 1 polyfill failures; 20 fixed.
+- **Current surface/gap:** 21 known mapped mismatch(es).
+- **Required classification review:** 21 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (21)</summary>
+
+- `spec/operators/filter-spec.ts:107:filter > should filter in only prime numbers, but predicate throws`
+- `spec/operators/filter-spec.ts:127:filter > should filter in only prime numbers, predicate with index`
+- `spec/operators/filter-spec.ts:142:filter > should invoke predicate once for each checked value`
+- `spec/operators/filter-spec.ts:168:filter > should filter in only prime numbers, predicate with index, source unsubscribes early`
+- `spec/operators/filter-spec.ts:184:filter > should filter in only prime numbers, predicate with index, source throws`
+- `spec/operators/filter-spec.ts:199:filter > should filter in only prime numbers, predicate with index and throws`
+- `spec/operators/filter-spec.ts:219:filter > should compose with another filter to allow multiples of six`
+- `spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg`
+- `spec/operators/filter-spec.ts:265:filter > should be able to use filter and map composed`
+- `spec/operators/filter-spec.ts:282:filter > should propagate errors from the source`
+- `spec/operators/filter-spec.ts:293:filter > should handle empty`
+- `spec/operators/filter-spec.ts:304:filter > should handle never`
+- `spec/operators/filter-spec.ts:315:filter > should handle throw`
+- `spec/operators/filter-spec.ts:32:filter > should filter out even values`
+- `spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly`
+- `spec/operators/filter-spec.ts:425:filter > should support Boolean as a predicate`
+- `spec/operators/filter-spec.ts:43:filter > should filter in only prime numbers`
+- `spec/operators/filter-spec.ts:54:filter > should filter with an always-true predicate`
+- `spec/operators/filter-spec.ts:69:filter > should filter with an always-false predicate`
+- `spec/operators/filter-spec.ts:84:filter > should filter in only prime numbers, source unsubscribes early`
+- `spec/operators/filter-spec.ts:96:filter > should filter in only prime numbers, source throws`
+
+</details>
+
 ### RX7-THROTTLE — `throttle`
 
 - **Packet status:** `FIXED`
@@ -3862,25 +4381,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-INTERVAL — `interval`
-
-- **Packet status:** `TODO`
-- **Evidence:** 3 tracked case(s); 2 cold failures; 2 polyfill failures; 1 fixed.
-- **Current surface/gap:** 2 missing-capability case(s); 1 known mapped mismatch(es).
-- **Required classification review:** 1 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (3)</summary>
-
-- `spec/observables/interval-spec.ts:17:interval > should set up an interval`
-- `spec/observables/interval-spec.ts:32:interval > should emit when relative interval set to zero`
-- `spec/observables/interval-spec.ts:42:interval > should consider negative interval as zero`
-
-</details>
-
 ### RX7-ANIMATION-FRAMES — `animationFrames`
 
 - **Packet status:** `TODO`
@@ -3898,26 +4398,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/observables/dom/animationFrames-spec.ts:37:animationFrames > should use any passed timestampProvider`
 - `spec/observables/dom/animationFrames-spec.ts:60:animationFrames > should compose with take`
 - `spec/observables/dom/animationFrames-spec.ts:86:animationFrames > should compose with takeUntil`
-
-</details>
-
-### RX7-MERGE-WITH — `mergeWith`
-
-- **Packet status:** `TODO`
-- **Evidence:** 4 tracked case(s); 1 cold failures; 1 polyfill failures; 3 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 3 known mapped mismatch(es).
-- **Required classification review:** 3 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (4)</summary>
-
-- `spec/operators/mergeWith-spec.ts:131:merge operator > should allow unsubscribing explicitly and early`
-- `spec/operators/mergeWith-spec.ts:148:merge operator > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/mergeWith-spec.ts:202:merge operator > should merge never and empty`
-- `spec/operators/mergeWith-spec.ts:217:merge operator > should merge never and never`
 
 </details>
 
@@ -3939,48 +4419,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/observables/merge-spec.ts:282:merge(...observables, Scheduler) > should merge single lowerCaseO into RxJS Observable`
 - `spec/observables/merge-spec.ts:311:merge(...observables, Scheduler, number) > should handle scheduler`
 - `spec/observables/merge-spec.ts:322:merge(...observables, Scheduler, number) > should handle scheduler with concurrency limits`
-
-</details>
-
-### RX7-SCAN — `scan`
-
-- **Packet status:** `TODO`
-- **Evidence:** 5 tracked case(s); 1 cold failures; 1 polyfill failures; 4 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 4 known mapped mismatch(es).
-- **Required classification review:** 4 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (5)</summary>
-
-- `spec/operators/scan-spec.ts:171:scan > handle never`
-- `spec/operators/scan-spec.ts:197:scan > should allow unsubscribing explicitly and early`
-- `spec/operators/scan-spec.ts:219:scan > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/scan-spec.ts:245:scan > should pass current index to accumulator`
-- `spec/operators/scan-spec.ts:91:scan > should scan without seed`
-
-</details>
-
-### RX7-SKIP-WHILE — `skipWhile`
-
-- **Packet status:** `TODO`
-- **Evidence:** 5 tracked case(s); 1 cold failures; 1 polyfill failures; 4 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 4 known mapped mismatch(es).
-- **Required classification review:** 4 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (5)</summary>
-
-- `spec/operators/skipWhile-spec.ts:122:skipWhile > should skip using index with source unsubscribes early`
-- `spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/skipWhile-spec.ts:183:skipWhile > should invoke predicate while its false and never again`
-- `spec/operators/skipWhile-spec.ts:243:skipWhile > should handle Observable.never`
-- `spec/operators/skipWhile-spec.ts:88:skipWhile > should skip elements on hot source`
 
 </details>
 
@@ -4030,54 +4468,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-SWITCH-MAP — `switchMap`
-
-- **Packet status:** `TODO`
-- **Evidence:** 7 tracked case(s); 1 cold failures; 1 polyfill failures; 6 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 6 known mapped mismatch(es).
-- **Required classification review:** 6 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (7)</summary>
-
-- `spec/operators/switchMap-spec.ts:139:switchMap > should switch inner cold observables, outer is unsubscribed early`
-- `spec/operators/switchMap-spec.ts:16:switchMap > should map-and-flatten each item to an Observable`
-- `spec/operators/switchMap-spec.ts:161:switchMap > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/switchMap-spec.ts:187:switchMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly`
-- `spec/operators/switchMap-spec.ts:248:switchMap > should switch inner cold observables, inner never completes`
-- `spec/operators/switchMap-spec.ts:353:switchMap > should switch inner empty and never`
-- `spec/operators/switchMap-spec.ts:450:switchMap > should handle outer never`
-
-</details>
-
-### RX7-TIMER — `timer`
-
-- **Packet status:** `TODO`
-- **Evidence:** 9 tracked case(s); 9 cold failures; 8 polyfill failures; 0 fixed.
-- **Current surface/gap:** 5 missing-capability case(s); 4 known mapped mismatch(es).
-- **Required classification review:** 4 portable; 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (9)</summary>
-
-- `spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'`
-- `spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument`
-- `spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument`
-- `spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically`
-- `spec/observables/timer-spec.ts:153:timer > should accept 0 as the second argument`
-- `spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values`
-- `spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values`
-- `spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done`
-- `spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values`
-
-</details>
-
 ### RX7-LAST — `last`
 
 - **Packet status:** `TODO`
@@ -4101,118 +4491,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/last-spec.ts:69:last > should return last element matches with predicate`
 - `spec/operators/last-spec.ts:80:last > should allow unsubscribing explicitly and early`
 - `spec/operators/last-spec.ts:92:last > should not break unsubscription chains when result is unsubscribed explicitly`
-
-</details>
-
-### RX7-CONCAT-ALL — `concatAll`
-
-- **Packet status:** `TODO`
-- **Evidence:** 11 tracked case(s); 4 cold failures; 4 polyfill failures; 7 fixed.
-- **Current surface/gap:** 2 missing-capability case(s); 9 known mapped mismatch(es).
-- **Required classification review:** 9 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (11)</summary>
-
-- `spec/operators/concatAll-spec.ts:130:concatAll operator > should concat all observables in an observable`
-- `spec/operators/concatAll-spec.ts:139:concatAll operator > should throw if any child observable throws`
-- `spec/operators/concatAll-spec.ts:206:concatAll operator > should not complete if first source does not completes`
-- `spec/operators/concatAll-spec.ts:222:concatAll operator > should not complete if second source does not completes`
-- `spec/operators/concatAll-spec.ts:238:concatAll operator > should not complete if both sources do not complete`
-- `spec/operators/concatAll-spec.ts:334:concatAll operator > should emit element from first source, and should not complete if second source does not completes`
-- `spec/operators/concatAll-spec.ts:350:concatAll operator > should not complete if first source does not complete`
-- `spec/operators/concatAll-spec.ts:382:concatAll operator > should unsubscribe to inner source if outer is unsubscribed early`
-- `spec/operators/concatAll-spec.ts:399:concatAll operator > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler`
-- `spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler`
-
-</details>
-
-### RX7-CONCAT-MAP — `concatMap`
-
-- **Packet status:** `TODO`
-- **Evidence:** 11 tracked case(s); 1 cold failures; 1 polyfill failures; 10 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 10 known mapped mismatch(es).
-- **Required classification review:** 10 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (11)</summary>
-
-- `spec/operators/concatMap-spec.ts:145:Observable.prototype.concatMap > should handle a never source`
-- `spec/operators/concatMap-spec.ts:15:Observable.prototype.concatMap > should map-and-flatten each item to an Observable`
-- `spec/operators/concatMap-spec.ts:210:Observable.prototype.concatMap > should return a never if the mapped inner is never`
-- `spec/operators/concatMap-spec.ts:272:Observable.prototype.concatMap > should concatMap many outer to many inner, outer never completes`
-- `spec/operators/concatMap-spec.ts:294:Observable.prototype.concatMap > should concatMap many outer to many inner, inner never completes`
-- `spec/operators/concatMap-spec.ts:401:Observable.prototype.concatMap > should concatMap many complex, all inners finite except one`
-- `spec/operators/concatMap-spec.ts:436:Observable.prototype.concatMap > should concatMap many complex, inners finite, outer does not complete`
-- `spec/operators/concatMap-spec.ts:726:Observable.prototype.concatMap > should concatMap many outer to an array for each value`
-- `spec/operators/concatMap-spec.ts:739:Observable.prototype.concatMap > should concatMap many outer to inner arrays, outer unsubscribed early`
-- `spec/operators/concatMap-spec.ts:753:Observable.prototype.concatMap > should concatMap many outer to inner arrays, project throws`
-- `spec/operators/concatMap-spec.ts:81:Observable.prototype.concatMap > should concatenate many regular interval inners`
-
-</details>
-
-### RX7-TAKE-WHILE — `takeWhile`
-
-- **Packet status:** `TODO`
-- **Evidence:** 12 tracked case(s); 1 cold failures; 1 polyfill failures; 11 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 11 known mapped mismatch(es).
-- **Required classification review:** 11 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (12)</summary>
-
-- `spec/operators/takeWhile-spec.ts:101:takeWhile > should take all elements up to and including the element that made the predicate return false`
-- `spec/operators/takeWhile-spec.ts:119:takeWhile > should take elements with predicate when source does not complete`
-- `spec/operators/takeWhile-spec.ts:132:takeWhile > should not complete when source never completes`
-- `spec/operators/takeWhile-spec.ts:145:takeWhile > should complete when source does not emit`
-- `spec/operators/takeWhile-spec.ts:158:takeWhile > should complete when source is empty`
-- `spec/operators/takeWhile-spec.ts:188:takeWhile > should raise error when source raises error`
-- `spec/operators/takeWhile-spec.ts:201:takeWhile > should raise error when source throws`
-- `spec/operators/takeWhile-spec.ts:214:takeWhile > should invoke predicate until return false`
-- `spec/operators/takeWhile-spec.ts:256:takeWhile > should take elements until unsubscribed`
-- `spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly`
-- `spec/operators/takeWhile-spec.ts:28:takeWhile > should take all elements with predicate returns true`
-- `spec/operators/takeWhile-spec.ts:41:takeWhile > should take all elements with truthy predicate`
-
-</details>
-
-### RX7-EXHAUST-MAP — `exhaustMap`
-
-- **Packet status:** `TODO`
-- **Evidence:** 14 tracked case(s); 1 cold failures; 1 polyfill failures; 13 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 13 known mapped mismatch(es).
-- **Required classification review:** 13 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (14)</summary>
-
-- `spec/operators/exhaustMap-spec.ts:116:exhaustMap > should handle outer never`
-- `spec/operators/exhaustMap-spec.ts:149:exhaustMap > should switch with a selector function`
-- `spec/operators/exhaustMap-spec.ts:16:exhaustMap > should map-and-flatten each item to an Observable`
-- `spec/operators/exhaustMap-spec.ts:173:exhaustMap > should switch inner cold observables, outer is unsubscribed early`
-- `spec/operators/exhaustMap-spec.ts:198:exhaustMap > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/exhaustMap-spec.ts:227:exhaustMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly`
-- `spec/operators/exhaustMap-spec.ts:291:exhaustMap > should switch inner cold observables, inner never completes`
-- `spec/operators/exhaustMap-spec.ts:315:exhaustMap > should handle a synchronous switch and stay on the first inner observable`
-- `spec/operators/exhaustMap-spec.ts:336:exhaustMap > should switch inner cold observables, one inner throws`
-- `spec/operators/exhaustMap-spec.ts:357:exhaustMap > should switch inner hot observables`
-- `spec/operators/exhaustMap-spec.ts:381:exhaustMap > should switch inner empty and empty`
-- `spec/operators/exhaustMap-spec.ts:402:exhaustMap > should switch inner empty and never`
-- `spec/operators/exhaustMap-spec.ts:423:exhaustMap > should never switch inner never`
-- `spec/operators/exhaustMap-spec.ts:465:exhaustMap > should handle outer error`
 
 </details>
 
@@ -4246,71 +4524,41 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-MERGE-MAP-TO — `mergeMapTo`
+### RX7-MAP — `map`
 
 - **Packet status:** `TODO`
-- **Evidence:** 14 tracked case(s); 1 cold failures; 1 polyfill failures; 13 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 6 known mapped mismatch(es); 7 active-registration failure(s).
-- **Required classification review:** 13 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Evidence:** 15 tracked case(s); 0 cold failures; 0 polyfill failures; 14 fixed.
+- **Current surface/gap:** 1 missing-capability case(s); 14 known mapped mismatch(es).
+- **Required classification review:** 14 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (14)</summary>
-
-- `spec/operators/mergeMapTo-spec.ts:143:mergeMapTo > should mergeMapTo many outer values to many inner values`
-- `spec/operators/mergeMapTo-spec.ts:15:mergeMapTo > should map-and-flatten each item to an Observable`
-- `spec/operators/mergeMapTo-spec.ts:165:mergeMapTo > should mergeMapTo many outer to many inner, complete late`
-- `spec/operators/mergeMapTo-spec.ts:187:mergeMapTo > should mergeMapTo many outer to many inner, outer never completes`
-- `spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/mergeMapTo-spec.ts:249:mergeMapTo > should mergeMapTo many outer to many inner, inner never completes`
-- `spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws`
-- `spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws`
-- `spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw`
-- `spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector`
-- `spec/operators/mergeMapTo-spec.ts:378:mergeMapTo > should mergeMapTo many outer to arrays`
-- `spec/operators/mergeMapTo-spec.ts:391:mergeMapTo > should mergeMapTo many outer to inner arrays, and outer throws`
-- `spec/operators/mergeMapTo-spec.ts:404:mergeMapTo > should mergeMapTo many outer to inner arrays, outer gets unsubscribed`
-- `spec/operators/mergeMapTo-spec.ts:84:mergeMapTo > should mergeMapTo many regular interval inners`
-
-</details>
-
-### RX7-BUFFER — `buffer`
-
-- **Packet status:** `TODO`
-- **Evidence:** 15 tracked case(s); 5 cold failures; 5 polyfill failures; 10 fixed.
-- **Current surface/gap:** 5 missing-capability case(s); 10 known mapped mismatch(es).
-- **Required classification review:** 10 portable; 4 harness rewrite; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
 - **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
 
-- `spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector`
-- `spec/operators/buffer-spec.ts:130:Observable.prototype.buffer > should work with throw and non-empty selector`
-- `spec/operators/buffer-spec.ts:139:Observable.prototype.buffer > should work with error`
-- `spec/operators/buffer-spec.ts:148:Observable.prototype.buffer > should work with error and non-empty selector`
-- `spec/operators/buffer-spec.ts:194:Observable.prototype.buffer > should allow unsubscribing the result Observable early`
-- `spec/operators/buffer-spec.ts:210:Observable.prototype.buffer > should not break unsubscription chains when unsubscribed explicitly`
-- `spec/operators/buffer-spec.ts:233:Observable.prototype.buffer > should work with non-empty and selector error`
-- `spec/operators/buffer-spec.ts:276:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`
-- `spec/operators/buffer-spec.ts:295:Observable.prototype.buffer > should unsubscribe notifier when source unsubscribed`
-- `spec/operators/buffer-spec.ts:384:should be equivalent for case 0 [buffer-case-0]`
-- `spec/operators/buffer-spec.ts:384:should be equivalent for case 1 [buffer-case-1]`
-- `spec/operators/buffer-spec.ts:384:should be equivalent for case 2 [buffer-case-2]`
-- `spec/operators/buffer-spec.ts:384:should be equivalent for case 3 [buffer-case-3]`
-- `spec/operators/buffer-spec.ts:44:Observable.prototype.buffer > should emit all buffered values if the source completes before the closingNotifier does`
-- `spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector`
+- `spec/operators/map-spec.ts:103:map > should not map an empty observable`
+- `spec/operators/map-spec.ts:127:map > should allow unsubscribing explicitly and early`
+- `spec/operators/map-spec.ts:141:map > should map with index`
+- `spec/operators/map-spec.ts:166:map > should map with index until completed`
+- `spec/operators/map-spec.ts:18:map > should map multiple values`
+- `spec/operators/map-spec.ts:191:map > should map with index until an error occurs`
+- `spec/operators/map-spec.ts:216:map > should map using a custom thisArg`
+- `spec/operators/map-spec.ts:238:map > should map twice`
+- `spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg`
+- `spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly`
+- `spec/operators/map-spec.ts:31:map > should map one value`
+- `spec/operators/map-spec.ts:45:map > should map multiple values`
+- `spec/operators/map-spec.ts:58:map > should propagate errors from map function`
+- `spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors`
+- `spec/operators/map-spec.ts:89:map > should propagate errors from observable that emit values`
 
 </details>
 
 ### RX7-COMBINE-LATEST — `combineLatest`
 
 - **Packet status:** `TODO`
-- **Evidence:** 16 tracked case(s); 16 cold failures; 16 polyfill failures; 0 fixed.
+- **Evidence:** 16 tracked case(s); 15 cold failures; 15 polyfill failures; 0 fixed.
 - **Current surface/gap:** 15 missing-capability case(s); 1 duplicate registration(s).
 - **Required classification review:** 1 portable; 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
@@ -4339,46 +4587,12 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-BUFFER-TIME — `bufferTime`
-
-- **Packet status:** `TODO`
-- **Evidence:** 18 tracked case(s); 18 cold failures; 18 polyfill failures; 0 fixed.
-- **Current surface/gap:** 3 missing-capability case(s); 15 known mapped mismatch(es).
-- **Required classification review:** 15 portable; 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (18)</summary>
-
-- `spec/operators/bufferTime-spec.ts:103:bufferTime operator > should emit buffers at intervals or when the buffer is full test 2`
-- `spec/operators/bufferTime-spec.ts:124:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay`
-- `spec/operators/bufferTime-spec.ts:146:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full`
-- `spec/operators/bufferTime-spec.ts:15:bufferTime operator > should emit buffers at intervals`
-- `spec/operators/bufferTime-spec.ts:168:bufferTime operator > should emit buffers with timeSpan 10 and creationInterval 7`
-- `spec/operators/bufferTime-spec.ts:198:bufferTime operator > should emit buffers but handle source ending with an error`
-- `spec/operators/bufferTime-spec.ts:225:bufferTime operator > should emit buffers and allow result to unsubscribed early`
-- `spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly`
-- `spec/operators/bufferTime-spec.ts:275:bufferTime operator > should handle empty`
-- `spec/operators/bufferTime-spec.ts:290:bufferTime operator > should handle never`
-- `spec/operators/bufferTime-spec.ts:303:bufferTime operator > should handle throw`
-- `spec/operators/bufferTime-spec.ts:315:bufferTime operator > should handle errors`
-- `spec/operators/bufferTime-spec.ts:332:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay with errors`
-- `spec/operators/bufferTime-spec.ts:35:bufferTime operator > should emit buffers at intervals test 2`
-- `spec/operators/bufferTime-spec.ts:355:bufferTime operator > should not throw when subscription synchronously unsubscribed after emit`
-- `spec/operators/bufferTime-spec.ts:373:bufferTime operator > should not have errors when take follows and maxBufferSize is provided`
-- `spec/operators/bufferTime-spec.ts:392:bufferTime operator > should not mutate the buffer on reentrant next`
-- `spec/operators/bufferTime-spec.ts:52:bufferTime operator > should emit buffers at intervals or when the buffer is full`
-
-</details>
-
 ### RX7-MERGE-MAP — `mergeMap`
 
 - **Packet status:** `TODO`
-- **Evidence:** 20 tracked case(s); 3 cold failures; 3 polyfill failures; 17 fixed.
-- **Current surface/gap:** 3 missing-capability case(s); 11 known mapped mismatch(es); 6 active-registration failure(s).
-- **Required classification review:** 17 portable; 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Evidence:** 20 tracked case(s); 1 cold failures; 3 polyfill failures; 17 fixed.
+- **Current surface/gap:** 1 missing-capability case(s); 13 known mapped mismatch(es); 6 active-registration failure(s).
+- **Required classification review:** 19 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
 - **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
@@ -4406,42 +4620,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/mergeMap-spec.ts:831:mergeMap > should mergeMap many outer to inner arrays, outer gets unsubscribed`
 - `spec/operators/mergeMap-spec.ts:845:mergeMap > should mergeMap many outer to inner arrays, project throws`
 - `spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async`
-
-</details>
-
-### RX7-REPEAT — `repeat`
-
-- **Packet status:** `TODO`
-- **Evidence:** 20 tracked case(s); 1 cold failures; 1 polyfill failures; 19 fixed.
-- **Current surface/gap:** 1 missing-capability case(s); 19 known mapped mismatch(es).
-- **Required classification review:** 19 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (20)</summary>
-
-- `spec/operators/repeat-spec.ts:102:repeat operator > should not break unsubscription chain when unsubscribed explicitly`
-- `spec/operators/repeat-spec.ts:127:repeat operator > should consider negative count as no repeat, and return EMPTY`
-- `spec/operators/repeat-spec.ts:15:repeat operator > should resubscribe count number of times`
-- `spec/operators/repeat-spec.ts:178:repeat operator > should not complete when source never completes`
-- `spec/operators/repeat-spec.ts:189:repeat operator > should not complete when source does not completes`
-- `spec/operators/repeat-spec.ts:201:repeat operator > should complete immediately when source does not complete without emit but count is zero`
-- `spec/operators/repeat-spec.ts:212:repeat operator > should complete immediately when source does not complete but count is zero`
-- `spec/operators/repeat-spec.ts:223:repeat operator > should emit source once and does not complete when source emits but does not complete`
-- `spec/operators/repeat-spec.ts:234:repeat operator > should complete when source is empty`
-- `spec/operators/repeat-spec.ts:245:repeat operator > should complete when source does not emit`
-- `spec/operators/repeat-spec.ts:260:repeat operator > should complete immediately when source does not emit but count is zero`
-- `spec/operators/repeat-spec.ts:30:repeat operator > should resubscribe multiple times`
-- `spec/operators/repeat-spec.ts:304:repeat operator > should raise error after first emit succeed`
-- `spec/operators/repeat-spec.ts:365:repeat operator > should allow count configuration`
-- `spec/operators/repeat-spec.ts:380:repeat operator > should allow delay time configuration`
-- `spec/operators/repeat-spec.ts:396:repeat operator > should allow delay function configuration`
-- `spec/operators/repeat-spec.ts:46:repeat operator > should complete without emit when count is zero`
-- `spec/operators/repeat-spec.ts:57:repeat operator > should emit source once when count is one`
-- `spec/operators/repeat-spec.ts:68:repeat operator > should repeat until gets unsubscribed`
-- `spec/operators/repeat-spec.ts:83:repeat operator > should be able to repeat indefinitely until unsubscribed`
 
 </details>
 
@@ -4486,6 +4664,52 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/observables/zip-spec.ts:65:zip > should end once one observable nexts and zips value from completed other observable whose buffer is empty`
 - `spec/observables/zip-spec.ts:88:zip > with iterables > should zip them with values`
 - `spec/operators/zip-spec.ts:13:zip > should work with non-empty observable and non-empty iterable selector that throws`
+
+</details>
+
+### RX7-COMBINE-LATEST-WITH — `combineLatestWith`
+
+- **Packet status:** `TODO`
+- **Evidence:** 30 tracked case(s); 6 cold failures; 6 polyfill failures; 24 fixed.
+- **Current surface/gap:** 1 missing-capability case(s); 29 known mapped mismatch(es).
+- **Required classification review:** 29 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
+- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
+- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
+- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
+
+<details><summary>Affected case IDs (30)</summary>
+
+- `spec/operators/combineLatestWith-spec.ts:114:combineLatestWith > should work with hot-empty and hot-single`
+- `spec/operators/combineLatestWith-spec.ts:139:combineLatestWith > should work with hot-single and hot-empty`
+- `spec/operators/combineLatestWith-spec.ts:14:combineLatestWith > should combine events from two cold observables`
+- `spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never`
+- `spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single`
+- `spec/operators/combineLatestWith-spec.ts:208:combineLatestWith > should work with hot and hot`
+- `spec/operators/combineLatestWith-spec.ts:227:combineLatestWith > should work with empty and error`
+- `spec/operators/combineLatestWith-spec.ts:246:combineLatestWith > should work with error and empty`
+- `spec/operators/combineLatestWith-spec.ts:265:combineLatestWith > should work with hot and throw`
+- `spec/operators/combineLatestWith-spec.ts:284:combineLatestWith > should work with throw and hot`
+- `spec/operators/combineLatestWith-spec.ts:303:combineLatestWith > should work with throw and throw`
+- `spec/operators/combineLatestWith-spec.ts:322:combineLatestWith > should work with error and throw`
+- `spec/operators/combineLatestWith-spec.ts:341:combineLatestWith > should work with throw and error`
+- `spec/operators/combineLatestWith-spec.ts:360:combineLatestWith > should work with never and throw`
+- `spec/operators/combineLatestWith-spec.ts:379:combineLatestWith > should work with throw and never`
+- `spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers`
+- `spec/operators/combineLatestWith-spec.ts:398:combineLatestWith > should work with some and throw`
+- `spec/operators/combineLatestWith-spec.ts:417:combineLatestWith > should work with throw and some`
+- `spec/operators/combineLatestWith-spec.ts:436:combineLatestWith > should handle throw after complete left`
+- `spec/operators/combineLatestWith-spec.ts:455:combineLatestWith > should handle throw after complete right`
+- `spec/operators/combineLatestWith-spec.ts:474:combineLatestWith > should handle interleaved with tail`
+- `spec/operators/combineLatestWith-spec.ts:493:combineLatestWith > should handle two consecutive hot observables`
+- `spec/operators/combineLatestWith-spec.ts:512:combineLatestWith > should handle two consecutive hot observables with error left`
+- `spec/operators/combineLatestWith-spec.ts:531:combineLatestWith > should handle two consecutive hot observables with error right`
+- `spec/operators/combineLatestWith-spec.ts:550:combineLatestWith > should allow unsubscribing early and explicitly`
+- `spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty`
+- `spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly`
+- `spec/operators/combineLatestWith-spec.ts:594:combineLatestWith > should emit unique array instances with the default projection`
+- `spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never`
+- `spec/operators/combineLatestWith-spec.ts:95:combineLatestWith > should work with empty and empty`
 
 </details>
 
@@ -4798,23 +5022,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-FROM-EVENT — `fromEvent`
-
-- **Packet status:** `TODO`
-- **Evidence:** 1 tracked case(s); 1 cold failures; 1 polyfill failures; 0 fixed.
-- **Current surface/gap:** 1 missing-capability case(s).
-- **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (1)</summary>
-
-- `spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element`
-
-</details>
-
 ### RX7-FROM-EVENT-PATTERN — `fromEventPattern`
 
 - **Packet status:** `TODO`
@@ -4919,24 +5126,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-BEHAVIOR-SUBJECT — `BehaviorSubject`
-
-- **Packet status:** `TODO`
-- **Evidence:** 2 tracked case(s); 2 cold failures; 2 polyfill failures; 0 fixed.
-- **Current surface/gap:** 2 missing-capability case(s).
-- **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (2)</summary>
-
-- `spec/subjects/BehaviorSubject-spec.ts:144:BehaviorSubject > should replay the previous value when subscribed`
-- `spec/subjects/BehaviorSubject-spec.ts:176:BehaviorSubject > should emit complete when subscribed after completed`
-
-</details>
-
 ### RX7-CONNECT — `connect`
 
 - **Packet status:** `TODO`
@@ -5031,31 +5220,10 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-REPLAY-SUBJECT — `ReplaySubject`
-
-- **Packet status:** `TODO`
-- **Evidence:** 5 tracked case(s); 5 cold failures; 5 polyfill failures; 0 fixed.
-- **Current surface/gap:** 5 missing-capability case(s).
-- **Required classification review:** 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (5)</summary>
-
-- `spec/subjects/ReplaySubject-spec.ts:117:ReplaySubject > with bufferSize=2 > should replay 2 previous values when subscribed`
-- `spec/subjects/ReplaySubject-spec.ts:149:ReplaySubject > with bufferSize=2 > should replay 2 last values for when subscribed after completed`
-- `spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed`
-- `spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed`
-- `spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted`
-
-</details>
-
 ### RX7-TAP — `tap`
 
 - **Packet status:** `IN-PROCESS`
-- **Evidence:** 5 tracked case(s); 5 cold failures; 5 polyfill failures; 0 fixed.
+- **Evidence:** 5 tracked case(s); 0 cold failures; 0 polyfill failures; 1 fixed.
 - **Current surface/gap:** 4 missing-capability case(s); 1 duplicate registration(s).
 - **Required classification review:** 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
@@ -5070,29 +5238,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly`
 - `spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete`
 - `spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error`
-
-</details>
-
-### RX7-FINALIZE — `finalize`
-
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 7 tracked case(s); 7 cold failures; 7 polyfill failures; 0 fixed.
-- **Current surface/gap:** 7 missing-capability case(s).
-- **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (7)</summary>
-
-- `spec/operators/finalize-spec.ts:116:finalize > should handle throw`
-- `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`
-- `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable`
-- `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`
-- `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`
-- `spec/operators/finalize-spec.ts:78:finalize > should handle empty`
-- `spec/operators/finalize-spec.ts:97:finalize > should handle never`
 
 </details>
 
@@ -5687,37 +5832,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-MAP — `map`
-
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 15 tracked case(s); 15 cold failures; 15 polyfill failures; 0 fixed.
-- **Current surface/gap:** 15 missing-capability case(s).
-- **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (15)</summary>
-
-- `spec/operators/map-spec.ts:103:map > should not map an empty observable`
-- `spec/operators/map-spec.ts:127:map > should allow unsubscribing explicitly and early`
-- `spec/operators/map-spec.ts:141:map > should map with index`
-- `spec/operators/map-spec.ts:166:map > should map with index until completed`
-- `spec/operators/map-spec.ts:18:map > should map multiple values`
-- `spec/operators/map-spec.ts:191:map > should map with index until an error occurs`
-- `spec/operators/map-spec.ts:216:map > should map using a custom thisArg`
-- `spec/operators/map-spec.ts:238:map > should map twice`
-- `spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg`
-- `spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly`
-- `spec/operators/map-spec.ts:31:map > should map one value`
-- `spec/operators/map-spec.ts:45:map > should map multiple values`
-- `spec/operators/map-spec.ts:58:map > should propagate errors from map function`
-- `spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors`
-- `spec/operators/map-spec.ts:89:map > should propagate errors from observable that emit values`
-
-</details>
-
 ### RX7-PUBLISH — `publish`
 
 - **Packet status:** `TODO`
@@ -5777,37 +5891,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/startWith-spec.ts:68:startWith > should start with given value and completes if source does not emits`
 - `spec/operators/startWith-spec.ts:81:startWith > should start with given value and complete immediately if source is empty`
 - `spec/operators/startWith-spec.ts:94:startWith > should start with given value and source both if source emits single value`
-
-</details>
-
-### RX7-TAKE — `take`
-
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 15 tracked case(s); 15 cold failures; 15 polyfill failures; 0 fixed.
-- **Current surface/gap:** 15 missing-capability case(s).
-- **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (15)</summary>
-
-- `spec/operators/take-spec.ts:103:take > should propagate error from the source observable`
-- `spec/operators/take-spec.ts:114:take > should propagate error from an observable with values`
-- `spec/operators/take-spec.ts:125:take > should allow unsubscribing explicitly and early`
-- `spec/operators/take-spec.ts:137:take > should work with throw`
-- `spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly`
-- `spec/operators/take-spec.ts:15:take > should take two values of an observable with many values`
-- `spec/operators/take-spec.ts:209:take > should complete even if the parameter is a string`
-- `spec/operators/take-spec.ts:222:take > should unsubscribe from the source when it reaches the limit before a recursive synchronous upstream error is notified`
-- `spec/operators/take-spec.ts:26:take > should work with empty`
-- `spec/operators/take-spec.ts:37:take > should go on forever on never`
-- `spec/operators/take-spec.ts:48:take > should be empty on take(0)`
-- `spec/operators/take-spec.ts:59:take > should be empty if provided with negative value`
-- `spec/operators/take-spec.ts:70:take > should take one value of an observable with one value`
-- `spec/operators/take-spec.ts:81:take > should take one values of an observable with many values`
-- `spec/operators/take-spec.ts:92:take > should error on empty`
 
 </details>
 
@@ -6452,7 +6535,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-COUNT — `count`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 21 tracked case(s); 21 cold failures; 21 polyfill failures; 0 fixed.
 - **Current surface/gap:** 21 missing-capability case(s).
 - **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -6524,43 +6607,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 </details>
 
-### RX7-FILTER — `filter`
-
-- **Packet status:** `IN-PROCESS`
-- **Evidence:** 21 tracked case(s); 21 cold failures; 21 polyfill failures; 0 fixed.
-- **Current surface/gap:** 21 missing-capability case(s).
-- **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (21)</summary>
-
-- `spec/operators/filter-spec.ts:107:filter > should filter in only prime numbers, but predicate throws`
-- `spec/operators/filter-spec.ts:127:filter > should filter in only prime numbers, predicate with index`
-- `spec/operators/filter-spec.ts:142:filter > should invoke predicate once for each checked value`
-- `spec/operators/filter-spec.ts:168:filter > should filter in only prime numbers, predicate with index, source unsubscribes early`
-- `spec/operators/filter-spec.ts:184:filter > should filter in only prime numbers, predicate with index, source throws`
-- `spec/operators/filter-spec.ts:199:filter > should filter in only prime numbers, predicate with index and throws`
-- `spec/operators/filter-spec.ts:219:filter > should compose with another filter to allow multiples of six`
-- `spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg`
-- `spec/operators/filter-spec.ts:265:filter > should be able to use filter and map composed`
-- `spec/operators/filter-spec.ts:282:filter > should propagate errors from the source`
-- `spec/operators/filter-spec.ts:293:filter > should handle empty`
-- `spec/operators/filter-spec.ts:304:filter > should handle never`
-- `spec/operators/filter-spec.ts:315:filter > should handle throw`
-- `spec/operators/filter-spec.ts:32:filter > should filter out even values`
-- `spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly`
-- `spec/operators/filter-spec.ts:425:filter > should support Boolean as a predicate`
-- `spec/operators/filter-spec.ts:43:filter > should filter in only prime numbers`
-- `spec/operators/filter-spec.ts:54:filter > should filter with an always-true predicate`
-- `spec/operators/filter-spec.ts:69:filter > should filter with an always-false predicate`
-- `spec/operators/filter-spec.ts:84:filter > should filter in only prime numbers, source unsubscribes early`
-- `spec/operators/filter-spec.ts:96:filter > should filter in only prime numbers, source throws`
-
-</details>
-
 ### RX7-PUBLISH-REPLAY — `publishReplay`
 
 - **Packet status:** `TODO`
@@ -6600,7 +6646,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-DISTINCT-UNTIL-CHANGED — `distinctUntilChanged`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 22 tracked case(s); 22 cold failures; 22 polyfill failures; 0 fixed.
 - **Current surface/gap:** 22 missing-capability case(s).
 - **Required classification review:** 22 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -6638,7 +6684,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-EVERY — `every`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 22 tracked case(s); 22 cold failures; 22 polyfill failures; 0 fixed.
 - **Current surface/gap:** 22 missing-capability case(s).
 - **Required classification review:** 22 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -6750,52 +6796,6 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - `spec/operators/single-spec.ts:60:single operator > should not break unsubscription chains when result is unsubscribed explicitly`
 - `spec/operators/single-spec.ts:78:single operator > should raise error from empty predicate if observable emits error`
 - `spec/operators/single-spec.ts:89:single operator > should raise error from predicate if observable emits error`
-
-</details>
-
-### RX7-COMBINE-LATEST-WITH — `combineLatestWith`
-
-- **Packet status:** `TODO`
-- **Evidence:** 30 tracked case(s); 30 cold failures; 30 polyfill failures; 0 fixed.
-- **Current surface/gap:** 30 missing-capability case(s).
-- **Required classification review:** 30 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
-- **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
-- **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
-- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
-
-<details><summary>Affected case IDs (30)</summary>
-
-- `spec/operators/combineLatestWith-spec.ts:114:combineLatestWith > should work with hot-empty and hot-single`
-- `spec/operators/combineLatestWith-spec.ts:139:combineLatestWith > should work with hot-single and hot-empty`
-- `spec/operators/combineLatestWith-spec.ts:14:combineLatestWith > should combine events from two cold observables`
-- `spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never`
-- `spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single`
-- `spec/operators/combineLatestWith-spec.ts:208:combineLatestWith > should work with hot and hot`
-- `spec/operators/combineLatestWith-spec.ts:227:combineLatestWith > should work with empty and error`
-- `spec/operators/combineLatestWith-spec.ts:246:combineLatestWith > should work with error and empty`
-- `spec/operators/combineLatestWith-spec.ts:265:combineLatestWith > should work with hot and throw`
-- `spec/operators/combineLatestWith-spec.ts:284:combineLatestWith > should work with throw and hot`
-- `spec/operators/combineLatestWith-spec.ts:303:combineLatestWith > should work with throw and throw`
-- `spec/operators/combineLatestWith-spec.ts:322:combineLatestWith > should work with error and throw`
-- `spec/operators/combineLatestWith-spec.ts:341:combineLatestWith > should work with throw and error`
-- `spec/operators/combineLatestWith-spec.ts:360:combineLatestWith > should work with never and throw`
-- `spec/operators/combineLatestWith-spec.ts:379:combineLatestWith > should work with throw and never`
-- `spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers`
-- `spec/operators/combineLatestWith-spec.ts:398:combineLatestWith > should work with some and throw`
-- `spec/operators/combineLatestWith-spec.ts:417:combineLatestWith > should work with throw and some`
-- `spec/operators/combineLatestWith-spec.ts:436:combineLatestWith > should handle throw after complete left`
-- `spec/operators/combineLatestWith-spec.ts:455:combineLatestWith > should handle throw after complete right`
-- `spec/operators/combineLatestWith-spec.ts:474:combineLatestWith > should handle interleaved with tail`
-- `spec/operators/combineLatestWith-spec.ts:493:combineLatestWith > should handle two consecutive hot observables`
-- `spec/operators/combineLatestWith-spec.ts:512:combineLatestWith > should handle two consecutive hot observables with error left`
-- `spec/operators/combineLatestWith-spec.ts:531:combineLatestWith > should handle two consecutive hot observables with error right`
-- `spec/operators/combineLatestWith-spec.ts:550:combineLatestWith > should allow unsubscribing early and explicitly`
-- `spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty`
-- `spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly`
-- `spec/operators/combineLatestWith-spec.ts:594:combineLatestWith > should emit unique array instances with the default projection`
-- `spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never`
-- `spec/operators/combineLatestWith-spec.ts:95:combineLatestWith > should work with empty and empty`
 
 </details>
 
