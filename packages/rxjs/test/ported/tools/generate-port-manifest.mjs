@@ -68,6 +68,34 @@ const harnessRewritePrograms = new Map([
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
   [
+    'spec/operators/find-spec.ts:35:find > should not emit if source does not emit',
+    {
+      observable: '^!',
+      subscriptions: new Map([['e1subs', '^!']]),
+    },
+  ],
+  [
+    'spec/operators/findIndex-spec.ts:35:findIndex > should not emit if source does not emit',
+    {
+      observable: '^!',
+      subscriptions: new Map([['e1subs', '^!']]),
+    },
+  ],
+  [
+    'spec/observables/partition-spec.ts:254:partition > should partition to infinite observable if source does not completes',
+    {
+      observable: boundedSubscription(0, 20),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 20)]]),
+    },
+  ],
+  [
+    'spec/observables/partition-spec.ts:273:partition > should partition to infinite observable if source never completes',
+    {
+      observable: '^!',
+      subscriptions: new Map([['e1subs', '^!']]),
+    },
+  ],
+  [
     'spec/operators/skipUntil-spec.ts:181:skipUntil > should not complete if hot source observable does not complete',
     {
       observable: boundedSubscription(0, 16),
@@ -1090,6 +1118,22 @@ const modeAwareObservableExpectations = new Map([
   ['spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector', new Map([['result', sharedManyConcurrentTwo]])],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
+  [
+    'spec/observables/partition-spec.ts:115:partition > should pass errors to both returned observables if source throws',
+    new Map([['e1', 1]]),
+  ],
+  [
+    'spec/observables/partition-spec.ts:178:partition > should partition empty observable if source is empty',
+    new Map([['e1', 1]]),
+  ],
+  [
+    'spec/observables/partition-spec.ts:273:partition > should partition to infinite observable if source never completes',
+    new Map([['e1', 1]]),
+  ],
+  [
+    'spec/observables/partition-spec.ts:315:partition > should not break unsubscription chains when result is unsubscribed explicitly',
+    new Map([['e1', 1]]),
+  ],
   [
     'spec/operators/toArray-spec.ts:80:toArray > should allow multiple subscriptions',
     new Map([['e1', 1]]),
@@ -2315,7 +2359,12 @@ function createMigrationTransformer({
           return createSubscriptionFrameRecord(node.arguments, factory, visit);
         }
         if (ts.isIdentifier(node.expression) && node.expression.text === 'expectObservableArray') {
-          return createExpectObservableArrayCall(node.arguments, factory, visit);
+          return createExpectObservableArrayCall(
+            node.arguments,
+            factory,
+            visit,
+            observationBoundary?.observable
+          );
         }
         if (ts.isIdentifier(node.expression) && node.expression.text === 'getTimerSelector') {
           const delay = node.arguments[0] ? ts.visitNode(node.arguments[0], visit) : factory.createNumericLiteral(0);
@@ -2643,7 +2692,7 @@ function createComposedOperatorFunction(operators, factory) {
   );
 }
 
-function createExpectObservableArrayCall(args, factory, visit) {
+function createExpectObservableArrayCall(args, factory, visit, observationBoundary) {
   const result = factory.createUniqueName('result');
   const expected = factory.createUniqueName('expected');
   const index = factory.createUniqueName('index');
@@ -2669,6 +2718,9 @@ function createExpectObservableArrayCall(args, factory, visit) {
                 factory.createPropertyAccessExpression(
                   factory.createCallExpression(factory.createIdentifier('expectObservable'), undefined, [
                     factory.createElementAccessExpression(result, index),
+                    ...(typeof observationBoundary === 'string'
+                      ? [factory.createStringLiteral(observationBoundary)]
+                      : []),
                   ]),
                   'toBe'
                 ),
