@@ -66,11 +66,13 @@
         "./src/debounce.ts",
         "./src/default-if-empty.ts",
         "./src/distinct-until-changed.ts",
+        "./src/distinct-until-key-changed.ts",
         "./src/each-value-from.ts",
         "./src/every.ts",
         "./src/exhaust-map.ts",
         "./src/finalize.ts",
         "./src/filter.ts",
+        "./src/identity.ts",
         "./src/index.ts",
         "./src/interval.ts",
         "./src/map.ts",
@@ -79,10 +81,12 @@
         "./src/noop.ts",
         "./src/pipe.ts",
         "./src/race.ts",
+        "./src/reduce.ts",
         "./src/repeat.ts",
         "./src/replay-subject.ts",
         "./src/retry.ts",
         "./src/scan.ts",
+        "./src/skip.ts",
         "./src/skip-last.ts",
         "./src/skip-while.ts",
         "./src/subject.ts",
@@ -204,6 +208,13 @@
       "require": "./dist/commonjs/distinct-until-changed.js",
       "types": "./dist/types/distinct-until-changed.d.ts"
     },
+    "./distinct-until-key-changed": {
+      "browser": "./dist/browser/distinct-until-key-changed.js",
+      "webpack": "./dist/webpack/distinct-until-key-changed.js",
+      "import": "./dist/esm/distinct-until-key-changed.js",
+      "require": "./dist/commonjs/distinct-until-key-changed.js",
+      "types": "./dist/types/distinct-until-key-changed.d.ts"
+    },
     "./each-value-from": {
       "browser": "./dist/browser/each-value-from.js",
       "webpack": "./dist/webpack/each-value-from.js",
@@ -238,6 +249,13 @@
       "import": "./dist/esm/filter.js",
       "require": "./dist/commonjs/filter.js",
       "types": "./dist/types/filter.d.ts"
+    },
+    "./identity": {
+      "browser": "./dist/browser/identity.js",
+      "webpack": "./dist/webpack/identity.js",
+      "import": "./dist/esm/identity.js",
+      "require": "./dist/commonjs/identity.js",
+      "types": "./dist/types/identity.d.ts"
     },
     "./index": {
       "browser": "./dist/browser/index.js",
@@ -296,6 +314,13 @@
       "require": "./dist/commonjs/race.js",
       "types": "./dist/types/race.d.ts"
     },
+    "./reduce": {
+      "browser": "./dist/browser/reduce.js",
+      "webpack": "./dist/webpack/reduce.js",
+      "import": "./dist/esm/reduce.js",
+      "require": "./dist/commonjs/reduce.js",
+      "types": "./dist/types/reduce.d.ts"
+    },
     "./repeat": {
       "browser": "./dist/browser/repeat.js",
       "webpack": "./dist/webpack/repeat.js",
@@ -323,6 +348,13 @@
       "import": "./dist/esm/scan.js",
       "require": "./dist/commonjs/scan.js",
       "types": "./dist/types/scan.d.ts"
+    },
+    "./skip": {
+      "browser": "./dist/browser/skip.js",
+      "webpack": "./dist/webpack/skip.js",
+      "import": "./dist/esm/skip.js",
+      "require": "./dist/commonjs/skip.js",
+      "types": "./dist/types/skip.d.ts"
     },
     "./skip-last": {
       "browser": "./dist/browser/skip-last.js",

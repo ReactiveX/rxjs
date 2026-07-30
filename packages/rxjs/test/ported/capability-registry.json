@@ -145,6 +145,14 @@
       "status": "Present; parity unverified",
       "note": "Uses strict equality by default and compares selected keys against the last emitted key."
     },
+    "distinctUntilKeyChanged": {
+      "symbol": "distinctUntilKeyChanged",
+      "module": "distinct-until-key-changed",
+      "adapter": "identity",
+      "mapping": "source[distinctUntilKeyChanged](key, comparator?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates property-key comparison to the exact distinctUntilChanged Symbol contract."
+    },
     "elementAt": {
       "symbol": "elementAt",
       "module": "element-at",
@@ -321,6 +329,14 @@
       "status": "Partial unified mapping",
       "note": "Maps the With variant to the unified race Symbol."
     },
+    "reduce": {
+      "symbol": "reduce",
+      "module": "reduce",
+      "adapter": "identity",
+      "mapping": "source[reduce](accumulator, seed?)",
+      "status": "Present; parity unverified",
+      "note": "Distinguishes omitted and explicitly undefined seeds and emits accumulated state only on successful completion."
+    },
     "repeat": {
       "symbol": "repeat",
       "module": "repeat",
@@ -352,6 +368,14 @@
       "mapping": "source[sequenceEqual](otherSource, comparator?)",
       "status": "Present; parity verified",
       "note": "Supports strict equality by default and the RxJS 7 comparator overload."
+    },
+    "skip": {
+      "symbol": "skip",
+      "module": "skip",
+      "adapter": "identity",
+      "mapping": "source[skip](count)",
+      "status": "Present; parity unverified",
+      "note": "Suppresses the first count values while preserving completion, errors, and cancellation."
     },
     "skipLast": {
       "symbol": "skipLast",
@@ -651,6 +675,13 @@
       "mapping": "source.first()",
       "status": "Partial platform mapping",
       "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
+    },
+    "identity": {
+      "module": "identity",
+      "adapter": "identity",
+      "mapping": "identity",
+      "status": "Present; parity verified",
+      "note": "Uses the public generic identity utility."
     },
     "lastValueFrom": {
       "module": "global",
