@@ -1,4 +1,4 @@
-import { combine } from './combine';
+import { combine } from './combine.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
 type CombineLatestValues<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }> = {
@@ -33,16 +33,20 @@ function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [
 ): Observable<CombineLatestValues<Sources>> {
   const { requireAllValues = true } = config ?? {};
 
-  let actualSources: readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> };
-
   if (isObservableInstance(this)) {
     if (!Array.isArray(sources)) {
       throw new TypeError('Must combine observable instance with an array of observable values');
     }
-    actualSources = [this, ...sources];
-  } else {
-    actualSources = Array.isArray(sources) ? [...sources] : { ...sources };
+    return this[combine](
+      sources.map((source) => ({
+        source,
+        requireFirstValue: requireAllValues,
+      }))
+    ) as any;
   }
+
+  const actualSources: readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> } =
+    Array.isArray(sources) ? [...sources] : { ...sources };
 
   if (isSourceArray(actualSources)) {
     return this[combine](
@@ -56,7 +60,7 @@ function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [
 
     return this[combine](
       keys.map((key) => ({
-        source: actualSources[key],
+        source: actualSources[key]!,
         requireFirstValue: requireAllValues,
       }))
     ).map((values) => Object.fromEntries(keys.map((key, i) => [key, values[i]]))) as any;
