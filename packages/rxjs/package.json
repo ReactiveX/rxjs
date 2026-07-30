@@ -92,6 +92,7 @@
         "./src/min.ts",
         "./src/not-found-error.ts",
         "./src/noop.ts",
+        "./src/pairwise.ts",
         "./src/partition.ts",
         "./src/pipe.ts",
         "./src/pluck.ts",
@@ -107,6 +108,7 @@
         "./src/skip-last.ts",
         "./src/skip-until.ts",
         "./src/skip-while.ts",
+        "./src/start-with.ts",
         "./src/subject.ts",
         "./src/switch-map.ts",
         "./src/tap.ts",
@@ -413,6 +415,13 @@
       "types": "./dist/types/noop.d.ts"
     },
     "./package.json": "./package.json",
+    "./pairwise": {
+      "browser": "./dist/browser/pairwise.js",
+      "webpack": "./dist/webpack/pairwise.js",
+      "import": "./dist/esm/pairwise.js",
+      "require": "./dist/commonjs/pairwise.js",
+      "types": "./dist/types/pairwise.d.ts"
+    },
     "./partition": {
       "browser": "./dist/browser/partition.js",
       "webpack": "./dist/webpack/partition.js",
@@ -517,6 +526,13 @@
       "import": "./dist/esm/skip-while.js",
       "require": "./dist/commonjs/skip-while.js",
       "types": "./dist/types/skip-while.d.ts"
+    },
+    "./start-with": {
+      "browser": "./dist/browser/start-with.js",
+      "webpack": "./dist/webpack/start-with.js",
+      "import": "./dist/esm/start-with.js",
+      "require": "./dist/commonjs/start-with.js",
+      "types": "./dist/types/start-with.d.ts"
     },
     "./subject": {
       "browser": "./dist/browser/subject.js",
