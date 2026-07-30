@@ -537,6 +537,14 @@
       "status": "Present; platform lifecycle review required",
       "note": "Shares one connector and source connection per active run with configurable reset behavior. A late observer joining an already-active platform result bypasses operator initialization, so a replaying custom connector cannot replay history to that observer; ColdObservable compatibility fanout retains that behavior."
     },
+    "shareReplay": {
+      "symbol": "shareReplay",
+      "module": "share-replay",
+      "adapter": "identity",
+      "mapping": "source[shareReplay](configOrBufferSize?, windowTime?)",
+      "status": "Present; platform lifecycle review required",
+      "note": "Uses share with a size/host-time-bounded replay connector, persistent successful terminal cache, error reset, and optional ref-count reset. Active platform late observers cannot receive connector history; ColdObservable and post-terminal activations can. Defined scheduler arguments fail explicitly and remain scheduler-last."
+    },
     "single": {
       "symbol": "single",
       "module": "single",
