@@ -83,6 +83,7 @@
         "./src/identity.ts",
         "./src/index.ts",
         "./src/interval.ts",
+        "./src/is-empty.ts",
         "./src/last.ts",
         "./src/map.ts",
         "./src/max.ts",
@@ -114,6 +115,7 @@
         "./src/take-until.ts",
         "./src/take-while.ts",
         "./src/throttle.ts",
+        "./src/throw-if-empty.ts",
         "./src/timeout.ts",
         "./src/timer.ts",
         "./src/with-latest-from.ts",
@@ -347,6 +349,13 @@
       "require": "./dist/commonjs/interval.js",
       "types": "./dist/types/interval.d.ts"
     },
+    "./is-empty": {
+      "browser": "./dist/browser/is-empty.js",
+      "webpack": "./dist/webpack/is-empty.js",
+      "import": "./dist/esm/is-empty.js",
+      "require": "./dist/commonjs/is-empty.js",
+      "types": "./dist/types/is-empty.d.ts"
+    },
     "./last": {
       "browser": "./dist/browser/last.js",
       "webpack": "./dist/webpack/last.js",
@@ -564,6 +573,13 @@
       "import": "./dist/esm/throttle.js",
       "require": "./dist/commonjs/throttle.js",
       "types": "./dist/types/throttle.d.ts"
+    },
+    "./throw-if-empty": {
+      "browser": "./dist/browser/throw-if-empty.js",
+      "webpack": "./dist/webpack/throw-if-empty.js",
+      "import": "./dist/esm/throw-if-empty.js",
+      "require": "./dist/commonjs/throw-if-empty.js",
+      "types": "./dist/types/throw-if-empty.d.ts"
     },
     "./timeout": {
       "browser": "./dist/browser/timeout.js",
