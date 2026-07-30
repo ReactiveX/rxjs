@@ -76,6 +76,114 @@ const harnessRewritePrograms = new Map([
     buildNeverMulticastHarnessRewrite(),
   ],
   [
+    'spec/operators/publish-spec.ts:37:publish operator > should do nothing if connect is not called, despite subscriptions',
+    buildNoConnectPublishHarnessRewrite('publish'),
+  ],
+  [
+    'spec/operators/publish-spec.ts:114:publish operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    buildDisconnectedPublishHarnessRewrite('publish', false),
+  ],
+  [
+    'spec/operators/publish-spec.ts:146:publish operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildDisconnectedPublishHarnessRewrite('publish', true),
+  ],
+  [
+    'spec/operators/publish-spec.ts:315:publish operator > should multicast a never source',
+    buildNeverPublishHarnessRewrite('publish'),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:37:publishBehavior operator > should only emit default value if connect is not called, despite subscriptions',
+    buildNoConnectPublishHarnessRewrite('publishBehavior'),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:91:publishBehavior operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    buildDisconnectedPublishHarnessRewrite('publishBehavior', false),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:123:publishBehavior operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildDisconnectedPublishHarnessRewrite('publishBehavior', true),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:292:publishBehavior operator > should multicast a never source',
+    buildNeverPublishHarnessRewrite('publishBehavior'),
+  ],
+  [
+    'spec/operators/publishLast-spec.ts:37:publishLast operator > should do nothing if connect is not called, despite subscriptions',
+    buildNoConnectPublishHarnessRewrite('publishLast'),
+  ],
+  [
+    'spec/operators/publishLast-spec.ts:91:publishLast operator > should not cast any values to multiple observers, when source is unsubscribed explicitly and early',
+    buildDisconnectedPublishHarnessRewrite('publishLast', false),
+  ],
+  [
+    'spec/operators/publishLast-spec.ts:123:publishLast operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildDisconnectedPublishHarnessRewrite('publishLast', true),
+  ],
+  [
+    'spec/operators/publishLast-spec.ts:230:publishLast operator > should multicast a never source',
+    buildNeverPublishHarnessRewrite('publishLast'),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:37:publishReplay operator > should do nothing if connect is not called, despite subscriptions',
+    buildNoConnectPublishHarnessRewrite('publishReplay'),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:112:publishReplay operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    buildDisconnectedPublishReplayHarnessRewrite(false),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:144:publishReplay operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildDisconnectedPublishReplayHarnessRewrite(true),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:423:publishReplay operator > should multicast a never source',
+    buildNeverPublishHarnessRewrite('publishReplay'),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:495:publishReplay operator > should terminate immediately when the selector returns an empty Observable',
+    buildTerminalPublishReplaySelectorHarnessRewrite('complete'),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:508:publishReplay operator > should not emit and should not complete/error when the selector returns never',
+    buildNeverPublishReplaySelectorHarnessRewrite(),
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:521:publishReplay operator > should emit error when the selector returns Observable.throw',
+    buildTerminalPublishReplaySelectorHarnessRewrite('error'),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:391:multicast > with refCount() and subject factory > should be retryable when cold source is synchronous',
+    buildSynchronousRefCountHarnessRewrite('retry', false),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:432:multicast > with refCount() and subject factory > should be retryable with ReplaySubject and cold source is synchronous',
+    buildSynchronousRefCountHarnessRewrite('retry', true),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:473:multicast > with refCount() and subject factory > should be repeatable when cold source is synchronous',
+    buildSynchronousRefCountHarnessRewrite('repeat', false),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:516:multicast > with refCount() and subject factory > should be repeatable with ReplaySubject and cold source is synchronous',
+    buildSynchronousRefCountHarnessRewrite('repeat', true),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:559:multicast > with refCount() and subject factory > should be retryable',
+    buildTimedRefCountHarnessRewrite('retry', false),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:597:multicast > with refCount() and subject factory > should be retryable using a ReplaySubject',
+    buildTimedRefCountHarnessRewrite('retry', true),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:620:multicast > with refCount() and subject factory > should be repeatable',
+    buildTimedRefCountHarnessRewrite('repeat', false),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:656:multicast > with refCount() and subject factory > should be repeatable using a ReplaySubject',
+    buildTimedRefCountHarnessRewrite('repeat', true),
+  ],
+  [
     'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
     buildSynchronousCatchErrorHarnessRewrite(),
   ],
@@ -151,8 +259,186 @@ const harnessRewritePrograms = new Map([
     'spec/operators/groupBy-spec.ts:1436:groupBy operator > should not error for late subscribed inners if outer is unsubscribed before inners are subscribed',
     buildVeryLateGroupsAfterOuterCancellationHarnessRewrite(),
   ],
+  [
+    'spec/operators/groupBy-spec.ts:566:groupBy operator > should allow an inner to be unsubscribed early but other inners continue',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+        [12, 'N', 'qux'],
+        [26, 'C'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 2, abortFrame: 9, events: [[2, 'N', 'a'], [4, 'N', 'b'], [8, 'N', 'd']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 6, events: [[6, 'N', 'c'], [14, 'N', 'g'], [16, 'N', 'h'], [26, 'C']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 10, events: [[10, 'N', 'e'], [20, 'N', 'j'], [22, 'N', 'k'], [26, 'C']] },
+        { key: 'qux', occurrence: 0, subscribeFrame: 12, events: [[12, 'N', 'f'], [26, 'C']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:621:groupBy operator > should allow inners to be unsubscribed early at different times',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+        [12, 'N', 'qux'],
+        [26, 'C'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 2, abortFrame: 9, events: [[2, 'N', 'a'], [4, 'N', 'b'], [8, 'N', 'd']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 6, abortFrame: 12, events: [[6, 'N', 'c']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 10, abortFrame: 16, events: [[10, 'N', 'e']] },
+        { key: 'qux', occurrence: 0, subscribeFrame: 12, abortFrame: 19, events: [[12, 'N', 'f']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:921:groupBy operator > should allow using a durationSelector, outer and all inners unsubscribed early',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      durationSkip: 2,
+      outerAbortFrame: 11,
+      sourceSubscription: '^----------!',
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 2, abortFrame: 11, events: [[2, 'N', 'a'], [4, 'N', 'b'], [8, 'N', 'd'], [8, 'C']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 6, abortFrame: 11, events: [[6, 'N', 'c']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 10, abortFrame: 11, events: [[10, 'N', 'e']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1142:groupBy operator > should allow an inner to be unsubscribed early but other inners continue, with durationSelector',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      durationSkip: 2,
+      element: 'reverse',
+      legacy: true,
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+        [12, 'N', 'qux'],
+        [18, 'N', 'foo'],
+        [26, 'C'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 2, abortFrame: 7, events: [[2, 'N', 'a'], [4, 'N', 'b']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 6, events: [[6, 'N', 'c'], [14, 'N', 'g'], [16, 'N', 'h'], [16, 'C']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 10, events: [[10, 'N', 'e'], [20, 'N', 'j'], [22, 'N', 'k'], [22, 'C']] },
+        { key: 'qux', occurrence: 0, subscribeFrame: 12, events: [[12, 'N', 'f'], [26, 'C']] },
+        { key: 'foo', occurrence: 1, subscribeFrame: 18, events: [[18, 'N', 'i'], [24, 'N', 'l'], [26, 'C']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1206:groupBy operator > should allow inners to be unsubscribed early at different times, with durationSelector',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      durationSkip: 2,
+      element: 'identity',
+      legacy: true,
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+        [12, 'N', 'qux'],
+        [18, 'N', 'foo'],
+        [26, 'C'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 2, abortFrame: 7, events: [[2, 'N', 'a'], [4, 'N', 'b']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 6, abortFrame: 9, events: [[6, 'N', 'c']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 10, abortFrame: 21, events: [[10, 'N', 'e'], [20, 'N', 'j']] },
+        { key: 'qux', occurrence: 0, subscribeFrame: 12, abortFrame: 16, events: [[12, 'N', 'f']] },
+        { key: 'foo', occurrence: 1, subscribeFrame: 18, abortFrame: 22, events: [[18, 'N', 'i']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1280:groupBy operator > should return inners that when subscribed late exhibit hot behavior',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      element: 'identity',
+      legacy: true,
+      outer: [
+        [2, 'N', 'foo'],
+        [6, 'N', 'bar'],
+        [10, 'N', 'baz'],
+        [12, 'N', 'qux'],
+        [26, 'C'],
+      ],
+      groups: [
+        { key: 'foo', occurrence: 0, subscribeFrame: 3, events: [[4, 'N', 'b'], [8, 'N', 'd'], [18, 'N', 'i'], [24, 'N', 'l'], [26, 'C']] },
+        { key: 'bar', occurrence: 0, subscribeFrame: 9, events: [[14, 'N', 'g'], [16, 'N', 'h'], [26, 'C']] },
+        { key: 'baz', occurrence: 0, subscribeFrame: 19, events: [[20, 'N', 'j'], [22, 'N', 'k'], [26, 'C']] },
+        { key: 'qux', occurrence: 0, subscribeFrame: 30, events: [[30, 'C']] },
+      ],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1346:groupBy operator > should return inner group that when subscribed late emits complete()',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      durationSkip: 7,
+      element: 'identity',
+      legacy: true,
+      sourceMarbles: '--a-b---d---------i-----l-|',
+      values: {
+        a: '  foo',
+        b: ' FoO ',
+        d: 'foO ',
+        i: 'FOO ',
+        l: '    fOo    ',
+      },
+      outer: [
+        [2, 'N', 'foo'],
+        [26, 'C'],
+      ],
+      groups: [{ key: 'foo', occurrence: 0, subscribeFrame: 32, events: [[32, 'C']] }],
+    }),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1391:groupBy operator > should return inner group that when subscribed late emits error()',
+    buildPhonyMarbelizeGroupHarnessRewrite({
+      durationSkip: 7,
+      element: 'identity',
+      legacy: true,
+      sourceMarbles: '--a-b---d---------i-----l-#',
+      values: {
+        a: '  foo',
+        b: ' FoO ',
+        d: 'foO ',
+        i: 'FOO ',
+        l: '    fOo    ',
+      },
+      outer: [
+        [2, 'N', 'foo'],
+        [26, 'E'],
+      ],
+      groups: [{ key: 'foo', occurrence: 0, subscribeFrame: 32, events: [[32, 'E']] }],
+    }),
+  ],
 ]);
 const intentionalDivergenceReasons = new Map([
+  [
+    'spec/operators/publishReplay-spec.ts:112:publishReplay operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    'Intentional RxJS Next divergence: the bounded cold case retains RxJS 7 replay for each observer, while platform observers joining one active result run do not create separate ReplaySubject subscriptions.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:144:publishReplay operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    'Intentional RxJS Next divergence: the bounded cold case retains RxJS 7 replay for each observer, while platform observers joining one active result run do not create separate ReplaySubject subscriptions.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:495:publishReplay operator > should terminate immediately when the selector returns an empty Observable',
+    'Intentional RxJS Next divergence: a synchronously completed selector result prevents source activation instead of recording an immediately closed source subscription.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:521:publishReplay operator > should emit error when the selector returns Observable.throw',
+    'Intentional RxJS Next divergence: a synchronously errored selector result prevents source activation instead of recording an immediately closed source subscription.',
+  ],
   [
     'spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early',
     'Intentional RxJS Next divergence: outer cancellation silently releases read-only windows, and late observation is accepted but remains silent.',
@@ -553,6 +839,16 @@ const observationBoundaries = new Map([
     },
   ],
   [
+    'spec/observables/zip-spec.ts:216:zip > should combine two observables and selector',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
     'spec/observables/zip-spec.ts:148:zip > with iterables > should work with never observable and non-empty iterable',
     { observable: boundedSubscription(0, 1), subscriptions: new Map([['asubs', boundedSubscription(0, 1)]]) },
   ],
@@ -576,6 +872,16 @@ const observationBoundaries = new Map([
   ],
   [
     'spec/operators/zipWith-spec.ts:15:zipWith > should combine a source with a second',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zip-legacy-spec.ts:153:zip legacy > should combine two observables and selector',
     {
       observable: boundedSubscription(0, 18),
       subscriptions: new Map([
@@ -657,6 +963,32 @@ const observationBoundaries = new Map([
         ['bsubs', boundedSubscription(0, 18)],
       ]),
     },
+  ],
+  [
+    'spec/observables/combineLatest-spec.ts:126:static combineLatest > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['e2subs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/observables/combineLatest-spec.ts:142:static combineLatest > should work with never and empty',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/observables/combineLatest-spec.ts:158:static combineLatest > should work with empty and never',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e2subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/observables/combineLatest-spec.ts:233:static combineLatest > should work with hot-single and never',
+    { observable: boundedSubscription(0, 3), subscriptions: new Map([['e2subs', boundedSubscription(0, 3)]]) },
+  ],
+  [
+    'spec/observables/combineLatest-spec.ts:252:static combineLatest > should work with never and hot-single',
+    { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
   ],
   [
     'spec/operators/combineLatestAll-spec.ts:28:combineLatestAll operator > should work with two nevers',
@@ -1425,8 +1757,77 @@ const modeAwareObservableExpectations = new Map([
     'spec/operators/mergeScan-spec.ts:354:mergeScan > should not emit accumulator if inner completes without value after source completes',
     new Map([['result', observableMessages([[9, 'C']])]]),
   ],
+  [
+    'spec/operators/multicast-spec.ts:127:multicast > should accept a multicast selector and connect to a cold source for each subscriber',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '6'], [10, 'N', '8'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '8'], [12, 'C']])],
+    ]),
+  ],
+  [
+    "spec/operators/multicast-spec.ts:155:multicast > should accept a multicast selector and respect the subject's messaging semantics",
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'N', '4'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'N', '4'], [12, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:49:publishBehavior operator > should multicast the same values to multiple observers',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:70:publishBehavior operator > should multicast an error from the source to multiple observers',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'E']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'E']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:159:publishBehavior operator > with refCount() > should connect when first subscriber subscribes',
+    new Map([
+      ['subscriber2', observableMessages([[8, 'N', '3'], [13, 'N', '4'], [15, 'C']])],
+      ['subscriber3', observableMessages([[13, 'N', '4'], [15, 'C']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:178:publishBehavior operator > with refCount() > should disconnect when last subscriber unsubscribes',
+    new Map([['subscriber2', observableMessages([[8, 'N', '3']])]]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:196:publishBehavior operator > with refCount() > should NOT be retryable',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'E']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'E']])],
+    ]),
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:215:publishBehavior operator > with refCount() > should NOT be repeatable',
+    new Map([
+      ['subscriber2', observableMessages([[5, 'N', '3'], [10, 'N', '4'], [12, 'C']])],
+      ['subscriber3', observableMessages([[10, 'N', '4'], [12, 'C']])],
+    ]),
+  ],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
+  [
+    'spec/operators/publish-spec.ts:70:publish operator > should accept selectors',
+    new Map([['source', [boundedSubscription(0, 12)]]]),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:100:multicast > should accept a multicast selector and connect to a hot source for each subscriber',
+    new Map([['e1', [boundedSubscription(0, 12)]]]),
+  ],
+  [
+    'spec/operators/multicast-spec.ts:127:multicast > should accept a multicast selector and connect to a cold source for each subscriber',
+    new Map([['e1', [boundedSubscription(0, 12)]]]),
+  ],
+  [
+    "spec/operators/multicast-spec.ts:155:multicast > should accept a multicast selector and respect the subject's messaging semantics",
+    new Map([['e1', [boundedSubscription(0, 12)]]]),
+  ],
   [
     'spec/observables/partition-spec.ts:115:partition > should pass errors to both returned observables if source throws',
     new Map([['e1', 1]]),
@@ -1767,19 +2168,13 @@ function extractCases({ path, sourceText }) {
       const availability = assessAvailability(usedImports);
       const harnessRewrite = harnessRewritePrograms.get(id);
       const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
-      const unrepresentedZipProjection = hasUnrepresentedZipProjection({
-        path,
-        callback,
-      });
-      const unrepresentedCombineLatestProjection = hasUnrepresentedCombineLatestProjection({
-        path,
-        callback,
-      });
-      const schedulerInternal = isGenuinelySchedulerInternal({
-        path,
-        line: lineOf(call, sourceFile),
-        blockedSupport,
-      });
+      const schedulerInternal =
+        !harnessRewrite &&
+        isGenuinelySchedulerInternal({
+          path,
+          line: lineOf(call, sourceFile),
+          blockedSupport,
+        });
 
       let classification;
       let disposition;
@@ -1800,32 +2195,6 @@ function extractCases({ path, sourceText }) {
           blockedSupport.length > 0
             ? `The case depends on scheduler-bound parser or notification state: ${blockedSupport.join(', ')}.`
             : 'The case protects TestScheduler parser or queue internals rather than an Observable behavior.';
-        modes = ['cold', 'polyfill', 'native'];
-        migratedProgram = buildMigratedProgram({
-          caseId: id,
-          callback,
-          imports: usedImports,
-          sourceFile,
-          support: caseSupport,
-          wrapManualHelpers: !runMode,
-        });
-      } else if (unrepresentedZipProjection) {
-        classification = 'compatibility-only';
-        disposition = 'missing-api';
-        reason = 'RxJS 7 zip projection overload is not represented.';
-        modes = ['cold', 'polyfill', 'native'];
-        migratedProgram = buildMigratedProgram({
-          caseId: id,
-          callback,
-          imports: usedImports,
-          sourceFile,
-          support: caseSupport,
-          wrapManualHelpers: !runMode,
-        });
-      } else if (unrepresentedCombineLatestProjection) {
-        classification = 'compatibility-only';
-        disposition = 'missing-api';
-        reason = 'RxJS 7 combineLatest projection overload is not represented.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
           caseId: id,
@@ -1997,6 +2366,263 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) =
 
   const connection = result.connect();
   schedule(() => connection.unsubscribe(), 1);
+});
+}
+`;
+}
+
+function buildNoConnectPublishHarnessRewrite(kind) {
+  const descriptor =
+    kind === 'publishBehavior'
+      ? "publishBehavior('0')"
+      : `${kind}()`;
+  const expected = kind === 'publishBehavior' ? '0' : '-';
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, ${kind} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('--1-2---3-4--5-|');
+  const result = applyOperators(source, [${descriptor}]);
+
+  // No manual connection is made. Bound the observer at the original
+  // one-frame evidence horizon while retaining the empty source log.
+  expectObservable(result, '^!').toBe('${expected}');
+  expectSubscriptions(source.subscriptions).toBe([]);
+});
+}
+`;
+}
+
+function buildDisconnectedPublishHarnessRewrite(kind, withUnsubscriptionChain) {
+  const descriptor =
+    kind === 'publishBehavior'
+      ? "publishBehavior('0')"
+      : `${kind}()`;
+  const runtimeNames = [
+    'rxTest',
+    'applyOperators',
+    kind,
+    ...(withUnsubscriptionChain ? ['mergeMap', 'of'] : []),
+  ];
+  const operators = [
+    ...(withUnsubscriptionChain ? ['mergeMap((value) => of(value))'] : []),
+    descriptor,
+  ];
+  const expectations =
+    kind === 'publish'
+      ? ['-1-2-3----', '-----3----', '----------']
+      : kind === 'publishBehavior'
+        ? ['01-2-3----', '----23----', '--------3-']
+        : ['----------', '----------', '----------'];
+  return `async function migrated(runtime) {
+const { ${runtimeNames.join(', ')}, __rxPortMode } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const source = cold('-1-2-3----4-|');
+  const result = applyOperators(source, [${operators.join(', ')}]);
+  const platformSharedRun = __rxPortMode !== 'cold';
+  const secondExpected =
+    platformSharedRun && '${kind}' === 'publishBehavior'
+      ? '-----3----'
+      : '${expectations[1]}';
+  const thirdExpected =
+    platformSharedRun && '${kind}' === 'publishBehavior'
+      ? '----------'
+      : '${expectations[2]}';
+
+  // Preserve the original observer starts at frames 0, 4, and 8. Disconnect
+  // the source at frame 9 and release the live subject observers at the
+  // diagrams' frame-10 horizon. Platform-mode observers join the existing
+  // shared activation, so publishBehavior does not synchronously replay its
+  // current subject value for those later logical observations.
+  expectObservable(result, '^---------!').toBe('${expectations[0]}');
+  expectObservable(result, '----^-----!').toBe(secondExpected);
+  expectObservable(result, '--------^-!').toBe(thirdExpected);
+  expectSubscriptions(source.subscriptions).toBe('^--------!');
+
+  const connection = result.connect();
+  schedule(() => connection.unsubscribe(), 9);
+});
+}
+`;
+}
+
+function buildNeverPublishHarnessRewrite(kind) {
+  const descriptor =
+    kind === 'publishBehavior'
+      ? "publishBehavior('0')"
+      : `${kind}()`;
+  const expected = kind === 'publishBehavior' ? '0' : '-';
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, ${kind} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const source = cold('-');
+  const result = applyOperators(source, [${descriptor}]);
+
+  // Bound both the silent source connection and its result at the original
+  // one-frame evidence horizon.
+  expectObservable(result, '^!').toBe('${expected}');
+  expectSubscriptions(source.subscriptions).toBe('^!');
+
+  const connection = result.connect();
+  schedule(() => connection.unsubscribe(), 1);
+});
+}
+`;
+}
+
+function buildDisconnectedPublishReplayHarnessRewrite(withUnsubscriptionChain) {
+  const runtimeNames = [
+    'rxTest',
+    'applyOperators',
+    'publishReplay',
+    ...(withUnsubscriptionChain ? ['mergeMap', 'of'] : []),
+  ];
+  const operators = [
+    ...(withUnsubscriptionChain ? ['mergeMap((value) => of(value))'] : []),
+    'publishReplay(1)',
+  ];
+  return `async function migrated(runtime) {
+const { ${runtimeNames.join(', ')}, __rxPortMode } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const source = cold('-1-2-3----4-|');
+  const result = applyOperators(source, [${operators.join(', ')}]);
+  const coldMode = __rxPortMode === 'cold';
+
+  // Preserve the original observer starts at frames 0, 4, and 8. A cold
+  // observer gets its own ReplaySubject subscription and therefore replay;
+  // platform observers join one active result run and see only later fanout.
+  expectObservable(result, '^---------!').toBe('-1-2-3----');
+  expectObservable(result, '----^-----!').toBe(coldMode ? '----23----' : '-----3----');
+  expectObservable(result, '--------^-!').toBe(coldMode ? '--------3-' : '----------');
+  expectSubscriptions(source.subscriptions).toBe('^--------!');
+
+  const connection = result.connect();
+  schedule(() => connection.unsubscribe(), 9);
+});
+}
+`;
+}
+
+function buildNeverPublishReplaySelectorHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, NEVER, publishReplay } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('-');
+  const result = applyOperators(source, [publishReplay(1, Infinity, () => NEVER)]);
+
+  // Bound the selector result and its source subscription at the original
+  // one-frame evidence horizon without changing either silent claim.
+  expectObservable(result, '^!').toBe('-');
+  expectSubscriptions(source.subscriptions).toBe('^!');
+});
+}
+`;
+}
+
+function buildTerminalPublishReplaySelectorHarnessRewrite(terminal) {
+  const isError = terminal === 'error';
+  const runtimeNames = isError
+    ? 'rxTest, applyOperators, publishReplay, throwError'
+    : 'rxTest, applyOperators, EMPTY, publishReplay';
+  const selector = isError
+    ? `() => throwError(() => "It's broken")`
+    : '() => EMPTY';
+  const expected = isError ? '#' : '|';
+  const assertionArguments = isError ? `, undefined, "It's broken"` : '';
+  return `async function migrated(runtime) {
+const { ${runtimeNames} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('--1--2---3---|');
+  const result = applyOperators(source, [publishReplay(1, Infinity, ${selector})]);
+
+  // RxJS Next subscribes to the selector result first. Synchronous terminal
+  // delivery closes the result before source activation, so the behavioral
+  // output is retained with an intentionally empty source-subscription log.
+  expectObservable(result).toBe('${expected}'${assertionArguments});
+  expectSubscriptions(source.subscriptions).toBe([]);
+});
+}
+`;
+}
+
+function buildSynchronousRefCountHarnessRewrite(kind, replay) {
+  const attempts = kind === 'retry' ? 4 : 5;
+  const terminal = kind === 'retry' ? '#' : '|';
+  const subject = replay ? 'new ReplaySubject(1)' : 'new Subject()';
+  const runtimeNames = [
+    'rxTest',
+    'applyOperators',
+    'multicast',
+    'refCount',
+    kind,
+    replay ? 'ReplaySubject' : 'Subject',
+  ];
+  const sourceSubscriptions = [
+    ...Array.from({ length: attempts }, () => '(^!)'),
+    ...Array.from({ length: attempts }, () => '-(^!)'),
+  ];
+  const expected = `(${`123`.repeat(attempts)}${terminal})`;
+  const operatorArgument = kind === 'retry' ? attempts - 1 : attempts;
+  return `async function migrated(runtime) {
+const { ${runtimeNames.join(', ')} } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('(123${terminal})');
+  const result = applyOperators(source, [
+    multicast(() => ${subject}),
+    refCount(),
+  ]);
+
+  // Preserve the two original trigger frames directly. Nested expectations
+  // created at frame 1 otherwise schedule against absolute frame 0.
+  expectObservable(applyOperators(result, [${kind}(${operatorArgument})])).toBe('${expected}');
+  expectObservable(applyOperators(result, [${kind}(${operatorArgument})]), '-^').toBe('-${expected}');
+  expectSubscriptions(source.subscriptions).toBe(${JSON.stringify(sourceSubscriptions, null, 2)});
+});
+}
+`;
+}
+
+function buildTimedRefCountHarnessRewrite(kind, replay) {
+  const terminal = kind === 'retry' ? '#' : '|';
+  const subject = replay ? 'new ReplaySubject(1)' : 'new Subject()';
+  const runtimeNames = [
+    'rxTest',
+    'applyOperators',
+    'multicast',
+    'refCount',
+    kind,
+    replay ? 'ReplaySubject' : 'Subject',
+  ];
+  return `async function migrated(runtime) {
+const { ${runtimeNames.join(', ')}, __rxPortMode } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('-1-2-3----4-${terminal}                        ');
+  const result = applyOperators(source, [
+    multicast(() => ${subject}),
+    refCount(),
+  ]);
+  const coldMode = __rxPortMode === 'cold';
+  const firstExpected = coldMode
+    ? ${replay ? `'-1-2-3----4-(44${terminal})'` : `'-1-2-3----4-${terminal}'`}
+    : '-1-2-3----4--1-2-3----4--1-2-3----4-${terminal}';
+  const secondPrefix = ${replay ? `coldMode ? '----23----4-' : '-----3----4-'` : ` '-----3----4-'`};
+
+  // Observe the shared ref-counted run at the original frames 0 and 4
+  // without retaining the never-ending hot trigger fixtures. Cold-mode
+  // operator subscriptions retain their individual terminal lifecycle while
+  // the second ref-counted observer keeps the shared source retry/repeat run
+  // active; platform mode shares that operator activation as well.
+  expectObservable(applyOperators(result, [${kind}(${kind === 'retry' ? 2 : 3})])).toBe(
+    firstExpected
+  );
+  expectObservable(
+    applyOperators(result, [${kind}(${kind === 'retry' ? 2 : 3})]),
+    '----^'
+  ).toBe(secondPrefix + '-1-2-3----4--1-2-3----4-${terminal}');
+  expectSubscriptions(source.subscriptions).toBe([
+    '^-----------!                        ',
+    '------------^-----------!            ',
+    '------------------------^-----------!',
+  ]);
 });
 }
 `;
@@ -2302,6 +2928,119 @@ await rxTest(async ({ flush, hot, now, schedule }) => {
   expect(groupKeys).to.deep.equal(['a', 'b']);
   expect(snapshot).to.deep.equal({ a: [], b: [] });
   expect(subjectEvents).to.deep.equal({ a: [], b: [] });
+});
+}
+`;
+}
+
+function buildPhonyMarbelizeGroupHarnessRewrite(config) {
+  const normalized = {
+    durationSkip: null,
+    element: null,
+    legacy: false,
+    outerAbortFrame: null,
+    sourceMarbles: '--a-b-c-d-e-f-g-h-i-j-k-l-|',
+    sourceSubscription: '^-------------------------!',
+    values: {
+      a: '  foo',
+      b: ' FoO ',
+      c: 'baR  ',
+      d: 'foO ',
+      e: ' Baz   ',
+      f: '  qux ',
+      g: '   bar',
+      h: ' BAR  ',
+      i: 'FOO ',
+      j: 'baz  ',
+      k: ' bAZ ',
+      l: '    fOo    ',
+    },
+    ...config,
+  };
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, groupBy, skip } = runtime;
+const config = ${JSON.stringify(normalized)};
+await rxTest(async ({ expectSubscriptions, flush, hot, now, schedule }) => {
+  const source = hot(config.sourceMarbles, config.values);
+  const outerController = new AbortController();
+  const groupControllers = [];
+  const occurrences = new Map();
+  const actualOuter = [];
+  const actualGroups = [];
+  const keySelector = (value) => value.toLowerCase().trim();
+  const element = config.element === 'reverse'
+    ? (value) => value.split('').reverse().join('')
+    : (value) => value;
+  const outputTokens = new Map(
+    Object.entries(config.values).map(([token, value]) => [element(value), token])
+  );
+  const duration = config.durationSkip === null
+    ? undefined
+    : (group) => applyOperators(group, [skip(config.durationSkip)]);
+  const descriptor = config.legacy
+    ? config.durationSkip === null
+      ? groupBy(keySelector, element)
+      : groupBy(keySelector, element, duration)
+    : config.durationSkip === null
+      ? groupBy(keySelector)
+      : groupBy(keySelector, { duration });
+
+  applyOperators(source, [descriptor]).subscribe(
+    {
+      next: (group) => {
+        const occurrence = occurrences.get(group.key) ?? 0;
+        occurrences.set(group.key, occurrence + 1);
+        actualOuter.push([now(), 'N', group.key]);
+        const expectedGroup = config.groups.find(
+          (candidate) => candidate.key === group.key && candidate.occurrence === occurrence
+        );
+        if (!expectedGroup) {
+          throw new Error(\`Unexpected group \${group.key} occurrence \${occurrence}\`);
+        }
+        const actualGroup = {
+          key: group.key,
+          occurrence,
+          subscribeFrame: expectedGroup.subscribeFrame,
+          ...(expectedGroup.abortFrame === undefined ? {} : { abortFrame: expectedGroup.abortFrame }),
+          events: [],
+        };
+        actualGroups.push(actualGroup);
+        const subscribe = () => {
+          const controller = new AbortController();
+          groupControllers.push(controller);
+          group.subscribe(
+            {
+              next: (value) => actualGroup.events.push([now(), 'N', outputTokens.get(value)]),
+              error: () => actualGroup.events.push([now(), 'E']),
+              complete: () => actualGroup.events.push([now(), 'C']),
+            },
+            { signal: controller.signal }
+          );
+          if (expectedGroup.abortFrame !== undefined) {
+            schedule(() => controller.abort(), expectedGroup.abortFrame - now());
+          }
+        };
+        const delay = expectedGroup.subscribeFrame - now();
+        if (delay === 0) {
+          subscribe();
+        } else {
+          schedule(subscribe, delay);
+        }
+      },
+      error: () => actualOuter.push([now(), 'E']),
+      complete: () => actualOuter.push([now(), 'C']),
+    },
+    { signal: outerController.signal }
+  );
+
+  if (config.outerAbortFrame !== null) {
+    schedule(() => outerController.abort(), config.outerAbortFrame);
+  }
+
+  expectSubscriptions(source.subscriptions).toBe(config.sourceSubscription);
+  await flush();
+  expect(actualOuter).to.deep.equal(config.outer);
+  expect(actualGroups).to.deep.equal(config.groups);
 });
 }
 `;
@@ -4798,6 +5537,8 @@ function assessAvailability(imports) {
       }
     } else if (item.module === 'rxjs/testing') {
       continue;
+    } else if (item.module === 'sinon' && item.imported === 'spy') {
+      continue;
     } else if (frameworkModules.has(item.module)) {
       continue;
     } else if (item.module.startsWith('rxjs/')) {
@@ -4905,7 +5646,10 @@ function getCaseSupport({ path, callback, sourceFile, support, extraRoots = [] }
   if (!callback || !isFunction(callback)) {
     return [];
   }
-  if (path !== 'spec/operators/share-spec.ts') {
+  if (
+    path !== 'spec/operators/share-spec.ts' &&
+    path !== 'spec/observables/combineLatest-spec.ts'
+  ) {
     if (path !== 'spec/observables/zip-spec.ts') {
       return support;
     }
@@ -4936,102 +5680,6 @@ function getCaseSupport({ path, callback, sourceFile, support, extraRoots = [] }
     }
   }
   return support.filter((statement) => reachable.has(statement));
-}
-
-function hasUnrepresentedZipProjection({ path, callback }) {
-  if (path !== 'spec/observables/zip-spec.ts' || !callback || !isFunction(callback)) {
-    return false;
-  }
-
-  const functionBindings = new Set();
-  const collectFunctionBindings = (node) => {
-    if (ts.isFunctionDeclaration(node) && node.name) {
-      functionBindings.add(node.name.text);
-    } else if (
-      ts.isVariableDeclaration(node) &&
-      ts.isIdentifier(node.name) &&
-      node.initializer &&
-      isFunction(node.initializer)
-    ) {
-      functionBindings.add(node.name.text);
-    }
-    ts.forEachChild(node, collectFunctionBindings);
-  };
-  collectFunctionBindings(callback);
-
-  let found = false;
-  const visit = (node) => {
-    if (found) {
-      return;
-    }
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === 'zip' &&
-      node.arguments.length > 0
-    ) {
-      const trailingArgument = node.arguments[node.arguments.length - 1];
-      if (
-        trailingArgument &&
-        (isFunction(trailingArgument) ||
-          (ts.isIdentifier(trailingArgument) && functionBindings.has(trailingArgument.text)))
-      ) {
-        found = true;
-        return;
-      }
-    }
-    ts.forEachChild(node, visit);
-  };
-  visit(callback);
-  return found;
-}
-
-function hasUnrepresentedCombineLatestProjection({ path, callback }) {
-  if (path !== 'spec/operators/combineLatest-legacy-spec.ts' || !callback || !isFunction(callback)) {
-    return false;
-  }
-
-  const functionBindings = new Set();
-  const collectFunctionBindings = (node) => {
-    if (ts.isFunctionDeclaration(node) && node.name) {
-      functionBindings.add(node.name.text);
-    } else if (
-      ts.isVariableDeclaration(node) &&
-      ts.isIdentifier(node.name) &&
-      node.initializer &&
-      isFunction(node.initializer)
-    ) {
-      functionBindings.add(node.name.text);
-    }
-    ts.forEachChild(node, collectFunctionBindings);
-  };
-  collectFunctionBindings(callback);
-
-  let found = false;
-  const visit = (node) => {
-    if (found) {
-      return;
-    }
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === 'combineLatest' &&
-      node.arguments.length > 0
-    ) {
-      const trailingArgument = node.arguments[node.arguments.length - 1];
-      if (
-        trailingArgument &&
-        (isFunction(trailingArgument) ||
-          (ts.isIdentifier(trailingArgument) && functionBindings.has(trailingArgument.text)))
-      ) {
-        found = true;
-        return;
-      }
-    }
-    ts.forEachChild(node, visit);
-  };
-  visit(callback);
-  return found;
 }
 
 function collectSupport(statements) {
