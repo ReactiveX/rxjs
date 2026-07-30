@@ -1239,3 +1239,41 @@ conformance implementation depends on a runnable harness.
   projection overload, scheduler argument, scheduler injection, provider, or
   scheduler-class behavior was introduced.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — P0.T3 existing-surface final audit and zip hardening
+
+- Replaced the first standalone-zip completion patch with reviewed commit
+  `9ab5aa5cb`, after reverting it in `f16352d9b`. The replacement retains the
+  shortest-input completion and sibling-cancellation behavior while also
+  draining the exploratory `fillAfterComplete` path without an all-complete
+  infinite loop. Ten focused zip tests cover zero inputs, synchronous empty
+  inputs, final-buffer draining, input errors, shared ref-counted observers,
+  last-observer cancellation, and finite fill completion.
+- Commit `ab482214b` corrected the first finite zip observation boundary from
+  frame 15 to frame 18 so it preserves the full original source-diagram
+  horizon. The expected notifications were not changed.
+- Complete one-process audits remained at 848 cold passes with 1,490 failures
+  and 865 polyfill passes with 1,473 failures. Tracker regeneration produced
+  the same 428-case fixed cohort with zero `IN-PROCESS` or `BLOCKED` rows. The
+  strict cold-plus-polyfill gate completed and remained red only on the
+  unresolved queue; all 97 focused source tests and the parity freshness check
+  passed.
+- A fresh audit found 136 remaining `TODO` cases whose programs mention
+  `rxTestScheduler` or `testScheduler`; 110 currently fail first on the
+  undefined name. None are missed safe helper-receiver rewrites: 105 exercise
+  real scheduler arguments or injection, 14 exercise scheduler parser, queue,
+  export, or other internals, and 17 fail first on an unrelated missing API.
+  A global scheduler alias was rejected because it would turn those explicit
+  scheduler claims into misleading harness behavior.
+- The final existing-capability audit found no remaining non-scheduler case
+  backed by a current implementation or executable mapping. Remaining
+  unresolved rows require missing non-scheduler APIs, unsupported legacy
+  overloads, compatibility decisions, or the scheduler-last phase. The next
+  implementation phase is missing non-scheduler operators and functions;
+  scheduler arguments, providers, classes, and internals remain the absolute
+  final P0.T3 phase.
+- The package build and lint commands still hit the documented exploratory
+  package baselines: `tshy` rejects source-path exports and ESLint points the
+  RxJS package at the Observable package's TypeScript project. Neither command
+  reached a change-specific diagnostic.
+- P0.T3 remains the single project-level `NEXT` item.
