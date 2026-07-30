@@ -7783,7 +7783,7 @@
     {
       "id": "spec/operators/count-spec.ts:15:count > should count the values of an observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7791,10 +7791,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
@@ -7812,12 +7809,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: count"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/count-spec.ts:37:count > should be zero when source is empty",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7825,10 +7822,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
@@ -7846,12 +7840,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: count"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/count-spec.ts:59:count > should be zero when source doesn't have values",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7859,16 +7853,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:70:count > should count the unique value of an observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7876,16 +7867,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:81:count > should count the values of an ongoing hot observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7893,16 +7881,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:140:count > should work with error",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7910,16 +7895,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:151:count > should work with throw",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7927,16 +7909,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:162:count > should handle an always-true predicate on an empty hot observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7944,16 +7923,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:176:count > should handle an always-false predicate on an empty hot observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7961,16 +7937,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:190:count > should handle an always-true predicate on a simple hot observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7978,16 +7951,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:204:count > should handle an always-false predicate on a simple hot observable",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7995,16 +7965,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:218:count > should allow unsubscribing early and explicitly",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8012,16 +7979,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:232:count > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8029,16 +7993,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:250:count > should handle a match-all predicate on observable with many values",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8046,16 +8007,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:262:count > should handle a match-none predicate on observable with many values",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8063,16 +8021,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:274:count > should handle an always-true predicate on observable that throws",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8080,16 +8035,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
       "id": "spec/operators/count-spec.ts:286:count > should handle an always-false predicate on observable that throws",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8097,10 +8049,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
@@ -8118,12 +8067,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: count"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/count-spec.ts:310:count > should handle a predicate that throws, on observable with many values",
       "group": "count",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8131,10 +8080,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: count"
     },
     {
@@ -9508,7 +9454,7 @@
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:15:distinctUntilChanged > should distinguish between values",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9516,16 +9462,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:26:distinctUntilChanged > should distinguish between values",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9533,10 +9476,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
@@ -9554,7 +9494,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: distinctUntilChanged"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:48:distinctUntilChanged > should not complete if source never completes",
@@ -9571,7 +9511,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: distinctUntilChanged"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:59:distinctUntilChanged > should not complete if source does not complete",
@@ -9588,12 +9528,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: distinctUntilChanged"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:70:distinctUntilChanged > should complete if source is empty",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9601,16 +9541,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:81:distinctUntilChanged > should complete if source does not emit",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9618,16 +9555,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:92:distinctUntilChanged > should emit if source emits single element only",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9635,16 +9569,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:103:distinctUntilChanged > should emit if source is scalar",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9652,16 +9583,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:112:distinctUntilChanged > should raise error if source raises error",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9669,16 +9597,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:123:distinctUntilChanged > should raise error if source throws",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9686,16 +9611,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:134:distinctUntilChanged > should not omit if source elements are all different",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9703,16 +9625,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:145:distinctUntilChanged > should allow unsubscribing early and explicitly",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9720,16 +9639,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:159:distinctUntilChanged > should not break unsubscription chains when unsubscribed explicitly",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9737,16 +9653,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:177:distinctUntilChanged > should emit once if source elements are all same",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9754,16 +9667,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:188:distinctUntilChanged > should emit once if comparator returns true always regardless of source emits",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9771,16 +9681,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:200:distinctUntilChanged > should emit all if comparator returns false always regardless of source emits",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9788,16 +9695,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:212:distinctUntilChanged > should distinguish values by comparator",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9805,16 +9709,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:224:distinctUntilChanged > should raise error when comparator throws",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9822,16 +9723,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:241:distinctUntilChanged > should use the keySelector to pick comparator values",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9839,16 +9737,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:254:distinctUntilChanged > should use the keySelector even for the first emit",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9856,16 +9751,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilChanged-spec.ts:266:distinctUntilChanged > should raise error when keySelector throws",
       "group": "distinctUntilChanged",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9873,16 +9765,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: distinctUntilChanged"
     },
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:15:distinctUntilKeyChanged > should distinguish between values",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9899,7 +9788,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:29:distinctUntilKeyChanged > should distinguish between values",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9916,7 +9805,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:41:distinctUntilKeyChanged > should distinguish between values and does not complete",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9933,7 +9822,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:53:distinctUntilKeyChanged > should distinguish between values with key",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9950,7 +9839,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:65:distinctUntilKeyChanged > should not compare if source does not have element with key",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9967,7 +9856,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:77:distinctUntilKeyChanged > should not complete if source never completes",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9984,7 +9873,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:88:distinctUntilKeyChanged > should not complete if source does not complete",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10001,7 +9890,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:99:distinctUntilKeyChanged > should complete if source is empty",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10018,7 +9907,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:110:distinctUntilKeyChanged > should complete if source does not emit",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10035,7 +9924,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:121:distinctUntilKeyChanged > should emit if source emits single element only",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10052,7 +9941,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:133:distinctUntilKeyChanged > should emit if source is scalar",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10069,7 +9958,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:143:distinctUntilKeyChanged > should raise error if source raises error",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10086,7 +9975,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:155:distinctUntilKeyChanged > should raise error if source throws",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10103,7 +9992,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:166:distinctUntilKeyChanged > should not omit if source elements are all different",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10120,7 +10009,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:178:distinctUntilKeyChanged > should allow unsubscribing early and explicitly",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10137,7 +10026,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:193:distinctUntilKeyChanged > should not break unsubscription chains when unsubscribed explicitly",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10154,7 +10043,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:212:distinctUntilKeyChanged > should emit once if source elements are all same",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10171,7 +10060,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:224:distinctUntilKeyChanged > should emit once if comparer returns true always regardless of source emits",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10188,7 +10077,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:236:distinctUntilKeyChanged > should emit all if comparer returns false always regardless of source emits",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10205,7 +10094,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:248:distinctUntilKeyChanged > should distinguish values by selector",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10222,7 +10111,7 @@
     {
       "id": "spec/operators/distinctUntilKeyChanged-spec.ts:261:distinctUntilKeyChanged > should raise error when comparer throws",
       "group": "distinctUntilKeyChanged",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10545,7 +10434,7 @@
     {
       "id": "spec/operators/every-spec.ts:23:every > should return false if only one of elements does not match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10553,16 +10442,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:92:every > should emit true if source is empty",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10570,16 +10456,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:103:every > should emit false if single source element does not match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10587,16 +10470,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:114:every > should emit false if none of elements match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10604,16 +10484,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:125:every > should return false if only some of elements matches with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10621,16 +10498,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:137:every > should allow unsubscribing early and explicitly",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10638,16 +10512,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:152:every > should not break unsubscription chains when result observable is unsubscribed",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10655,16 +10526,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:171:every > should propagate error if predicate eventually throws",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10672,16 +10540,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:190:every > should emit true if single source element matches with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10689,16 +10554,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:202:every > should emit true if scalar source matches with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10706,16 +10568,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:211:every > should emit false if scalar source does not match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10723,16 +10582,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:220:every > should propagate error if predicate throws on scalar source",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10740,16 +10596,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:233:every > should emit true if scalar array source matches with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10757,16 +10610,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:242:every > should emit false if scalar array source does not match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10774,16 +10624,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:251:every > should propagate error if predicate eventually throws on scalar array source",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10791,16 +10638,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:267:every > should emit true if all source elements match with predicate",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10808,16 +10652,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:279:every > should raise error if source raises error",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10825,10 +10666,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
@@ -10846,12 +10684,12 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: every"
+      "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/every-spec.ts:301:every > should emit true if source element matches with predicate after subscription",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10859,16 +10697,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:313:every > should emit false if source element does not match with predicate after subscription",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10876,16 +10711,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:325:every > should raise error if source raises error after subscription",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10893,16 +10725,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
       "id": "spec/operators/every-spec.ts:336:every > should emit true if source does not emit after subscription",
       "group": "every",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10910,10 +10739,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: every"
     },
     {
@@ -11728,7 +11554,7 @@
     {
       "id": "spec/operators/filter-spec.ts:304:filter > should handle never",
       "group": "filter",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11736,10 +11562,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -11787,7 +11610,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:78:finalize > should handle empty",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11801,7 +11624,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:97:finalize > should handle never",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11809,16 +11632,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/finalize-spec.ts:116:finalize > should handle throw",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11832,7 +11652,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11846,7 +11666,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11860,7 +11680,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:173:finalize > should handle basic error",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11874,7 +11694,7 @@
     {
       "id": "spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription",
       "group": "finalize",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13515,7 +13335,7 @@
     {
       "id": "spec/operators/map-spec.ts:76:map > should propagate errors from observable that emits only errors",
       "group": "map",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17587,7 +17407,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:15:reduce > should reduce",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17604,7 +17424,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:29:reduce > should reduce with seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17621,7 +17441,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:42:reduce > should reduce with a seed of undefined",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17638,7 +17458,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:55:reduce > should reduce without a seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17655,7 +17475,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:102:reduce > should reduce with seed if source is empty",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17672,7 +17492,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:115:reduce > should raise error if reduce function throws without seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17689,7 +17509,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:132:reduce > should allow unsubscribing explicitly and early",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17706,7 +17526,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:146:reduce > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17723,7 +17543,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:164:reduce > should raise error if source emits and raises error with seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17740,7 +17560,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:177:reduce > should raise error if source raises error with seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17757,7 +17577,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:190:reduce > should raise error if reduce function throws with seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17774,7 +17594,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:207:reduce > should not complete with seed if source emits but does not complete",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17791,7 +17611,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:220:reduce > should not complete with seed if source never completes",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17808,7 +17628,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:233:reduce > should not complete without seed if source emits but does not completes",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17825,7 +17645,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:246:reduce > should not complete without seed if source never completes",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17842,7 +17662,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:259:reduce > should reduce if source does not emit without seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17859,7 +17679,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:272:reduce > should raise error if source emits and raises error without seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17876,7 +17696,7 @@
     {
       "id": "spec/operators/reduce-spec.ts:285:reduce > should raise error if source raises error without seed",
       "group": "reduce",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22585,7 +22405,7 @@
     {
       "id": "spec/operators/skip-spec.ts:15:skip > should skip values before a total",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22602,7 +22422,7 @@
     {
       "id": "spec/operators/skip-spec.ts:26:skip > should skip all values without error if total is more than actual number of values",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22619,7 +22439,7 @@
     {
       "id": "spec/operators/skip-spec.ts:37:skip > should skip all values without error if total is same as actual number of values",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22636,7 +22456,7 @@
     {
       "id": "spec/operators/skip-spec.ts:48:skip > should not skip if count is zero",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22653,7 +22473,7 @@
     {
       "id": "spec/operators/skip-spec.ts:59:skip > should not skip if count is negative value",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22670,7 +22490,7 @@
     {
       "id": "spec/operators/skip-spec.ts:70:skip > should allow unsubscribing explicitly and early",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22687,7 +22507,7 @@
     {
       "id": "spec/operators/skip-spec.ts:82:skip > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22704,7 +22524,7 @@
     {
       "id": "spec/operators/skip-spec.ts:100:skip > should raise error if skip count is more than actual number of emits and source raises error",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22721,7 +22541,7 @@
     {
       "id": "spec/operators/skip-spec.ts:111:skip > should raise error if skip count is same as emits of source and source raises error",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22738,7 +22558,7 @@
     {
       "id": "spec/operators/skip-spec.ts:122:skip > should skip values before a total and raises error if source raises error",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22755,7 +22575,7 @@
     {
       "id": "spec/operators/skip-spec.ts:133:skip > should complete regardless of skip count if source is empty",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22772,7 +22592,7 @@
     {
       "id": "spec/operators/skip-spec.ts:144:skip > should not complete if source never completes without emit",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22789,7 +22609,7 @@
     {
       "id": "spec/operators/skip-spec.ts:155:skip > should skip values before total and never completes if source emits and does not complete",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22806,7 +22626,7 @@
     {
       "id": "spec/operators/skip-spec.ts:166:skip > should skip all values and never completes if total is more than numbers of value and source does not complete",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22823,7 +22643,7 @@
     {
       "id": "spec/operators/skip-spec.ts:177:skip > should skip all values and never completes if total is same asnumbers of value and source does not complete",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22840,7 +22660,7 @@
     {
       "id": "spec/operators/skip-spec.ts:188:skip > should raise error if source throws",
       "group": "skip",
-      "status": "TODO",
+      "status": "IN-PROCESS",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24269,7 +24089,7 @@
     {
       "id": "spec/operators/take-spec.ts:37:take > should go on forever on never",
       "group": "take",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24277,10 +24097,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -24995,7 +24812,7 @@
     {
       "id": "spec/operators/tap-spec.ts:15:tap > should mirror multiple values and complete",
       "group": "tap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25009,7 +24826,7 @@
     {
       "id": "spec/operators/tap-spec.ts:223:tap > should allow unsubscribing explicitly and early",
       "group": "tap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25023,7 +24840,7 @@
     {
       "id": "spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "tap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -25051,7 +24868,7 @@
     {
       "id": "spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error",
       "group": "tap",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
