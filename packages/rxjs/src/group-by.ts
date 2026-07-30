@@ -102,6 +102,7 @@ function groupByOperator<T, K, E = T>(
     const durationControllers = new Set<AbortController>();
     const sourceController = new AbortController();
     let activeGroupViews = 0;
+    let dispatchingSourceValue = false;
     let outerActive = true;
     let stopped = false;
 
@@ -119,7 +120,7 @@ function groupByOperator<T, K, E = T>(
     };
 
     const stopIfUnobserved = () => {
-      if (!outerActive && activeGroupViews === 0) {
+      if (!outerActive && activeGroupViews === 0 && !dispatchingSourceValue) {
         stop();
       }
     };
@@ -239,52 +240,58 @@ function groupByOperator<T, K, E = T>(
             return;
           }
 
-          let key: K;
+          dispatchingSourceValue = true;
           try {
-            key = keySelector(value);
-          } catch (error) {
-            terminate('error', error);
-            return;
-          }
-
-          let entry = groups.get(key);
-          if (!entry) {
-            if (!outerActive) {
-              return;
-            }
-
-            let subject: SubjectLike<E>;
+            let key: K;
             try {
-              subject = connector ? connector() : new Subject<E>();
+              key = keySelector(value);
             } catch (error) {
               terminate('error', error);
               return;
             }
 
-            entry = {
-              subject,
-              view: createGroupView(key, subject),
-            };
-            groups.set(key, entry);
-            subscriber.next(entry.view);
+            let entry = groups.get(key);
+            if (!entry) {
+              if (!outerActive) {
+                return;
+              }
 
-            if (stopped || groups.get(key) !== entry) {
+              let subject: SubjectLike<E>;
+              try {
+                subject = connector ? connector() : new Subject<E>();
+              } catch (error) {
+                terminate('error', error);
+                return;
+              }
+
+              entry = {
+                subject,
+                view: createGroupView(key, subject),
+              };
+              groups.set(key, entry);
+              subscriber.next(entry.view);
+
+              if (stopped || groups.get(key) !== entry) {
+                return;
+              }
+              startDuration(key, entry);
+              if (stopped || groups.get(key) !== entry) {
+                return;
+              }
+            }
+
+            let groupedValue: E;
+            try {
+              groupedValue = element ? element(value) : (value as unknown as E);
+            } catch (error) {
+              terminate('error', error);
               return;
             }
-            startDuration(key, entry);
-            if (stopped || groups.get(key) !== entry) {
-              return;
-            }
+            entry.subject.next(groupedValue);
+          } finally {
+            dispatchingSourceValue = false;
+            stopIfUnobserved();
           }
-
-          let groupedValue: E;
-          try {
-            groupedValue = element ? element(value) : (value as unknown as E);
-          } catch (error) {
-            terminate('error', error);
-            return;
-          }
-          entry.subject.next(groupedValue);
         },
         error: (error) => terminate('error', error),
         complete: () => terminate('complete'),

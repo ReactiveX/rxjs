@@ -270,6 +270,33 @@ describe('groupBy', () => {
     expect(source.teardowns).toBe(1);
   });
 
+  it('finishes routing a value when outer and inner observers cancel during a new-group handoff', () => {
+    const source = tracked<number>();
+    const outerController = new AbortController();
+    const innerController = new AbortController();
+    const values: number[] = [];
+
+    source.observable[groupBy]((value) => value % 2).subscribe(
+      (group) => {
+        group.subscribe(
+          (value) => {
+            values.push(value as number);
+            innerController.abort();
+          },
+          { signal: innerController.signal }
+        );
+        outerController.abort();
+      },
+      { signal: outerController.signal }
+    );
+
+    source.subscribers[0]?.next(1);
+
+    expect(values).toEqual([1]);
+    expect(source.subscribers[0]?.active).toBe(false);
+    expect(source.teardowns).toBe(1);
+  });
+
   it('keeps source work active when one group observer aborts while the outer result remains observed', () => {
     const source = tracked<number>();
     const innerController = new AbortController();
