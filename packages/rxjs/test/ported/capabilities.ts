@@ -45,6 +45,7 @@ export async function loadCapabilities(): Promise<{
 }> {
   const [
     animationFramesModule,
+    argumentOutOfRangeErrorModule,
     asyncSubjectModule,
     behaviorSubjectModule,
     bufferModule,
@@ -136,6 +137,7 @@ export async function loadCapabilities(): Promise<{
     zipModule,
   ] = await Promise.all([
     import('../../src/animation-frames.js'),
+    import('../../src/argument-out-of-range-error.js'),
     import('../../src/async-subject.js'),
     import('../../src/behavior-subject.js'),
     import('../../src/buffer.js'),
@@ -313,6 +315,7 @@ export async function loadCapabilities(): Promise<{
       timer: timerModule.timer,
     },
     values: {
+      ArgumentOutOfRangeError: argumentOutOfRangeErrorModule.ArgumentOutOfRangeError,
       AsyncSubject: asyncSubjectModule.AsyncSubject,
       BehaviorSubject: behaviorSubjectModule.behaviorSubject,
       ColdObservable: coldObservableModule.ColdObservable,
