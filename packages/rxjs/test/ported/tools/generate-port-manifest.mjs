@@ -1001,6 +1001,10 @@ function extractCases({ path, sourceText }) {
         path,
         callback,
       });
+      const unrepresentedCombineLatestProjection = hasUnrepresentedCombineLatestProjection({
+        path,
+        callback,
+      });
       const schedulerInternal = isGenuinelySchedulerInternal({
         path,
         line: lineOf(call, sourceFile),
@@ -1039,6 +1043,19 @@ function extractCases({ path, sourceText }) {
         classification = 'compatibility-only';
         disposition = 'missing-api';
         reason = 'RxJS 7 zip projection overload is not represented.';
+        modes = ['cold', 'polyfill', 'native'];
+        migratedProgram = buildMigratedProgram({
+          caseId: id,
+          callback,
+          imports: usedImports,
+          sourceFile,
+          support: caseSupport,
+          wrapManualHelpers: !runMode,
+        });
+      } else if (unrepresentedCombineLatestProjection) {
+        classification = 'compatibility-only';
+        disposition = 'missing-api';
+        reason = 'RxJS 7 combineLatest projection overload is not represented.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram = buildMigratedProgram({
           caseId: id,
@@ -2520,6 +2537,54 @@ function hasUnrepresentedZipProjection({ path, callback }) {
       ts.isCallExpression(node) &&
       ts.isIdentifier(node.expression) &&
       node.expression.text === 'zip' &&
+      node.arguments.length > 0
+    ) {
+      const trailingArgument = node.arguments[node.arguments.length - 1];
+      if (
+        trailingArgument &&
+        (isFunction(trailingArgument) ||
+          (ts.isIdentifier(trailingArgument) && functionBindings.has(trailingArgument.text)))
+      ) {
+        found = true;
+        return;
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(callback);
+  return found;
+}
+
+function hasUnrepresentedCombineLatestProjection({ path, callback }) {
+  if (path !== 'spec/operators/combineLatest-legacy-spec.ts' || !callback || !isFunction(callback)) {
+    return false;
+  }
+
+  const functionBindings = new Set();
+  const collectFunctionBindings = (node) => {
+    if (ts.isFunctionDeclaration(node) && node.name) {
+      functionBindings.add(node.name.text);
+    } else if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.initializer &&
+      isFunction(node.initializer)
+    ) {
+      functionBindings.add(node.name.text);
+    }
+    ts.forEachChild(node, collectFunctionBindings);
+  };
+  collectFunctionBindings(callback);
+
+  let found = false;
+  const visit = (node) => {
+    if (found) {
+      return;
+    }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === 'combineLatest' &&
       node.arguments.length > 0
     ) {
       const trailingArgument = node.arguments[node.arguments.length - 1];

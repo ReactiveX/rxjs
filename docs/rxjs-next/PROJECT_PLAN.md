@@ -1252,12 +1252,20 @@ conformance implementation depends on a runnable harness.
 - Commit `ab482214b` corrected the first finite zip observation boundary from
   frame 15 to frame 18 so it preserves the full original source-diagram
   horizon. The expected notifications were not changed.
-- Complete one-process audits remained at 848 cold passes with 1,490 failures
-  and 865 polyfill passes with 1,473 failures. Tracker regeneration produced
-  the same 428-case fixed cohort with zero `IN-PROCESS` or `BLOCKED` rows. The
-  strict cold-plus-polyfill gate completed and remained red only on the
-  unresolved queue; all 97 focused source tests and the parity freshness check
-  passed.
+- Commit `98277dbc9` corrected instance `combineLatest` so the lower-level
+  combine primitive, rather than both layers, owns the receiver subscription.
+  Four focused tests preserve exact tuple arity, single receiver activation,
+  cancellation, static forms, and one shared ref-counted activation for
+  concurrent polyfill observers.
+- Complete one-process audits recorded 865 cold passes with 1,473 failures and
+  865 polyfill passes with 1,473 failures. The 17 new cold passes are legacy
+  projection cases that now terminate without invoking their selector; they do
+  not represent the missing projection overload and remain `TODO`. Manifest
+  generation now classifies all 31 such legacy projection cases as
+  compatibility-only `missing-api`, preserving the same 428-case fixed cohort
+  with zero `IN-PROCESS` or `BLOCKED` rows. The strict cold-plus-polyfill gate
+  completed and remained red only on the unresolved queue; all 101 focused
+  source tests and the parity freshness check passed.
 - A fresh audit found 136 remaining `TODO` cases whose programs mention
   `rxTestScheduler` or `testScheduler`; 110 currently fail first on the
   undefined name. None are missed safe helper-receiver rewrites: 105 exercise
@@ -1271,7 +1279,10 @@ conformance implementation depends on a runnable harness.
   overloads, compatibility decisions, or the scheduler-last phase. The next
   implementation phase is missing non-scheduler operators and functions;
   scheduler arguments, providers, classes, and internals remain the absolute
-  final P0.T3 phase.
+  final P0.T3 phase. The scheduler-last boundary also retains the current
+  `animationFrames` case and 20 `timeout` configuration cases: their callbacks
+  do not all pass an explicit scheduler, but the claims are inherently about
+  frame or timeout scheduling.
 - The package build and lint commands still hit the documented exploratory
   package baselines: `tshy` rejects source-path exports and ESLint points the
   RxJS package at the Observable package's TypeScript project. Neither command
