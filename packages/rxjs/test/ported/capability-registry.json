@@ -1018,6 +1018,13 @@
       "status": "Partial platform mapping",
       "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
     },
+    "fromEventPattern": {
+      "module": "from-event-pattern",
+      "adapter": "identity",
+      "mapping": "fromEventPattern(addHandler, removeHandler?, resultSelector?)",
+      "status": "Present; parity unverified",
+      "note": "Registers one stable handler per active platform run and removes it with the exact registration token on final cancellation."
+    },
     "identity": {
       "module": "identity",
       "adapter": "identity",
