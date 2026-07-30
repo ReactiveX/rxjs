@@ -71,6 +71,7 @@ export async function loadCapabilities(): Promise<{
     forkJoinModule,
     identityModule,
     intervalModule,
+    isEmptyModule,
     lastModule,
     mapModule,
     maxModule,
@@ -81,6 +82,7 @@ export async function loadCapabilities(): Promise<{
     notFoundErrorModule,
     noopModule,
     onErrorResumeNextModule,
+    pairwiseModule,
     partitionModule,
     pipeModule,
     pluckModule,
@@ -97,6 +99,7 @@ export async function loadCapabilities(): Promise<{
     skipLastModule,
     skipUntilModule,
     skipWhileModule,
+    startWithModule,
     subjectModule,
     switchMapModule,
     tapModule,
@@ -105,6 +108,7 @@ export async function loadCapabilities(): Promise<{
     takeUntilModule,
     takeWhileModule,
     throttleModule,
+    throwIfEmptyModule,
     timeoutModule,
     timerModule,
     withLatestFromModule,
@@ -139,6 +143,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/fork-join.js'),
     import('../../src/identity.js'),
     import('../../src/interval.js'),
+    import('../../src/is-empty.js'),
     import('../../src/last.js'),
     import('../../src/map.js'),
     import('../../src/max.js'),
@@ -149,6 +154,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/not-found-error.js'),
     import('../../src/noop.js'),
     import('../../src/on-error-resume-next.js'),
+    import('../../src/pairwise.js'),
     import('../../src/partition.js'),
     import('../../src/pipe.js'),
     import('../../src/pluck.js'),
@@ -165,6 +171,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/skip-last.js'),
     import('../../src/skip-until.js'),
     import('../../src/skip-while.js'),
+    import('../../src/start-with.js'),
     import('../../src/subject.js'),
     import('../../src/switch-map.js'),
     import('../../src/tap.js'),
@@ -173,6 +180,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/take-until.js'),
     import('../../src/take-while.js'),
     import('../../src/throttle.js'),
+    import('../../src/throw-if-empty.js'),
     import('../../src/timeout.js'),
     import('../../src/timer.js'),
     import('../../src/with-latest-from.js'),
@@ -202,6 +210,7 @@ export async function loadCapabilities(): Promise<{
       findIndex: findIndexModule.findIndex,
       find: findModule.find,
       first: firstModule.first,
+      isEmpty: isEmptyModule.isEmpty,
       last: lastModule.last,
       map: mapModule.map,
       max: maxModule.max,
@@ -209,6 +218,7 @@ export async function loadCapabilities(): Promise<{
       mergeMap: mergeMapModule.mergeMap,
       min: minModule.min,
       onErrorResumeNext: onErrorResumeNextModule.onErrorResumeNext,
+      pairwise: pairwiseModule.pairwise,
       pluck: pluckModule.pluck,
       race: raceModule.race,
       reduce: reduceModule.reduce,
@@ -221,6 +231,7 @@ export async function loadCapabilities(): Promise<{
       skipLast: skipLastModule.skipLast,
       skipUntil: skipUntilModule.skipUntil,
       skipWhile: skipWhileModule.skipWhile,
+      startWith: startWithModule.startWith,
       switchMap: switchMapModule.switchMap,
       tap: tapModule.tap,
       take: takeModule.take,
@@ -228,6 +239,7 @@ export async function loadCapabilities(): Promise<{
       takeUntil: takeUntilModule.takeUntil,
       takeWhile: takeWhileModule.takeWhile,
       throttle: throttleModule.throttle,
+      throwIfEmpty: throwIfEmptyModule.throwIfEmpty,
       timeout: timeoutModule.timeout,
       withLatestFrom: withLatestFromModule.withLatestFrom,
       zipAll: zipAllModule.zipAll,
@@ -696,6 +708,11 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
         throw new Error('Unsupported RxJS 7 endWith trailing SchedulerLike overload.');
       }
       return [[[...args]]];
+    case 'startWith':
+      if (isSchedulerLike(args.at(-1))) {
+        throw new Error('Unsupported RxJS 7 startWith trailing SchedulerLike overload.');
+      }
+      return args;
     case 'first':
       if (args.length > 0) {
         throw new Error('Unsupported RxJS 7 first predicate/default-value overload.');

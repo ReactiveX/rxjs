@@ -281,6 +281,14 @@
       "status": "Partial unified mapping",
       "note": "Maps each input to an ambient empty Observable while retaining source completion and error behavior."
     },
+    "isEmpty": {
+      "symbol": "isEmpty",
+      "module": "is-empty",
+      "adapter": "identity",
+      "mapping": "source[isEmpty]()",
+      "status": "Present; parity unverified",
+      "note": "Emits false and cancels upstream on the first value, or emits true after successful empty completion."
+    },
     "last": {
       "symbol": "last",
       "module": "last",
@@ -368,6 +376,14 @@
       "mapping": "source[onErrorResumeNext]([otherSources])",
       "status": "Partial unified mapping",
       "note": "Adapts variadic or single-array source arguments to the current array form."
+    },
+    "pairwise": {
+      "symbol": "pairwise",
+      "module": "pairwise",
+      "adapter": "identity",
+      "mapping": "source[pairwise]()",
+      "status": "Present; parity unverified",
+      "note": "Emits consecutive value tuples from the second value onward with shared activation state and cancellation."
     },
     "pluck": {
       "symbol": "pluck",
@@ -473,6 +489,14 @@
       "status": "Present; parity unverified",
       "note": "Exact predicate parity remains test-driven."
     },
+    "startWith": {
+      "symbol": "startWith",
+      "module": "start-with",
+      "adapter": "startWith",
+      "mapping": "source[startWith](...values)",
+      "status": "Present; scheduler overload deferred",
+      "note": "Synchronously emits configured prefix values before source activation; legacy trailing scheduler overloads remain scheduler-last."
+    },
     "switchAll": {
       "symbol": "switchMap",
       "module": "switch-map",
@@ -552,6 +576,14 @@
       "mapping": "source[throttle](milliseconds, config?)",
       "status": "Partial unified mapping",
       "note": "Scheduler arguments are not represented."
+    },
+    "throwIfEmpty": {
+      "symbol": "throwIfEmpty",
+      "module": "throw-if-empty",
+      "adapter": "identity",
+      "mapping": "source[throwIfEmpty](errorFactory?)",
+      "status": "Present; parity unverified",
+      "note": "Forwards nonempty sources and errors an empty completion with a fresh EmptyError or the configured factory result."
     },
     "timeout": {
       "symbol": "timeout",
