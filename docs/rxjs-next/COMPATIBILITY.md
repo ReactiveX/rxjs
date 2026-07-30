@@ -178,6 +178,11 @@ configuration without restoring a scheduler argument. Expiry aborts the source
 before subscribing to the fallback. The default path exposes a `TimeoutError`
 whose `info` retains the RxJS 7 timeout context.
 
+The exact `bufferTime(span, creationInterval, maxBufferSize)` Symbol preserves
+sequential, overlapping, size-triggered, completion, error, and cancellation
+behavior through host timers. Its compatibility mapping drops only the legacy
+scheduler argument; it does not reintroduce a scheduler overload.
+
 Selector-based `retry` invokes its delay selector with one-based consecutive
 retry counts, including when the retry budget is infinite. A notifier value
 cancels that notifier before the next source attempt starts; notifier
