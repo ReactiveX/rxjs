@@ -11,7 +11,7 @@ export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
     return !this.#completed && !this.#hasError;
   }
 
-  #internalSubscriber: Subscriber<T> | null = null;
+  #internalSubscribers = new Set<Subscriber<T>>();
 
   constructor() {
     super((subscriber: Subscriber<T>) => {
@@ -25,16 +25,18 @@ export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
         return;
       }
 
-      this.#internalSubscriber = subscriber;
+      this.#internalSubscribers.add(subscriber);
       subscriber.addTeardown(() => {
-        this.#internalSubscriber = null;
+        this.#internalSubscribers.delete(subscriber);
       });
     });
   }
 
   next(value: T) {
     if (this.active) {
-      this.#internalSubscriber?.next?.(value);
+      for (const subscriber of Array.from(this.#internalSubscribers)) {
+        subscriber.next(value);
+      }
     }
   }
 
@@ -42,14 +44,22 @@ export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
     if (this.active) {
       this.#hasError = true;
       this.#error = error;
-      this.#internalSubscriber?.error?.(error);
+      const subscribers = Array.from(this.#internalSubscribers);
+      this.#internalSubscribers.clear();
+      for (const subscriber of subscribers) {
+        subscriber.error(error);
+      }
     }
   }
 
   complete() {
     if (this.active) {
       this.#completed = true;
-      this.#internalSubscriber?.complete?.();
+      const subscribers = Array.from(this.#internalSubscribers);
+      this.#internalSubscribers.clear();
+      for (const subscriber of subscribers) {
+        subscriber.complete();
+      }
     }
   }
 
