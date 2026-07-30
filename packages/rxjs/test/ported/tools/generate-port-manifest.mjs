@@ -29,6 +29,7 @@ const inlineTestHelpers = new Set([
   '../helpers/test-helper:NO_SUBS',
   '../helpers/test-helper:lowerCaseO',
   '../helpers/interop-helper:asInteropObservable',
+  '../helpers/observableMatcher:observableMatcher',
 ]);
 const convertibleSchedulerHelpers = new Set(['expectObservableArray', 'getTimerSelector']);
 if (verifiedColdPasses.sourceCommit !== sourceCommit) {
@@ -67,6 +68,24 @@ const observationBoundaries = new Map([
   [
     'spec/operators/ignoreElements-spec.ts:79:ignoreElements > should handle never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/filter-spec.ts:304:filter > should handle never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/take-spec.ts:37:take > should go on forever on never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/finalize-spec.ts:97:finalize > should handle never',
+    {
+      observable: '^!',
+      subscriptions: new Map([['e1subs', '^!']]),
+      // Preserve the source assertion that finalize has not run while the
+      // never-source is still active. The synthetic boundary runs afterward.
+      manualFlushThroughFrame: 0,
+    },
   ],
   [
     'spec/operators/audit-spec.ts:369:audit operator > should handle a never source',
@@ -1789,7 +1808,11 @@ function createMigrationTransformer({
         if (ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'run' && node.arguments.length > 0) {
           const asyncCallback = ensureAsyncFunction(node.arguments[0], factory);
           const visitedCallback = ts.visitNode(asyncCallback, visit);
-          const callback = ensureContextHelpers(visitedCallback, factory);
+          const callback = ensureContextHelpers(
+            visitedCallback,
+            factory,
+            observationBoundary?.manualFlushThroughFrame !== undefined
+          );
           const invocation = factory.createCallExpression(factory.createIdentifier('rxTest'), undefined, [callback]);
           return awaitAllowed ? factory.createAwaitExpression(invocation) : invocation;
         }
@@ -1800,7 +1823,12 @@ function createMigrationTransformer({
         if (ts.isPropertyAccessExpression(node.expression) && isSchedulerReceiver(node.expression.expression)) {
           const method = node.expression.name.text;
           if (method === 'flush') {
-            const invocation = factory.createCallExpression(factory.createIdentifier('__rxFlush'), undefined, []);
+            const invocation =
+              observationBoundary?.manualFlushThroughFrame === undefined
+                ? factory.createCallExpression(factory.createIdentifier('__rxFlush'), undefined, [])
+                : factory.createCallExpression(factory.createIdentifier('__rxAdvanceTo'), undefined, [
+                    factory.createNumericLiteral(observationBoundary.manualFlushThroughFrame),
+                  ]);
             return awaitAllowed ? factory.createAwaitExpression(invocation) : invocation;
           }
           if (method === 'now') {
@@ -2062,7 +2090,7 @@ function createCompletedMatcherIntrospection(node, helperName, factory, visit) {
   );
 }
 
-function ensureContextHelpers(node, factory) {
+function ensureContextHelpers(node, factory, includeAdvanceTo = false) {
   if (!isFunction(node)) {
     return node;
   }
@@ -2072,6 +2100,7 @@ function ensureContextHelpers(node, factory) {
     { property: 'time', local: '__rxTime' },
     { property: 'expectObservable', local: 'expectObservable' },
     { property: 'flush', local: '__rxFlush' },
+    ...(includeAdvanceTo ? [{ property: 'advanceTo', local: '__rxAdvanceTo' }] : []),
     { property: 'now', local: '__rxNow' },
     { property: 'schedule', local: '__rxSchedule' },
   ];
