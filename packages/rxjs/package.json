@@ -120,6 +120,7 @@
         "./src/throw-if-empty.ts",
         "./src/timeout.ts",
         "./src/timer.ts",
+        "./src/window-count.ts",
         "./src/with-latest-from.ts",
         "./src/zip-all.ts",
         "./src/zip-with.ts",
@@ -610,6 +611,13 @@
       "import": "./dist/esm/timer.js",
       "require": "./dist/commonjs/timer.js",
       "types": "./dist/types/timer.d.ts"
+    },
+    "./window-count": {
+      "browser": "./dist/browser/window-count.js",
+      "webpack": "./dist/webpack/window-count.js",
+      "import": "./dist/esm/window-count.js",
+      "require": "./dist/commonjs/window-count.js",
+      "types": "./dist/types/window-count.d.ts"
     },
     "./with-latest-from": {
       "browser": "./dist/browser/with-latest-from.js",
