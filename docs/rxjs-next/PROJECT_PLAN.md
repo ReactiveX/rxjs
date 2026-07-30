@@ -74,6 +74,7 @@ item.
 | `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue              |
 | `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                    |
 | `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                         |
+| `DONE`    | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                 |
 | `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
 | `DONE`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
 | `NEXT`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
@@ -345,6 +346,24 @@ item.
   parity suite and known P0.3 build/lint baselines.
 - Linked specialized docs and verified the listed commands against current
   workspace scripts while keeping P0.2 as the single `NEXT` item.
+
+#### P0.DX3 completion evidence
+
+- Added a one-shot production Webpack comparison for the current RxJS Next
+  runtime surface with and without the Observable fallback, plus the public
+  root surface of selected published RxJS versions.
+- Kept the analyzer toolchain in a disposable pnpm project and left workspace
+  dependencies and the lockfile unchanged.
+- Cached each published version's standalone bundle, complete module stats,
+  registry integrity, and configuration fingerprint under an ignored local
+  cache. Exact cache hits do not resolve or rebuild the published package;
+  `--refresh` is the explicit rebuild path.
+- Flattened fresh and cached compilations into one analyzer-compatible stats
+  document and generated one static gzip-first report under
+  `dist/bundle-analysis/`.
+- Verified CLI parsing, source filtering, cache keys, and stats composition
+  with focused Node tests. The default `7.8.2` integration run, cache-hit
+  reuse, and refresh behavior are recorded in the session log.
 
 #### P0.I1 completion bar
 
@@ -1585,3 +1604,33 @@ conformance implementation depends on a runnable harness.
   migration-evidence policy, open questions, future phases, risks, and package
   diagrams, marked P0.2 `DONE`, and advanced P0.3 as the sole `NEXT` item.
 - This decision-only step changed no package metadata or runtime code.
+
+### 2026-07-30 — Cached bundle-size comparison
+
+- Temporarily prioritized and completed P0.DX3 without changing the accepted
+  package map or implementing the P0.3 package build.
+- Added `pnpm run analyze:bundles` to compare fresh native and fallback RxJS
+  Next bundles with cached published RxJS root bundles in one static
+  webpack-bundle-analyzer UI.
+- Isolated the pinned Webpack, analyzer, TypeScript loader, and published RxJS
+  installs from the workspace. Published caches are keyed by exact version,
+  registry integrity, and bundle-configuration fingerprint; `--refresh`
+  rebuilds them explicitly.
+- Added focused Node tests and documented version selection, cache reuse,
+  refresh, no-open behavior, and generated artifact locations.
+- `pnpm run test:bundle-analysis` passed 8 focused tests covering CLI parsing,
+  tag-to-version normalization, configuration fingerprints, cache paths, source
+  discovery, and combined-stats construction.
+- A default `7.8.2` cache-miss run generated the native, fallback, and published
+  assets plus the static report. A second run reported the published target as
+  reused and left its bundle, stats, and metadata timestamps and SHA-256 hashes
+  unchanged; `--refresh` then rebuilt that cache generation and advanced its
+  metadata timestamp.
+- The final combined map contained distinct `rxjs-next-native.js`,
+  `rxjs-next-polyfill.js`, and `rxjs-7.8.2.js` assets with ungrouped module
+  records. The Observable fallback appeared only in the polyfill target, and no
+  specs or `src/testing` modules were present.
+- `git diff --check` passed. The disposable installs changed neither the root
+  dependency graph nor `pnpm-lock.yaml`; generated reports and published caches
+  remained in ignored output locations.
+- Restored P0.3 as the sole project-level `NEXT` item.

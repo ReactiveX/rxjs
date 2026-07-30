@@ -65,6 +65,29 @@ lints also have known P0.3 failures.
 Use focused checks for normal development; see the
 [active project plan](docs/rxjs-next/PROJECT_PLAN.md) for current baselines.
 
+### Bundle-size spot checks
+
+`pnpm run analyze:bundles` builds the current RxJS Next source with and without
+the Observable fallback, compares both bundles with published RxJS `7.8.2`,
+and opens one static webpack-bundle-analyzer report. The command installs its
+pinned analyzer toolchain in a disposable directory rather than changing this
+workspace's dependencies or lockfile.
+
+Published-version bundle maps are cached under
+`.cache/rxjs-bundle-analysis/`; current workspace bundles are always rebuilt.
+Exact cached versions can be reused without registry access; npm tags are
+resolved to an exact version on every run. Pass `--rxjs-version` more than once
+to select other releases or npm tags, `--refresh` to rebuild the selected
+published caches, or `--no-open` to write the report without opening it:
+
+```sh
+pnpm run analyze:bundles -- --rxjs-version 7.8.1 --rxjs-version next
+pnpm run analyze:bundles -- --refresh --no-open
+```
+
+The generated report, combined Webpack stats, and standalone bundles are under
+`dist/bundle-analysis/`.
+
 ### Documentation site
 
 | Command                                         | Use it for                |
