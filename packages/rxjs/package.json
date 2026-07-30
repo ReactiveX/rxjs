@@ -74,6 +74,7 @@
         "./src/empty-error.ts",
         "./src/every.ts",
         "./src/exhaust-map.ts",
+        "./src/expand.ts",
         "./src/finalize.ts",
         "./src/filter.ts",
         "./src/find-index.ts",
@@ -289,6 +290,13 @@
       "import": "./dist/esm/exhaust-map.js",
       "require": "./dist/commonjs/exhaust-map.js",
       "types": "./dist/types/exhaust-map.d.ts"
+    },
+    "./expand": {
+      "browser": "./dist/browser/expand.js",
+      "webpack": "./dist/webpack/expand.js",
+      "import": "./dist/esm/expand.js",
+      "require": "./dist/commonjs/expand.js",
+      "types": "./dist/types/expand.d.ts"
     },
     "./finalize": {
       "browser": "./dist/browser/finalize.js",
