@@ -10,15 +10,6 @@ const shardCount = parseShardValue('RXJS_NEXT_SHARD_COUNT', 1);
 const shardIndex = parseShardValue('RXJS_NEXT_SHARD_INDEX', 0);
 const nativeAvailableAtLoad = typeof globalThis.Observable === 'function';
 const nativeObservableAtLoad = globalThis.Observable;
-// Keep this source ID registered as an ordinary failure, but fail it before
-// executing a converted program proven not to yield before the host kills its
-// isolated shard. The manifest retains the original program for later repair.
-const nonTerminatingConvertedPrograms = new Map<string, string>([
-  [
-    'spec/schedulers/TestScheduler-spec.ts:198:TestScheduler > createHotObservable() > should create a hot observable',
-    'The direct-subscription manual-TestScheduler conversion does not yield control or finalize under rxTest.',
-  ],
-]);
 let nativeAvailable = true;
 let nativeAcquisitionBlocker: Error | undefined;
 let capabilities: Awaited<ReturnType<typeof loadCapabilities>>;
@@ -80,10 +71,6 @@ async function runCase(testCase: PortedMarbleCase): Promise<void> {
   }
   if (!testCase.migratedProgram) {
     throw new Error(`[${testCase.disposition}] ${testCase.id}: no executable migrated program (${testCase.reason})`);
-  }
-  const nonTerminatingReason = nonTerminatingConvertedPrograms.get(testCase.id);
-  if (nonTerminatingReason) {
-    throw new Error(`[non-terminating-conversion] ${testCase.id}: ${nonTerminatingReason}`);
   }
   const runtime = createRuntime({ testCase, mode, rxTest, capabilities });
   try {

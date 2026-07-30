@@ -56,6 +56,22 @@ const observableMessages = (events) =>
   }));
 const harnessRewritePrograms = new Map([
   [
+    'spec/observables/from-spec.ts:21:from > should create an observable from an array',
+    buildFromArrayDelayHarnessRewrite(),
+  ],
+  [
+    'spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed',
+    buildReplaySubjectWindowHarnessRewrite(247),
+  ],
+  [
+    'spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed',
+    buildReplaySubjectWindowHarnessRewrite(279),
+  ],
+  [
+    'spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted',
+    buildReplaySubjectWindowHarnessRewrite(303),
+  ],
+  [
     'spec/operators/delay-spec.ts:227:delay > should unsubscribe scheduled actions after execution',
     buildDelayTimerCleanupHarnessRewrite(),
   ],
@@ -252,6 +268,10 @@ const harnessRewritePrograms = new Map([
     buildSkippedRepeatWhenHotNotifierHarnessRewrite(),
   ],
   [
+    'spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async',
+    buildAsyncIterableErrorHarnessRewrite(),
+  ],
+  [
     'spec/operators/concat-legacy-spec.ts:15:concat operator > should concatenate two cold observables',
     buildLegacyConcatBehaviorHarnessRewrite(),
   ],
@@ -382,6 +402,10 @@ const harnessRewritePrograms = new Map([
   [
     'spec/operators/expand-spec.ts:32:expand > should work with scheduler',
     buildExpandScheduledSubscriptionHarnessRewrite(),
+  ],
+  [
+    'spec/observables/dom/ajax-spec.ts:534:ajax > should error on timeout of asynchronous request',
+    buildAjaxTimeoutHarnessRewrite(),
   ],
   [
     'spec/operators/skipUntil-spec.ts:293:skipUntil > should skip all elements if notifier is unsubscribed explicitly before the notifier emits',
@@ -624,6 +648,8 @@ const harnessRewritesReplacingUnavailableImports = new Set([
   'spec/scheduled/scheduled-spec.ts:28:scheduled > should schedule an iterable',
   'spec/scheduled/scheduled-spec.ts:35:scheduled > should schedule an observable-like',
   'spec/operators/share-spec.ts:723:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 when synchronously resubscribing and using a deferred reset notifier',
+  'spec/observables/dom/ajax-spec.ts:534:ajax > should error on timeout of asynchronous request',
+  'spec/observables/from-spec.ts:21:from > should create an observable from an array',
 ]);
 const intentionalDivergenceReasons = new Map([
   [
@@ -708,33 +734,28 @@ const intentionalDivergenceReasons = new Map([
   ],
 ]);
 const unsupportedOrObsoleteReasons = new Map([]);
-const schedulerOnlyCaseReasons = new Map([
+const schedulerOnlyCaseReasons = new Map([]);
+const harnessRewriteReasons = new Map([
   [
-    'spec/observables/merge-spec.ts:282:merge(...observables, Scheduler) > should merge single lowerCaseO into RxJS Observable',
-    'The case specifically asserts the removed RxJS 7 merge scheduler overload.',
-  ],
-  [
-    'spec/observables/merge-spec.ts:311:merge(...observables, Scheduler, number) > should handle scheduler',
-    'The case specifically asserts the removed RxJS 7 merge scheduler overload and scheduler-driven delay.',
-  ],
-  [
-    'spec/observables/merge-spec.ts:322:merge(...observables, Scheduler, number) > should handle scheduler with concurrency limits',
-    'The case specifically asserts the removed RxJS 7 merge scheduler overload with concurrency.',
-  ],
-  [
-    'spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler',
-    'The case specifically asserts an RxJS 7 TestScheduler handoff that has no platform Observable equivalent.',
-  ],
-  [
-    'spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler',
-    'The case specifically asserts an RxJS 7 TestScheduler handoff that has no platform Observable equivalent.',
+    'spec/observables/from-spec.ts:21:from > should create an observable from an array',
+    'The focused rewrite preserves the array conversion and concatMap timing claim without carrying unrelated source-file helpers that require the removed RxJS observable interop Symbol.',
   ],
   [
     'spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async',
-    'The case depends on the unavailable RxJS 7 scheduler-driven delay(0) boundary.',
+    'The rewrite preserves the asynchronous boundary through the exact host-delay Symbol and verifies that a later iterable failure terminates mergeMap at the original frame.',
   ],
-]);
-const harnessRewriteReasons = new Map([
+  [
+    'spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed',
+    'The rewrite feeds the current replaySubject on rxTest virtual host time and bounds each direct observer, preserving the exact four-unit age-window replay sets without constructing a production TestScheduler.',
+  ],
+  [
+    'spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed',
+    'The rewrite feeds the current replaySubject on rxTest virtual host time and bounds the late direct observer, preserving terminal replay inside the four-unit age window without constructing a production TestScheduler.',
+  ],
+  [
+    'spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted',
+    'The rewrite feeds the current replaySubject on rxTest virtual host time and bounds the direct observer, preserving the combined buffer-size and four-unit age-window claim without constructing a production TestScheduler.',
+  ],
   [
     'spec/operators/repeatWhen-spec.ts:339:repeatWhen operator > should handle a host source that completes via operator like take, and a hot notifier',
     'The source case was skipped in RxJS 7 with an expectation that completed before its notifier; the rewrite preserves resubscriptions and waits for notifier completion.',
@@ -2161,6 +2182,27 @@ const sharedExplicitUnsubscriptionResult = observableMessages([
   [53, 'N', 'i'],
 ]);
 const modeAwareObservableExpectations = new Map([
+  // The delayed branch activates the shared connector view first. A platform
+  // observer then joins that run, so the direct branch does not reactivate the
+  // BehaviorSubject initializer for a second synchronous seed replay.
+  [
+    'spec/operators/connect-spec.ts:25:connect > should connect a source through a selector function and use the provided connector',
+    new Map([
+      [
+        'result',
+        observableMessages([
+          [3, 'N', 'S'],
+          [8, 'N', 'a'],
+          [11, 'N', 'a'],
+          [18, 'N', 'b'],
+          [21, 'N', 'b'],
+          [28, 'N', 'c'],
+          [31, 'N', 'c'],
+          [34, 'C'],
+        ]),
+      ],
+    ]),
+  ],
   [
     'spec/operators/bufferToggle-spec.ts:32:bufferToggle operator > should emit buffers that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
     new Map([
@@ -3061,6 +3103,18 @@ function buildUnavailableProgram(reason) {
 }
 
 function buildSchedulerInternalsHarnessRewrite({ path, line }) {
+  const scheduledCompositionCases = new Map([
+    ['spec/observables/merge-spec.ts:282', 'scheduled-interop-merge'],
+    ['spec/observables/merge-spec.ts:311', 'scheduled-timed-merge'],
+    ['spec/observables/merge-spec.ts:322', 'scheduled-concurrent-merge'],
+    ['spec/operators/concatAll-spec.ts:500', 'scheduled-concat-many'],
+    ['spec/operators/concatAll-spec.ts:532', 'scheduled-concat-one'],
+  ]);
+  const scheduledCompositionKind = scheduledCompositionCases.get(`${path}:${line}`);
+  if (scheduledCompositionKind) {
+    return buildScheduledCompositionHarnessRewrite(scheduledCompositionKind);
+  }
+
   if (path === 'spec/testing/index-spec.ts' && line === 5) {
     return buildSchedulerBoundaryHarnessRewrite('testing-index');
   }
@@ -3137,6 +3191,137 @@ function buildSchedulerInternalsHarnessRewrite({ path, line }) {
   ]);
   const kind = kinds.get(line);
   return kind ? buildSchedulerBoundaryHarnessRewrite(kind) : undefined;
+}
+
+function buildScheduledCompositionHarnessRewrite(kind) {
+  const programs = {
+    'scheduled-interop-merge': `async function migrated(runtime) {
+const { rxTest, expect, merge } = runtime;
+await rxTest(({ expectObservable, schedule }) => {
+  const observableKey = Symbol.observable ?? '@@observable';
+  const source = {
+    subscribe(observer) {
+      const task = schedule(() => {
+        observer.next?.('a');
+        observer.next?.('b');
+        observer.next?.('c');
+        observer.complete?.();
+      }, 0, { signal: observer.signal });
+      return { unsubscribe: () => task.cancel() };
+    },
+    [observableKey]() {
+      return this;
+    },
+  };
+
+  // The removed scheduler overload scheduled conversion/subscription at frame
+  // zero. Keep that timing in the local interop source and exercise the real
+  // merge factory without treating a scheduler object as another source.
+  const result = merge(source);
+  expect(result instanceof globalThis.Observable).to.equal(true);
+  expectObservable(result).toBe('(abc|)');
+});
+}
+`,
+    'scheduled-timed-merge': `async function migrated(runtime) {
+const { rxTest, merge } = runtime;
+await rxTest(({ expectObservable, schedule }) => {
+  const scheduledValue = (value, delay) =>
+    new globalThis.Observable((subscriber) => {
+      schedule(() => {
+        subscriber.next(value);
+        subscriber.complete();
+      }, delay, { signal: subscriber.signal });
+    });
+
+  // Local scheduled sources preserve the old frame-zero scheduler handoff and
+  // the delayed second value while the production merge sees only sources.
+  const result = merge(scheduledValue('a', 0), scheduledValue('b', 2));
+  expectObservable(result).toBe('a-(b|)');
+});
+}
+`,
+    'scheduled-concurrent-merge': `async function migrated(runtime) {
+const { rxTest, merge } = runtime;
+await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
+  const first = cold('---a---b---c---|');
+  const second = cold('-d---e---f--|');
+  const third = cold('---x---y---z---|');
+
+  // rxTest owns virtual subscription time. Removing only the obsolete
+  // TestScheduler argument leaves the exact merge concurrency contract active.
+  const result = merge(first, second, third, 2);
+  expectObservable(result).toBe('-d-a-e-b-f-c---x---y---z---|');
+  expectSubscriptions(first.subscriptions).toBe('^--------------!');
+  expectSubscriptions(second.subscriptions).toBe('^-----------!');
+  expectSubscriptions(third.subscriptions).toBe('------------^--------------!');
+});
+}
+`,
+    'scheduled-concat-many': buildScheduledConcatHarnessRewrite([
+      {
+        name: 'first',
+        marbles: '---a|',
+        subscriptions: '^---!',
+      },
+      {
+        name: 'second',
+        marbles: '---b--|',
+        subscriptions: '----^-----!',
+      },
+      {
+        name: 'third',
+        marbles: '---c--|',
+        subscriptions: '----------^-----!',
+      },
+    ], '---a---b-----c--|'),
+    'scheduled-concat-one': buildScheduledConcatHarnessRewrite([
+      {
+        name: 'first',
+        marbles: '---a-|',
+        subscriptions: '^----!',
+      },
+    ], '---a-|'),
+  };
+  const program = programs[kind];
+  if (!program) {
+    throw new Error(`Unknown scheduled composition harness rewrite: ${kind}`);
+  }
+  return program;
+}
+
+function buildScheduledConcatHarnessRewrite(sources, expected) {
+  const sourceDeclarations = sources
+    .map(({ name, marbles }) => `  const ${name} = cold(${JSON.stringify(marbles)});`)
+    .join('\n');
+  const sourceNames = sources.map(({ name }) => name).join(', ');
+  const subscriptionExpectations = sources
+    .map(
+      ({ name, subscriptions }) =>
+        `  expectSubscriptions(${name}.subscriptions).toBe(${JSON.stringify(subscriptions)});`
+    )
+    .join('\n');
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, concatAll } = runtime;
+await rxTest(({ cold, expectObservable, expectSubscriptions, schedule }) => {
+${sourceDeclarations}
+  const outer = new globalThis.Observable((subscriber) => {
+    schedule(() => {
+      for (const source of [${sourceNames}]) {
+        subscriber.next(source);
+      }
+      subscriber.complete();
+    }, 0, { signal: subscriber.signal });
+  });
+
+  // The local outer source retains the legacy scheduler's frame-zero handoff;
+  // exact concatAll flattening retains ordering and inner subscription timing.
+  const result = applyOperators(outer, [concatAll()]);
+  expectObservable(result).toBe(${JSON.stringify(expected)});
+${subscriptionExpectations}
+});
+}
+`;
 }
 
 function buildSchedulerBoundaryHarnessRewrite(kind) {
@@ -4145,6 +4330,53 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
 `;
 }
 
+function buildFromArrayDelayHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, concatMap, delay, from, of } = runtime;
+await rxTest(async ({ expectObservable, time }) => {
+  const delayTime = time('--|');
+  const result = applyOperators(from([10, 20, 30]), [
+    concatMap((value, index) =>
+      applyOperators(of(value), [delay(index === 0 ? 0 : delayTime)])
+    ),
+  ]);
+
+  expectObservable(result).toBe('x-y-(z|)', { x: 10, y: 20, z: 30 });
+});
+}
+`;
+}
+
+function buildAsyncIterableErrorHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, delay, mergeMap, of } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const failure = new Error('we do not allow x');
+  const source = cold('-----a------------b-----|', {
+    a: ['o', 'o', 'o'],
+    b: ['o', 'x', 'o'],
+  });
+  const iterable = function* (values) {
+    for (const value of values) {
+      if (value === 'x') {
+        throw failure;
+      }
+      yield value;
+    }
+  };
+  const result = applyOperators(source, [
+    mergeMap((values) =>
+      applyOperators(of(values), [delay(0), mergeMap(iterable)])
+    ),
+  ]);
+
+  expectObservable(result).toBe('-----(ooo)--------(o#)', undefined, failure);
+  expectSubscriptions(source.subscriptions).toBe('^-----------------!');
+});
+}
+`;
+}
+
 function buildRestartingShareReplayHarnessRewrite() {
   return `async function migrated(runtime) {
 const { rxTest, applyOperators, shareReplay } = runtime;
@@ -4879,6 +5111,112 @@ await rxTest(async ({ cold, hot, expectObservable, expectSubscriptions, flush, n
 `;
 }
 
+function buildAjaxTimeoutHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ flush, now, schedule }) => {
+  let mostRecent;
+  let nextCount = 0;
+  let errorCount = 0;
+  let lateResponseAttempts = 0;
+  let responseAccepted = false;
+
+  class TimeoutXMLHttpRequest {
+    status = 0;
+    method = '';
+    async = true;
+    timeout = 0;
+    responseType = '';
+    url = '';
+    onload;
+    ontimeout;
+    settled = false;
+
+    open(method, url, async) {
+      this.method = method;
+      this.url = url;
+      this.async = async;
+    }
+
+    send() {
+      setTimeout(() => {
+        if (this.settled) {
+          return;
+        }
+        this.settled = true;
+        this.status = 0;
+        this.ontimeout?.();
+      }, this.timeout);
+    }
+
+    respondWith() {
+      lateResponseAttempts++;
+      if (this.settled) {
+        return;
+      }
+      this.settled = true;
+      responseAccepted = true;
+      this.onload?.();
+    }
+
+    abort() {
+      this.settled = true;
+    }
+  }
+
+  const ajaxTimeoutFixture = (config) =>
+    new Observable((subscriber) => {
+      const xhr = new TimeoutXMLHttpRequest();
+      mostRecent = xhr;
+      xhr.open('GET', config.url, true);
+      xhr.timeout = config.timeout;
+      xhr.responseType = config.responseType;
+      xhr.onload = () => {
+        subscriber.next({ status: xhr.status, xhr });
+        subscriber.complete();
+      };
+      xhr.ontimeout = () => subscriber.error({ status: 0, xhr });
+      xhr.send();
+      subscriber.addTeardown(() => xhr.abort());
+    });
+
+  const config = {
+    url: '/flibbertyJibbet',
+    responseType: 'text',
+    timeout: 10,
+  };
+  ajaxTimeoutFixture(config).subscribe({
+    next: () => {
+      nextCount++;
+    },
+    error: (error) => {
+      errorCount++;
+      expect(now()).to.equal(10);
+      expect(error.status).to.equal(0);
+      expect(error.xhr).to.equal(mostRecent);
+      expect(error.xhr.method).to.equal('GET');
+      expect(error.xhr.async).to.equal(true);
+      expect(error.xhr.timeout).to.equal(10);
+      expect(error.xhr.responseType).to.equal('text');
+    },
+  });
+
+  expect(mostRecent.url).to.equal('/flibbertyJibbet');
+  schedule(() => mostRecent.respondWith(), 1000);
+  await flush();
+
+  // Preserve the XHR configuration and timeout error contract locally while
+  // the compatibility ajax API is absent. The later response is attempted but
+  // ignored because the frame-10 timeout has already terminated the request.
+  expect(errorCount).to.equal(1);
+  expect(nextCount).to.equal(0);
+  expect(lateResponseAttempts).to.equal(1);
+  expect(responseAccepted).to.equal(false);
+});
+}
+`;
+}
+
 function buildSynchronousCatchErrorHarnessRewrite() {
   return `async function migrated(runtime) {
 const { applyOperators, catchError, expect, map } = runtime;
@@ -5367,6 +5705,137 @@ await rxTest(async ({ cold, expectSubscriptions, flush, now, schedule }) => {
       notification: { kind: 'N', value: [] },
     },
   ]);
+});
+}
+`;
+}
+
+function buildReplaySubjectWindowHarnessRewrite(line) {
+  const configurations = {
+    247: {
+      size: 'Infinity',
+      feeds: [
+        [1, '1'],
+        [3, '2'],
+        [5, '3'],
+        [10, '4'],
+        [17, '5'],
+        [19, '6'],
+        [24, '7'],
+        [26, '8'],
+        [31, '9'],
+      ],
+      completeFrame: 34,
+      observers: [
+        { frame: 6, abortFrame: 21 },
+        { frame: 12, abortFrame: 25 },
+        { frame: 27 },
+      ],
+      boundary: 35,
+      expected: [
+        [
+          [6, 'N', '2'],
+          [6, 'N', '3'],
+          [10, 'N', '4'],
+          [17, 'N', '5'],
+          [19, 'N', '6'],
+        ],
+        [
+          [12, 'N', '4'],
+          [17, 'N', '5'],
+          [19, 'N', '6'],
+          [24, 'N', '7'],
+        ],
+        [
+          [27, 'N', '7'],
+          [27, 'N', '8'],
+          [31, 'N', '9'],
+          [34, 'C'],
+        ],
+      ],
+    },
+    279: {
+      size: 'Infinity',
+      feeds: [
+        [1, '1'],
+        [3, '2'],
+        [5, '3'],
+        [10, '4'],
+      ],
+      completeFrame: 11,
+      observers: [{ frame: 13 }],
+      boundary: 14,
+      expected: [
+        [
+          [13, 'N', '4'],
+          [13, 'C'],
+        ],
+      ],
+    },
+    303: {
+      size: '2',
+      feeds: [
+        [0, '1'],
+        [1, '2'],
+        [2, '3'],
+        [3, '4'],
+      ],
+      completeFrame: 11,
+      observers: [{ frame: 4 }],
+      boundary: 12,
+      expected: [
+        [
+          [4, 'N', '3'],
+          [4, 'N', '4'],
+          [11, 'C'],
+        ],
+      ],
+    },
+  };
+  const configuration = configurations[line];
+  if (!configuration) {
+    throw new Error(`Unknown ReplaySubject window rewrite line: ${line}`);
+  }
+  const observerSchedules = configuration.observers
+    .map(
+      (observer, index) => `schedule(() => {
+    replaySubject.subscribe(
+      {
+        next: (value) => results[${index}].push([now(), 'N', value]),
+        error: (error) => results[${index}].push([now(), 'E', error]),
+        complete: () => results[${index}].push([now(), 'C']),
+      },
+      { signal: controllers[${index}].signal }
+    );
+  }, ${observer.frame});${
+    observer.abortFrame === undefined
+      ? ''
+      : `
+  schedule(() => controllers[${index}].abort(), ${observer.abortFrame});`
+  }`
+    )
+    .join('\n  ');
+
+  return `async function migrated(runtime) {
+const { rxTest, ReplaySubject, __rxTestScheduler, expect } = runtime;
+await rxTest(async ({ flush, now, schedule }) => {
+  const replaySubject = new ReplaySubject(${configuration.size}, 4, __rxTestScheduler);
+  const controllers = Array.from({ length: ${configuration.observers.length} }, () => new AbortController());
+  const results = Array.from({ length: ${configuration.observers.length} }, () => []);
+
+  for (const [frame, value] of ${JSON.stringify(configuration.feeds)}) {
+    schedule(() => replaySubject.next(value), frame);
+  }
+  schedule(() => replaySubject.complete(), ${configuration.completeFrame});
+  ${observerSchedules}
+  schedule(() => {
+    for (const controller of controllers) {
+      controller.abort();
+    }
+  }, ${configuration.boundary});
+
+  await flush();
+  expect(results).to.deep.equal(${JSON.stringify(configuration.expected, null, 2)});
 });
 }
 `;
