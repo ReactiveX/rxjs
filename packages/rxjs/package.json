@@ -53,6 +53,7 @@
       "./package.json": "./package.json",
       ".": [
         "./src/animation-frames.ts",
+        "./src/argument-out-of-range-error.ts",
         "./src/async-subject.ts",
         "./src/behavior-subject.ts",
         "./src/buffer.ts",
@@ -159,6 +160,13 @@
       "import": "./dist/esm/animation-frames.js",
       "require": "./dist/commonjs/animation-frames.js",
       "types": "./dist/types/animation-frames.d.ts"
+    },
+    "./argument-out-of-range-error": {
+      "browser": "./dist/browser/argument-out-of-range-error.js",
+      "webpack": "./dist/webpack/argument-out-of-range-error.js",
+      "import": "./dist/esm/argument-out-of-range-error.js",
+      "require": "./dist/commonjs/argument-out-of-range-error.js",
+      "types": "./dist/types/argument-out-of-range-error.d.ts"
     },
     "./async-subject": {
       "browser": "./dist/browser/async-subject.js",
