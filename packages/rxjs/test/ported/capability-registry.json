@@ -729,6 +729,14 @@
       "status": "Present; parity unverified",
       "note": "Emits overlapping read-only windows, closes each window on the first closing value, and silently releases live windows on outer cancellation. This cancellation behavior intentionally does not reproduce RxJS 7's disposed-Subject ObjectUnsubscribedError."
     },
+    "windowWhen": {
+      "symbol": "windowWhen",
+      "module": "window-when",
+      "adapter": "identity",
+      "mapping": "source[windowWhen](closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Emits consecutive read-only windows and rotates on the first closing value or completion. Synchronous closing rotation is iterative, and outer cancellation silently releases the live window."
+    },
     "withLatestFrom": {
       "symbol": "withLatestFrom",
       "module": "with-latest-from",
