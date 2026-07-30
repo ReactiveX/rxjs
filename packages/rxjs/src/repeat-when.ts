@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { Subject } from './subject.js';
 
 export const repeatWhen: unique symbol = Symbol('repeatWhen');
 
@@ -15,8 +16,7 @@ Observable.prototype[repeatWhen] = function <T>(
   const source = this;
 
   return source[create]<T>((subscriber) => {
-    let completions: Observable<void> | undefined;
-    let completionSubscriber: Subscriber<void> | undefined;
+    let completions: Subject<void> | undefined;
     let notifierComplete = false;
     let awaitingRepeat = false;
     let sourceSubscribeInProgress = false;
@@ -51,14 +51,7 @@ Observable.prototype[repeatWhen] = function <T>(
                 }
 
                 if (!completions) {
-                  completions = new Observable<void>((nextCompletionSubscriber) => {
-                    completionSubscriber = nextCompletionSubscriber;
-                    nextCompletionSubscriber.addTeardown(() => {
-                      if (completionSubscriber === nextCompletionSubscriber) {
-                        completionSubscriber = undefined;
-                      }
-                    });
-                  });
+                  completions = new Subject<void>();
 
                   let notifierInput: ObservableValue<unknown>;
                   try {
@@ -101,7 +94,7 @@ Observable.prototype[repeatWhen] = function <T>(
                 }
 
                 if (subscriber.active && !notifierComplete) {
-                  completionSubscriber?.next();
+                  completions.next();
                 }
               },
             },

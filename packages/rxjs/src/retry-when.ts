@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { Subject } from './subject.js';
 
 export const retryWhen: unique symbol = Symbol('retryWhen');
 
@@ -15,8 +16,7 @@ Observable.prototype[retryWhen] = function <T>(
   const source = this;
 
   return source[create]((subscriber) => {
-    let errors: Observable<any> | undefined;
-    let errorSubscriber: Subscriber<any> | undefined;
+    let errors: Subject<any> | undefined;
     let pendingAttempts = 1;
     let draining = false;
 
@@ -29,15 +29,8 @@ Observable.prototype[retryWhen] = function <T>(
       drainAttempts();
     }
 
-    function startNotifier(): Observable<any> | undefined {
-      const errorStream = source[create]<any>((currentErrorSubscriber) => {
-        errorSubscriber = currentErrorSubscriber;
-        currentErrorSubscriber.addTeardown(() => {
-          if (errorSubscriber === currentErrorSubscriber) {
-            errorSubscriber = undefined;
-          }
-        });
-      });
+    function startNotifier(): Subject<any> | undefined {
+      const errorStream = new Subject<any>();
       let notifierInput: ObservableValue<any>;
 
       try {
@@ -88,7 +81,7 @@ Observable.prototype[retryWhen] = function <T>(
         }
 
         errors ??= startNotifier();
-        errorSubscriber?.next(error);
+        errors?.next(error);
       };
 
       try {
