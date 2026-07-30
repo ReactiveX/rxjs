@@ -162,11 +162,7 @@ describe('zip', () => {
       complete: () => events.push('complete'),
     });
 
-    expect(events).toEqual([
-      [0, 1],
-      [0, 2],
-      'complete',
-    ]);
+    expect(events).toEqual([[0, 1], [0, 2], 'complete']);
   });
 
   it('drains unequal completed buffers with fill values and then completes', () => {
@@ -177,11 +173,31 @@ describe('zip', () => {
       complete: () => events.push('complete'),
     });
 
-    expect(events).toEqual([
-      [1, 'a'],
-      [2, null],
-      'complete',
-    ]);
+    expect(events).toEqual([[1, 'a'], [2, null], 'complete']);
+  });
+
+  it('projects each tuple with the RxJS result-selector overload', () => {
+    const events: Array<string | 'complete'> = [];
+
+    zip([Observable.from([1, 2]), Observable.from(['a', 'b'])], (left, right) => `${left}:${right}`).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    expect(events).toEqual(['1:a', '2:b', 'complete']);
+  });
+
+  it('forwards result-selector errors through the derived observable', () => {
+    const expected = new Error('projection failed');
+    const errors: unknown[] = [];
+
+    zip([Observable.from([1]), Observable.from([2])], () => {
+      throw expected;
+    }).subscribe({
+      error: (error) => errors.push(error),
+    });
+
+    expect(errors).toEqual([expected]);
   });
 });
 
