@@ -1220,7 +1220,7 @@
       "adapter": "replaySubjectConstructor",
       "mapping": "new ReplaySubject(bufferSize, windowTime) → replaySubject({ size: bufferSize, maxAge: windowTime })",
       "status": "Partial standalone mapping",
-      "note": "Adapts bufferSize and windowTime to the current factory; a third timestamp-provider or scheduler argument fails explicitly, and lifecycle parity is unverified."
+      "note": "Adapts bufferSize and windowTime to the current factory. The exact port harness accepts only its rxTest virtual-clock marker as the third argument, relying on virtualized host Date.now/setTimeout; every other timestamp-provider or scheduler fails explicitly."
     },
     "SequenceError": {
       "module": "sequence-error",

@@ -946,7 +946,10 @@ function createReplaySubjectConstructor(
     windowTime = Infinity,
     timestampProviderOrScheduler?: unknown
   ): unknown {
-    if (timestampProviderOrScheduler !== undefined) {
+    if (
+      timestampProviderOrScheduler !== undefined &&
+      timestampProviderOrScheduler !== portedRxTestScheduler
+    ) {
       throw new Error('Unsupported RxJS 7 ReplaySubject timestamp-provider or scheduler constructor argument.');
     }
     return value({ size: bufferSize, maxAge: windowTime });
