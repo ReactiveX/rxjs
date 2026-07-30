@@ -8,12 +8,18 @@ interface ReplaySubjectConfig {
 class ReplaySubject<T> extends ColdSubject<T> {
   #bufferValues: T[] = [];
   #bufferTimestamps: number[] = [];
+  #completed = false;
+  #hasError = false;
+  #error: any;
 
   readonly #size: number;
   readonly #maxAge: number;
 
-  constructor(init?: (subscriber: Subscriber<T>) => void, config?: ReplaySubjectConfig) {
-    super(init);
+  constructor(config?: ReplaySubjectConfig) {
+    let subscribeToReplay: (subscriber: Subscriber<T>) => void;
+    super((subscriber) => subscribeToReplay(subscriber));
+    subscribeToReplay = (subscriber) => this.addSubscriber(subscriber);
+
     const { size = Infinity, maxAge = Infinity } = config ?? {};
     this.#size = size;
     this.#maxAge = maxAge;
@@ -23,10 +29,10 @@ class ReplaySubject<T> extends ColdSubject<T> {
     setTimeout(() => {
       const tooOld = Date.now() - this.#maxAge;
       const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex((timestamp) => tooOld < timestamp);
-      const indexOfLastAgedOutItem = indexOfOldestAllowedItem - 1;
-      if (indexOfLastAgedOutItem >= 0) {
-        this.#bufferTimestamps.splice(0, indexOfLastAgedOutItem + 1);
-        this.#bufferValues.splice(0, indexOfLastAgedOutItem + 1);
+      const amountToTrim = indexOfOldestAllowedItem < 0 ? this.#bufferTimestamps.length : indexOfOldestAllowedItem;
+      if (amountToTrim > 0) {
+        this.#bufferTimestamps.splice(0, amountToTrim);
+        this.#bufferValues.splice(0, amountToTrim);
       }
     }, this.#maxAge);
   }
@@ -45,28 +51,61 @@ class ReplaySubject<T> extends ColdSubject<T> {
 
   override addSubscriber(subscriber: Subscriber<T>) {
     const buffer = Array.from(this.#bufferValues);
+    if (!this.#hasError && !this.#completed) {
+      // Match ReplaySubject's reentrant contract: an active subscriber joins
+      // live fanout before its buffered values are replayed.
+      super.addSubscriber(subscriber);
+    }
+
     for (const value of buffer) {
+      if (!subscriber.active) {
+        return;
+      }
       subscriber.next(value);
     }
-    super.addSubscriber(subscriber);
+
+    if (this.#hasError) {
+      subscriber.error(this.#error);
+      return;
+    }
+
+    if (this.#completed) {
+      subscriber.complete();
+      return;
+    }
+
   }
 
   override next(value: T) {
     if (this.active) {
       this.#bufferValues.push(value);
-      if (this.#size !== Infinity) {
-        this.#checkSize();
-      }
-
       if (this.#maxAge !== Infinity) {
         this.#bufferTimestamps.push(Date.now());
         this.#scheduleAgeFlush();
       }
+      if (this.#size !== Infinity) {
+        this.#checkSize();
+      }
     }
     super.next(value);
+  }
+
+  override error(error: any) {
+    if (this.active) {
+      this.#hasError = true;
+      this.#error = error;
+    }
+    super.error(error);
+  }
+
+  override complete() {
+    if (this.active) {
+      this.#completed = true;
+    }
+    super.complete();
   }
 }
 
 export function replaySubject<T>(config: ReplaySubjectConfig) {
-  return new ReplaySubject<T>(undefined, config);
+  return new ReplaySubject<T>(config);
 }
