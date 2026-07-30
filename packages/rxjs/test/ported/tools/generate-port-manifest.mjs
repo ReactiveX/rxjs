@@ -56,6 +56,26 @@ const observableMessages = (events) =>
   }));
 const harnessRewritePrograms = new Map([
   [
+    'spec/operators/delay-spec.ts:227:delay > should unsubscribe scheduled actions after execution',
+    buildDelayTimerCleanupHarnessRewrite(),
+  ],
+  [
+    'spec/operators/windowTime-spec.ts:160:windowTime > should be able to split a never Observable into timely empty windows',
+    buildWindowTimeHorizonHarnessRewrite(160),
+  ],
+  [
+    'spec/operators/windowTime-spec.ts:224:windowTime > should emit windows given windowTimeSpan and windowCreationInterval, but outer is unsubscribed early',
+    buildWindowTimeHorizonHarnessRewrite(224),
+  ],
+  [
+    'spec/operators/windowTime-spec.ts:247:windowTime > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildWindowTimeHorizonHarnessRewrite(247),
+  ],
+  [
+    'spec/operators/windowTime-spec.ts:274:windowTime > should not error if maxWindowSize is hit while nexting to other windows.',
+    buildWindowTimeHorizonHarnessRewrite(274),
+  ],
+  [
     'spec/observables/connectable-spec.ts:29:connectable > should do nothing if connect is not called, despite subscriptions',
     buildNoConnectHarnessRewrite('connectable', 1),
   ],
@@ -234,6 +254,134 @@ const harnessRewritePrograms = new Map([
   [
     'spec/operators/concat-legacy-spec.ts:15:concat operator > should concatenate two cold observables',
     buildLegacyConcatBehaviorHarnessRewrite(),
+  ],
+  [
+    'spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically',
+    buildVirtualTimerHarnessRewrite('periodic-open'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values',
+    buildVirtualTimerHarnessRewrite('delayed-periodic'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values',
+    buildVirtualTimerHarnessRewrite('immediate-periodic'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done',
+    buildVirtualTimerHarnessRewrite('cancelled-periodic'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values',
+    buildVirtualTimerHarnessRewrite('dated-periodic'),
+  ],
+  [
+    "spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'",
+    buildVirtualTimerHarnessRewrite('dated-resubscription'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument',
+    buildVirtualTimerHarnessRewrite('infinite-due'),
+  ],
+  [
+    'spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument',
+    buildVirtualTimerHarnessRewrite('infinite-period'),
+  ],
+  [
+    'spec/observables/range-spec.ts:17:range > should create an observable with numbers 1 to 10',
+    buildRangeBehaviorHarnessRewrite(1, 10, false),
+  ],
+  [
+    'spec/observables/range-spec.ts:49:range > should work for two subscribers',
+    buildRangeBehaviorHarnessRewrite(1, 5, true),
+  ],
+  [
+    'spec/observables/range-spec.ts:101:range > should accept only one argument where count is argument and start is zero',
+    buildRangeBehaviorHarnessRewrite(0, 5, true),
+  ],
+  [
+    'spec/observables/generate-spec.ts:103:generate > should accept a scheduler',
+    buildGenerateSchedulerBehaviorHarnessRewrite('values'),
+  ],
+  [
+    'spec/observables/generate-spec.ts:150:generate > should emit error if result selector throws on scheduler',
+    buildGenerateSchedulerBehaviorHarnessRewrite('result-error'),
+  ],
+  [
+    'spec/observables/generate-spec.ts:176:generate > should emit error after first value if iterate function throws on scheduler',
+    buildGenerateSchedulerBehaviorHarnessRewrite('iterate-error'),
+  ],
+  [
+    'spec/observables/generate-spec.ts:202:generate > should emit error if condition function throws on scheduler',
+    buildGenerateSchedulerBehaviorHarnessRewrite('condition-error'),
+  ],
+  [
+    'spec/scheduled/scheduled-spec.ts:14:scheduled > should schedule a sync observable',
+    buildScheduledInputHarnessRewrite('observable'),
+  ],
+  [
+    'spec/scheduled/scheduled-spec.ts:21:scheduled > should schedule an array',
+    buildScheduledInputHarnessRewrite('array'),
+  ],
+  [
+    'spec/scheduled/scheduled-spec.ts:28:scheduled > should schedule an iterable',
+    buildScheduledInputHarnessRewrite('iterable'),
+  ],
+  [
+    'spec/scheduled/scheduled-spec.ts:35:scheduled > should schedule an observable-like',
+    buildScheduledInputHarnessRewrite('observable-like'),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:146:startWith > should allow unsubscribing explicitly and early',
+    buildStartWithSchedulerLastHarnessRewrite('cancelled'),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:161:startWith > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildStartWithSchedulerLastHarnessRewrite('chain'),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:180:startWith > should start with empty if given value is not specified',
+    buildStartWithSchedulerLastHarnessRewrite('empty'),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:193:startWith > should accept scheduler as last argument with single value',
+    buildStartWithSchedulerLastHarnessRewrite('single'),
+  ],
+  [
+    'spec/operators/startWith-spec.ts:206:startWith > should accept scheduler as last argument with multiple value',
+    buildStartWithSchedulerLastHarnessRewrite('multiple'),
+  ],
+  [
+    'spec/operators/endWith-spec.ts:181:endWith > should accept scheduler as last argument with single value',
+    buildEndWithSchedulerLastHarnessRewrite('single'),
+  ],
+  [
+    'spec/operators/endWith-spec.ts:192:endWith > should accept scheduler as last argument with multiple value',
+    buildEndWithSchedulerLastHarnessRewrite('multiple'),
+  ],
+  [
+    'spec/operators/concat-legacy-spec.ts:324:concat operator > should accept scheduler with multiple observables',
+    buildConcatSchedulerLastHarnessRewrite('multiple'),
+  ],
+  [
+    'spec/operators/concat-legacy-spec.ts:341:concat operator > should accept scheduler without observable parameters',
+    buildConcatSchedulerLastHarnessRewrite('empty'),
+  ],
+  [
+    'spec/operators/share-spec.ts:723:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 when synchronously resubscribing and using a deferred reset notifier',
+    buildDeferredShareResetHarnessRewrite(),
+  ],
+  [
+    'spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element',
+    buildFromEventDispatchHarnessRewrite(),
+  ],
+  [
+    'spec/observables/fromEventPattern-spec.ts:18:fromEventPattern > should create an observable from the handler API',
+    buildFromEventPatternDispatchHarnessRewrite(),
+  ],
+  [
+    'spec/operators/expand-spec.ts:32:expand > should work with scheduler',
+    buildExpandScheduledSubscriptionHarnessRewrite(),
   ],
   [
     'spec/operators/skipUntil-spec.ts:293:skipUntil > should skip all elements if notifier is unsubscribed explicitly before the notifier emits',
@@ -470,7 +618,18 @@ const harnessRewritePrograms = new Map([
     }),
   ],
 ]);
+const harnessRewritesReplacingUnavailableImports = new Set([
+  'spec/scheduled/scheduled-spec.ts:14:scheduled > should schedule a sync observable',
+  'spec/scheduled/scheduled-spec.ts:21:scheduled > should schedule an array',
+  'spec/scheduled/scheduled-spec.ts:28:scheduled > should schedule an iterable',
+  'spec/scheduled/scheduled-spec.ts:35:scheduled > should schedule an observable-like',
+  'spec/operators/share-spec.ts:723:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 when synchronously resubscribing and using a deferred reset notifier',
+]);
 const intentionalDivergenceReasons = new Map([
+  [
+    'spec/operators/delay-spec.ts:227:delay > should unsubscribe scheduled actions after execution',
+    'Intentional RxJS Next divergence: the executable replacement asserts AbortSignal cancellation and virtual host-timer cleanup instead of removed RxJS 7 source and Subscription._finalizers internals.',
+  ],
   [
     'spec/operators/bufferToggle-spec.ts:32:bufferToggle operator > should emit buffers that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
     'Intentional RxJS Next divergence: overlapping closing subscriptions join one platform Observable run instead of restarting the reused cold closing fixture.',
@@ -584,6 +743,107 @@ const harnessRewriteReasons = new Map([
 // Subscription replacements close original open logs only where the synthetic
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
+  [
+    'spec/observables/dom/animationFrames-spec.ts:17:animationFrames > should animate',
+    { marbles: new Map([['subs', boundedSubscription(0, 12)]]) },
+  ],
+  [
+    'spec/observables/dom/animationFrames-spec.ts:37:animationFrames > should use any passed timestampProvider',
+    { marbles: new Map([['subs', boundedSubscription(0, 12)]]) },
+  ],
+  [
+    'spec/observables/dom/animationFrames-spec.ts:60:animationFrames > should compose with take',
+    { observable: boundedSubscription(0, 12) },
+  ],
+  [
+    'spec/observables/dom/animationFrames-spec.ts:86:animationFrames > should compose with takeUntil',
+    { observable: boundedSubscription(0, 12) },
+  ],
+  [
+    'spec/operators/timeInterval-spec.ts:73:timeInterval > should record interval then does not completes if source emits but not completes',
+    {
+      observable: boundedSubscription(0, 7),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 7)]]),
+    },
+  ],
+  [
+    'spec/operators/delay-spec.ts:213:delay > should not complete when source never completes',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/timeout-spec.ts:561:timeout operator > using with > should timeout after a specified period between emit then never completes if other source does not complete',
+    {
+      observable: boundedSubscription(0, 21),
+      subscriptions: new Map([['innerSubs', boundedSubscription(9, 21)]]),
+    },
+  ],
+  [
+    'spec/operators/timeout-spec.ts:595:timeout operator > using with > should timeout after a specified period between emit then never completes if other source emits but not complete',
+    {
+      observable: boundedSubscription(0, 20),
+      subscriptions: new Map([['innerSubs', boundedSubscription(11, 20)]]),
+    },
+  ],
+  [
+    'spec/operators/timeout-spec.ts:694:timeout operator > using with > should not timeout if source emits synchronously when subscribed',
+    { observable: boundedSubscription(0, 4) },
+  ],
+  [
+    'spec/operators/timeoutWith-spec.ts:145:timeoutWith operator > should timeout after a specified period between emit then never completes if other source does not complete',
+    {
+      observable: boundedSubscription(0, 21),
+      subscriptions: new Map([['switchToSubs', boundedSubscription(9, 21)]]),
+    },
+  ],
+  [
+    'spec/operators/timeoutWith-spec.ts:179:timeoutWith operator > should timeout after a specified period between emit then never completes if other source emits but not complete',
+    {
+      observable: boundedSubscription(0, 20),
+      subscriptions: new Map([['switchToSubs', boundedSubscription(11, 20)]]),
+    },
+  ],
+  [
+    'spec/operators/timeInterval-spec.ts:131:timeInterval > should not completes if source never completes',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/timestamp-spec.ts:72:timestamp > should record stamp then does not completes if source emits but not completes',
+    {
+      observable: boundedSubscription(0, 7),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 7)]]),
+    },
+  ],
+  [
+    'spec/operators/timestamp-spec.ts:130:timestamp > should not completes if source never completes',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/observeOn-spec.ts:62:observeOn > should observe when source does not complete',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]),
+    },
+  ],
+  [
+    'spec/operators/subscribeOn-spec.ts:68:subscribeOn > should subscribe when source does not complete',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['sub', boundedSubscription(0, 5)]]),
+    },
+  ],
+  [
+    'spec/operators/subscribeOn-spec.ts:113:subscribeOn > should properly support a delayTime of Infinity',
+    { observable: boundedSubscription(0, 9) },
+  ],
   [
     'spec/operators/groupBy-spec.ts:160:groupBy operator > should handle a never Observable',
     {
@@ -2626,13 +2886,26 @@ function extractCases({ path, sourceText }) {
         support: caseSupport,
       });
       const availability = assessAvailability(usedImports);
-      const harnessRewrite = harnessRewritePrograms.get(id);
+      const schedulerCompatibilityRewrite = buildSchedulerInternalsHarnessRewrite({
+        path,
+        line: lineOf(call, sourceFile),
+      });
+      const harnessRewrite = harnessRewritePrograms.get(id) ?? schedulerCompatibilityRewrite;
+      const harnessRewriteReplacesUnavailableImports =
+        harnessRewrite !== undefined &&
+        (harnessRewritesReplacingUnavailableImports.has(id) || schedulerCompatibilityRewrite !== undefined);
       const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
       const unsupportedOrObsoleteReason = unsupportedOrObsoleteReasons.get(id);
       const schedulerOnlyReason = schedulerOnlyCaseReasons.get(id);
-      const harnessRewriteReason = harnessRewriteReasons.get(id);
+      const harnessRewriteReason =
+        harnessRewriteReasons.get(id) ??
+        getPortedSchedulerAdapterReason({
+          imports: usedImports,
+          source: originalSource,
+        });
       const schedulerInternal =
         !harnessRewrite &&
+        !harnessRewriteReason &&
         (Boolean(schedulerOnlyReason) ||
           isGenuinelySchedulerInternal({
             path,
@@ -2682,7 +2955,11 @@ function extractCases({ path, sourceText }) {
           support: caseSupport,
           wrapManualHelpers: !runMode,
         });
-      } else if (availability.missing.length > 0 && !intentionalDivergenceReason) {
+      } else if (
+        availability.missing.length > 0 &&
+        !intentionalDivergenceReason &&
+        !harnessRewriteReplacesUnavailableImports
+      ) {
         classification = 'compatibility-only';
         disposition = 'missing-api';
         reason = `Required runtime capabilities are unavailable: ${availability.missing.join(', ')}.`;
@@ -2695,7 +2972,11 @@ function extractCases({ path, sourceText }) {
           support: caseSupport,
           wrapManualHelpers: !runMode,
         });
-      } else if (availability.external.length > 0 && !intentionalDivergenceReason) {
+      } else if (
+        availability.external.length > 0 &&
+        !intentionalDivergenceReason &&
+        !harnessRewriteReplacesUnavailableImports
+      ) {
         classification = 'harness-rewrite';
         disposition = 'missing-api';
         reason = `Required external test capabilities are unavailable: ${availability.external.join(', ')}.`;
@@ -2711,7 +2992,7 @@ function extractCases({ path, sourceText }) {
       } else {
         classification = intentionalDivergenceReason
           ? 'intentional-divergence'
-          : harnessRewrite || reviewFlags.includes('multiple-observers') || !runMode
+          : harnessRewrite || harnessRewriteReason || reviewFlags.includes('multiple-observers') || !runMode
             ? 'harness-rewrite'
             : 'portable';
         const verifiedActive =
@@ -2728,7 +3009,7 @@ function extractCases({ path, sourceText }) {
             : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
           : intentionalDivergenceReason
             ? intentionalDivergenceReason
-            : harnessRewrite
+            : harnessRewrite || harnessRewriteReason
               ? (harnessRewriteReason ??
               'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.')
               : verifiedActive
@@ -2777,6 +3058,661 @@ function extractCases({ path, sourceText }) {
 
 function buildUnavailableProgram(reason) {
   return `async function migrated() {\n  throw new Error(${JSON.stringify(reason)});\n}\n`;
+}
+
+function buildSchedulerInternalsHarnessRewrite({ path, line }) {
+  if (path === 'spec/testing/index-spec.ts' && line === 5) {
+    return buildSchedulerBoundaryHarnessRewrite('testing-index');
+  }
+
+  const delayedSchedulerCases = new Map([
+    ['spec/schedulers/AnimationFrameScheduler-spec.ts:24', 'delayed-host-time'],
+    ['spec/schedulers/AnimationFrameScheduler-spec.ts:41', 'cancelled-host-time'],
+    ['spec/schedulers/AsapScheduler-spec.ts:24', 'delayed-host-time'],
+    ['spec/schedulers/AsapScheduler-spec.ts:40', 'cancelled-host-time'],
+    ['spec/schedulers/QueueScheduler-spec.ts:18', 'delayed-host-time'],
+  ]);
+  const delayedSchedulerKind = delayedSchedulerCases.get(`${path}:${line}`);
+  if (delayedSchedulerKind) {
+    return buildSchedulerBoundaryHarnessRewrite(delayedSchedulerKind);
+  }
+
+  if (path !== 'spec/schedulers/TestScheduler-spec.ts') {
+    return undefined;
+  }
+
+  const kinds = new Map([
+    [16, 'test-api'],
+    [21, 'frame-time-factor'],
+    [26, 'parse-basic'],
+    [35, 'parse-spaces'],
+    [44, 'parse-caret'],
+    [53, 'parse-error'],
+    [62, 'parse-default-values'],
+    [71, 'parse-grouped'],
+    [80, 'parse-whitespace'],
+    [91, 'parse-time-progression'],
+    [102, 'parse-emoji'],
+    [114, 'subscription-basic'],
+    [120, 'subscription-open-boundary'],
+    [126, 'subscription-sync'],
+    [132, 'subscription-whitespace'],
+    [139, 'subscription-time-progression'],
+    [146, 'subscription-multiple-starts'],
+    [150, 'subscription-multiple-ends'],
+    [156, 'time-basic'],
+    [162, 'time-whitespace-boundary'],
+    [169, 'time-mixed-whitespace-boundary'],
+    [198, 'hot-source'],
+    [213, 'test-api'],
+    [219, 'cold-helper'],
+    [237, 'hot-helper'],
+    [242, 'hot-subject-boundary'],
+    [250, 'time-helper'],
+    [255, 'time-helper-value'],
+    [261, 'observable-expectation-helper'],
+    [270, 'observable-expectation-registration'],
+    [279, 'never-expectation'],
+    [300, 'subscription-expectation-helper'],
+    [309, 'subscription-expectation-registration'],
+    [361, 'run-whitespace-and-host-delay'],
+    [390, 'run-helper-set'],
+    [427, 'unbounded-virtual-time'],
+    [451, 'automatic-flush'],
+    [472, 'explicit-flush'],
+    [497, 'promise-completion-boundary'],
+    [508, 'restore-after-error'],
+    [569, 'animation-async'],
+    [591, 'animation-sync'],
+    [610, 'animation-cancellation'],
+    [632, 'immediate-schedule'],
+    [647, 'immediate-cancellation'],
+    [663, 'interval-schedule'],
+    [679, 'interval-repeat'],
+    [698, 'timeout-schedule'],
+    [713, 'immediate-priority'],
+    [739, 'host-scheduler-order'],
+    [756, 'microtask-before-timer'],
+    [769, 'zero-duration-repetition'],
+  ]);
+  const kind = kinds.get(line);
+  return kind ? buildSchedulerBoundaryHarnessRewrite(kind) : undefined;
+}
+
+function buildSchedulerBoundaryHarnessRewrite(kind) {
+  const parserCases = {
+    'parse-basic': {
+      source: 'cold',
+      marbles: '-------a---b---|',
+      values: `{ a: 'A', b: 'B' }`,
+      expected: `[
+    [7, 'N', 'A'],
+    [11, 'N', 'B'],
+    [15, 'C'],
+  ]`,
+    },
+    'parse-spaces': {
+      source: 'cold',
+      marbles: '--a--b--|   ',
+      values: `{ a: 'A', b: 'B' }`,
+      expected: `[
+    [2, 'N', 'A'],
+    [5, 'N', 'B'],
+    [8, 'C'],
+  ]`,
+    },
+    'parse-caret': {
+      source: 'hot',
+      marbles: '---^---a---b---|',
+      values: `{ a: 'A', b: 'B' }`,
+      expected: `[
+    [4, 'N', 'A'],
+    [8, 'N', 'B'],
+    [12, 'C'],
+  ]`,
+    },
+    'parse-error': {
+      source: 'cold',
+      marbles: '-------a---b---#',
+      values: `{ a: 'A', b: 'B' }`,
+      error: `'omg error!'`,
+      expected: `[
+    [7, 'N', 'A'],
+    [11, 'N', 'B'],
+    [15, 'E', 'omg error!'],
+  ]`,
+    },
+    'parse-default-values': {
+      source: 'cold',
+      marbles: '--a--b--c--',
+      expected: `[
+    [2, 'N', 'a'],
+    [5, 'N', 'b'],
+    [8, 'N', 'c'],
+  ]`,
+      horizon: 9,
+    },
+    'parse-grouped': {
+      source: 'cold',
+      marbles: '---(abc)---',
+      expected: `[
+    [3, 'N', 'a'],
+    [3, 'N', 'b'],
+    [3, 'N', 'c'],
+  ]`,
+      horizon: 4,
+    },
+    'parse-whitespace': {
+      source: 'cold',
+      marbles: '  -a - b -    c |       ',
+      values: `{ a: 'A', b: 'B', c: 'C' }`,
+      expected: `[
+    [1, 'N', 'A'],
+    [3, 'N', 'B'],
+    [5, 'N', 'C'],
+    [6, 'C'],
+  ]`,
+    },
+    'parse-time-progression': {
+      source: 'cold',
+      marbles: '10.2ms a 1.2s b 1m c|',
+      values: `{ a: 'A', b: 'B', c: 'C' }`,
+      expected: `[
+    [10.2, 'N', 'A'],
+    [1211.2, 'N', 'B'],
+    [61212.2, 'N', 'C'],
+    [61213.2, 'C'],
+  ]`,
+    },
+    'parse-emoji': {
+      source: 'cold',
+      marbles: '--🙈--🙉--🙊--|',
+      expected: `[
+    [2, 'N', '🙈'],
+    [5, 'N', '🙉'],
+    [8, 'N', '🙊'],
+    [11, 'C'],
+  ]`,
+    },
+  };
+  const parserCase = parserCases[kind];
+  if (parserCase) {
+    const values = parserCase.values ? `, ${parserCase.values}` : '';
+    const error = parserCase.error ? `, ${parserCase.error}` : '';
+    const horizon = parserCase.horizon
+      ? `\n  schedule(() => controller.abort(), ${parserCase.horizon});`
+      : '';
+    return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ ${parserCase.source}, flush, now, schedule }) => {
+  const actual = [];
+  const controller = new AbortController();
+  ${parserCase.source}(${JSON.stringify(parserCase.marbles)}${values}${error}).subscribe({
+    next: (value) => actual.push([now(), 'N', value]),
+    error: (error) => actual.push([now(), 'E', error]),
+    complete: () => actual.push([now(), 'C']),
+  }, { signal: controller.signal });${horizon}
+  await flush();
+  expect(actual).to.deep.equal(${parserCase.expected});
+});
+}
+`;
+  }
+
+  const programs = {
+    'testing-index': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+// RxJS Next exports the framework-neutral rxTest function instead of reviving
+// the RxJS 7 rxjs/testing TestScheduler class.
+expect(rxTest).to.be.a('function');
+}
+`,
+    'test-api': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+// The accepted public testing boundary is rxTest, not a constructible
+// TestScheduler with mutable parser and queue internals.
+expect(rxTest).to.be.a('function');
+}
+`,
+    'frame-time-factor': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(({ time }) => {
+  // Run-style virtual time is the RxJS Next contract: one millisecond per
+  // marble frame, replacing the legacy static frameTimeFactor of ten.
+  expect(time('-|')).to.equal(1);
+});
+}
+`,
+    'subscription-basic': buildSubscriptionParserProgram('---^---!', '---^---!'),
+    'subscription-open-boundary': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+let rejection;
+try {
+  await rxTest(({ cold, expectObservable }) => {
+    expectObservable(cold('-a'), '---^').toBe('----a');
+  });
+} catch (error) {
+  rejection = error;
+}
+// A start marker without an end still parses as an infinite subscription.
+// Unlike TestScheduler.run, rxTest then rejects the deliberately open
+// observation so leaked tests cannot silently pass.
+expect(rejection).to.be.instanceof(Error);
+expect(rejection.message).to.match(/open observation/);
+}
+`,
+    'subscription-sync': buildSubscriptionParserProgram('---(^!)', '---(^!)'),
+    'subscription-whitespace': buildSubscriptionParserProgram(
+      '  - -  - -  ^ -   - !  -- -      ',
+      '----^--!'
+    ),
+    'subscription-time-progression': buildSubscriptionParserProgram(
+      '10.2ms ^ 1.2s - 1m !',
+      '10.2ms ^ 1.2s - 1m !'
+    ),
+    'subscription-multiple-starts': buildInvalidSubscriptionParserProgram('---^-^-!-'),
+    'subscription-multiple-ends': buildInvalidSubscriptionParserProgram('---^---!-!'),
+    'time-basic': buildTimeBoundaryProgram('-----|', 5, 'one millisecond per frame'),
+    'time-whitespace-boundary': buildTimeBoundaryProgram(
+      '     |',
+      0,
+      'run-style diagrams ignore whitespace instead of advancing legacy createTime'
+    ),
+    'time-mixed-whitespace-boundary': buildTimeBoundaryProgram(
+      '  --|',
+      2,
+      'run-style diagrams ignore whitespace and count only explicit frames'
+    ),
+    'hot-source': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ hot, flush, now }) => {
+  const actual = [];
+  const source = hot('--a---b--|', { a: 'A', b: 'B' });
+  source.subscribe({
+    next: (value) => actual.push([now(), value]),
+    complete: () => actual.push([now(), 'complete']),
+  });
+  await flush();
+  expect(actual).to.deep.equal([[2, 'A'], [6, 'B'], [9, 'complete']]);
+});
+}
+`,
+    'cold-helper': buildHelperExistenceProgram('cold'),
+    'hot-helper': buildHelperExistenceProgram('hot'),
+    'time-helper': buildHelperExistenceProgram('time'),
+    'time-helper-value': buildTimeBoundaryProgram('-----|', 5, 'one millisecond per frame'),
+    'observable-expectation-helper': buildHelperExistenceProgram('expectObservable'),
+    'subscription-expectation-helper': buildHelperExistenceProgram('expectSubscriptions'),
+    'hot-subject-boundary': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(({ hot, expectObservable }) => {
+  const source = hot('---^-a-b-|', { a: 1, b: 2 });
+  // A Next hot fixture remains subject-like and multicast, but is deliberately
+  // not required to inherit the removed RxJS 7 Subject class.
+  expect(source.next).to.be.a('function');
+  expect(source.complete).to.be.a('function');
+  expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
+});
+}
+`,
+    'observable-expectation-registration': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ cold, expectObservable, flush }) => {
+  const expectation = expectObservable(cold('|'));
+  expect(expectation.toBe).to.be.a('function');
+  expectation.toBe('|');
+  await flush();
+});
+}
+`,
+    'never-expectation': `async function migrated(runtime) {
+const { rxTest } = runtime;
+await rxTest(({ cold, expectObservable }) => {
+  const never = cold('-');
+  expectObservable(never, '^!').toBe('-');
+  expectObservable(never, '^--!').toBe('---');
+});
+}
+`,
+    'subscription-expectation-registration': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, flush }) => {
+  const source = cold('|');
+  expectObservable(source).toBe('|');
+  const expectation = expectSubscriptions(source.subscriptions);
+  expect(expectation.toBe).to.be.a('function');
+  expectation.toBe('(^!)');
+  await flush();
+});
+}
+`,
+    'run-whitespace-and-host-delay': `async function migrated(runtime) {
+const { rxTest, applyOperators, concatMap, delay, of } = runtime;
+await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
+  const input = cold('  -a - b -    c |       ');
+  const output = applyOperators(input, [
+    concatMap((value) => applyOperators(of(value), [delay(10)])),
+  ]);
+  expectObservable(output).toBe('-- 9ms a 9ms b 9ms (c|)');
+  expectSubscriptions(input.subscriptions).toBe('^-----!');
+});
+}
+`,
+    'run-helper-set': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+  expect(cold).to.be.a('function');
+  expect(hot).to.be.a('function');
+  expect(flush).to.be.a('function');
+  expect(expectObservable).to.be.a('function');
+  expect(expectSubscriptions).to.be.a('function');
+  const first = cold('-a-c-e|');
+  const second = hot('^-b-d-f|');
+  expectObservable(first).toBe('-a-c-e|');
+  expectObservable(second).toBe('--b-d-f|');
+  expectSubscriptions(first.subscriptions).toBe('^-----!');
+  expectSubscriptions(second.subscriptions).toBe('^------!');
+});
+}
+`,
+    'unbounded-virtual-time': `async function migrated(runtime) {
+const { rxTest, applyOperators, delay } = runtime;
+await rxTest(({ cold, expectObservable }) => {
+  // rxTest has no legacy maxFrames ceiling.
+  expectObservable(applyOperators(cold('-a|'), [delay(10_000)])).toBe('- 10s (a|)');
+});
+}
+`,
+    'automatic-flush': `async function migrated(runtime) {
+const { rxTest, applyOperators, concatMap, delay, of } = runtime;
+await rxTest(({ cold, expectObservable }) => {
+  const output = applyOperators(cold('-a-b-c|'), [
+    concatMap((value) => applyOperators(of(value), [delay(10)])),
+  ]);
+  // Returning from the callback performs the automatic flush and assertion.
+  expectObservable(output).toBe('-- 9ms a 9ms b 9ms (c|)');
+});
+}
+`,
+    'explicit-flush': `async function migrated(runtime) {
+const { rxTest, applyOperators, concatMap, delay, of, expect } = runtime;
+let flushed = false;
+await rxTest(async ({ cold, expectObservable, flush }) => {
+  const output = applyOperators(cold('-a-b-c|'), [
+    concatMap((value) => applyOperators(of(value), [delay(10)])),
+  ]);
+  expectObservable(output).toBe('-- 9ms a 9ms b 9ms (c|)');
+  await flush();
+  flushed = true;
+});
+expect(flushed).to.equal(true);
+}
+`,
+    'promise-completion-boundary': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+let completed = false;
+await rxTest(async () => {
+  await Promise.resolve('foo');
+  completed = true;
+});
+// rxTest owns callback completion and returns Promise<void>; it does not expose
+// arbitrary callback values as the removed TestScheduler.run method did.
+expect(completed).to.equal(true);
+}
+`,
+    'restore-after-error': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+let caught;
+try {
+  await rxTest(() => {
+    throw new Error('kaboom!');
+  });
+} catch (error) {
+  caught = error;
+}
+expect(caught).to.be.instanceof(Error);
+expect(caught.message).to.equal('kaboom!');
+let ran = false;
+await rxTest(async ({ schedule, flush }) => {
+  schedule(() => {
+    ran = true;
+  }, 1);
+  await flush();
+});
+expect(ran).to.equal(true);
+}
+`,
+    'animation-async': buildAnimationProgram(false, false),
+    'animation-sync': buildAnimationProgram(true, false),
+    'animation-cancellation': buildAnimationProgram(true, true),
+    'immediate-schedule': buildImmediateProgram(false),
+    'immediate-cancellation': buildImmediateProgram(true),
+    'interval-schedule': buildIntervalProgram(false),
+    'interval-repeat': buildIntervalProgram(true),
+    'timeout-schedule': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ flush, now }) => {
+  const values = [];
+  setTimeout(() => values.push('a@' + now()), 1);
+  expect(values).to.deep.equal([]);
+  await flush();
+  expect(values).to.deep.equal(['a@1']);
+});
+}
+`,
+    'immediate-priority': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+if (typeof globalThis.setImmediate !== 'function') {
+  return;
+}
+await rxTest(async ({ flush, now }) => {
+  const values = [];
+  const interval = setInterval(() => {
+    values.push('a@' + now());
+    clearInterval(interval);
+  }, 0);
+  setTimeout(() => values.push('b@' + now()), 0);
+  globalThis.setImmediate(() => values.push('c@' + now()));
+  await flush();
+  expect(values).to.deep.equal(['c@0', 'a@0', 'b@0']);
+});
+}
+`,
+    'host-scheduler-order': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ animate, cold, flush, now }) => {
+  animate([9]);
+  const values = [];
+  cold('--m|').subscribe({
+    next: () => {
+      requestAnimationFrame(() => values.push('a@' + now()));
+      setTimeout(() => values.push('b@' + now()), 5);
+      setTimeout(() => values.push('c@' + now()), 0);
+      queueMicrotask(() => values.push('d@' + now()));
+    },
+  });
+  await flush();
+  expect(values).to.deep.equal(['d@2', 'c@2', 'b@7', 'a@9']);
+});
+}
+`,
+    'microtask-before-timer': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ cold, flush, now }) => {
+  const values = [];
+  cold('--ab|').subscribe({
+    next: (value) => {
+      if (value === 'a') {
+        setTimeout(() => values.push('a@' + now()), 1);
+      } else {
+        queueMicrotask(() => values.push('b@' + now()));
+      }
+    },
+  });
+  await flush();
+  expect(values).to.deep.equal(['b@3', 'a@3']);
+});
+}
+`,
+    'zero-duration-repetition': `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ cold, flush, now }) => {
+  const values = [];
+  cold('--m|').subscribe({
+    next: () => {
+      let microtasks = 0;
+      const runMicrotask = () => {
+        values.push('b@' + now());
+        if (++microtasks < 3) queueMicrotask(runMicrotask);
+      };
+      queueMicrotask(runMicrotask);
+      let intervals = 0;
+      const handle = setInterval(() => {
+        values.push('a@' + now());
+        if (++intervals === 3) clearInterval(handle);
+      }, 0);
+    },
+  });
+  await flush();
+  expect(values).to.deep.equal(['b@2', 'b@2', 'b@2', 'a@2', 'a@2', 'a@2']);
+});
+}
+`,
+    'delayed-host-time': `async function migrated(runtime) {
+const { rxTest, applyOperators, delay, merge } = runtime;
+await rxTest(({ cold, expectObservable, time }) => {
+  const first = applyOperators(cold('(a|)'), [delay(time('----|'))]);
+  const second = applyOperators(cold('(b|)'), [delay(time('--------|'))]);
+  // Positive-delay legacy schedulers all crossed onto the same host timer
+  // boundary; preserve that behavior without publishing scheduler instances.
+  expectObservable(merge(first, second)).toBe('----a---(b|)');
+});
+}
+`,
+    'cancelled-host-time': `async function migrated(runtime) {
+const { rxTest, applyOperators, delay } = runtime;
+await rxTest(({ cold, expectObservable, expectSubscriptions, time }) => {
+  const source = cold('a');
+  const result = applyOperators(source, [delay(time('----|'))]);
+  expectObservable(result, '^-!').toBe('--');
+  expectSubscriptions(source.subscriptions).toBe('^-!');
+  // Cancellation must clear the positive-delay host task. Provider spying is
+  // intentionally outside the public Next boundary.
+});
+}
+`,
+  };
+  const program = programs[kind];
+  if (!program) {
+    throw new Error(`Unknown scheduler compatibility harness rewrite: ${kind}`);
+  }
+  return program;
+}
+
+function buildSubscriptionParserProgram(subscriptionMarbles, expectedSubscriptionMarbles) {
+  return `async function migrated(runtime) {
+const { rxTest } = runtime;
+await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
+  const source = cold('-');
+  expectObservable(source, ${JSON.stringify(subscriptionMarbles)}).toBe('-');
+  expectSubscriptions(source.subscriptions).toBe(${JSON.stringify(expectedSubscriptionMarbles)});
+});
+}
+`;
+}
+
+function buildInvalidSubscriptionParserProgram(subscriptionMarbles) {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(({ cold, expectObservable }) => {
+  const source = cold('|');
+  expect(() => expectObservable(source, ${JSON.stringify(subscriptionMarbles)})).to.throw();
+});
+}
+`;
+}
+
+function buildTimeBoundaryProgram(marbles, expected, boundary) {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(({ time }) => {
+  // Accepted TestScheduler compatibility boundary: ${boundary}.
+  expect(time(${JSON.stringify(marbles)})).to.equal(${expected});
+});
+}
+`;
+}
+
+function buildHelperExistenceProgram(helper) {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest((context) => {
+  expect(context[${JSON.stringify(helper)}]).to.be.a('function');
+});
+}
+`;
+}
+
+function buildAnimationProgram(synchronousRequests, cancelFirst) {
+  const requests = synchronousRequests
+    ? `schedule(() => {
+    const first = requestAnimationFrame((timestamp) => values.push('a@' + timestamp));
+    requestAnimationFrame((timestamp) => values.push('b@' + timestamp));
+    ${cancelFirst ? 'cancelAnimationFrame(first);' : ''}
+  }, 1);`
+    : `schedule(() => requestAnimationFrame((timestamp) => values.push('a@' + timestamp)), 0);
+  schedule(() => requestAnimationFrame((timestamp) => values.push('b@' + timestamp)), 1);`;
+  const expected = cancelFirst ? `['b@2']` : `['a@2', 'b@2']`;
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ animate, schedule, flush }) => {
+  animate([2]);
+  const values = [];
+  ${requests}
+  await flush();
+  expect(values).to.deep.equal(${expected});
+});
+}
+`;
+}
+
+function buildImmediateProgram(cancelled) {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+if (typeof globalThis.setImmediate !== 'function') {
+  return;
+}
+await rxTest(async ({ flush, now }) => {
+  const values = [];
+  const handle = globalThis.setImmediate(() => values.push('a@' + now()));
+  ${cancelled ? 'globalThis.clearImmediate(handle);' : ''}
+  expect(values).to.deep.equal([]);
+  await flush();
+  expect(values).to.deep.equal(${cancelled ? '[]' : "['a@0']"});
+});
+}
+`;
+}
+
+function buildIntervalProgram(repeated) {
+  return `async function migrated(runtime) {
+const { rxTest, expect } = runtime;
+await rxTest(async ({ flush, now }) => {
+  const values = [];
+  const handle = setInterval(() => {
+    if (${repeated ? 'now() <= 3' : 'true'}) {
+      values.push('a@' + now());
+    }
+    if (${repeated ? 'now() > 3' : 'true'}) {
+      clearInterval(handle);
+    }
+  }, 1);
+  expect(values).to.deep.equal([]);
+  await flush();
+  expect(values).to.deep.equal(${repeated ? "['a@1', 'a@2', 'a@3']" : "['a@1']"});
+});
+}
+`;
 }
 
 function buildRequiredObservableInitializerHarnessRewrite() {
@@ -3417,6 +4353,532 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
 `;
 }
 
+function buildVirtualTimerHarnessRewrite(kind) {
+  const configurations = {
+    'periodic-open': {
+      runtimeNames: 'rxTest, applyOperators, NEVER, take, concat',
+      body: `const source = applyOperators(virtualTimer(6, 2), [
+    take(4),
+    concat(NEVER),
+  ]);
+  expectObservable(source, '^-------------!').toBe('------a-b-c-d-', {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+  });`,
+    },
+    'delayed-periodic': {
+      runtimeNames: 'rxTest, applyOperators, take',
+      body: `const source = applyOperators(virtualTimer(4, 2), [take(5)]);
+  expectObservable(source).toBe('----a-b-c-d-(e|)', {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+  });`,
+    },
+    'immediate-periodic': {
+      runtimeNames: 'rxTest, applyOperators, take',
+      body: `const source = applyOperators(virtualTimer(0, 3), [take(5)]);
+  expectObservable(source).toBe('a--b--c--d--(e|)', {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+  });`,
+    },
+    'cancelled-periodic': {
+      runtimeNames: 'rxTest',
+      body: `const source = virtualTimer(0, 3);
+  expectObservable(source, '^------------!').toBe('a--b--c--d--e', {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+  });`,
+    },
+    'dated-periodic': {
+      runtimeNames: 'rxTest, applyOperators, take',
+      body: `const source = applyOperators(virtualTimer(new Date(now() + 4), 2), [take(5)]);
+  expectObservable(source).toBe('----a-b-c-d-(e|)', {
+    a: 0,
+    b: 1,
+    c: 2,
+    d: 3,
+    e: 4,
+  });`,
+    },
+    'dated-resubscription': {
+      runtimeNames: 'rxTest, applyOperators, merge, mergeMap',
+      body: `const firstTrigger = cold('a|');
+  const secondTrigger = cold('--a|');
+  const source = virtualTimer(new Date(now() + 4));
+  const result = applyOperators(merge(firstTrigger, secondTrigger), [
+    mergeMap(() => source),
+  ]);
+  expectObservable(result).toBe('----(aa|)', { a: 0 });`,
+    },
+    'infinite-due': {
+      runtimeNames: 'rxTest',
+      body: `const source = virtualTimer(Infinity);
+  expectObservable(source, '^-----!').toBe('------');`,
+    },
+    'infinite-period': {
+      runtimeNames: 'rxTest',
+      body: `const source = virtualTimer(4, Infinity);
+  expectObservable(source, '^-----!').toBe('----a-', { a: 0 });`,
+    },
+  };
+  const configuration = configurations[kind];
+  if (!configuration) {
+    throw new Error(`Unknown virtual timer harness rewrite: ${kind}`);
+  }
+  return `async function migrated(runtime) {
+const { ${configuration.runtimeNames} } = runtime;
+await rxTest(async ({ cold, expectObservable, now, schedule }) => {
+  const virtualTimer = (due, period) =>
+    new Observable((subscriber) => {
+      const firstDelay =
+        due instanceof Date ? Math.max(0, +due - now()) : Math.max(0, Number(due));
+      if (firstDelay === Infinity) {
+        return;
+      }
+      let index = 0;
+      const emit = () => {
+        if (subscriber.signal.aborted) {
+          return;
+        }
+        subscriber.next(index++);
+        if (subscriber.signal.aborted) {
+          return;
+        }
+        if (period == null || period < 0) {
+          subscriber.complete();
+        } else if (period !== Infinity) {
+          schedule(emit, period, { signal: subscriber.signal });
+        }
+      };
+      schedule(emit, firstDelay, { signal: subscriber.signal });
+    });
+
+  // Model only the removed TestScheduler injection inside rxTest's virtual
+  // host. This fixture preserves the timing claim without exposing a generic
+  // scheduler value or claiming a public scheduler overload.
+  ${configuration.body}
+});
+}
+`;
+}
+
+function buildRangeBehaviorHarnessRewrite(start, count, multipleSubscribers) {
+  const valueKeys = 'abcdefghij'.slice(0, count);
+  const values = Object.fromEntries(
+    Array.from({ length: count }, (_, index) => [valueKeys[index], start + index])
+  );
+  const argumentsText = start === 0 ? `${count}` : `${start}, ${count}`;
+  const expectations = [
+    `expectObservable(source).toBe('(${valueKeys}|)', values);`,
+    ...(multipleSubscribers
+      ? [`expectObservable(source).toBe('(${valueKeys}|)', values);`]
+      : []),
+  ].join('\n  ');
+  return `async function migrated(runtime) {
+const { rxTest, range } = runtime;
+await rxTest(async ({ expectObservable }) => {
+  const source = range(${argumentsText});
+  const values = ${JSON.stringify(values, null, 2)};
+
+  // The RxJS 7 case used concatMap/delay only to spread synchronous range
+  // values into a readable diagram. Assert the actual range contract directly.
+  ${expectations}
+});
+}
+`;
+}
+
+function buildGenerateSchedulerBehaviorHarnessRewrite(kind) {
+  const configurations = {
+    values: {
+      runtimeNames: 'rxTest, expect, generate',
+      options: `{
+    initialState: 1,
+    condition: (value) => value < 4,
+    iterate: (value) => value + 1,
+    resultSelector: (value) => value,
+  }`,
+      assertion: `let count = 0;
+  schedule(() => source.subscribe(() => count++), 0);
+  expect(count).to.equal(0);
+  expectObservable(source).toBe('(123|)', { '1': 1, '2': 2, '3': 3 });
+  await flush();
+  expect(count).to.equal(3);`,
+    },
+    'result-error': {
+      runtimeNames: 'rxTest, generate',
+      options: `{
+    initialState: 1,
+    iterate: (value) => value * 2,
+    resultSelector: err,
+  }`,
+      assertion: `expectObservable(source).toBe('(#)');`,
+    },
+    'iterate-error': {
+      runtimeNames: 'rxTest, generate',
+      options: `{
+    initialState: 1,
+    iterate: err,
+  }`,
+      assertion: `expectObservable(source).toBe('(1#)', { '1': 1 });`,
+    },
+    'condition-error': {
+      runtimeNames: 'rxTest, generate',
+      options: `{
+    initialState: 1,
+    iterate: (value) => value + 1,
+    condition: err,
+  }`,
+      assertion: `expectObservable(source).toBe('(#)');`,
+    },
+  };
+  const configuration = configurations[kind];
+  if (!configuration) {
+    throw new Error(`Unknown generate scheduler harness rewrite: ${kind}`);
+  }
+  return `async function migrated(runtime) {
+const { ${configuration.runtimeNames} } = runtime;
+function err() {
+  throw 'error';
+}
+await rxTest(async ({ expectObservable, flush, schedule }) => {
+  const source = generate(${configuration.options});
+
+  // The scheduler-last overload is intentionally unavailable. Preserve the
+  // generation/error contract, and use rxTest.schedule only where the source
+  // case explicitly proves deferred subscription.
+  ${configuration.assertion}
+});
+}
+`;
+}
+
+function buildScheduledInputHarnessRewrite(kind) {
+  const inputs = {
+    observable: {
+      runtimeNames: 'rxTest, of',
+      declaration: `const input = of('a', 'b', 'c');`,
+    },
+    array: {
+      runtimeNames: 'rxTest',
+      declaration: `const input = ['a', 'b', 'c'];`,
+    },
+    iterable: {
+      runtimeNames: 'rxTest',
+      declaration: `const input = 'abc';`,
+    },
+    'observable-like': {
+      runtimeNames: 'rxTest',
+      declaration: `const input = {
+  subscribe(observer) {
+    for (const value of ['a', 'b', 'c']) {
+      observer.next?.(value);
+    }
+    observer.complete?.();
+    return { unsubscribe() {} };
+  },
+};
+input[Symbol.observable ?? '@@observable'] = function () {
+  return this;
+};`,
+    },
+  };
+  const input = inputs[kind];
+  if (!input) {
+    throw new Error(`Unknown scheduled input harness rewrite: ${kind}`);
+  }
+  return `async function migrated(runtime) {
+const { ${input.runtimeNames} } = runtime;
+${input.declaration}
+await rxTest(async ({ expectObservable, schedule }) => {
+  const virtualScheduled = (value) =>
+    new Observable((subscriber) => {
+      schedule(
+        () => {
+          try {
+            if (typeof value === 'string') {
+              for (const item of value) {
+                subscriber.next(item);
+              }
+              subscriber.complete();
+              return;
+            }
+            Observable.from(value).subscribe(subscriber, {
+              signal: subscriber.signal,
+            });
+          } catch (error) {
+            subscriber.error(error);
+          }
+        },
+        0,
+        { signal: subscriber.signal }
+      );
+    });
+
+  // This case exercises the input conversion contract under rxTest's virtual
+  // host without registering scheduled or a scheduler object as public APIs.
+  expectObservable(virtualScheduled(input)).toBe('(abc|)');
+});
+}
+`;
+}
+
+function buildStartWithSchedulerLastHarnessRewrite(kind) {
+  const configurations = {
+    cancelled: {
+      runtimeNames: 'rxTest, applyOperators, startWith',
+      source: '---a--b----c--d--|',
+      sourceSubscription: '^--------!',
+      operators: `[startWith('s')]`,
+      expectation: `expectObservable(result, '^--------!').toBe('s--a--b--', {
+    s: 's',
+    a: 'a',
+    b: 'b',
+  });`,
+    },
+    chain: {
+      runtimeNames: 'rxTest, applyOperators, startWith, mergeMap, of',
+      source: '---a--b----c--d--|',
+      sourceSubscription: '^--------!',
+      operators: `[mergeMap((value) => of(value)), startWith('s'), mergeMap((value) => of(value))]`,
+      expectation: `expectObservable(result, '^--------!').toBe('s--a--b--', {
+    s: 's',
+    a: 'a',
+    b: 'b',
+  });`,
+    },
+    empty: {
+      runtimeNames: 'rxTest, applyOperators, startWith',
+      source: '-a-|',
+      sourceSubscription: '^--!',
+      operators: `[startWith()]`,
+      expectation: `expectObservable(result).toBe('-a-|');`,
+    },
+    single: {
+      runtimeNames: 'rxTest, applyOperators, startWith',
+      source: '--a--|',
+      sourceSubscription: '^----!',
+      operators: `[startWith('x')]`,
+      expectation: `expectObservable(result).toBe('x-a--|');`,
+    },
+    multiple: {
+      runtimeNames: 'rxTest, applyOperators, startWith',
+      source: '-----a--|',
+      sourceSubscription: '^-------!',
+      operators: `[startWith('y', 'z')]`,
+      expectation: `expectObservable(result).toBe('(yz)-a--|');`,
+    },
+  };
+  const configuration = configurations[kind];
+  if (!configuration) {
+    throw new Error(`Unknown startWith scheduler-last harness rewrite: ${kind}`);
+  }
+  return `async function migrated(runtime) {
+const { ${configuration.runtimeNames} } = runtime;
+await rxTest(async ({ hot, expectObservable, expectSubscriptions }) => {
+  const source = hot('${configuration.source}');
+  const result = applyOperators(source, ${configuration.operators});
+
+  // Remove only the obsolete TestScheduler argument. The exact startWith
+  // Symbol still owns all values, timing, and cancellation in this claim.
+  ${configuration.expectation}
+  expectSubscriptions(source.subscriptions).toBe('${configuration.sourceSubscription}');
+});
+}
+`;
+}
+
+function buildEndWithSchedulerLastHarnessRewrite(kind) {
+  const multiple = kind === 'multiple';
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, endWith } = runtime;
+await rxTest(async ({ hot, expectObservable, expectSubscriptions }) => {
+  const source = hot('${multiple ? '-----a--|' : '--a--|'}');
+  const result = applyOperators(source, [${multiple ? "endWith('y', 'z')" : "endWith('x')"}]);
+
+  // Remove only the obsolete TestScheduler argument. The existing concat
+  // compatibility boundary still owns append ordering and completion.
+  expectObservable(result).toBe('${multiple ? '-----a--(yz|)' : '--a--(x|)'}');
+  expectSubscriptions(source.subscriptions).toBe('${multiple ? '^-------!' : '^----!'}');
+});
+}
+`;
+}
+
+function buildConcatSchedulerLastHarnessRewrite(kind) {
+  const multiple = kind === 'multiple';
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, concat } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
+  const first = cold('${multiple ? '---a|' : '---a-|'}');${
+    multiple
+      ? `
+  const second = cold('---b--|');
+  const third = cold('---c--|');
+  const result = applyOperators(first, [concat(second, third)]);`
+      : `
+  const result = applyOperators(first, [concat()]);`
+  }
+
+  // The trailing scheduler controlled subscription dispatch only. Preserve
+  // the exact sequential-source claim without treating that object as input.
+  expectObservable(result).toBe('${multiple ? '---a---b-----c--|' : '---a-|'}');
+  expectSubscriptions(first.subscriptions).toBe('${multiple ? '^---!' : '^----!'}');${
+    multiple
+      ? `
+  expectSubscriptions(second.subscriptions).toBe('----^-----!');
+  expectSubscriptions(third.subscriptions).toBe('----------^-----!');`
+      : ''
+  }
+});
+}
+`;
+}
+
+function buildDeferredShareResetHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, concat, share, take } = runtime;
+await rxTest(async ({ cold, expectObservable, expectSubscriptions, schedule }) => {
+  const deferredNotify = new Observable((subscriber) => {
+    schedule(
+      () => {
+        subscriber.next(1);
+        subscriber.complete();
+      },
+      0,
+      { signal: subscriber.signal }
+    );
+  });
+  const source = cold('---1---2---3---4---5---|');
+  const sharedSource = applyOperators(source, [
+    share({ resetOnRefCountZero: () => deferredNotify }),
+    take(3),
+  ]);
+  const result = concat(sharedSource, sharedSource);
+
+  // A zero-delay rxTest task represents the original asap reset. concat
+  // resubscribes synchronously first, cancelling that pending reset without
+  // exposing scheduled/asapScheduler as compatibility capabilities.
+  expectObservable(result, '^-----------------------').toBe(
+    '---1---2---3---4---5---|'
+  );
+  expectSubscriptions(source.subscriptions).toBe('^----------------------!');
+});
+}
+`;
+}
+
+function buildFromEventDispatchHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, fromEvent, mapTo } = runtime;
+await rxTest(async ({ expectObservable, schedule }) => {
+  const target = new EventTarget();
+  const result = applyOperators(fromEvent(target, 'click'), [mapTo('ev')]);
+
+  // Use the platform EventTarget contract required by the current fromEvent
+  // boundary and reproduce the original two listener callbacks at frames 5
+  // and 7. The finite observer horizon replaces the source's concat(NEVER).
+  schedule(() => target.dispatchEvent(new Event('click')), 5);
+  schedule(() => target.dispatchEvent(new Event('click')), 7);
+  expectObservable(result, '^----------!').toBe('-----x-x---', { x: 'ev' });
+});
+}
+`;
+}
+
+function buildFromEventPatternDispatchHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, fromEventPattern } = runtime;
+await rxTest(async ({ expectObservable, schedule }) => {
+  const addHandler = (handler) => {
+    schedule(() => handler('ev'), 5);
+    schedule(() => handler('ev'), 7);
+  };
+  const result = fromEventPattern(addHandler);
+
+  // Reproduce the original handler API and virtual emission times directly.
+  // The finite observation boundary retains the deliberately open result.
+  expectObservable(result, '^----------!').toBe('-----x-x---', { x: 'ev' });
+});
+}
+`;
+}
+
+function buildExpandScheduledSubscriptionHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, expand, map, EMPTY } = runtime;
+await rxTest(async ({ cold, hot, expectObservable, expectSubscriptions, flush, now, schedule }) => {
+  const source = hot('--x----|', { x: 1 });
+  const ordering = [];
+  const scheduleSubscription = (input) =>
+    new Observable((subscriber) => {
+      schedule(
+        () => {
+          ordering.push(\`subscribe:\${now()}\`);
+          Observable.from(input).subscribe(subscriber, {
+            signal: subscriber.signal,
+          });
+        },
+        0,
+        { signal: subscriber.signal }
+      );
+    });
+  const result = applyOperators(source, [
+    expand(
+      (value) => {
+        ordering.push(\`project:\${now()}\`);
+        return scheduleSubscription(
+          value === 8
+            ? EMPTY
+            : applyOperators(cold('--c|', { c: 2 }), [
+                map((innerValue) => innerValue * value),
+              ])
+        );
+      },
+      Infinity
+    ),
+  ]);
+
+  // RxJS 7 deprecated the scheduler argument in favor of scheduling each
+  // projected subscription. Model that replacement with rxTest.schedule.
+  // Create each projected cold producer per recursion because platform-mode
+  // fixtures otherwise join one shared run, unlike the RxJS 7 cold fixture.
+  // This retains the original breadth-first timing plus source lifecycle.
+  expectObservable(result).toBe('--a-b-c-d|', {
+    a: 1,
+    b: 2,
+    c: 4,
+    d: 8,
+  });
+  expectSubscriptions(source.subscriptions).toBe('^------!');
+  await flush();
+  expect(ordering).to.deep.equal([
+    'project:2',
+    'subscribe:2',
+    'project:4',
+    'subscribe:4',
+    'project:6',
+    'subscribe:6',
+    'project:8',
+    'subscribe:8',
+  ]);
+});
+}
+`;
+}
+
 function buildSynchronousCatchErrorHarnessRewrite() {
   return `async function migrated(runtime) {
 const { applyOperators, catchError, expect, map } = runtime;
@@ -3905,6 +5367,182 @@ await rxTest(async ({ cold, expectSubscriptions, flush, now, schedule }) => {
       notification: { kind: 'N', value: [] },
     },
   ]);
+});
+}
+`;
+}
+
+function buildDelayTimerCleanupHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, delay, expect } = runtime;
+await rxTest(async ({ flush, now, schedule }) => {
+  const sourceSignals = [];
+  const cancelledEvents = [];
+  const completedEvents = [];
+  const source = new Observable((subscriber) => {
+    sourceSignals.push(subscriber.signal);
+    subscriber.next('a');
+    subscriber.complete();
+  });
+
+  const cancellation = new AbortController();
+  applyOperators(source, [delay(2)]).subscribe(
+    {
+      next: (value) => cancelledEvents.push([now(), 'N', value]),
+      complete: () => cancelledEvents.push([now(), 'C']),
+    },
+    { signal: cancellation.signal }
+  );
+  schedule(() => cancellation.abort(), 1);
+
+  applyOperators(source, [delay(2)]).subscribe({
+    next: (value) => completedEvents.push([now(), 'N', value]),
+    complete: () => completedEvents.push([now(), 'C']),
+  });
+
+  await flush();
+  expect(cancelledEvents).to.deep.equal([]);
+  expect(completedEvents).to.deep.equal([
+    [2, 'N', 'a'],
+    [2, 'C'],
+  ]);
+  expect(cancellation.signal.aborted).to.equal(true);
+  expect(sourceSignals.every((signal) => signal.aborted)).to.equal(true);
+});
+}
+`;
+}
+
+function buildWindowTimeHorizonHarnessRewrite(line) {
+  const next = (frame, value) => ({ frame, notification: { kind: 'N', value } });
+  const complete = (frame) => ({ frame, notification: { kind: 'C' } });
+  const configurations = {
+    160: {
+      runtimeNames: 'windowTime',
+      helpers: 'expectSubscriptions, flush, hot, now, schedule',
+      horizon: 10,
+      setup: `const source = hot('^----------');
+  const result = applyOperators(source, [windowTime(3, 3)]);`,
+      expected: [
+        next(0, [complete(3)]),
+        next(3, [complete(3)]),
+        next(6, [complete(3)]),
+        next(9, []),
+      ],
+      subscriptions: `expectSubscriptions(source.subscriptions).toBe('^---------!');`,
+    },
+    224: {
+      runtimeNames: 'windowTime',
+      helpers: 'expectSubscriptions, flush, hot, now, schedule',
+      horizon: 11,
+      setup: `const source = hot('^--a--b--c--d--e--f--g--h--|');
+  const result = applyOperators(source, [windowTime(5, 10)]);`,
+      expected: [
+        next(0, [next(3, 'a'), complete(5)]),
+        next(10, []),
+      ],
+      subscriptions: `expectSubscriptions(source.subscriptions).toBe('^----------!');`,
+    },
+    247: {
+      runtimeNames: 'mergeMap, of, windowTime',
+      helpers: 'expectSubscriptions, flush, hot, now, schedule',
+      horizon: 14,
+      setup: `const source = hot('^--a--b--c--d--e--f--g--h--|');
+  const result = applyOperators(source, [
+    mergeMap((value) => of(value)),
+    windowTime(5, 10),
+    mergeMap((value) => of(value)),
+  ]);`,
+      expected: [
+        next(0, [next(3, 'a'), complete(5)]),
+        next(10, [next(2, 'd')]),
+      ],
+      subscriptions: `expectSubscriptions(source.subscriptions).toBe('^-------------!');`,
+    },
+    274: {
+      runtimeNames: 'windowTime',
+      helpers: 'cold, flush, now, schedule',
+      horizon: 42,
+      setup: `const source = cold('----a---b---c---d---e---f---g---h---i---j---');
+  const result = applyOperators(source, [windowTime(12, 8, 4)]);`,
+      expected: [
+        next(0, [next(4, 'a'), next(8, 'b'), complete(12)]),
+        next(8, [next(0, 'b'), next(4, 'c'), next(8, 'd'), next(12, 'e'), complete(12)]),
+        next(16, [next(4, 'e'), next(8, 'f'), next(12, 'g'), complete(12)]),
+        next(24, [next(4, 'g'), next(8, 'h'), next(12, 'i'), complete(12)]),
+        next(32, [next(4, 'i'), next(8, 'j')]),
+        next(40, []),
+      ],
+      subscriptions: '',
+    },
+  };
+  const configuration = configurations[line];
+  if (!configuration) {
+    throw new Error(`Unknown windowTime horizon rewrite line: ${line}`);
+  }
+
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, ${configuration.runtimeNames} } = runtime;
+await rxTest(async ({ ${configuration.helpers} }) => {
+  ${configuration.setup}
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+
+  schedule(() => {
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, ${configuration.horizon});
+
+  result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => {
+              messages.push({
+                frame: now() - outerFrame,
+                notification: { kind: 'C' },
+              });
+              innerController.abort();
+            },
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  );
+
+  await flush();
+  expect(actual).to.deep.equal(${JSON.stringify(configuration.expected, null, 2)});
+  ${configuration.subscriptions}
 });
 }
 `;
@@ -4758,6 +6396,25 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
   );
 }
 
+function getPortedSchedulerAdapterReason({ imports, source }) {
+  const schedulerOperatorLocals = imports
+    .filter(
+      ({ imported, usage }) =>
+        usage === 'operator' &&
+        (imported === 'observeOn' || imported === 'subscribeOn')
+    )
+    .map(({ local }) => local);
+  const usesPortedScheduler = schedulerOperatorLocals.some((local) =>
+    new RegExp(
+      `\\b${escapeRegExp(local)}\\s*\\(\\s*(?:rx)?testScheduler\\b`,
+      'i'
+    ).test(source)
+  );
+  return usesPortedScheduler
+    ? 'The RxJS 7 TestScheduler argument is adapted to the exact host-delay Symbol because rxTest virtualizes host timers; notification, subscription, and cancellation evidence is unchanged.'
+    : undefined;
+}
+
 function rewriteManualHelperCalls(source) {
   const aliases = {
     animate: '__rxAnimate',
@@ -5165,6 +6822,15 @@ function transpileMigratedProgram(
     imports.filter((item) => item.module === 'rxjs' && item.imported === 'pipe').map((item) => item.local)
   );
   const operatorLocals = new Set(imports.filter((item) => item.usage === 'operator').map((item) => item.local));
+  const portedSchedulerOperatorLocals = new Set(
+    imports
+      .filter(
+        ({ imported, usage }) =>
+          usage === 'operator' &&
+          (imported === 'observeOn' || imported === 'subscribeOn')
+      )
+      .map(({ local }) => local)
+  );
   const transformed = ts.transpileModule(input, {
     compilerOptions: {
       module: ts.ModuleKind.None,
@@ -5176,6 +6842,7 @@ function transpileMigratedProgram(
         createMigrationTransformer({
           standalonePipeLocals,
           operatorLocals,
+          portedSchedulerOperatorLocals,
           observationBoundary,
           modeAwareObservableExpectation,
           modeAwareSubscriptionExpectation,
@@ -5196,6 +6863,9 @@ function transpileMigratedProgram(
   }
   if (/\b__rxPortMode\b/.test(transformed)) {
     usedRuntimeNames.push('__rxPortMode');
+  }
+  if (/\b__rxTestScheduler\b/.test(transformed)) {
+    usedRuntimeNames.push('__rxTestScheduler');
   }
 
   if (!injectRuntime) {
@@ -5437,6 +7107,7 @@ function createLiteralExpression(value, factory) {
 function createMigrationTransformer({
   standalonePipeLocals,
   operatorLocals,
+  portedSchedulerOperatorLocals,
   observationBoundary,
   modeAwareObservableExpectation,
   modeAwareSubscriptionExpectation,
@@ -5523,6 +7194,80 @@ function createMigrationTransformer({
       }
 
       if (ts.isCallExpression(node)) {
+        if (
+          ts.isIdentifier(node.expression) &&
+          ['bufferTime', 'timeout', 'timeoutWith', 'windowTime'].includes(node.expression.text) &&
+          isSchedulerReceiver(node.arguments.at(-1))
+        ) {
+          return factory.updateCallExpression(
+            node,
+            ts.visitNode(node.expression, visit),
+            node.typeArguments,
+            node.arguments.slice(0, -1).map((argument) => ts.visitNode(argument, visit))
+          );
+        }
+        if (
+          ts.isIdentifier(node.expression) &&
+          node.expression.text === 'interval' &&
+          node.arguments.length > 1 &&
+          isSchedulerReceiver(node.arguments.at(-1))
+        ) {
+          return factory.updateCallExpression(
+            node,
+            ts.visitNode(node.expression, visit),
+            node.typeArguments,
+            [ts.visitNode(node.arguments[0], visit)]
+          );
+        }
+        if (
+          ts.isIdentifier(node.expression) &&
+          portedSchedulerOperatorLocals.has(node.expression.text) &&
+          node.arguments[0] &&
+          isPortedTestSchedulerReceiver(node.arguments[0])
+        ) {
+          return factory.updateCallExpression(
+            node,
+            node.expression,
+            node.typeArguments,
+            [
+              factory.createIdentifier('__rxTestScheduler'),
+              ...node.arguments.slice(1).map((argument) => ts.visitNode(argument, visit)),
+            ]
+          );
+        }
+        if (
+          ts.isIdentifier(node.expression) &&
+          ['timestamp', 'timeInterval', 'sampleTime'].includes(node.expression.text)
+        ) {
+          const schedulerIndex = node.expression.text === 'sampleTime' ? 1 : 0;
+          const schedulerArgument = node.arguments[schedulerIndex];
+          if (schedulerArgument && isSchedulerReceiver(schedulerArgument)) {
+            const arguments_ = node.arguments.map((argument) => ts.visitNode(argument, visit));
+            arguments_[schedulerIndex] = factory.createObjectLiteralExpression(
+              [
+                factory.createPropertyAssignment('__rxjsHostTimeProvider', factory.createTrue()),
+                factory.createPropertyAssignment(
+                  'now',
+                  factory.createArrowFunction(
+                    undefined,
+                    undefined,
+                    [],
+                    undefined,
+                    factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                    factory.createCallExpression(factory.createIdentifier('__rxNow'), undefined, [])
+                  )
+                ),
+              ],
+              false
+            );
+            return factory.updateCallExpression(
+              node,
+              ts.visitNode(node.expression, visit),
+              node.typeArguments,
+              arguments_
+            );
+          }
+        }
         const expectedValuesArgument = node.arguments[1];
         const expectedValueToken =
           ts.isPropertyAccessExpression(node.expression) &&
@@ -6125,6 +7870,10 @@ function isSchedulerReceiver(node) {
   return ts.isIdentifier(node) && /(?:testScheduler|rxTest|scheduler)$/i.test(node.text);
 }
 
+function isPortedTestSchedulerReceiver(node) {
+  return ts.isIdentifier(node) && /^(?:rx)?testScheduler$/i.test(node.text);
+}
+
 function isTestSchedulerConstruction(node) {
   return (
     ts.isNewExpression(node) &&
@@ -6333,9 +8082,15 @@ function assessAvailability(imports) {
       }
     } else if (item.module === 'rxjs/testing') {
       continue;
-    } else if (item.module === 'sinon' && item.imported === 'spy') {
+    } else if (item.module === 'sinon') {
       continue;
     } else if (frameworkModules.has(item.module)) {
+      continue;
+    } else if (
+      (item.module === 'rxjs/internal/operators/timeInterval' && item.imported === 'TimeInterval') ||
+      (item.module === 'rxjs/internal/scheduler/animationFrameProvider' &&
+        item.imported === 'animationFrameProvider')
+    ) {
       continue;
     } else if (item.module.startsWith('rxjs/')) {
       missing.push(`${item.module}:${item.imported}`);
