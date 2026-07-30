@@ -8,10 +8,55 @@ interface OperatorDescriptor {
   readonly args: readonly unknown[];
 }
 
+declare global {
+  namespace Chai {
+    interface Assertion {
+      callCount(expected: number): Assertion;
+      readonly called: Assertion;
+      readonly calledOnce: Assertion;
+      readonly calledTwice: Assertion;
+      calledWithExactly(...expected: readonly unknown[]): Assertion;
+    }
+  }
+}
+
 const composedOperatorName = '\0rxjs7-pipe';
 const chaiInspect = Symbol.for('chai/inspect');
 const portedObservableDisplayFlag = 'rxjsPortedObservableDisplay';
 const originalChaiAssert = ChaiAssertion.prototype.assert;
+
+interface PortedSpyCall {
+  readonly args: readonly unknown[];
+}
+
+export type PortedSpy<Args extends unknown[] = unknown[], Result = unknown> = ((...args: Args) => Result) & {
+  readonly callCount: number;
+  readonly called: boolean;
+  readonly calledOnce: boolean;
+  readonly calledTwice: boolean;
+  getCall(index: number): PortedSpyCall | undefined;
+};
+
+export function portedSpy<Args extends unknown[] = unknown[], Result = unknown>(
+  implementation?: (...args: Args) => Result
+): PortedSpy<Args, Result> {
+  const calls: PortedSpyCall[] = [];
+  const spy = function (this: unknown, ...args: Args): Result {
+    calls.push({ args });
+    return implementation?.apply(this, args) as Result;
+  } as PortedSpy<Args, Result>;
+
+  Object.defineProperties(spy, {
+    callCount: { get: () => calls.length },
+    called: { get: () => calls.length > 0 },
+    calledOnce: { get: () => calls.length === 1 },
+    calledTwice: { get: () => calls.length === 2 },
+    getCall: { value: (index: number) => calls[index] },
+  });
+  return spy;
+}
+
+installPortedSpyAssertions();
 
 export const portedExpect = ((actual: unknown, message?: string) => {
   const assertion = chaiExpect(actual, message);
@@ -26,6 +71,50 @@ ChaiAssertion.prototype.assert = function (...args: Parameters<typeof originalCh
   const actual = chaiUtil.flag(this, 'object');
   return withObservableAssertionDisplay(actual, () => originalChaiAssert.apply(this, args));
 };
+
+function installPortedSpyAssertions(): void {
+  const Assertion = ChaiAssertion as any;
+  Assertion.addMethod('callCount', function (this: any, expected: number): void {
+    const actual = chaiUtil.flag(this, 'object') as Partial<PortedSpy>;
+    this.assert(
+      actual.callCount === expected,
+      'expected spy to have been called #{exp} times but was called #{act} times',
+      'expected spy not to have been called #{exp} times',
+      expected,
+      actual.callCount
+    );
+  });
+  for (const [property, count] of [
+    ['calledOnce', 1],
+    ['calledTwice', 2],
+  ] as const) {
+    Assertion.addProperty(property, function (this: any): void {
+      const actual = chaiUtil.flag(this, 'object') as Partial<PortedSpy>;
+      this.assert(
+        actual.callCount === count,
+        `expected spy to have been ${property}`,
+        `expected spy not to have been ${property}`
+      );
+    });
+  }
+  Assertion.addProperty('called', function (this: any): void {
+    const actual = chaiUtil.flag(this, 'object') as Partial<PortedSpy>;
+    this.assert(actual.called === true, 'expected spy to have been called', 'expected spy not to have been called');
+  });
+  Assertion.addMethod('calledWithExactly', function (this: any, ...expected: readonly unknown[]): void {
+    const actual = chaiUtil.flag(this, 'object') as PortedSpyCall | undefined;
+    const matches =
+      actual !== undefined &&
+      actual.args.length === expected.length &&
+      actual.args.every((value, index) => value === expected[index]);
+    this.assert(
+      matches,
+      'expected spy call to have exact arguments #{exp}',
+      'expected spy call not to have exact arguments #{exp}',
+      expected
+    );
+  });
+}
 
 type SymbolMap = Readonly<Record<string, symbol>>;
 type StaticFactoryMap = Readonly<Record<string, symbol>>;
@@ -543,6 +632,8 @@ function installImport(
   }
   if (imported.module === 'chai' && imported.imported === 'expect') {
     runtime[imported.local] = portedExpect;
+  } else if (imported.module === 'sinon' && imported.imported === 'spy') {
+    runtime[imported.local] = portedSpy;
   }
 }
 

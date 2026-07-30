@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { portedExpect } from './capabilities.js';
+import { portedExpect, portedSpy } from './capabilities.js';
 
 describe('ported Chai assertions', () => {
   beforeAll(async () => {
@@ -39,5 +39,18 @@ describe('ported Chai assertions', () => {
     let completed = false;
     source.inspect({ complete: () => (completed = true) }).subscribe();
     expect(completed).toBe(true);
+  });
+
+  it('supports the Sinon spy evidence used by migrated operator tests', () => {
+    const expected = new Error('expected');
+    const spy = portedSpy((value: unknown) => value);
+
+    expect(spy(expected)).toBe(expected);
+    portedExpect(spy).to.have.callCount(1);
+    portedExpect(spy).to.have.been.calledOnce;
+    portedExpect(spy.getCall(0)).to.have.been.calledWithExactly(expected);
+
+    const idle = portedSpy();
+    portedExpect(idle).to.not.have.been.called;
   });
 });
