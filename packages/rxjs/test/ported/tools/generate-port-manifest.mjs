@@ -403,6 +403,29 @@ const observationBoundaries = new Map([
     { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
   ],
   [
+    'spec/observables/forkJoin-spec.ts:190:forkJoin > forkJoin([input1, input2, input3]) > should not complete when only source never completes',
+    { observable: boundedSubscription(0, 14) },
+  ],
+  [
+    'spec/observables/forkJoin-spec.ts:199:forkJoin > forkJoin([input1, input2, input3]) > should not complete when one of the sources never completes',
+    { observable: boundedSubscription(0, 1) },
+  ],
+  [
+    'spec/observables/forkJoin-spec.ts:451:forkJoin > forkJoin({ foo, bar, baz }) > should not complete when only source never completes',
+    { observable: boundedSubscription(0, 14) },
+  ],
+  [
+    'spec/observables/forkJoin-spec.ts:462:forkJoin > forkJoin({ foo, bar, baz }) > should not complete when one of the sources never completes',
+    { observable: boundedSubscription(0, 14) },
+  ],
+  [
+    'spec/operators/catchError-spec.ts:329:catchError operator > should never terminate if you return NEVER',
+    {
+      observable: boundedSubscription(0, 9),
+      subscriptions: new Map([['e2subs', boundedSubscription(8, 9)]]),
+    },
+  ],
+  [
     'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
