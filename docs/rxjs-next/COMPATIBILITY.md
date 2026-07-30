@@ -117,11 +117,20 @@ current or buffered state to each late observer. Its default hook handles
 terminal state and live fanout; subclasses that bypass it to control replay
 ordering own those lifecycle responsibilities.
 
-This hook is not a transparent native Observable hook. It is reached through
-the compatibility `subscribe()` override for direct JavaScript subscriptions.
-Native Observable methods may use the platform's internal subscription
-algorithm and bypass that override. Code must not assume `_subscribe` runs when
-a native operator internally subscribes to an instance.
+The compatibility/native boundary is explicit. `ColdObservable` is an
+`instanceof Observable` subclass and its direct `subscribe()` creates a new
+producer run. RxJS Symbol operators use the shared versioned `[create]`
+protocol and return plain ColdObservables. String-named native methods delegate
+through a fresh base Observable view and return platform Observables; native
+Promise consumers use the same view. The platform result then owns its normal
+shared, ref-counted activation.
+
+For a `PerSubscriptionSubjectBase`, the platform view reaches `_subscribe`
+once when that activation starts. Concurrent observers of the same native
+result share it; a later observer after ref-count closure starts another view
+activation and reaches the hook again. A borrowed or newly introduced native
+method is not automatically intercepted and must be added to the explicit
+bridge before it is supported.
 
 The current `Subject` class provides `subject.asObservable()` as a
 Subject-local compatibility capability. It returns a distinct base Observable

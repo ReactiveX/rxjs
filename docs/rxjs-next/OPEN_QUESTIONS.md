@@ -43,31 +43,27 @@ The current pnpm workspace hoist affects repository resolution only. It does
 not install the fallback for published consumers and therefore does not answer
 this question.
 
-### 3. What is the Symbol identity strategy?
+### 3. What Symbol identity details remain?
 
-The branch primarily uses `Symbol('name')`, while `buffer` uses
-`Symbol.for('buffer')`.
+D-037 resolves the construction seam. Public operator and factory Symbols stay
+exact and module-owned. Only the internal construction protocol uses the
+namespaced, ABI-versioned global key
+`Symbol.for('rxjs.kernel.create.v1')`. This lets an operator from one compatible
+RxJS copy honor a `ColdObservable` created by another copy. Installation keeps
+an existing callable implementation and rejects a non-callable collision.
 
-An accepted constraint is that unrelated extensions must not be able to
-overwrite one another merely by choosing the same descriptive name. Unique
-Symbols provide that isolation because only code holding the exact key can
-address its slot. `Symbol.for` makes a key recoverable by registry name and must
-therefore justify the collision tradeoff.
+Still decide:
 
-Decide:
-
-- unique module Symbols versus globally registered Symbols;
-- registry key names, namespacing, and collision ownership if `Symbol.for` is
-  used;
-- behavior with duplicate RxJS copies or versions;
-- whether symbols are stable across major versions;
-- how symbols cross realms;
-- whether patch installation is idempotent and how conflicting implementations
-  are detected.
-
-D-031 and D-032 use exact unique Symbols for their current modules, but that
-local collision isolation does not settle duplicate-copy, version, or realm
-identity.
+- whether public exact Symbols are stable across major versions;
+- the supported behavior when multiple versions install different
+  implementations under their separate exact operator Symbols;
+- whether and how public Symbols and the global construction protocol cross
+  the supported realm boundaries;
+- whether a stronger compatibility marker is needed to distinguish an
+  arbitrary callable occupying the versioned protocol slot;
+- removal or correction of the unreviewed `Symbol.for('buffer')` exception;
+- the common idempotent installer and conflict policy for public extension
+  Symbols.
 
 ### 4. What does importing an extension guarantee?
 
@@ -106,8 +102,10 @@ the current fallback is ready for strict conformance work.
 
 ### 7. How are realms and subclasses preserved?
 
-The prototype uses `this.constructor` to construct many results. Decide the
-required behavior for:
+The prototype uses `this.constructor` to construct many results. D-037 resolves
+the compatibility subclass used by `ColdObservable`: RxJS Symbol operators
+return a plain ColdObservable, while native string methods return fresh
+platform Observables. Decide the remaining required behavior for:
 
 - native subclasses;
 - cross-realm Observable instances;
@@ -179,10 +177,15 @@ classified in the compatibility ledger as APIs are restored.
 
 ### 11. What does a compatibility observable return?
 
-Decide whether compatibility operators return:
+D-037 resolves the current `ColdObservable` experiment: RxJS Symbol operators
+return plain ColdObservables, while native string methods return platform
+Observables. This does not yet choose the final compatibility product, package,
+or conversion API.
+
+Decide whether the stabilized compatibility surface retains that model or
+instead returns:
 
 - platform Observable instances with adapters;
-- a producer-per-subscription compatibility subclass;
 - a wrapper that exposes both platform and RxJS 7 contracts; or
 - a distinct type requiring explicit conversion.
 

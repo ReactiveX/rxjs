@@ -40,11 +40,11 @@ function singleOperator<T>(
       {
         next: (value) => {
           seenValue = true;
-          let matches = true;
+          let isMatch = true;
 
           if (predicate) {
             try {
-              matches = predicate(value, index++, source);
+              isMatch = predicate(value, index++, source);
             } catch (error) {
               sourceController.abort();
               subscriber.error(error);
@@ -52,7 +52,7 @@ function singleOperator<T>(
             }
           }
 
-          if (!matches) {
+          if (!isMatch) {
             return;
           }
 

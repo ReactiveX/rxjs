@@ -15,10 +15,6 @@ Observable.prototype[mergeMap] = function <T, R>(
 ): Observable<R> {
   const { concurrent = Infinity } = options ?? {};
 
-  if (concurrent === 1) {
-    return this.flatMap(mapper);
-  }
-
   return this[create]((subscriber) => {
     let index = 0;
     const buffer: T[] = [];

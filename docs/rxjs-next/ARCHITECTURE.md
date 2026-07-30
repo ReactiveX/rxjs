@@ -321,7 +321,9 @@ These are two intentional public surfaces on the same Observable:
 - The RxJS implementation may delegate to the platform method when the
   contracts match, wrap it, or independently implement additional inputs,
   overloads, or behavior. Those differences are part of the RxJS contract and
-  require focused documentation and tests.
+  require focused documentation and tests. Delegation must also preserve the
+  receiver's approved `[create]` policy; it cannot turn a ColdObservable Symbol
+  result into a platform Observable as an accidental fast path.
 - Installing the RxJS Symbol must never replace or alias over the string-named
   platform property.
 
@@ -369,18 +371,28 @@ enumerate Symbol properties, and an exported Symbol is intentionally available
 to its importers. The guarantee is that unrelated code cannot collide merely by
 choosing the same name.
 
-The guarantee is strongest with unique Symbols. `Symbol.for(key)` deliberately
-uses a shared global registry: any code that knows `key` can recover the same
-Symbol and write to the same slot. A globally registered key may solve
-duplicate-package discoverability, but it gives up some collision isolation and
-therefore requires an explicit, namespaced design decision.
+The guarantee is strongest with unique Symbols, which remain the rule for
+public RxJS operators and factories. `Symbol.for(key)` deliberately uses a
+shared global registry: any code that knows `key` can recover the same Symbol
+and write to the same slot.
+
+The one accepted exception is the internal construction protocol in D-037.
+Compatible copies use `Symbol.for('rxjs.kernel.create.v1')` so an operator from
+one copy can discover the construction policy of an Observable subclass from
+another copy. The ABI version belongs to the protocol rather than the package
+release. Installation keeps an existing callable implementation and rejects an
+occupied non-callable slot. No public operator Symbol becomes globally
+recoverable as a result.
 
 ### Constructor preservation
 
 `create.ts` and helper functions use either `this.constructor` or a static
-receiver so derived results can use the receiver's Observable constructor.
-This is directionally important for native subclasses and realms, but the
-required edge-case behavior is still open.
+receiver so ordinary derived results can use the receiver's Observable
+constructor. `ColdObservable` deliberately overrides the shared creation
+protocol to construct another plain `ColdObservable`. Its native string-named
+methods instead delegate through a fresh base Observable and return platform
+Observables. General native-subclass, borrowed-method, and cross-realm behavior
+remains open.
 
 ### Installation side effects
 
@@ -395,19 +407,23 @@ the following architectural concerns inseparable from the API:
 - property descriptors and collision behavior must be specified;
 - patching may fail for non-extensible constructors or prototypes.
 
-The branch has no common installer or collision guard yet.
+The branch still has no common installer for public extension Symbols. The
+shared creation protocol is narrower: its installer is idempotent for an
+existing callable slot and rejects a non-callable collision.
 
 ### Current Symbol inconsistency
 
-Most modules use `Symbol('name')`, producing a key unique to that module
-instance. `buffer.ts` uses `Symbol.for('buffer')`, producing a
-global-registry key. `with-latest-from.ts` also lacks the explicit
-`unique symbol` annotation used by most other modules.
+Most public extension modules use `Symbol('name')`, producing a key unique to
+that module instance. `buffer.ts` uses `Symbol.for('buffer')`, producing an
+unreviewed global-registry key. `with-latest-from.ts` also lacks the explicit
+`unique symbol` annotation used by most other modules. Separately,
+`create.ts` uses the accepted namespaced global protocol key from D-037.
 
-The unique-symbol form provides the collision-safety described above.
-`Symbol.for` changes that property by making the key recoverable from its
-registry name. No one form should be copied as policy until the identity and
-duplicate-install decision is resolved.
+The unique-symbol form provides the collision-safety described above and is
+the policy for public operators and factories. The construction protocol's
+global key is a narrow interoperability exception, not precedent for copying
+`Symbol.for` into public extension modules. The inconsistent `buffer` key and
+remaining realm/version details still require P2.1 resolution.
 
 ## Current API inventory
 
@@ -656,10 +672,15 @@ violate the project foundation and make native and polyfilled behavior diverge.
 
 ### Current prototypes
 
-`ColdObservable` overrides `subscribe()` and creates a new `ColdSubscriber` per
-direct JavaScript call. `PerSubscriptionSubjectBase`, the behavior-subject
-factory, and the replay-subject factory build on that compatibility mechanism.
-These classes demonstrate a possible compatibility seam.
+`ColdObservable` subclasses the active platform Observable, overrides
+`subscribe()`, and creates a new `ColdSubscriber` per direct JavaScript call.
+It also defines the shared versioned `[create]` protocol so RxJS Symbol
+operators return plain ColdObservables. Its string-named platform methods take
+the opposite path: each delegates through a fresh base Observable view, so
+Observable-returning methods return platform Observables and Promise consumers
+still activate the cold source correctly. `PerSubscriptionSubjectBase`, the
+behavior-subject factory, and the replay-subject factory build on that
+compatibility mechanism.
 
 `PerSubscriptionSubjectBase` is an advanced abstract base rather than an
 ordinary Subject for application code. Like every Subject, its instance is a
@@ -682,8 +703,9 @@ from `Subject` are:
   type.
 - `Subject` provides `asObservable()` and overrides the Symbol-keyed creation
   hook so operator results use the immutable platform Observable base.
-  `PerSubscriptionSubjectBase` does not provide those Subject-local
-  safeguards.
+  `PerSubscriptionSubjectBase` instead inherits the cold `[create]` protocol.
+  Symbol-operator results are plain ColdObservables rather than mutable Subject
+  subclasses, while native-method results are platform Observables.
 
 The constructor is protected and the class is abstract so it cannot be
 presented as a beginner-facing replacement for `Subject`. Its default
@@ -693,12 +715,14 @@ implementation. A subclass that calls the lower-level `addSubscriber` helper
 instead owns terminal handling, replay ordering, active-state checks, and
 teardown correctness.
 
-The hook is deliberately documented as a **direct-subscription compatibility
-hook**. Native Observable methods can use the platform's internal subscription
-algorithm rather than reading an instance's JavaScript `subscribe` property.
-Such methods can therefore bypass the `ColdObservable.subscribe()` override
-and the `_subscribe` hook. `PerSubscriptionSubjectBase` is not a transparent
-interception point for native operator subscriptions.
+The hook is deliberately a **direct-subscription compatibility hook**.
+`ColdObservable`'s explicit native-method overrides reach it by subscribing
+the fresh platform view to the cold source. For a behavior or replay subject,
+that means observer-local setup runs once for each active platform view, while
+concurrent observers of the same native result share that platform activation.
+Borrowed or newly introduced native methods are not automatically covered;
+the method-inventory test must identify and force review of platform-surface
+growth.
 
 For a plain Subject, the extra compatibility layer has no identified fanout
 purpose. The current behavior- and replay-subject prototypes are its concrete

@@ -1433,3 +1433,28 @@ conformance implementation depends on a runnable harness.
   subclasses after filtering out the repository's existing errors.
 - This user-directed compatibility cleanup does not advance P0.2, which
   remains the single project-level `NEXT` item.
+
+### 2026-07-30 — ColdObservable native and Symbol construction boundary
+
+- Accepted one globally shared, ABI-versioned construction protocol at
+  `Symbol.for('rxjs.kernel.create.v1')` while retaining exact module-owned
+  Symbols for public operators and factories.
+- Made protocol installation idempotent for compatible callable slots and a
+  hard error for a non-callable collision.
+- Kept `ColdObservable` as a real platform subclass. Native string methods
+  delegate through fresh base Observable views and return platform
+  Observables; native Promise consumers activate the source through the same
+  boundary.
+- Overrode `[create]` so RxJS Symbol operators return plain ColdObservables,
+  including when the receiver is a behavior or replay Subject derived through
+  `PerSubscriptionSubjectBase`.
+- Removed `mergeMap` and `switchMap` native-method shortcuts that bypassed the
+  receiver's `[create]` policy in their default configurations.
+- Added focused constructor, native-method inventory, Promise-consumer,
+  duplicate-copy Symbol identity, Symbol-operator, and derived-Subject tests.
+- Regenerated the source-pinned port manifest for the accepted cold-subclass
+  identity rule. The full RxJS gate passes 717 focused tests and all 2,338
+  cases in both cold and polyfill modes.
+- Recorded D-037. This user-directed compatibility/kernel slice does not
+  advance the package-map decision; P0.2 remains the single project-level
+  `NEXT` item.

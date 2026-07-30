@@ -14,9 +14,6 @@ Observable.prototype[switchMap] = function <T, R>(
   options?: { concurrent?: number }
 ): Observable<R> {
   const { concurrent = 1 } = options ?? {};
-  if (concurrent === 1) {
-    return this.switchMap(mapper);
-  }
 
   return this[create]((subscriber) => {
     let outerComplete = false;

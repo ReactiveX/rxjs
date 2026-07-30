@@ -760,3 +760,39 @@ Status meanings:
   the overridden `subscribe()` method, so this base is not a transparent native
   subscription interception mechanism. Removing the old public subpath is an
   intentional exploratory API rename.
+
+## D-037 — Share only the versioned Observable creation protocol
+
+- **Status:** Accepted
+- **Decision:** Public RxJS operator and factory Symbols remain exact
+  module-owned keys. The internal construction protocol is the deliberate
+  exception: every compatible RxJS copy uses
+  `Symbol.for('rxjs.kernel.create.v1')`. Installation on the active Observable
+  constructor and prototype is idempotent. An existing callable implementation
+  is retained; an occupied non-callable slot is a hard initialization error.
+  The protocol property is non-enumerable, writable, and configurable.
+- **ColdObservable contract:** `ColdObservable` is a real subclass of the
+  active platform Observable. Its `[create]` implementation constructs a plain
+  `ColdObservable`, so RxJS Symbol operators preserve producer-per-subscription
+  compatibility. Every current string-named platform method is overridden to
+  delegate through a fresh base Observable view. Observable-returning native
+  methods therefore return platform Observables, and native Promise consumers
+  activate the cold source through the same platform view.
+- **Rationale:** An operator Symbol from one compatible RxJS installation must
+  be able to discover the construction policy of a `ColdObservable` created by
+  another installation. Globalizing every operator Symbol would unnecessarily
+  surrender their collision isolation. A single namespaced and ABI-versioned
+  protocol key provides the required interoperation without making the public
+  extension catalog shared global territory.
+- **Consequence:** `cold.map(project)` crosses to the platform lifecycle, while
+  `cold[map](project)` remains on the cold compatibility lifecycle. Behavior-
+  and replay-subject prototypes derived from `ColdObservable` inherit this
+  rule; their Symbol-operator results are plain ColdObservables rather than
+  Subject subclasses. Concurrent observers of one native-method result share
+  that result's platform activation. A future incompatible creation protocol
+  requires a new registry key, and compatibility subclasses that need to work
+  with older operators must retain the older protocol slot. New platform
+  methods must be audited and overridden before they are considered supported
+  on `ColdObservable`. A Symbol operator cannot bypass `[create]` by delegating
+  directly to a native method when that would change the receiver's
+  construction policy.

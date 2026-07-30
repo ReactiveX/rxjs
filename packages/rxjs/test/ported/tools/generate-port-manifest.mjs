@@ -724,19 +724,19 @@ const intentionalDivergenceReasons = new Map([
   ],
   [
     'spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest',
-    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and combined output.',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol. The platform protocol preserves the custom subclass; the cold compatibility protocol returns a plain ColdObservable while preserving the combined output.',
   ],
   [
     'spec/Observable-spec.ts:1353:Observable.lift > should compose through concat',
-    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and concatenated output; the trailing RxJS 7 scheduler overload is explicitly rejected.',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol. The platform protocol preserves the custom subclass; the cold compatibility protocol returns a plain ColdObservable while preserving the concatenated output. The trailing RxJS 7 scheduler overload is explicitly rejected.',
   ],
   [
     'spec/Observable-spec.ts:1366:Observable.lift > should compose through merge',
-    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass and merged output; the trailing RxJS 7 scheduler overload is explicitly rejected.',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol. The platform protocol preserves the custom subclass; the cold compatibility protocol returns a plain ColdObservable while preserving the merged output. The trailing RxJS 7 scheduler overload is explicitly rejected.',
   ],
   [
     'spec/Observable-spec.ts:1380:Observable.lift > should compose through race',
-    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol while preserving the valid platform subclass, winning output, and loser cancellation.',
+    'Intentional RxJS Next divergence: exact Symbol composition replaces the removed lift/source/operator protocol. The platform protocol preserves the custom subclass; the cold compatibility protocol returns a plain ColdObservable while preserving the winning output and loser cancellation.',
   ],
   [
     'spec/Observable-spec.ts:1400:Observable.lift > should compose through zip',
@@ -4084,8 +4084,8 @@ expect(schedulerError.message).to.match(/not observable/);
       : '';
   const runtimeNames =
     kind === 'concat' || kind === 'merge'
-      ? `rxTest, expect, Observable, applyOperators, ${kind}`
-      : 'rxTest, expect, Observable';
+      ? `rxTest, expect, Observable, applyOperators, ${kind}${configuration.subclass ? ', __rxPortMode' : ''}`
+      : `rxTest, expect, Observable${configuration.subclass ? ', __rxPortMode' : ''}`;
   const mapSymbol =
     kind === 'zip'
       ? `
@@ -4093,9 +4093,18 @@ const mapSymbol = exactOperatorSymbol('map');`
       : '';
   const subclassAssertion =
     configuration.subclass
-      ? `expect(result instanceof MyCustomObservable).to.equal(true);`
+      ? `expect(result instanceof MyCustomObservable).to.equal(__rxPortMode !== 'cold');
+  expect(result instanceof Observable).to.equal(true);`
       : `expect(result instanceof MyCustomObservable).to.equal(false);
   expect(result instanceof Observable).to.equal(true);`;
+  const constructionComment = configuration.subclass
+    ? `// Exact extension Symbols replace the removed RxJS 7
+  // empty-constructor/source/operator/lift protocol. The platform construction
+  // protocol preserves an ordinary custom subclass; the cold compatibility
+  // protocol deliberately normalizes subclasses to a plain ColdObservable.`
+    : `// A valid platform subclass and exact extension Symbol replace the removed
+  // RxJS 7 empty-constructor/source/operator/lift protocol. Preserve the
+  // original composition identity decision and complete marble evidence.`;
 
   return `async function migrated(runtime) {
 const { ${runtimeNames} } = runtime;
@@ -4121,9 +4130,7 @@ await rxTest(async ({ cold, expectObservable, expectSubscriptions }) => {
   const source = MyCustomObservable.from(first);
   const result = ${configuration.result};
 
-  // A valid platform subclass and exact extension Symbol replace the removed
-  // RxJS 7 empty-constructor/source/operator/lift protocol. Preserve the
-  // original composition identity decision and complete marble evidence.
+  ${constructionComment}
   ${subclassAssertion}
   expectObservable(result).toBe('${configuration.expected}'${configuration.values});${configuration.subscriptions}
 });
