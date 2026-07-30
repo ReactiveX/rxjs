@@ -19,6 +19,7 @@ export interface CompleteNotification {
 }
 
 export type ObservableNotification<T> = NextNotification<T> | ErrorNotification | CompleteNotification;
+export type ValueFromNotification<N> = N extends NextNotification<infer T> ? T : never;
 
 export class Notification<T> {
   readonly hasValue: boolean;
