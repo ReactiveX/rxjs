@@ -88,6 +88,43 @@ const observationBoundaries = new Map([
     },
   ],
   [
+    'spec/operators/distinctUntilChanged-spec.ts:37:distinctUntilChanged > should distinguish between values and does not complete',
+    {
+      observable: boundedSubscription(0, 19),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 19)]]),
+    },
+  ],
+  [
+    'spec/operators/distinctUntilChanged-spec.ts:48:distinctUntilChanged > should not complete if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/distinctUntilChanged-spec.ts:59:distinctUntilChanged > should not complete if source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/count-spec.ts:26:count > should be never when source is never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    "spec/operators/count-spec.ts:48:count > should be never when source doesn't complete",
+    {
+      observable: boundedSubscription(0, 6),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 6)]]),
+    },
+  ],
+  [
+    'spec/operators/count-spec.ts:298:count > should handle an always-true predicate on a hot never-observable',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]),
+    },
+  ],
+  [
+    'spec/operators/every-spec.ts:290:every > should not complete if source never emits',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/audit-spec.ts:369:audit operator > should handle a never source',
     { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
   ],
