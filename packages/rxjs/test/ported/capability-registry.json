@@ -465,6 +465,14 @@
       "status": "Present; parity unverified",
       "note": "Creates one hot error stream and one notifier per shared activation; retries are sequential and notifier completion or error controls the shared result."
     },
+    "sample": {
+      "symbol": "sample",
+      "module": "sample",
+      "adapter": "identity",
+      "mapping": "source[sample](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Samples the latest unseen source value on notifier emissions; notifier completion does not complete or flush the result."
+    },
     "scan": {
       "symbol": "scan",
       "module": "scan",
@@ -640,6 +648,14 @@
       "mapping": "source[buffer]({ emitEmpty: true, emitRemainingOnError: false })",
       "status": "Partial unified mapping",
       "note": "Uses one unbounded buffer and emits it only on successful completion."
+    },
+    "window": {
+      "symbol": "window",
+      "module": "window",
+      "adapter": "identity",
+      "mapping": "source[window](boundaries)",
+      "status": "Present; parity unverified",
+      "note": "Emits read-only hot windows, activates source before boundaries, rotates on boundary values, and silently releases the live window on outer cancellation."
     },
     "windowCount": {
       "symbol": "windowCount",
