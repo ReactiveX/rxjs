@@ -145,6 +145,14 @@
       "status": "Partial unified mapping",
       "note": "Numeric delays reset a host timer, flush on completion, and cancel via AbortSignal. Scheduler arguments are not represented."
     },
+    "dematerialize": {
+      "symbol": "dematerialize",
+      "module": "dematerialize",
+      "adapter": "identity",
+      "mapping": "source[dematerialize]()",
+      "status": "Present; parity unverified",
+      "note": "Converts next, error, and completion notification shapes back into their represented Observable signals."
+    },
     "defaultIfEmpty": {
       "symbol": "defaultIfEmpty",
       "module": "default-if-empty",
@@ -328,6 +336,14 @@
       "mapping": "source[mergeMap](() => Observable.from([value]))",
       "status": "Partial unified mapping",
       "note": "Expresses constant projection through mergeMap and an ambient single-value Observable."
+    },
+    "materialize": {
+      "symbol": "materialize",
+      "module": "materialize",
+      "adapter": "identity",
+      "mapping": "source[materialize]()",
+      "status": "Present; parity unverified",
+      "note": "Converts every source signal into a Notification next value and completes after materialized error or completion."
     },
     "max": {
       "symbol": "max",
@@ -560,6 +576,14 @@
       "mapping": "source[switchMap](() => innerSource)",
       "status": "Partial unified mapping",
       "note": "Legacy result-selector overloads are not represented."
+    },
+    "switchScan": {
+      "symbol": "switchScan",
+      "module": "switch-scan",
+      "adapter": "identity",
+      "mapping": "source[switchScan](accumulator, seed)",
+      "status": "Present; parity unverified",
+      "note": "Carries inner emissions as accumulator state, cancels the prior inner on each source value, and waits for the current inner after source completion."
     },
     "tap": {
       "symbol": "tap",
@@ -944,6 +968,13 @@
       "mapping": "Notification",
       "status": "Compatibility-only",
       "note": "Provides the deprecated RxJS 7 Notification class, its shared completion instance, dispatch helpers, and Observable conversion."
+    },
+    "ObservableNotification": {
+      "module": "notification",
+      "adapter": "typeOnly",
+      "mapping": "ObservableNotification<T>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased RxJS 7 notification union import."
     },
     "noop": {
       "module": "noop",
