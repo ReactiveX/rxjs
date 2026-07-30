@@ -89,6 +89,14 @@
       "status": "Partial unified mapping",
       "note": "Maps the With variant to the unified combineLatest Symbol."
     },
+    "connect": {
+      "symbol": "connect",
+      "module": "connect",
+      "adapter": "identity",
+      "mapping": "source[connect](selector, config?)",
+      "status": "Present; parity unverified",
+      "note": "Creates one connector per active result run, establishes the selector result before source activation, and owns selector/source cancellation through the result signal."
+    },
     "concat": {
       "symbol": "concat",
       "module": "concat",
