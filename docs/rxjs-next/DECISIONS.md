@@ -555,3 +555,65 @@ Status meanings:
   flush source, and clears remembered keys on each flush value. Predicate,
   selector, comparer, source, and flush errors terminate the shared activation;
   cancellation closes every active source through `AbortSignal`.
+
+## D-028 — Keep forkJoin as an exact static Symbol contract
+
+- **Status:** Accepted
+- **Decision:** RxJS `forkJoin` is installed only under its exported exact
+  static Symbol. It accepts RxJS 7 array, object, deprecated rest, empty-input,
+  and result-selector forms, converts inputs through the active platform
+  constructor, and constructs its result through the static receiver.
+- **Rationale:** `forkJoin` is an RxJS combination contract rather than a
+  platform string-named constructor method. Its input normalization, last-value
+  collection, and early-empty completion rules are observable behavior that
+  should not be hidden in a test-only adapter.
+- **Consequence:** Every input must emit and complete before the one result is
+  delivered. An input that completes without a value completes the result
+  immediately, cancels active siblings, and prevents later synchronous input
+  activation. Input conversion, source, and selector errors terminate the
+  shared activation. Concurrent observers share input work and last-value
+  state; restart begins with empty state. No string-named `forkJoin` member or
+  global Symbol registry key is introduced.
+
+## D-029 — Treat catchError recovery as one shared activation
+
+- **Status:** Accepted
+- **Decision:** The exact Symbol-keyed `catchError` forwards ordinary source
+  notifications and, on error, closes the failed source before invoking
+  `selector(error, caught)`. A replacement accepts any platform
+  `ObservableValue`. Returning the exact `caught` object restarts the original
+  source inside the current shared activation, using a synchronous trampoline
+  instead of recursive stack growth.
+- **Rationale:** Subscribing to `caught` as an ordinary replacement would join
+  the already active shared result and fail to reproduce RxJS caught-source
+  retry behavior. Recursive resubscription would instead consume the JavaScript
+  stack. Both outcomes violate the intended recovery lifecycle.
+- **Consequence:** Selector and replacement work run once per shared error, not
+  once per downstream observer. Result cancellation owns whichever source or
+  replacement phase is active, and a later observer after termination starts a
+  fresh recovery activation. Synchronously returning `caught` forever remains
+  synchronously non-yielding; source-skipped parity evidence for that case must
+  use a deterministic in-subscription cancellation rewrite rather than changing
+  production timing or relying on an external virtual-time boundary.
+
+## D-030 — Separate RxJS terminal selection from platform Promise consumers
+
+- **Status:** Accepted
+- **Decision:** RxJS `first`, `last`, and `single` are installed only under
+  their exported exact Symbol keys. The platform string-named `first()` and
+  `last()` Promise consumers remain unchanged. The Symbol forms preserve RxJS
+  predicate, index, source, Boolean/type-guard, and explicit-default overloads,
+  including the distinction between an omitted default and an explicitly
+  supplied `undefined`.
+- **Rationale:** The platform consumers and RxJS operators have different
+  return types, overloads, error behavior, and cancellation boundaries.
+  Replacing or widening the platform string methods would collapse that
+  architectural separation.
+- **Consequence:** `first` cancels upstream before delivering its first match;
+  `last` emits its stored final match only after successful completion; and
+  `single` errors as soon as a second match is observed. Missing results use
+  the public RxJS-compatible `EmptyError`, `NotFoundError`, or `SequenceError`
+  values as appropriate. Predicate and selection state is shared by concurrent
+  platform observers and resets on restart. The error values and Symbol
+  modules are public package exports without adding string-named RxJS methods
+  to the platform prototype.
