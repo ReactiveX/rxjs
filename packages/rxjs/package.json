@@ -102,6 +102,7 @@
         "./src/race.ts",
         "./src/reduce.ts",
         "./src/repeat.ts",
+        "./src/repeat-when.ts",
         "./src/replay-subject.ts",
         "./src/retry.ts",
         "./src/retry-when.ts",
@@ -489,6 +490,13 @@
       "import": "./dist/esm/repeat.js",
       "require": "./dist/commonjs/repeat.js",
       "types": "./dist/types/repeat.d.ts"
+    },
+    "./repeat-when": {
+      "browser": "./dist/browser/repeat-when.js",
+      "webpack": "./dist/webpack/repeat-when.js",
+      "import": "./dist/esm/repeat-when.js",
+      "require": "./dist/commonjs/repeat-when.js",
+      "types": "./dist/types/repeat-when.d.ts"
     },
     "./replay-subject": {
       "browser": "./dist/browser/replay-subject.js",
