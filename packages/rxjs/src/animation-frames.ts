@@ -2,50 +2,74 @@ import { create } from './create.js';
 
 export const animationFrames: unique symbol = Symbol('animationFrames');
 
+export interface AnimationFrameTimestampProvider {
+  now(): number;
+}
+
+export const animationFrameProvider = {
+  delegate: {
+    requestAnimationFrame: (callback: FrameRequestCallback): number => requestAnimationFrame(callback),
+    cancelAnimationFrame: (id: number): void => cancelAnimationFrame(id),
+  },
+};
+
 declare global {
   interface AnimationFrameInfo {
-    start: number;
     timestamp: number;
-    precisionTimestamp: number;
     elapsed: number;
-    frame: number;
-    timeDiff: number;
   }
 
   interface ObservableCtor {
-    [animationFrames]: () => Observable<AnimationFrameInfo>;
+    [animationFrames]: (timestampProvider?: AnimationFrameTimestampProvider) => Observable<AnimationFrameInfo>;
   }
 }
 
 Observable[animationFrames] = animationFramesImpl;
 
-function animationFramesImpl(this: ObservableCtor): Observable<AnimationFrameInfo> {
+const performanceTimestampProvider: AnimationFrameTimestampProvider = {
+  now: () => performance.now(),
+};
+
+function animationFramesImpl(
+  this: ObservableCtor,
+  timestampProvider?: AnimationFrameTimestampProvider
+): Observable<AnimationFrameInfo> {
   return this[create]((subscriber) => {
-    let id = 0;
-    const start = Date.now();
-    let lastTimestamp = start;
-    let frame = 0;
+    const provider = timestampProvider ?? performanceTimestampProvider;
+    let start: number;
+    try {
+      start = provider.now();
+    } catch (error) {
+      subscriber.error(error);
+      return;
+    }
+
+    let id: number | undefined;
     const run = () => {
-      id = requestAnimationFrame((precisionTimestamp) => {
-        const timestamp = Date.now();
-        const timeDiff = lastTimestamp - timestamp;
-        lastTimestamp = timestamp;
-        frame++;
-
+      id = animationFrameProvider.delegate.requestAnimationFrame((frameTimestamp) => {
+        id = undefined;
+        let currentTimestamp: number;
+        try {
+          currentTimestamp = provider.now();
+        } catch (error) {
+          subscriber.error(error);
+          return;
+        }
         subscriber.next({
-          start,
-          timestamp,
-          precisionTimestamp,
-          elapsed: timestamp - start,
-          frame,
-          timeDiff,
+          timestamp: timestampProvider ? currentTimestamp : frameTimestamp,
+          elapsed: currentTimestamp - start,
         });
-
-        run();
+        if (subscriber.active) {
+          run();
+        }
       });
     };
 
-    subscriber.addTeardown(() => cancelAnimationFrame(id));
+    subscriber.addTeardown(() => {
+      if (id !== undefined) {
+        animationFrameProvider.delegate.cancelAnimationFrame(id);
+      }
+    });
 
     run();
   });

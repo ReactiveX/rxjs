@@ -1,0 +1,47 @@
+import { create } from './create.js';
+
+export const timestamp: unique symbol = Symbol('timestamp');
+
+export interface TimestampProvider {
+  now(): number;
+}
+
+export interface Timestamp<T> {
+  value: T;
+  timestamp: number;
+}
+
+declare global {
+  interface Observable<T> {
+    [timestamp]: (timestampProvider?: TimestampProvider) => Observable<Timestamp<T>>;
+  }
+}
+
+const dateTimestampProvider: TimestampProvider = {
+  now: () => Date.now(),
+};
+
+Observable.prototype[timestamp] = function <T>(
+  this: Observable<T>,
+  timestampProvider: TimestampProvider = dateTimestampProvider
+): Observable<Timestamp<T>> {
+  return this[create]((subscriber) => {
+    this.subscribe(
+      {
+        next: (value) => {
+          let currentTimestamp: number;
+          try {
+            currentTimestamp = timestampProvider.now();
+          } catch (error) {
+            subscriber.error(error);
+            return;
+          }
+          subscriber.next({ value, timestamp: currentTimestamp });
+        },
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};

@@ -161,6 +161,14 @@ discards the pending value and cancels the timer through `AbortSignal`.
 Concurrent platform observers share one timer and source activation. This
 mapping does not represent the RxJS 7 scheduler overload.
 
+The exact `sampleTime(period)` Symbol samples through a host interval; its
+compatibility mapping does not restore the RxJS 7 scheduler argument.
+`timestamp` and `timeInterval` retain their timestamp-provider overloads
+because those providers are clocks rather than work schedulers. The default
+clock is `Date.now()`. `animationFrames` retains its optional timestamp
+provider and RxJS 7 `{ timestamp, elapsed }` result shape while scheduling and
+cancelling through the host animation-frame APIs virtualized by `@rxjs/test`.
+
 Selector-based `retry` invokes its delay selector with one-based consecutive
 retry counts, including when the retry budget is infinite. A notifier value
 cancels that notifier before the next source attempt starts; notifier
