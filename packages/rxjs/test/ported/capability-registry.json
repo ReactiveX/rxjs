@@ -49,6 +49,14 @@
       "status": "Partial unified mapping",
       "note": "Uses the unified buffer delay selector and discards the active partial buffer when the source errors."
     },
+    "catchError": {
+      "symbol": "catchError",
+      "module": "catch-error",
+      "adapter": "identity",
+      "mapping": "source[catchError](selector)",
+      "status": "Present; parity unverified",
+      "note": "Replaces source errors with any ObservableValue, preserves caught-source retry identity, and trampolines synchronous retries."
+    },
     "combineLatest": {
       "symbol": "combineLatest",
       "module": "combine-latest",
@@ -401,6 +409,14 @@
       "status": "Present; parity verified",
       "note": "Supports strict equality by default and the RxJS 7 comparator overload."
     },
+    "single": {
+      "symbol": "single",
+      "module": "single",
+      "adapter": "identity",
+      "mapping": "source[single](predicate?)",
+      "status": "Present; parity unverified",
+      "note": "Requires exactly one value or predicate match and preserves RxJS 7 EmptyError, NotFoundError, and SequenceError outcomes."
+    },
     "skip": {
       "symbol": "skip",
       "module": "skip",
@@ -604,6 +620,15 @@
       "status": "Partial platform string mapping",
       "note": "Maps EventTarget inputs to the platform when() surface, normalizing boolean capture options; once, unsupported option keys, non-EventTarget inputs, and third- or fourth-argument result-selector overloads fail explicitly."
     },
+    "forkJoin": {
+      "kind": "symbol",
+      "symbol": "forkJoin",
+      "module": "fork-join",
+      "adapter": "identity",
+      "mapping": "Observable[forkJoin](...inputs)",
+      "status": "Present; parity unverified",
+      "note": "Supports array, object, deprecated rest, empty-input, and result-selector forms while preserving last-value and early-empty cancellation behavior."
+    },
     "iif": {
       "kind": "platform",
       "adapter": "iif",
@@ -716,6 +741,13 @@
       "status": "Present; parity unverified",
       "note": "Uses the current standalone empty Observable singleton."
     },
+    "EmptyError": {
+      "module": "empty-error",
+      "adapter": "identity",
+      "mapping": "EmptyError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible empty-sequence error value."
+    },
     "firstValueFrom": {
       "module": "global",
       "adapter": "platformConsumer",
@@ -753,6 +785,13 @@
       "status": "Present; parity unverified",
       "note": "Uses the current standalone never Observable singleton."
     },
+    "NotFoundError": {
+      "module": "not-found-error",
+      "adapter": "identity",
+      "mapping": "NotFoundError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible missing-match error value."
+    },
     "noop": {
       "module": "noop",
       "adapter": "identity",
@@ -766,6 +805,13 @@
       "mapping": "new ReplaySubject(bufferSize, windowTime) → replaySubject({ size: bufferSize, maxAge: windowTime })",
       "status": "Partial standalone mapping",
       "note": "Adapts bufferSize and windowTime to the current factory; a third timestamp-provider or scheduler argument fails explicitly, and lifecycle parity is unverified."
+    },
+    "SequenceError": {
+      "module": "sequence-error",
+      "adapter": "identity",
+      "mapping": "SequenceError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible invalid-sequence error value."
     },
     "Subject": {
       "module": "subject",
