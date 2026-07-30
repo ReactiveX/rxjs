@@ -76,10 +76,12 @@
         "./src/exhaust-map.ts",
         "./src/finalize.ts",
         "./src/filter.ts",
+        "./src/first.ts",
         "./src/fork-join.ts",
         "./src/identity.ts",
         "./src/index.ts",
         "./src/interval.ts",
+        "./src/last.ts",
         "./src/map.ts",
         "./src/max.ts",
         "./src/merge-map.ts",
@@ -290,6 +292,13 @@
       "require": "./dist/commonjs/filter.js",
       "types": "./dist/types/filter.d.ts"
     },
+    "./first": {
+      "browser": "./dist/browser/first.js",
+      "webpack": "./dist/webpack/first.js",
+      "import": "./dist/esm/first.js",
+      "require": "./dist/commonjs/first.js",
+      "types": "./dist/types/first.d.ts"
+    },
     "./fork-join": {
       "browser": "./dist/browser/fork-join.js",
       "webpack": "./dist/webpack/fork-join.js",
@@ -317,6 +326,13 @@
       "import": "./dist/esm/interval.js",
       "require": "./dist/commonjs/interval.js",
       "types": "./dist/types/interval.d.ts"
+    },
+    "./last": {
+      "browser": "./dist/browser/last.js",
+      "webpack": "./dist/webpack/last.js",
+      "import": "./dist/esm/last.js",
+      "require": "./dist/commonjs/last.js",
+      "types": "./dist/types/last.d.ts"
     },
     "./map": {
       "browser": "./dist/browser/map.js",
