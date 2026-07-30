@@ -105,6 +105,14 @@
       "status": "Partial unified mapping",
       "note": "Maps the With variant to the unified concat Symbol."
     },
+    "count": {
+      "symbol": "count",
+      "module": "count",
+      "adapter": "identity",
+      "mapping": "source[count](predicate?)",
+      "status": "Present; parity unverified",
+      "note": "Counts all values or predicate matches and emits the total only after successful completion."
+    },
     "debounce": {
       "symbol": "debounce",
       "module": "debounce",
@@ -129,6 +137,14 @@
       "status": "Present; parity unverified",
       "note": "Exact type and lifecycle parity remain test-driven."
     },
+    "distinctUntilChanged": {
+      "symbol": "distinctUntilChanged",
+      "module": "distinct-until-changed",
+      "adapter": "identity",
+      "mapping": "source[distinctUntilChanged](comparator?, keySelector?)",
+      "status": "Present; parity unverified",
+      "note": "Uses strict equality by default and compares selected keys against the last emitted key."
+    },
     "elementAt": {
       "symbol": "elementAt",
       "module": "element-at",
@@ -136,6 +152,14 @@
       "mapping": "source[elementAt](index, defaultValue?)",
       "status": "Present; partial empty behavior",
       "note": "The default-value overload is present; the no-default out-of-range error remains compatibility evidence."
+    },
+    "every": {
+      "symbol": "every",
+      "module": "every",
+      "adapter": "identity",
+      "mapping": "source[every](predicate, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "Evaluates value, index, and source and cancels upstream before emitting the first false result."
     },
     "endWith": {
       "symbol": "concat",
@@ -649,6 +673,13 @@
       "mapping": "NEVER",
       "status": "Present; parity unverified",
       "note": "Uses the current standalone never Observable singleton."
+    },
+    "noop": {
+      "module": "noop",
+      "adapter": "identity",
+      "mapping": "noop",
+      "status": "Present; parity verified",
+      "note": "Uses the public no-operation callback utility."
     },
     "ReplaySubject": {
       "module": "replay-subject",

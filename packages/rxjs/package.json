@@ -61,10 +61,13 @@
         "./src/combine-latest.ts",
         "./src/combine.ts",
         "./src/concat.ts",
+        "./src/count.ts",
         "./src/create.ts",
         "./src/debounce.ts",
         "./src/default-if-empty.ts",
+        "./src/distinct-until-changed.ts",
         "./src/each-value-from.ts",
+        "./src/every.ts",
         "./src/exhaust-map.ts",
         "./src/finalize.ts",
         "./src/filter.ts",
@@ -73,6 +76,7 @@
         "./src/map.ts",
         "./src/merge-map.ts",
         "./src/merge.ts",
+        "./src/noop.ts",
         "./src/pipe.ts",
         "./src/race.ts",
         "./src/repeat.ts",
@@ -165,6 +169,13 @@
       "require": "./dist/commonjs/concat.js",
       "types": "./dist/types/concat.d.ts"
     },
+    "./count": {
+      "browser": "./dist/browser/count.js",
+      "webpack": "./dist/webpack/count.js",
+      "import": "./dist/esm/count.js",
+      "require": "./dist/commonjs/count.js",
+      "types": "./dist/types/count.d.ts"
+    },
     "./create": {
       "browser": "./dist/browser/create.js",
       "webpack": "./dist/webpack/create.js",
@@ -186,12 +197,26 @@
       "require": "./dist/commonjs/default-if-empty.js",
       "types": "./dist/types/default-if-empty.d.ts"
     },
+    "./distinct-until-changed": {
+      "browser": "./dist/browser/distinct-until-changed.js",
+      "webpack": "./dist/webpack/distinct-until-changed.js",
+      "import": "./dist/esm/distinct-until-changed.js",
+      "require": "./dist/commonjs/distinct-until-changed.js",
+      "types": "./dist/types/distinct-until-changed.d.ts"
+    },
     "./each-value-from": {
       "browser": "./dist/browser/each-value-from.js",
       "webpack": "./dist/webpack/each-value-from.js",
       "import": "./dist/esm/each-value-from.js",
       "require": "./dist/commonjs/each-value-from.js",
       "types": "./dist/types/each-value-from.d.ts"
+    },
+    "./every": {
+      "browser": "./dist/browser/every.js",
+      "webpack": "./dist/webpack/every.js",
+      "import": "./dist/esm/every.js",
+      "require": "./dist/commonjs/every.js",
+      "types": "./dist/types/every.d.ts"
     },
     "./exhaust-map": {
       "browser": "./dist/browser/exhaust-map.js",
@@ -248,6 +273,13 @@
       "import": "./dist/esm/merge-map.js",
       "require": "./dist/commonjs/merge-map.js",
       "types": "./dist/types/merge-map.d.ts"
+    },
+    "./noop": {
+      "browser": "./dist/browser/noop.js",
+      "webpack": "./dist/webpack/noop.js",
+      "import": "./dist/esm/noop.js",
+      "require": "./dist/commonjs/noop.js",
+      "types": "./dist/types/noop.d.ts"
     },
     "./package.json": "./package.json",
     "./pipe": {
