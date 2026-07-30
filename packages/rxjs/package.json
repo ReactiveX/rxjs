@@ -82,6 +82,7 @@
         "./src/first.ts",
         "./src/fork-join.ts",
         "./src/generate.ts",
+        "./src/group-by.ts",
         "./src/identity.ts",
         "./src/index.ts",
         "./src/interval.ts",
@@ -346,6 +347,13 @@
       "import": "./dist/esm/generate.js",
       "require": "./dist/commonjs/generate.js",
       "types": "./dist/types/generate.d.ts"
+    },
+    "./group-by": {
+      "browser": "./dist/browser/group-by.js",
+      "webpack": "./dist/webpack/group-by.js",
+      "import": "./dist/esm/group-by.js",
+      "require": "./dist/commonjs/group-by.js",
+      "types": "./dist/types/group-by.d.ts"
     },
     "./identity": {
       "browser": "./dist/browser/identity.js",
