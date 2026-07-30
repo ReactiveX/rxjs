@@ -452,3 +452,62 @@ Status meanings:
   tuples. Concurrent platform observers share one zip activation and its
   buffers; this decision does not introduce queue scheduling or
   cold-per-observer behavior.
+
+## D-023 — Keep RxJS map and filter overloads on exact Symbol keys
+
+- **Status:** Accepted
+- **Decision:** The RxJS `map` and `filter` contracts are installed only under
+  their exported exact Symbol keys. Their RxJS forms preserve the projection
+  or predicate index and optional `thisArg`; `filter` also preserves Boolean
+  constructor and type-guard overloads. The platform string-named `map` and
+  `filter` methods remain present and unchanged.
+- **Rationale:** The platform and RxJS contracts overlap in name but not in
+  their complete call shapes. Replacing or widening the platform string
+  methods would erase that boundary, while `Symbol.for` would weaken collision
+  isolation.
+- **Consequence:** Applications choose the contract explicitly:
+  `observable.map(project)` remains the platform operation and
+  `observable[map](project, thisArg)` is the RxJS operation, with the analogous
+  distinction for `filter`. Projection and predicate errors terminate the
+  shared operator activation. Concurrent observers share one upstream
+  activation and one index sequence under the platform lifecycle.
+
+## D-024 — Let finite take cancel synchronous upstream work before its limit
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `take` uses a distinct upstream
+  `AbortController` joined with the result subscriber's signal. When the count
+  is reached, it aborts upstream before forwarding the limiting value and
+  completing the result. A nonpositive count completes without activating the
+  source.
+- **Rationale:** Synchronous and reentrant producers must observe cancellation
+  before they can perform work beyond the requested count. Reusing only the
+  result signal would leave upstream active until downstream completion
+  propagates.
+- **Consequence:** The limiting value is still delivered, but upstream work is
+  already closed when its downstream observer runs. Concurrent observers share
+  one count and one source activation; last-observer cancellation closes that
+  activation through the result signal. This is an operator-local cancellation
+  boundary, not cold-per-observer compatibility behavior.
+
+## D-025 — Scope tap and finalize hooks to a shared operator activation
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `tap` invokes notification side effects before
+  forwarding each notification, calls `subscribe` once per shared activation,
+  and calls `unsubscribe` followed by `finalize` when the last observer
+  explicitly cancels. Natural completion or error calls `finalize` without the
+  explicit-unsubscribe hook. The Symbol-keyed `finalize` invokes its callback
+  exactly once per activation after the terminal notification reaches the
+  downstream observer, or when the last observer cancels.
+- **Rationale:** The platform Observable owns one active producer subscriber,
+  not one producer per observer. Treating these hooks as observer-local would
+  duplicate source-side effects and violate the accepted shared,
+  ref-counted lifecycle.
+- **Consequence:** Concurrent observers see the same tapped notification and
+  lifecycle-hook run. A later observer after termination starts a new
+  activation and therefore a new hook lifecycle. Errors thrown by `tap`
+  notification handlers become stream errors; errors thrown by `finalize`
+  after termination are host-reported and do not replace the already-delivered
+  terminal notification. No string-named `tap` or `finalize` method is added,
+  and the platform `finally` method remains unchanged.
