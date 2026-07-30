@@ -529,6 +529,14 @@
       "status": "Present; parity verified",
       "note": "Supports strict equality by default and the RxJS 7 comparator overload."
     },
+    "share": {
+      "symbol": "share",
+      "module": "share",
+      "adapter": "identity",
+      "mapping": "source[share](config?)",
+      "status": "Present; platform lifecycle review required",
+      "note": "Shares one connector and source connection per active run with configurable reset behavior. A late observer joining an already-active platform result bypasses operator initialization, so a replaying custom connector cannot replay history to that observer; ColdObservable compatibility fanout retains that behavior."
+    },
     "single": {
       "symbol": "single",
       "module": "single",
