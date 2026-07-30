@@ -52,9 +52,14 @@ class ColdSubscriber<T> implements Subscriber<T> {
     if (this.active) {
       this.#abortController.abort();
       try {
-        this.#destination?.error?.(error);
-      } catch (error) {
-        reportError(error);
+        const handler = this.#destination?.error;
+        if (handler) {
+          handler.call(this.#destination, error);
+        } else {
+          reportError(error);
+        }
+      } catch (handlerError) {
+        reportError(handlerError);
       }
     }
   }
