@@ -94,6 +94,7 @@
         "./src/materialize.ts",
         "./src/max.ts",
         "./src/merge-map.ts",
+        "./src/merge-scan.ts",
         "./src/merge.ts",
         "./src/min.ts",
         "./src/not-found-error.ts",
@@ -447,6 +448,13 @@
       "import": "./dist/esm/merge-map.js",
       "require": "./dist/commonjs/merge-map.js",
       "types": "./dist/types/merge-map.d.ts"
+    },
+    "./merge-scan": {
+      "browser": "./dist/browser/merge-scan.js",
+      "webpack": "./dist/webpack/merge-scan.js",
+      "import": "./dist/esm/merge-scan.js",
+      "require": "./dist/commonjs/merge-scan.js",
+      "types": "./dist/types/merge-scan.d.ts"
     },
     "./min": {
       "browser": "./dist/browser/min.js",
