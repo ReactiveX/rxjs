@@ -66,6 +66,7 @@
         "./src/count.ts",
         "./src/create.ts",
         "./src/debounce.ts",
+        "./src/dematerialize.ts",
         "./src/default-if-empty.ts",
         "./src/distinct.ts",
         "./src/distinct-until-changed.ts",
@@ -89,6 +90,7 @@
         "./src/is-empty.ts",
         "./src/last.ts",
         "./src/map.ts",
+        "./src/materialize.ts",
         "./src/max.ts",
         "./src/merge-map.ts",
         "./src/merge.ts",
@@ -118,6 +120,7 @@
         "./src/start-with.ts",
         "./src/subject.ts",
         "./src/switch-map.ts",
+        "./src/switch-scan.ts",
         "./src/tap.ts",
         "./src/take.ts",
         "./src/take-last.ts",
@@ -240,6 +243,13 @@
       "import": "./dist/esm/debounce.js",
       "require": "./dist/commonjs/debounce.js",
       "types": "./dist/types/debounce.d.ts"
+    },
+    "./dematerialize": {
+      "browser": "./dist/browser/dematerialize.js",
+      "webpack": "./dist/webpack/dematerialize.js",
+      "import": "./dist/esm/dematerialize.js",
+      "require": "./dist/commonjs/dematerialize.js",
+      "types": "./dist/types/dematerialize.d.ts"
     },
     "./default-if-empty": {
       "browser": "./dist/browser/default-if-empty.js",
@@ -401,6 +411,13 @@
       "import": "./dist/esm/map.js",
       "require": "./dist/commonjs/map.js",
       "types": "./dist/types/map.d.ts"
+    },
+    "./materialize": {
+      "browser": "./dist/browser/materialize.js",
+      "webpack": "./dist/webpack/materialize.js",
+      "import": "./dist/esm/materialize.js",
+      "require": "./dist/commonjs/materialize.js",
+      "types": "./dist/types/materialize.d.ts"
     },
     "./max": {
       "browser": "./dist/browser/max.js",
@@ -605,6 +622,13 @@
       "import": "./dist/esm/switch-map.js",
       "require": "./dist/commonjs/switch-map.js",
       "types": "./dist/types/switch-map.d.ts"
+    },
+    "./switch-scan": {
+      "browser": "./dist/browser/switch-scan.js",
+      "webpack": "./dist/webpack/switch-scan.js",
+      "import": "./dist/esm/switch-scan.js",
+      "require": "./dist/commonjs/switch-scan.js",
+      "types": "./dist/types/switch-scan.d.ts"
     },
     "./tap": {
       "browser": "./dist/browser/tap.js",
