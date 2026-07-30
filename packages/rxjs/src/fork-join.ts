@@ -1,0 +1,171 @@
+import { create } from './create.js';
+
+declare const anyCatcher: unique symbol;
+type AnyCatcher = typeof anyCatcher;
+type ObservedValueOf<Input> = Input extends ObservableValue<infer Value> ? Value : never;
+type ForkJoinTuple<Sources extends readonly ObservableValue<any>[]> = {
+  -readonly [K in keyof Sources]: ObservedValueOf<Sources[K]>;
+};
+type ForkJoinObject<Sources extends Record<string, ObservableValue<any>>> = {
+  [K in keyof Sources]: ObservedValueOf<Sources[K]>;
+};
+
+interface ForkJoinMethod {
+  <T extends AnyCatcher>(arg: T): Observable<unknown>;
+  (): Observable<never>;
+  (sources: readonly []): Observable<never>;
+  <const Sources extends readonly ObservableValue<any>[]>(sources: Sources): Observable<ForkJoinTuple<Sources>>;
+  <const Sources extends readonly ObservableValue<any>[], Result>(
+    sources: Sources,
+    resultSelector: (...values: ForkJoinTuple<Sources>) => Result
+  ): Observable<Result>;
+  (sourcesObject: Record<string, never>): Observable<never>;
+  <Sources extends Record<string, ObservableValue<any>>>(sourcesObject: Sources): Observable<ForkJoinObject<Sources>>;
+  (source: null | undefined): Observable<never>;
+  <const Sources extends readonly ObservableValue<any>[]>(...sources: Sources): Observable<ForkJoinTuple<Sources>>;
+  <const Sources extends readonly ObservableValue<any>[], Result>(
+    ...sourcesAndResultSelector: [...Sources, (...values: ForkJoinTuple<Sources>) => Result]
+  ): Observable<Result>;
+}
+
+export const forkJoin: unique symbol = Symbol('forkJoin');
+
+declare global {
+  interface ObservableCtor {
+    [forkJoin]: ForkJoinMethod;
+  }
+}
+
+function forkJoinImpl<T extends AnyCatcher>(this: ObservableCtor, arg: T): Observable<unknown>;
+function forkJoinImpl(this: ObservableCtor): Observable<never>;
+function forkJoinImpl(this: ObservableCtor, sources: readonly []): Observable<never>;
+function forkJoinImpl<const Sources extends readonly ObservableValue<any>[]>(
+  this: ObservableCtor,
+  sources: Sources
+): Observable<ForkJoinTuple<Sources>>;
+function forkJoinImpl<const Sources extends readonly ObservableValue<any>[], Result>(
+  this: ObservableCtor,
+  sources: Sources,
+  resultSelector: (...values: ForkJoinTuple<Sources>) => Result
+): Observable<Result>;
+function forkJoinImpl(this: ObservableCtor, sourcesObject: Record<string, never>): Observable<never>;
+function forkJoinImpl<Sources extends Record<string, ObservableValue<any>>>(
+  this: ObservableCtor,
+  sourcesObject: Sources
+): Observable<ForkJoinObject<Sources>>;
+function forkJoinImpl(this: ObservableCtor, source: null | undefined): Observable<never>;
+function forkJoinImpl<const Sources extends readonly ObservableValue<any>[]>(
+  this: ObservableCtor,
+  ...sources: Sources
+): Observable<ForkJoinTuple<Sources>>;
+function forkJoinImpl<const Sources extends readonly ObservableValue<any>[], Result>(
+  this: ObservableCtor,
+  ...sourcesAndResultSelector: [...Sources, (...values: ForkJoinTuple<Sources>) => Result]
+): Observable<Result>;
+function forkJoinImpl(this: ObservableCtor, ...inputArguments: any[]): Observable<any> {
+  const resultSelector =
+    typeof inputArguments[inputArguments.length - 1] === 'function'
+      ? (inputArguments.pop() as (...values: any[]) => any)
+      : undefined;
+  const { keys, sources } = normalizeInputs(inputArguments);
+  const ObservableCtor = this;
+
+  return ObservableCtor[create]((subscriber) => {
+    const sourceCount = sources.length;
+    if (sourceCount === 0) {
+      subscriber.complete();
+      return;
+    }
+
+    const values = new Array<any>(sourceCount);
+    let remainingCompletions = sourceCount;
+    let remainingEmissions = sourceCount;
+
+    for (let index = 0; index < sourceCount && subscriber.active; index++) {
+      let hasValue = false;
+      let input: Observable<any>;
+
+      try {
+        input = ObservableCtor.from(sources[index]);
+      } catch (error) {
+        subscriber.error(error);
+        break;
+      }
+
+      input.subscribe(
+        {
+          next: (value) => {
+            if (!hasValue) {
+              hasValue = true;
+              remainingEmissions--;
+            }
+            values[index] = value;
+          },
+          error: (error) => subscriber.error(error),
+          complete: () => {
+            remainingCompletions--;
+
+            if (!hasValue) {
+              subscriber.complete();
+              return;
+            }
+
+            if (remainingCompletions === 0) {
+              let result: any = keys ? createResultObject(keys, values) : values;
+
+              if (resultSelector) {
+                try {
+                  result = keys ? resultSelector(result) : resultSelector(...values);
+                } catch (error) {
+                  subscriber.error(error);
+                  return;
+                }
+              }
+
+              if (remainingEmissions === 0) {
+                subscriber.next(result);
+              }
+              subscriber.complete();
+            }
+          },
+        },
+        { signal: subscriber.signal }
+      );
+    }
+  });
+}
+
+Observable[forkJoin] = forkJoinImpl;
+
+function normalizeInputs(inputArguments: any[]): {
+  readonly keys: string[] | null;
+  readonly sources: readonly any[];
+} {
+  if (inputArguments.length === 1) {
+    const first = inputArguments[0];
+    if (Array.isArray(first)) {
+      return { keys: null, sources: first };
+    }
+    if (isPlainObject(first)) {
+      const keys = Object.keys(first);
+      return {
+        keys,
+        sources: keys.map((key) => first[key]),
+      };
+    }
+  }
+
+  return { keys: null, sources: inputArguments };
+}
+
+function isPlainObject(value: any): value is Record<string, any> {
+  return value != null && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype;
+}
+
+function createResultObject(keys: readonly string[], values: readonly any[]): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (let index = 0; index < keys.length; index++) {
+    result[keys[index]!] = values[index];
+  }
+  return result;
+}
