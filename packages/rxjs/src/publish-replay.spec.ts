@@ -2,14 +2,22 @@ import { afterEach, beforeAll, describe, expect, expectTypeOf, it, vi } from 'vi
 import '@rxjs/observable-polyfill';
 
 type PublishReplaySymbol = typeof import('./publish-replay.js').publishReplay;
+type RepeatSymbol = typeof import('./repeat.js').repeat;
+type RetrySymbol = typeof import('./retry.js').retry;
 type ConnectableObservableType<T> = import('./connectable.js').ConnectableObservable<T>;
 
 let publishReplay: PublishReplaySymbol;
+let repeat: RepeatSymbol;
+let retry: RetrySymbol;
 let hadStringMethod: boolean;
 
 beforeAll(async () => {
   hadStringMethod = 'publishReplay' in Observable.prototype;
-  ({ publishReplay } = await import('./publish-replay.js'));
+  [{ publishReplay }, { repeat }, { retry }] = await Promise.all([
+    import('./publish-replay.js'),
+    import('./repeat.js'),
+    import('./retry.js'),
+  ]);
 });
 
 afterEach(() => {
@@ -244,7 +252,7 @@ describe('publishReplay', () => {
     expect(values).toEqual(['value 1', 'value 2']);
   });
 
-  it('cancels and restarts selector runs with a fresh replay connector', () => {
+  it('retains replay state across cancelled selector runs', () => {
     const source = tracked<number>();
     const result = source.observable[publishReplay](2, Infinity, (shared) => shared);
     const firstController = new AbortController();
@@ -261,13 +269,58 @@ describe('publishReplay', () => {
     result.subscribe((value) => restartedValues.push(value), { signal: restartController.signal });
 
     expect(source.activations).toBe(2);
-    expect(restartedValues).toEqual([]);
+    expect(restartedValues).toEqual([1]);
 
     source.subscribers[1]!.next(2);
     expect(firstValues).toEqual([1]);
-    expect(restartedValues).toEqual([2]);
+    expect(restartedValues).toEqual([1, 2]);
 
     restartController.abort();
+  });
+
+  it('reuses the terminal replay subject when selector results repeat', () => {
+    let sourceActivations = 0;
+    const source = new Observable<number>((subscriber) => {
+      sourceActivations++;
+      subscriber.next(1);
+      subscriber.complete();
+    });
+    const values: number[] = [];
+    let completions = 0;
+
+    source[publishReplay](1, Infinity, (shared) => shared)
+      [repeat]({ count: 3 })
+      .subscribe({
+        next: (value) => values.push(value),
+        complete: () => completions++,
+      });
+
+    expect(sourceActivations).toBe(1);
+    expect(values).toEqual([1, 1, 1]);
+    expect(completions).toBe(1);
+  });
+
+  it('reuses the terminal replay subject when selector results retry', () => {
+    const failure = new Error('source failed');
+    let sourceActivations = 0;
+    const source = new Observable<number>((subscriber) => {
+      sourceActivations++;
+      subscriber.next(1);
+      subscriber.error(failure);
+    });
+    const values: number[] = [];
+    const errors: unknown[] = [];
+
+    source[publishReplay](1, Infinity, (shared) => shared)
+      [retry]({ count: 2, resetOnSuccess: false })
+      .subscribe({
+        next: (value) => values.push(value),
+        error: (error) => errors.push(error),
+      });
+
+    expect(sourceActivations).toBe(1);
+    expect(values).toEqual([1, 1, 1]);
+    expect(errors).toEqual([failure]);
   });
 
   it('publishes the manual connection before synchronous reentrant replay fanout', () => {

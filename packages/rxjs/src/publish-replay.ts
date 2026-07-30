@@ -45,17 +45,16 @@ Observable.prototype[publishReplay] = function <T, Selected extends ObservableVa
     throw new Error(SCHEDULER_ERROR);
   }
 
-  const subjectFactory = () =>
-    replaySubject<T>({
-      size: bufferSize,
-      maxAge: windowTime,
-    });
+  const subject = replaySubject<T>({
+    size: bufferSize,
+    maxAge: windowTime,
+  });
 
   if (selector) {
-    return this[multicast](subjectFactory, selector);
+    return this[multicast](subject, selector);
   }
 
-  // RxJS 7 retains one ReplaySubject for the lifetime of a manual
-  // publishReplay result.
-  return this[multicast](subjectFactory());
+  // RxJS 7 retains one ReplaySubject for the lifetime of every publishReplay
+  // result, including selector-form results that are later retried or repeated.
+  return this[multicast](subject);
 };
