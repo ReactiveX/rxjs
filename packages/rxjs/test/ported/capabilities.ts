@@ -45,6 +45,7 @@ export async function loadCapabilities(): Promise<{
 }> {
   const [
     animationFramesModule,
+    asyncSubjectModule,
     behaviorSubjectModule,
     bufferModule,
     bufferToggleModule,
@@ -131,6 +132,7 @@ export async function loadCapabilities(): Promise<{
     zipModule,
   ] = await Promise.all([
     import('../../src/animation-frames.js'),
+    import('../../src/async-subject.js'),
     import('../../src/behavior-subject.js'),
     import('../../src/buffer.js'),
     import('../../src/buffer-toggle.js'),
@@ -299,6 +301,7 @@ export async function loadCapabilities(): Promise<{
       timer: timerModule.timer,
     },
     values: {
+      AsyncSubject: asyncSubjectModule.AsyncSubject,
       BehaviorSubject: behaviorSubjectModule.behaviorSubject,
       ColdObservable: coldObservableModule.ColdObservable,
       EMPTY: emptyModule.EMPTY,
@@ -310,6 +313,7 @@ export async function loadCapabilities(): Promise<{
       NotFoundError: notFoundErrorModule.NotFoundError,
       Notification: notificationModule.Notification,
       ObservableNotification: undefined,
+      Observer: undefined,
       noop: noopModule.noop,
       Observable,
       pipe: pipeModule.pipe,

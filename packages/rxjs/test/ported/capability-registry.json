@@ -906,6 +906,13 @@
     }
   },
   "values": {
+    "AsyncSubject": {
+      "module": "async-subject",
+      "adapter": "identity",
+      "mapping": "AsyncSubject",
+      "status": "Compatibility-only",
+      "note": "Provides the RxJS 7 final-value Subject contract with current, late, error, cancellation, and reentrant observer behavior."
+    },
     "BehaviorSubject": {
       "module": "behavior-subject",
       "adapter": "behaviorSubjectConstructor",
@@ -991,6 +998,13 @@
       "mapping": "ObservableNotification<T>",
       "status": "Type-only compatibility",
       "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased RxJS 7 notification union import."
+    },
+    "Observer": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Observer<T>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased platform Observer import."
     },
     "noop": {
       "module": "noop",
