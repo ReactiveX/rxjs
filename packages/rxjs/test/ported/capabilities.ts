@@ -21,6 +21,7 @@ declare global {
 }
 
 const composedOperatorName = '\0rxjs7-pipe';
+const portedRxTestScheduler = Object.freeze({ __rxjsPortedTestScheduler: true });
 const chaiInspect = Symbol.for('chai/inspect');
 const portedObservableDisplayFlag = 'rxjsPortedObservableDisplay';
 const originalChaiAssert = ChaiAssertion.prototype.assert;
@@ -138,6 +139,7 @@ export async function loadCapabilities(): Promise<{
     asyncSubjectModule,
     behaviorSubjectModule,
     bufferModule,
+    bufferTimeModule,
     bufferToggleModule,
     catchErrorModule,
     coldObservableModule,
@@ -148,6 +150,7 @@ export async function loadCapabilities(): Promise<{
     concatModule,
     countModule,
     debounceModule,
+    delayModule,
     delayWhenModule,
     dematerializeModule,
     defaultIfEmptyModule,
@@ -185,6 +188,7 @@ export async function loadCapabilities(): Promise<{
     notFoundErrorModule,
     notificationModule,
     noopModule,
+    observeOnModule,
     onErrorResumeNextModule,
     pairwiseModule,
     partitionModule,
@@ -203,6 +207,7 @@ export async function loadCapabilities(): Promise<{
     retryModule,
     retryWhenModule,
     sampleModule,
+    sampleTimeModule,
     scanModule,
     sequenceEqualModule,
     sequenceErrorModule,
@@ -215,6 +220,7 @@ export async function loadCapabilities(): Promise<{
     skipWhileModule,
     startWithModule,
     subjectModule,
+    subscribeOnModule,
     switchMapModule,
     switchScanModule,
     tapModule,
@@ -224,10 +230,13 @@ export async function loadCapabilities(): Promise<{
     takeWhileModule,
     throttleModule,
     throwIfEmptyModule,
+    timeIntervalModule,
     timeoutModule,
     timerModule,
+    timestampModule,
     windowModule,
     windowCountModule,
+    windowTimeModule,
     windowToggleModule,
     windowWhenModule,
     withLatestFromModule,
@@ -240,6 +249,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/async-subject.js'),
     import('../../src/behavior-subject.js'),
     import('../../src/buffer.js'),
+    import('../../src/buffer-time.js'),
     import('../../src/buffer-toggle.js'),
     import('../../src/catch-error.js'),
     import('../../src/cold-observable.js'),
@@ -250,6 +260,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/concat.js'),
     import('../../src/count.js'),
     import('../../src/debounce.js'),
+    import('../../src/delay.js'),
     import('../../src/delay-when.js'),
     import('../../src/dematerialize.js'),
     import('../../src/default-if-empty.js'),
@@ -287,6 +298,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/not-found-error.js'),
     import('../../src/notification.js'),
     import('../../src/noop.js'),
+    import('../../src/observe-on.js'),
     import('../../src/on-error-resume-next.js'),
     import('../../src/pairwise.js'),
     import('../../src/partition.js'),
@@ -305,6 +317,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/retry.js'),
     import('../../src/retry-when.js'),
     import('../../src/sample.js'),
+    import('../../src/sample-time.js'),
     import('../../src/scan.js'),
     import('../../src/sequence-equal.js'),
     import('../../src/sequence-error.js'),
@@ -317,6 +330,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/skip-while.js'),
     import('../../src/start-with.js'),
     import('../../src/subject.js'),
+    import('../../src/subscribe-on.js'),
     import('../../src/switch-map.js'),
     import('../../src/switch-scan.js'),
     import('../../src/tap.js'),
@@ -326,10 +340,13 @@ export async function loadCapabilities(): Promise<{
     import('../../src/take-while.js'),
     import('../../src/throttle.js'),
     import('../../src/throw-if-empty.js'),
+    import('../../src/time-interval.js'),
     import('../../src/timeout.js'),
     import('../../src/timer.js'),
+    import('../../src/timestamp.js'),
     import('../../src/window.js'),
     import('../../src/window-count.js'),
+    import('../../src/window-time.js'),
     import('../../src/window-toggle.js'),
     import('../../src/window-when.js'),
     import('../../src/with-latest-from.js'),
@@ -341,6 +358,7 @@ export async function loadCapabilities(): Promise<{
   const capabilities = {
     operators: {
       buffer: bufferModule.buffer,
+      bufferTime: bufferTimeModule.bufferTime,
       bufferToggle: bufferToggleModule.bufferToggle,
       catchError: catchErrorModule.catchError,
       combineLatestAll: combineLatestAllModule.combineLatestAll,
@@ -349,6 +367,7 @@ export async function loadCapabilities(): Promise<{
       concat: concatModule.concat,
       count: countModule.count,
       debounce: debounceModule.debounce,
+      delay: delayModule.delay,
       delayWhen: delayWhenModule.delayWhen,
       dematerialize: dematerializeModule.dematerialize,
       defaultIfEmpty: defaultIfEmptyModule.defaultIfEmpty,
@@ -375,6 +394,7 @@ export async function loadCapabilities(): Promise<{
       mergeScan: mergeScanModule.mergeScan,
       min: minModule.min,
       multicast: multicastModule.multicast,
+      observeOn: observeOnModule.observeOn,
       onErrorResumeNext: onErrorResumeNextModule.onErrorResumeNext,
       pairwise: pairwiseModule.pairwise,
       pluck: pluckModule.pluck,
@@ -390,6 +410,7 @@ export async function loadCapabilities(): Promise<{
       retry: retryModule.retry,
       retryWhen: retryWhenModule.retryWhen,
       sample: sampleModule.sample,
+      sampleTime: sampleTimeModule.sampleTime,
       scan: scanModule.scan,
       sequenceEqual: sequenceEqualModule.sequenceEqual,
       share: shareModule.share,
@@ -400,6 +421,7 @@ export async function loadCapabilities(): Promise<{
       skipUntil: skipUntilModule.skipUntil,
       skipWhile: skipWhileModule.skipWhile,
       startWith: startWithModule.startWith,
+      subscribeOn: subscribeOnModule.subscribeOn,
       switchMap: switchMapModule.switchMap,
       switchScan: switchScanModule.switchScan,
       tap: tapModule.tap,
@@ -409,9 +431,12 @@ export async function loadCapabilities(): Promise<{
       takeWhile: takeWhileModule.takeWhile,
       throttle: throttleModule.throttle,
       throwIfEmpty: throwIfEmptyModule.throwIfEmpty,
+      timeInterval: timeIntervalModule.timeInterval,
       timeout: timeoutModule.timeout,
+      timestamp: timestampModule.timestamp,
       window: windowModule.window,
       windowCount: windowCountModule.windowCount,
+      windowTime: windowTimeModule.windowTime,
       windowToggle: windowToggleModule.windowToggle,
       windowWhen: windowWhenModule.windowWhen,
       withLatestFrom: withLatestFromModule.withLatestFrom,
@@ -458,6 +483,9 @@ export async function loadCapabilities(): Promise<{
       SequenceError: sequenceErrorModule.SequenceError,
       Subject: subjectModule.Subject,
       Subscription: undefined,
+      TimeInterval: timeIntervalModule.TimeInterval,
+      TimeoutError: timeoutModule.TimeoutError,
+      animationFrameProvider: animationFramesModule.animationFrameProvider,
       zip: zipModule.zip,
     },
   };
@@ -522,6 +550,9 @@ export function createRuntime(options: {
         return zipped;
       }
       const mapSymbol = capabilities.operators.map;
+      if (!mapSymbol) {
+        throw new Error('Missing exact map Symbol capability for the legacy zip result selector.');
+      }
       const mapImplementation = zipped[mapSymbol];
       if (typeof mapImplementation !== 'function') {
         throw new Error('The exact map Symbol is required for the legacy zip result selector.');
@@ -538,6 +569,7 @@ export function createRuntime(options: {
 
   const runtime: Record<string, unknown> = {
     __rxPortMode: mode,
+    __rxTestScheduler: portedRxTestScheduler,
     expect: portedExpect,
     applyOperators(source: unknown, operators: readonly OperatorDescriptor[]): unknown {
       let current = createOperatorSource(source);
@@ -644,10 +676,45 @@ function installImport(
   }
   if (imported.module === 'chai' && imported.imported === 'expect') {
     runtime[imported.local] = portedExpect;
-  } else if (imported.module === 'sinon' && imported.imported === 'spy') {
-    runtime[imported.local] = portedSpy;
+  } else if (imported.module === 'sinon') {
+    runtime[imported.local] = imported.imported === 'spy' ? portedSpy : portedSinon;
+  } else if (
+    imported.module === 'rxjs/internal/operators/timeInterval' &&
+    imported.imported === 'TimeInterval'
+  ) {
+    runtime[imported.local] = capabilities.values.TimeInterval;
+  } else if (
+    imported.module === 'rxjs/internal/scheduler/animationFrameProvider' &&
+    imported.imported === 'animationFrameProvider'
+  ) {
+    runtime[imported.local] = capabilities.values.animationFrameProvider;
   }
 }
+
+const portedSinon = {
+  stub(): PortedSpy & { callsFake(implementation: (...args: readonly unknown[]) => unknown): PortedSpy } {
+    let implementation: ((...args: readonly unknown[]) => unknown) | undefined;
+    const stub = portedSpy((...args: readonly unknown[]) => implementation?.(...args)) as PortedSpy & {
+      callsFake(implementation: (...args: readonly unknown[]) => unknown): PortedSpy;
+    };
+    stub.callsFake = (nextImplementation) => {
+      implementation = nextImplementation;
+      return stub;
+    };
+    return stub;
+  },
+  spy(target: Record<PropertyKey, unknown>, method: PropertyKey): PortedSpy {
+    const original = target[method];
+    if (typeof original !== 'function') {
+      throw new TypeError(`Cannot spy on non-function property ${String(method)}.`);
+    }
+    const spy = portedSpy(function (this: unknown, ...args: readonly unknown[]) {
+      return original.apply(this, args);
+    });
+    target[method] = spy;
+    return spy;
+  },
+};
 
 function withObservableAssertionDisplay<T>(value: unknown, work: () => T): T {
   const ObservableConstructor = globalThis.Observable;
@@ -930,6 +997,32 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
       return args;
     case 'firstArgument':
       return args.length === 0 ? [] : [args[0]];
+    case 'hostTimeFirstArgument':
+      if (args[1] === undefined || isHostTimeProvider(args[1])) {
+        return args.length === 0 ? [] : [args[0]];
+      }
+      throw new Error('Unsupported RxJS 7 scheduler argument: sampleTime uses the virtualized host interval.');
+    case 'hostTimestampProvider':
+      if (args.length === 0) {
+        return [];
+      }
+      if (isHostTimeProvider(args[0])) {
+        return [{ now: args[0].now }];
+      }
+      throw new Error('Unsupported RxJS 7 scheduler argument: this operator accepts only the virtual host clock.');
+    case 'portedTestSchedulerDelay':
+      if (args[0] !== portedRxTestScheduler) {
+        throw new Error('Unsupported RxJS 7 scheduler argument: this port accepts only the rxTest virtual scheduler.');
+      }
+      if (args[1] !== undefined && typeof args[1] !== 'number') {
+        throw new TypeError('The RxJS 7 scheduler delay must be a number.');
+      }
+      return [args[1] ?? 0];
+    case 'dropSchedulerSecondArgument':
+      if (args[1] === undefined || isSchedulerLike(args[1])) {
+        return args.length === 0 ? [] : [args[0]];
+      }
+      throw new Error('Unsupported RxJS 7 delay second argument: only a legacy SchedulerLike can be dropped.');
     case 'elementAt':
       return args;
     case 'endWith':
@@ -984,6 +1077,20 @@ function adaptOperatorArguments(adapter: string, args: readonly unknown[]): read
       ];
     case 'bufferTime':
       return [{ delay: args[0], maxSize: args[2] ?? Infinity, emitEmpty: true }];
+    case 'bufferTimeExact': {
+      const values = [...args];
+      if (isSchedulerLike(values.at(-1)) || (values.length > 3 && values.at(-1) === undefined)) {
+        values.pop();
+      } else if (values.length > 3) {
+        throw new Error('Unsupported RxJS 7 bufferTime fourth argument: only a trailing SchedulerLike can be dropped.');
+      }
+      return [values[0], values[1] ?? null, values[2] ?? Infinity];
+    }
+    case 'windowTimeExact': {
+      const [span, ...optionalArguments] = args;
+      const numericArguments = optionalArguments.filter((value) => !isSchedulerLike(value));
+      return [span, numericArguments[0] ?? null, numericArguments[1] ?? Infinity];
+    }
     case 'bufferWhen':
       return [{ delay: args[0], emitEmpty: true, emitRemainingOnError: false }];
     case 'sourcesArray':
@@ -1077,6 +1184,17 @@ function sourcesFromArgs(args: readonly unknown[]): readonly unknown[] {
 
 function isSchedulerLike(value: unknown): value is { readonly schedule: (...args: readonly unknown[]) => unknown } {
   return typeof value === 'object' && value !== null && typeof (value as { readonly schedule?: unknown }).schedule === 'function';
+}
+
+function isHostTimeProvider(
+  value: unknown
+): value is { readonly __rxjsHostTimeProvider: true; readonly now: () => number } {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    (value as { readonly __rxjsHostTimeProvider?: unknown }).__rxjsHostTimeProvider === true &&
+    typeof (value as { readonly now?: unknown }).now === 'function'
+  );
 }
 
 function numericConcurrency(args: readonly unknown[], ...indexes: readonly number[]): number | undefined {

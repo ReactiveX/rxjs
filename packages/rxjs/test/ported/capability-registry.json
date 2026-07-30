@@ -42,12 +42,12 @@
       "note": "Supports overlapping buffers, closes on the first closing value but not closing completion, and flushes live buffers in opening order on source completion."
     },
     "bufferTime": {
-      "symbol": "buffer",
-      "module": "buffer",
-      "adapter": "bufferTime",
-      "mapping": "source[buffer]({ delay: bufferTimeSpan, maxSize, emitEmpty: true })",
-      "status": "Partial unified mapping",
-      "note": "Multiple concurrent time windows and scheduler arguments are not represented."
+      "symbol": "bufferTime",
+      "module": "buffer-time",
+      "adapter": "bufferTimeExact",
+      "mapping": "source[bufferTime](span, creationInterval ?? null, maxBufferSize ?? Infinity)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Preserves tumbling and overlapping host-time windows plus max-size closure. The adapter drops only a recognized trailing SchedulerLike fourth argument."
     },
     "bufferWhen": {
       "symbol": "buffer",
@@ -160,6 +160,14 @@
       "mapping": "source[debounce](milliseconds)",
       "status": "Partial unified mapping",
       "note": "Numeric delays reset a host timer, flush on completion, and cancel via AbortSignal. Scheduler arguments are not represented."
+    },
+    "delay": {
+      "symbol": "delay",
+      "module": "delay",
+      "adapter": "dropSchedulerSecondArgument",
+      "mapping": "source[delay](due)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses host time virtualized by @rxjs/test. The compatibility adapter drops only a recognized legacy SchedulerLike second argument and rejects other extra values."
     },
     "delayWhen": {
       "symbol": "delayWhen",
@@ -441,6 +449,14 @@
       "status": "Compatibility-only",
       "note": "Returns a manually connected compatibility Observable without a selector, or delegates selector forms to the exact Symbol-keyed connect contract."
     },
+    "observeOn": {
+      "symbol": "observeOn",
+      "module": "observe-on",
+      "adapter": "portedTestSchedulerDelay",
+      "mapping": "source[observeOn](delay?)",
+      "status": "Partial scheduler mapping",
+      "note": "The exact Symbol uses virtualizable host timers and AbortSignal cancellation. Ported RxJS 7 evidence adapts only its rxTest TestScheduler argument; other SchedulerLike implementations remain unsupported."
+    },
     "onErrorResumeNext": {
       "symbol": "onErrorResumeNext",
       "module": "on-error-resume-next",
@@ -569,6 +585,14 @@
       "status": "Present; parity unverified",
       "note": "Samples the latest unseen source value on notifier emissions; notifier completion does not complete or flush the result."
     },
+    "sampleTime": {
+      "symbol": "sampleTime",
+      "module": "sample-time",
+      "adapter": "hostTimeFirstArgument",
+      "mapping": "source[sampleTime](period)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a host interval virtualized by @rxjs/test; the generator marks the legacy TestScheduler argument for this adapter and other scheduler arguments remain unsupported."
+    },
     "scan": {
       "symbol": "scan",
       "module": "scan",
@@ -648,6 +672,14 @@
       "mapping": "source[startWith](...values)",
       "status": "Present; scheduler overload deferred",
       "note": "Synchronously emits configured prefix values before source activation; legacy trailing scheduler overloads remain scheduler-last."
+    },
+    "subscribeOn": {
+      "symbol": "subscribeOn",
+      "module": "subscribe-on",
+      "adapter": "portedTestSchedulerDelay",
+      "mapping": "source[subscribeOn](delay?)",
+      "status": "Partial scheduler mapping",
+      "note": "The exact Symbol delays source activation with a virtualizable host timer and AbortSignal cancellation. Ported RxJS 7 evidence adapts only its rxTest TestScheduler argument; other SchedulerLike implementations remain unsupported."
     },
     "switchAll": {
       "symbol": "switchMap",
@@ -745,6 +777,14 @@
       "status": "Present; parity unverified",
       "note": "Forwards nonempty sources and errors an empty completion with a fresh EmptyError or the configured factory result."
     },
+    "timeInterval": {
+      "symbol": "timeInterval",
+      "module": "time-interval",
+      "adapter": "hostTimestampProvider",
+      "mapping": "source[timeInterval]({ now: hostVirtualNow })",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a now-only provider. The port harness maps the legacy TestScheduler argument to @rxjs/test's virtual host clock and rejects other scheduler arguments."
+    },
     "timeout": {
       "symbol": "timeout",
       "module": "timeout",
@@ -760,6 +800,14 @@
       "mapping": "source[timeout]({ first/each: due, with: () => fallback })",
       "status": "Partial unified mapping",
       "note": "Maps fallback behavior to the unified timeout configuration; scheduler arguments are not represented."
+    },
+    "timestamp": {
+      "symbol": "timestamp",
+      "module": "timestamp",
+      "adapter": "hostTimestampProvider",
+      "mapping": "source[timestamp]({ now: hostVirtualNow })",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a now-only provider. The port harness maps the legacy TestScheduler argument to @rxjs/test's virtual host clock and rejects other scheduler arguments."
     },
     "toArray": {
       "symbol": "buffer",
@@ -784,6 +832,14 @@
       "mapping": "source[windowCount](windowSize, startWindowEvery?)",
       "status": "Present; parity unverified",
       "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence. Source completion completes live windows, source errors error them, and outer cancellation silently releases them."
+    },
+    "windowTime": {
+      "symbol": "windowTime",
+      "module": "window-time",
+      "adapter": "windowTimeExact",
+      "mapping": "source[windowTime](span, creationInterval ?? null, maxWindowSize ?? Infinity)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Preserves tumbling and overlapping host-time windows plus max-size closure. The adapter removes recognized legacy SchedulerLike objects from optional argument positions without changing numeric arguments."
     },
     "windowToggle": {
       "symbol": "windowToggle",
@@ -1186,6 +1242,27 @@
       "mapping": "Subscription",
       "status": "Type-only compatibility",
       "note": "The runtime sentinel retains erased annotations for the connection returned by connect(); migrated cases invoke unsubscribe() on the actual connection value."
+    },
+    "TimeInterval": {
+      "module": "time-interval",
+      "adapter": "identity",
+      "mapping": "TimeInterval",
+      "status": "Compatibility-only",
+      "note": "Provides the legacy value class used by exact timeInterval expectations without reviving scheduler internals."
+    },
+    "TimeoutError": {
+      "module": "timeout",
+      "adapter": "identity",
+      "mapping": "TimeoutError",
+      "status": "Present; parity verified",
+      "note": "Uses the public RxJS 7-compatible timeout error value and metadata shape."
+    },
+    "animationFrameProvider": {
+      "module": "animation-frames",
+      "adapter": "identity",
+      "mapping": "animationFrameProvider",
+      "status": "Test compatibility fixture",
+      "note": "Exposes the host request/cancel delegate used by animationFrames so exact RxJS 7 lifecycle assertions can observe request and cancellation counts."
     },
     "pipe": {
       "module": "pipe",
