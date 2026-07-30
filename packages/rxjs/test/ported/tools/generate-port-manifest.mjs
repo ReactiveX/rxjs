@@ -54,6 +54,12 @@ const observableMessages = (events) =>
           ? { kind, error: value ?? 'error' }
           : { kind },
   }));
+const harnessRewritePrograms = new Map([
+  [
+    'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
+    buildSynchronousCatchErrorHarnessRewrite(),
+  ],
+]);
 // Subscription replacements close original open logs only where the synthetic
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
@@ -1394,7 +1400,9 @@ function extractCases({ path, sourceText }) {
           wrapManualHelpers: !runMode,
         });
       } else {
-        classification = reviewFlags.includes('multiple-observers') || !runMode ? 'harness-rewrite' : 'portable';
+        const harnessRewrite = harnessRewritePrograms.get(id);
+        classification =
+          harnessRewrite || reviewFlags.includes('multiple-observers') || !runMode ? 'harness-rewrite' : 'portable';
         const verifiedActive =
           !reviewFlags.includes('source-skipped') &&
           isVerifiedColdPass({
@@ -1403,19 +1411,23 @@ function extractCases({ path, sourceText }) {
           });
         disposition = verifiedActive ? 'active' : 'expected-failure';
         reason = reviewFlags.includes('source-skipped')
-          ? 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
+          ? harnessRewrite
+            ? 'The source case was skipped in RxJS 7; its unbounded synchronous recovery loop is preserved with an explicit cancellation boundary.'
+            : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
           : verifiedActive
             ? 'Mechanically migrated and verified against the ColdObservable mode.'
             : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
-        migratedProgram = buildMigratedProgram({
-          caseId: id,
-          callback,
-          imports: usedImports,
-          sourceFile,
-          support: caseSupport,
-          wrapManualHelpers: !runMode,
-        });
+        migratedProgram =
+          harnessRewrite ??
+          buildMigratedProgram({
+            caseId: id,
+            callback,
+            imports: usedImports,
+            sourceFile,
+            support: caseSupport,
+            wrapManualHelpers: !runMode,
+          });
       }
 
       const fingerprint = createHash('sha256').update(normalizeCase(originalSource)).digest('hex');
@@ -1448,6 +1460,49 @@ function extractCases({ path, sourceText }) {
 
 function buildUnavailableProgram(reason) {
   return `async function migrated() {\n  throw new Error(${JSON.stringify(reason)});\n}\n`;
+}
+
+function buildSynchronousCatchErrorHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { applyOperators, catchError, expect, map } = runtime;
+const controller = new AbortController();
+let sourceAttempts = 0;
+let projectionAttempts = 0;
+let handledErrors = 0;
+const notifications = [];
+const source = new Observable((subscriber) => {
+  sourceAttempts++;
+  subscriber.next(4);
+  subscriber.complete();
+});
+const observable = applyOperators(source, [
+  map((value) => {
+    projectionAttempts++;
+    if (projectionAttempts === 1000) {
+      controller.abort();
+    }
+    throw 'four!';
+  }),
+  catchError((_error, caught) => {
+    handledErrors++;
+    return caught;
+  }),
+]);
+observable.subscribe(
+  {
+    next: (value) => notifications.push({ kind: 'N', value }),
+    error: (error) => notifications.push({ kind: 'E', error }),
+    complete: () => notifications.push({ kind: 'C' }),
+  },
+  { signal: controller.signal }
+);
+expect(sourceAttempts).to.equal(1000);
+expect(projectionAttempts).to.equal(1000);
+expect(handledErrors).to.equal(999);
+expect(controller.signal.aborted).to.equal(true);
+expect(notifications).to.deep.equal([]);
+}
+`;
 }
 
 function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, wrapManualHelpers = false }) {
