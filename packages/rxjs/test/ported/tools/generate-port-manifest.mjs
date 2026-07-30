@@ -94,10 +94,10 @@ const observationBoundaries = new Map([
   [
     'spec/observables/zip-spec.ts:17:zip > should combine a source with a second',
     {
-      observable: boundedSubscription(0, 15),
+      observable: boundedSubscription(0, 18),
       subscriptions: new Map([
-        ['asubs', boundedSubscription(0, 15)],
-        ['bsubs', boundedSubscription(0, 15)],
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
       ]),
     },
   ],
