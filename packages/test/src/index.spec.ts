@@ -375,6 +375,16 @@ describe('rxTest', () => {
     ).rejects.toBe(error);
   });
 
+  it('turns unhandled cold source errors into test failures', async () => {
+    const error = new Error('unhandled cold source error');
+
+    await expect(
+      rxTest(({ cold }) => {
+        cold('#', undefined, error).subscribe();
+      })
+    ).rejects.toBe(error);
+  });
+
   it('supports custom assertion adapters', async () => {
     let calls = 0;
     await rxTest(

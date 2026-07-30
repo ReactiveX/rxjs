@@ -225,7 +225,12 @@ class IndependentTestSubscriber<T> implements Subscriber<T> {
     }
     this.#controller.abort(error);
     try {
-      this.#observer.error?.(error);
+      const handler = this.#observer.error;
+      if (handler) {
+        handler.call(this.#observer, error);
+      } else {
+        globalThis.reportError(error);
+      }
     } catch (observerError) {
       globalThis.reportError(observerError);
     }
