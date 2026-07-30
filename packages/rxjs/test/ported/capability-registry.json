@@ -982,12 +982,19 @@
       "status": "Compatibility-only",
       "note": "Producer-per-subscription compatibility test surface; not a platform Observable parity claim."
     },
+    "connectable": {
+      "module": "connectable",
+      "adapter": "identity",
+      "mapping": "connectable(source, config?)",
+      "status": "Present; parity unverified",
+      "note": "Creates a manually connected Observable with a stable AbortController-backed connection facade and configurable connector reset."
+    },
     "ConnectableObservable": {
-      "module": "global",
-      "adapter": "typeOnly",
-      "mapping": "ConnectableObservable<T>",
-      "status": "Type-only compatibility",
-      "note": "The runtime sentinel retains erased casts in migrated multicast and publish tests; connectability itself comes from the mapped operator result."
+      "module": "connectable",
+      "adapter": "identity",
+      "mapping": "ConnectableObservable",
+      "status": "Compatibility-only",
+      "note": "Provides the concrete manually connected compatibility class used by standalone connectable and legacy multicasting operators."
     },
     "EMPTY": {
       "module": "empty",
