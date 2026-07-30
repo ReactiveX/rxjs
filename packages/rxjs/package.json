@@ -118,6 +118,7 @@
         "./src/scan.ts",
         "./src/sequence-error.ts",
         "./src/share.ts",
+        "./src/share-replay.ts",
         "./src/single.ts",
         "./src/skip.ts",
         "./src/skip-last.ts",
@@ -616,6 +617,13 @@
       "import": "./dist/esm/share.js",
       "require": "./dist/commonjs/share.js",
       "types": "./dist/types/share.d.ts"
+    },
+    "./share-replay": {
+      "browser": "./dist/browser/share-replay.js",
+      "webpack": "./dist/webpack/share-replay.js",
+      "import": "./dist/esm/share-replay.js",
+      "require": "./dist/commonjs/share-replay.js",
+      "types": "./dist/types/share-replay.d.ts"
     },
     "./single": {
       "browser": "./dist/browser/single.js",
