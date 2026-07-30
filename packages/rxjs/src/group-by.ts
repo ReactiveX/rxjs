@@ -44,6 +44,7 @@ declare global {
 interface GroupEntry<K, T> {
   readonly subject: SubjectLike<T>;
   readonly view: KeyedGroupObservable<K, T>;
+  readonly durationView: KeyedGroupObservable<K, T>;
   durationController?: AbortController;
 }
 
@@ -125,12 +126,14 @@ function groupByOperator<T, K, E = T>(
       }
     };
 
-    const createGroupView = (key: K, subject: SubjectLike<E>): KeyedGroupObservable<K, E> => {
+    const createGroupView = (key: K, subject: SubjectLike<E>, retainsSource: boolean): KeyedGroupObservable<K, E> => {
       const view = source[create]<E>((groupSubscriber) => {
-        activeGroupViews++;
+        if (retainsSource) {
+          activeGroupViews++;
+        }
         let released = false;
         groupSubscriber.addTeardown(() => {
-          if (released) {
+          if (released || !retainsSource) {
             return;
           }
           released = true;
@@ -201,7 +204,7 @@ function groupByOperator<T, K, E = T>(
 
       let durationValue: ObservableValue<unknown>;
       try {
-        durationValue = duration(entry.view);
+        durationValue = duration(entry.durationView);
       } catch (error) {
         terminate('error', error);
         return;
@@ -266,7 +269,8 @@ function groupByOperator<T, K, E = T>(
 
               entry = {
                 subject,
-                view: createGroupView(key, subject),
+                view: createGroupView(key, subject, true),
+                durationView: createGroupView(key, subject, false),
               };
               groups.set(key, entry);
               subscriber.next(entry.view);

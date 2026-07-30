@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, expectTypeOf, it } from 'vitest';
 import '@rxjs/observable-polyfill';
 import { Subject } from './subject.js';
 import type { KeyedGroupObservable } from './group-by.js';
+import { skip } from './skip.js';
 
 type GroupBySymbol = typeof import('./group-by.js').groupBy;
 
@@ -264,6 +265,31 @@ describe('groupBy', () => {
     source.subscribers[0]?.next(3);
     expect(innerValues).toEqual([1, 3]);
     expect(oddGroup?.key).toBe(1);
+
+    innerController.abort();
+    expect(source.subscribers[0]?.active).toBe(false);
+    expect(source.teardowns).toBe(1);
+  });
+
+  it('does not let duration observation retain source work after the outer and user group observers abort', () => {
+    const source = tracked<number>();
+    const outerController = new AbortController();
+    const innerController = new AbortController();
+
+    source.observable[groupBy]((value) => value % 2, {
+      duration: (group) => group[skip](2),
+    }).subscribe(
+      (group) => {
+        group.subscribe(() => {}, { signal: innerController.signal });
+      },
+      { signal: outerController.signal }
+    );
+
+    source.subscribers[0]?.next(1);
+    outerController.abort();
+
+    expect(source.subscribers[0]?.active).toBe(true);
+    expect(source.teardowns).toBe(0);
 
     innerController.abort();
     expect(source.subscribers[0]?.active).toBe(false);
