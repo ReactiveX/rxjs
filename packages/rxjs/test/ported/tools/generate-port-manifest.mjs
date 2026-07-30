@@ -103,6 +103,21 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/distinct-spec.ts:26:distinct > should distinguish between values and does not complete',
+    {
+      observable: boundedSubscription(0, 19),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 19)]]),
+    },
+  ],
+  [
+    'spec/operators/distinct-spec.ts:37:distinct > should not complete if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/distinct-spec.ts:48:distinct > should not complete if source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
     'spec/operators/count-spec.ts:26:count > should be never when source is never',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
@@ -123,6 +138,42 @@ const observationBoundaries = new Map([
   [
     'spec/operators/every-spec.ts:290:every > should not complete if source never emits',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/max-spec.ts:26:max > should be never when source is never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    "spec/operators/max-spec.ts:48:max > should be never when source doesn't complete",
+    {
+      observable: boundedSubscription(0, 6),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 6)]]),
+    },
+  ],
+  [
+    'spec/operators/max-spec.ts:207:max > should handle a constant predicate on an never hot observable',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]),
+    },
+  ],
+  [
+    'spec/operators/min-spec.ts:26:min > should be never when source is never',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    "spec/operators/min-spec.ts:48:min > should be never when source doesn't complete",
+    {
+      observable: boundedSubscription(0, 6),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 6)]]),
+    },
+  ],
+  [
+    'spec/operators/min-spec.ts:171:min > should handle a constant predicate on an never hot observable',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]),
+    },
   ],
   [
     'spec/operators/distinctUntilKeyChanged-spec.ts:41:distinctUntilKeyChanged > should distinguish between values and does not complete',
