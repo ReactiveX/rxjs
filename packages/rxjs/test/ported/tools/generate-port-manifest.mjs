@@ -242,6 +242,116 @@ const observationBoundaries = new Map([
     { observable: boundedSubscription(0, 7), subscriptions: new Map([['bsubs', boundedSubscription(0, 7)]]) },
   ],
   [
+    'spec/operators/zipWith-spec.ts:15:zipWith > should combine a source with a second',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zipWith-spec.ts:145:zipWith > with iterables > should work with never observable and non-empty iterable',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['asubs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/zipWith-spec.ts:223:zipWith > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 1)],
+        ['bsubs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zipWith-spec.ts:307:zipWith > should work with never and non-empty',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['asubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
+    'spec/operators/zipWith-spec.ts:321:zipWith > should work with non-empty and never',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['bsubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:28:zipAll operator > should combine two observables',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:173:zipAll operator > with iterables > should work with never observable and non-empty iterable',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['asubs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:241:zipAll operator > should combine two observables and selector',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:478:zipAll operator > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 1)],
+        ['bsubs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:562:zipAll operator > should work with never and non-empty',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['asubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:576:zipAll operator > should work with non-empty and never',
+    { observable: boundedSubscription(0, 7), subscriptions: new Map([['bsubs', boundedSubscription(0, 7)]]) },
+  ],
+  [
+    'spec/operators/zipAll-spec.ts:590:zipAll operator > should combine a source with a second',
+    {
+      observable: boundedSubscription(0, 18),
+      subscriptions: new Map([
+        ['asubs', boundedSubscription(0, 18)],
+        ['bsubs', boundedSubscription(0, 18)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/combineLatestAll-spec.ts:28:combineLatestAll operator > should work with two nevers',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['e2subs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/combineLatestAll-spec.ts:44:combineLatestAll operator > should work with never and empty',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatestAll-spec.ts:60:combineLatestAll operator > should work with empty and never',
+    { observable: boundedSubscription(0, 1), subscriptions: new Map([['e2subs', boundedSubscription(0, 1)]]) },
+  ],
+  [
+    'spec/operators/combineLatestAll-spec.ts:124:combineLatestAll operator > should work with hot-single and never',
+    { observable: boundedSubscription(0, 3), subscriptions: new Map([['e2subs', boundedSubscription(0, 3)]]) },
+  ],
+  [
+    'spec/operators/combineLatestAll-spec.ts:140:combineLatestAll operator > should work with never and hot-single',
+    { observable: boundedSubscription(0, 5), subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]) },
+  ],
+  [
     'spec/observables/concat-spec.ts:99:static concat > should not complete if first source does not completes',
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
