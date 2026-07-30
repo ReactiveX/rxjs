@@ -68,6 +68,7 @@
         "./src/count.ts",
         "./src/create.ts",
         "./src/debounce.ts",
+        "./src/delay-when.ts",
         "./src/dematerialize.ts",
         "./src/default-if-empty.ts",
         "./src/distinct.ts",
@@ -260,6 +261,13 @@
       "import": "./dist/esm/debounce.js",
       "require": "./dist/commonjs/debounce.js",
       "types": "./dist/types/debounce.d.ts"
+    },
+    "./delay-when": {
+      "browser": "./dist/browser/delay-when.js",
+      "webpack": "./dist/webpack/delay-when.js",
+      "import": "./dist/esm/delay-when.js",
+      "require": "./dist/commonjs/delay-when.js",
+      "types": "./dist/types/delay-when.d.ts"
     },
     "./dematerialize": {
       "browser": "./dist/browser/dematerialize.js",
