@@ -53,6 +53,7 @@
       "./package.json": "./package.json",
       ".": [
         "./src/animation-frames.ts",
+        "./src/async-subject.ts",
         "./src/behavior-subject.ts",
         "./src/buffer.ts",
         "./src/buffer-toggle.ts",
@@ -154,6 +155,13 @@
       "import": "./dist/esm/animation-frames.js",
       "require": "./dist/commonjs/animation-frames.js",
       "types": "./dist/types/animation-frames.d.ts"
+    },
+    "./async-subject": {
+      "browser": "./dist/browser/async-subject.js",
+      "webpack": "./dist/webpack/async-subject.js",
+      "import": "./dist/esm/async-subject.js",
+      "require": "./dist/commonjs/async-subject.js",
+      "types": "./dist/types/async-subject.d.ts"
     },
     "./behavior-subject": {
       "browser": "./dist/browser/behavior-subject.js",
