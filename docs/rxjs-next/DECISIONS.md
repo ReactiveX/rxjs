@@ -24,8 +24,10 @@ Status meanings:
 ## D-002 — Use a polyfill only when the platform primitive is absent
 
 - **Status:** Accepted
-- **Decision:** RxJS will provide a fallback implementation, but a conforming
-  native `Observable` takes precedence. String-named methods such as
+- **Decision:** RxJS will provide a fallback implementation, but any existing
+  `Observable` takes precedence without conformance probing. Support is claimed
+  only for implementations inside the documented capability boundary.
+  String-named methods such as
   `Observable.prototype.map` remain part of the platform contract: they come
   from the native implementation when present and from the conforming fallback
   otherwise.
@@ -34,8 +36,8 @@ Status meanings:
 - **Consequence:** The current unconditional assignment to
   `globalThis.Observable` is prototype debt, not the target contract. RxJS must
   not replace a platform string-named method in order to add library behavior.
-- **Unresolved detail:** The detection, installation, and import contract is
-  still open.
+- **Installation detail:** D-041 defines the conditional side-effect,
+  detection metadata, and per-realm initialization contract.
 
 ## D-003 — Address RxJS extensions with Symbols
 
@@ -72,7 +74,8 @@ Status meanings:
 
 ## D-004 — Keep backward compatibility in an additional library
 
-- **Status:** Accepted
+- **Status:** Superseded
+- **Superseded by:** D-039.
 - **Decision:** RxJS 7 compatibility behavior will be supplied through a
   separate library or package boundary rather than by changing the platform
   Observable contract.
@@ -83,7 +86,8 @@ Status meanings:
 
 ## D-005 — Preserve pipeable operators in compatibility work
 
-- **Status:** Accepted
+- **Status:** Superseded
+- **Superseded by:** D-039.
 - **Decision:** The compatibility layer will support operator functions that can
   be composed in the RxJS 7 pipeable style.
 - **Rationale:** Pipeable composition is central to the source structure of many
@@ -99,8 +103,9 @@ Status meanings:
   semantics make an unchanged result impossible or misleading.
 - **Rationale:** The old suite contains valuable behavioral knowledge, but it
   also encodes the old subscription model and implementation structure.
-- **Consequence:** A compatibility ledger and explicit accepted-divergence
-  category are required.
+- **Consequence:** A migration-evidence ledger and explicit
+  accepted-divergence category are required. Passing former tests does not
+  create a runtime-compatibility promise.
 
 ## D-007 — Use RxJS 9 as the probable release name
 
@@ -111,16 +116,19 @@ Status meanings:
 - **Consequence:** Current `8.0.0-alpha` package versions are not authoritative.
   Final versioning and pre-release naming remain release decisions.
 
-## D-008 — Provide migration Skills and MCP capabilities
+## D-008 — Provide migration Skills and defer MCP capabilities
 
-- **Status:** Deferred
-- **Decision:** Plan to ship AI-oriented knowledge and tools that help users
-  apply RxJS Next and migrate from RxJS 7.
+- **Status:** Accepted
+- **Decision:** Ship repository-grounded migration Skills that help users apply
+  RxJS Next and migrate from RxJS 7. Broader MCP capabilities remain a
+  possible later addition rather than a required runtime product.
 - **Rationale:** The semantic migration is substantial and benefits from
-  repository-grounded, executable assistance.
+  reviewable, executable assistance. D-039 rejects a runtime emulation package,
+  making explicit migration guidance and tooling the supported path.
 - **Consequence:** Do not design the packaging, permissions, server model, or
-  release coupling until the runtime and compatibility APIs are stable enough
-  to encode.
+  release coupling until the RxJS Next runtime APIs and migration evidence are
+  stable enough to encode. The existing marble-migration Skill is evidence for
+  the approach, not the final distribution contract.
 
 ## D-009 — Separate the attested WPT harness gate from conformance work
 
@@ -196,7 +204,7 @@ Status meanings:
 - **Rationale:** RxJS Next operators use host scheduling APIs rather than a
   public scheduler abstraction, so deterministic tests must virtualize the
   host boundary. Separate source helpers prevent producer-per-subscription
-  compatibility behavior from being confused with the platform lifecycle.
+  cold test behavior from being confused with the platform lifecycle.
 - **Consequence:** The main RxJS package does not regain scheduler arguments or
   a public `TestScheduler`. Every host scheduling primitive adopted by a
   supported operator must have an `@rxjs/test` adapter, and production
@@ -211,7 +219,7 @@ Status meanings:
 
 - **Status:** Accepted
 - **Decision:** Preserve the RxJS 7 marble corpus in a source-pinned generated
-  manifest with one compatibility classification and one execution disposition
+  manifest with one migration classification and one execution disposition
   per case. Establish producer-per-subscription behavior against
   `ColdObservable` first. Reuse reviewed portable definitions in isolated
   fallback and native-if-present processes, where every platform case uses the
@@ -340,7 +348,7 @@ Status meanings:
 
 - **Status:** Accepted
 - **Decision:** The exploratory RxJS `Subject` class exposes
-  `subject.asObservable()` as a class-local compatibility method. It returns a
+  `subject.asObservable()` as an intentional class-local method. It returns a
   distinct instance of Subject's base Observable that subscribes to the
   Subject with the derived subscriber's `AbortSignal`. No string-named
   `asObservable` property is installed on the platform Observable prototype.
@@ -416,7 +424,7 @@ Status meanings:
   throttle and audit behavior. A duration value closes a window and may emit a
   pending trailing value; duration completion only cleans up the window and
   does not emit. Throttle restarts its duration after a trailing emission by
-  default. The audit compatibility adapter supplies `leading: false`,
+  default. The audit migration adapter supplies `leading: false`,
   `trailing: true`, and `restartOnTrailing: false`, so the next source value
   starts the next audit window.
 - **Rationale:** Audit and throttle share duration selection, cancellation,
@@ -491,7 +499,7 @@ Status meanings:
   already closed when its downstream observer runs. Concurrent observers share
   one count and one source activation; last-observer cancellation closes that
   activation through the result signal. This is an operator-local cancellation
-  boundary, not producer-per-observer compatibility behavior.
+  boundary, not producer-per-observer platform behavior.
 
 ## D-025 — Scope tap and finalize hooks to a shared operator activation
 
@@ -647,7 +655,7 @@ Status meanings:
   run. Concurrent observers share each operator's activation state, and a
   restart begins with fresh state. No RxJS string method or global-registry
   Symbol is introduced. The legacy trailing-scheduler form of `startWith`
-  remains in the explicit scheduler-last compatibility queue.
+  remains in the explicit scheduler-last migration-evidence queue.
 
 ## D-032 — Keep count windows and recursive generation synchronous and activation-scoped
 
@@ -676,7 +684,7 @@ Status meanings:
   instead of being treated as ordinary values or silently accepted by these
   Symbol contracts.
 
-## D-033 — Resolve legacy scheduler evidence at the compatibility-test boundary
+## D-033 — Resolve legacy scheduler evidence at the migration-test boundary
 
 - **Status:** Accepted
 - **Decision:** Do not restore RxJS 7 scheduler classes, providers, parser
@@ -684,7 +692,7 @@ Status meanings:
   ported tests. Host-timed public Symbols use platform timers, animation
   frames, or narrow timestamp providers. Ported cases whose durable claim
   depends on legacy scheduling use explicit generator-owned `@rxjs/test`
-  timing rewrites or test-local compatibility sentinels.
+  timing rewrites or test-local migration sentinels.
 - **Rationale:** RxJS 7 schedulers combine public API, execution policy, and
   producer-per-subscription Observable assumptions that do not belong in the
   platform lifecycle layer. The virtual host environment can preserve notification timing,
@@ -785,13 +793,13 @@ Status meanings:
   protocol key provides the required interoperation without making the public
   extension catalog shared global territory.
 - **Consequence:** `cold.map(project)` crosses to the platform lifecycle, while
-  `cold[map](project)` remains on the cold compatibility lifecycle. Behavior-
+  `cold[map](project)` remains on the cold direct-subscription lifecycle. Behavior-
   and replay-subject prototypes derived from `ColdObservable` inherit this
   rule; their Symbol-operator results are plain ColdObservables rather than
   Subject subclasses. Concurrent observers of one native-method result share
   that result's platform activation. A future incompatible creation protocol
-  requires a new registry key, and compatibility subclasses that need to work
-  with older operators must retain the older protocol slot. New platform
+  requires a new registry key, and construction-protocol subclasses that need
+  to work with older operators must retain the older protocol slot. New platform
   methods must be audited and overridden before they are considered supported
   on `ColdObservable`. A Symbol operator cannot bypass `[create]` by delegating
   directly to a native method when that would change the receiver's
@@ -828,5 +836,98 @@ Status meanings:
   These public Symbols remain module-owned exact keys and do not use the global
   Symbol registry. Because they return async generators rather than derived
   Observables, they do not invoke the shared `[create]` construction protocol.
-  Their direct installation does not resolve the still-open common installer,
-  duplicate-package, package-map, or native-versus-polyfill decisions.
+  Their direct installation does not resolve the still-open common installer
+  or duplicate-package policy. D-040 and D-041 separately settle the package
+  map and native-versus-polyfill acquisition contract.
+
+## D-039 — Prefer migration assistance over an RxJS 7 runtime compatibility product
+
+- **Status:** Accepted
+- **Decision:** RxJS Next will not publish a separate runtime package that
+  emulates the RxJS 7 `Observable`, `Subscription`, pipeable-operator import
+  surface, scheduler system, or deprecated aliases. Migration is supported by
+  explicit RxJS Next APIs, documentation, behavioral evidence, and the Skills
+  direction in D-008.
+- **Intentional Next APIs:** `ColdObservable`, `PerSubscriptionSubjectBase`,
+  the Subject family, and the exact Symbol-keyed `pipe` may remain in `rxjs`
+  when their own contracts justify them. Their producer, sharing,
+  cancellation, typing, and composition behavior is documented directly; their
+  presence is not a blanket RxJS 7 compatibility promise.
+- **Rationale:** A second runtime surface would duplicate the old architecture,
+  blur the platform lifecycle, expand without a credible completion boundary,
+  and delay migration to the actual RxJS Next contracts.
+- **Consequence:** D-004 and D-005 are superseded. RxJS 7 tests and mappings
+  remain migration evidence, including classifications that describe why a
+  case requires producer-per-subscription or legacy harness behavior. Those
+  classifications do not imply a compatibility package, facade, or support
+  matrix.
+
+## D-040 — Publish three packages with one-way platform acquisition
+
+- **Status:** Accepted
+- **Decision:** The target npm map contains three products:
+  `@rxjs/observable-polyfill`, `rxjs`, and `@rxjs/test`.
+  `@rxjs/observable` is removed rather than archived, renamed, or reused.
+- **Package ownership:**
+  - `@rxjs/observable-polyfill` is independently publishable, has no dependency
+    on `rxjs`, supplies the conditional platform fallback, and owns the base
+    ambient TypeScript declarations for `Observable`, `Subscriber`,
+    `ObservableValue`, and `EventTarget.when`.
+  - `rxjs` declares a runtime dependency on
+    `@rxjs/observable-polyfill`. Its declarations augment the base platform
+    types only for the exact Symbols imported by each entry point.
+  - `@rxjs/test` remains implementation-neutral. It consumes an Observable
+    already selected in its realm and does not install, replace, or select one.
+- **Entry points:** The `rxjs` root conditionally initializes the platform and
+  exports intentional non-operator core classes and values, including cold,
+  Subject, connectable, notification, and public-error primitives. It does not
+  install operator or factory Symbols. Each public Symbol subpath conditionally
+  initializes the platform and installs only its own capability and required
+  internal kernel dependencies.
+- **Rationale:** Keeping acquisition independently usable lets applications
+  request only the platform fallback, while making it a declared `rxjs`
+  dependency makes every direct public entry deterministic. A core-only root
+  avoids turning one import into installation of the complete extension
+  catalog.
+- **Consequence:** Physical removal of `packages/observable`, preparation
+  cleanup, dependency metadata, root and subpath export maps, type wiring, and
+  import fixtures are P0.3 implementation work. The existing workspace public
+  hoist remains temporary until that work lands.
+
+## D-041 — Initialize and identify the Observable fallback per realm
+
+- **Status:** Accepted
+- **Decision:** `import '@rxjs/observable-polyfill'` is the standalone
+  side-effect initializer. Every public `rxjs` entry point evaluates that same
+  conditional initializer before accessing `Observable`.
+- **Selection:** If `globalThis.Observable` exists, preserve it without
+  conformance probing, warnings, or replacement, and do not install a separate
+  `Subscriber` beside it. If it is absent, install the paired RxJS fallback
+  `Observable` and `Subscriber`. If `globalThis.EventTarget` exists, install
+  `EventTarget.prototype.when` only when that property is absent; never replace
+  an existing method.
+- **Detection contract:** Export `observablePolyfillInfo`, backed by
+  `Symbol.for('rxjs.observable.polyfill.info.v1')`, and
+  `getObservablePolyfillInfo(constructor = globalThis.Observable)`. An
+  RxJS-installed constructor owns a non-enumerable, non-writable,
+  non-configurable property at that key whose frozen value is
+  `{ packageName, version }`. The helper returns that metadata object or
+  `undefined` for an unmarked native or foreign implementation. Metadata object
+  identity distinguishes installation instances without UUID or crypto
+  requirements. Initialization checks only during module evaluation; ordinary
+  operators do not poll the marker.
+- **Realms and servers:** Each window, iframe, worker, or server isolate
+  initializes independently. Imports do not traverse child realms or patch
+  foreign constructors, and transparent cross-realm Observable operation is
+  not supported. Server installation is isolate-global and idempotent, not
+  per-request.
+- **Support boundary:** The initial claim is capability-based for browser
+  windows, worker realms, and maintained Node releases with the required web
+  primitives. Deno, Bun, edge runtimes, hardened globals, and non-extensible
+  constructors or prototypes remain unclaimed until explicitly tested.
+- **Consequence:** The first existing constructor wins, including an earlier
+  RxJS fallback version; the helper reports its marker when present. P0.3 must
+  fail clearly rather than leave a partial installation when an absent slot
+  cannot be defined. P0.4 must exercise native, foreign, duplicate-version,
+  missing-global, `EventTarget.when`, direct-subpath, root-side-effect, and
+  separate-realm fixtures.

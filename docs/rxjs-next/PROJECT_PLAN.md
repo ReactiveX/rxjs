@@ -3,7 +3,7 @@
 ## Executive summary
 
 The project will establish a reliable platform Observable foundation before
-expanding the operator catalog or compatibility promises. The user temporarily
+expanding the operator catalog and migration promises. The user temporarily
 prioritized the attested Observable WPT harness and fallback-conformance work
 ahead of the package and installation decision. Both slices are complete:
 the fallback passes the pinned suite while exact implementation identity is
@@ -16,8 +16,10 @@ test declarations expand to 2,338 uniquely identified registrations, including
 parameterized and source-skipped evidence. The user has now temporarily
 prioritized and completed P0.T3: the durable failure ledger retains every
 original failure, all 2,338 registrations pass in cold and polyfill modes, and
-the strict RxJS unit gate is green. Package-boundary work at P0.2 is again the
-single active item. A later user-prioritized
+the strict RxJS unit gate is green. P0.2 has now accepted the three-package map,
+conditional per-realm fallback contract, and migration-over-emulation
+direction. P0.3 is the single active item and must implement those package
+decisions. A later user-prioritized
 runner follow-up also removed expected-failure quarantine from the default
 ported command and added live shard progress. The
 user-prioritized repository package-manager migration to pnpm 10 is complete
@@ -48,8 +50,8 @@ item.
 - Symbol extension identity, installation, construction, cancellation, typing,
   and packaging conventions are uniform and tested.
 - Supported operators are backed by classified RxJS 7 behavioral evidence.
-- The compatibility layer has an explicit support matrix and package/type
-  boundary.
+- RxJS 7 migration mappings are backed by classified evidence and do not imply
+  a runtime compatibility package.
 - Every published entry point builds and passes import/type fixtures in
   supported environments.
 - Migration guidance and future AI tools are generated from accepted behavior,
@@ -59,24 +61,24 @@ item.
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status    | ID     | Outcome                                                                                                                |
-| --------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| `DONE`    | P0.1   | Record the charter, current architecture, compatibility policy, decisions, risks, open questions, and AI working rules |
-| `DONE`    | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                          |
-| `DONE`    | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                           |
-| `DONE`    | P0.T2b | Vet the migration Skill independently before using it on the repository                                                |
-| `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                                  |
-| `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
-| `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
-| `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                          |
-| `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                  |
-| `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                        |
-| `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                             |
-| `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                                 |
-| `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
-| `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
-| `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
-| `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
+| Status    | ID     | Outcome                                                                                                            |
+| --------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| `DONE`    | P0.1   | Record the charter, current architecture, migration policy, decisions, risks, open questions, and AI working rules |
+| `DONE`    | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                      |
+| `DONE`    | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                       |
+| `DONE`    | P0.T2b | Vet the migration Skill independently before using it on the repository                                            |
+| `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                              |
+| `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                |
+| `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                      |
+| `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                      |
+| `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue              |
+| `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                    |
+| `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                         |
+| `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
+| `DONE`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
+| `NEXT`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
+| `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
+| `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                          |
 
 #### P0.1 completion evidence
 
@@ -152,7 +154,7 @@ item.
   native-if-present modes without importing the platform constructor.
 - Repository notes reconcile source counts, duplicate provenance, known
   failures, missing APIs, and semantic divergences.
-- Production Observable, operator, and compatibility implementations are not
+- Production Observable, operator, and direct-subscription implementations are not
   changed to make the port pass.
 
 #### P0.T2c completion evidence
@@ -170,8 +172,8 @@ item.
   detection skips explicitly in the current Node realm. Cold audit records 335
   passes and 1,811 failures; polyfill audit records 340 passes and 1,806
   failures.
-- Recorded the platform shared/ref-counted lifecycle separately from
-  compatibility-cold expectations and required platform cases to construct
+- Recorded the platform shared/ref-counted lifecycle separately from cold-mode
+  expectations and required platform cases to construct
   from the ambient Observable.
 - Added D-013 and the detailed port notes. No production implementation was
   changed, and P0.2 is restored as the single `NEXT` item.
@@ -184,7 +186,7 @@ item.
 - Missing capabilities fail with explicit source-linked capability diagnostics
   rather than being omitted from test collection.
 - The raw parity command reports the complete pass/fail/duplicate disposition
-  without changing production operators or compatibility behavior.
+  without changing production operators or direct-subscription behavior.
 - Normal and platform modes remain bounded; any required sharding or process
   isolation is part of the harness rather than a reason to omit cases.
 - Port notes, verification evidence, and the generated manifest agree on the
@@ -256,7 +258,7 @@ item.
 - The launcher continues through every shard, reports visible progress while
   they run, expands every failed shard's diagnostics, and exits nonzero when
   any test fails.
-- No production Observable, operator, or compatibility behavior changes.
+- No production Observable, operator, or direct-subscription behavior changes.
 
 #### P0.T2f completion evidence
 
@@ -283,7 +285,7 @@ item.
 - Every tracked case belongs to exactly one operator/function work packet and
   uses only `TODO`, `IN-PROCESS`, `FIXED`, or a `BLOCKED` status with a named
   dependency.
-- Each packet is resolved at the correct platform, compatibility, harness, or
+- Each packet is resolved at the correct platform, intentional Next, harness, or
   approved-divergence boundary without weakening RxJS 7 behavioral evidence.
 - Complete cold and polyfill audits account for all 2,338 cases, every tracked
   row is `FIXED`, and the normal strict ported-test gate passes.
@@ -302,7 +304,7 @@ item.
 - `pnpm --filter rxjs test` passed 705 focused source tests, then both complete
   parity modes.
 - Scheduler-specific RxJS 7 evidence is resolved at the explicit
-  compatibility-test boundary recorded in D-033. No public scheduler class,
+  migration-evidence boundary recorded in D-033. No public scheduler class,
   general scheduler argument, string-named RxJS method, or global-registry
   Symbol was introduced.
 - P0.2 is restored as the single `NEXT` item.
@@ -355,7 +357,7 @@ item.
   microtask coalescing, cancellation, platform sharing/ref counting, and
   `ColdObservable` producer-per-subscription behavior.
 - Public comments and architecture records explain the implications of
-  multiple generators over platform and compatibility Observables.
+  multiple generators over platform and direct-subscription Observables.
 
 #### P0.I1 completion evidence
 
@@ -370,19 +372,20 @@ item.
   tests, followed by all 2,338 cold and 2,338 polyfill parity cases.
 - Recorded D-038 against reviewed `rxjs-for-await` revision
   `94f9cf9cb015ac3700dfd1850eb81d36962eb70f` and updated architecture,
-  compatibility, and open-question records.
+  migration-policy, and open-question records.
 - Package metadata parses successfully. The package build reaches only the
   documented P0.3 baseline where `tshy` rejects the existing array-valued root
   source export; it reports no change-specific build diagnostic.
-- P0.2 remains the single project-level `NEXT` item.
+- At the time this evidence was recorded, P0.2 remained the single
+  project-level `NEXT` item.
 
 #### P0.2 completion bar
 
 Record accepted decisions covering:
 
 - the purpose or removal of `@rxjs/observable`;
-- the final conceptual and npm package boundaries for fallback, extensions, and
-  compatibility;
+- the final conceptual and npm package boundaries for fallback, extensions,
+  testing, and the explicit absence of a runtime compatibility product;
 - which package owns ambient platform types;
 - explicit versus automatic fallback installation;
 - behavior when a native constructor or `EventTarget.when` already exists;
@@ -393,8 +396,50 @@ Record accepted decisions covering:
 Update `ARCHITECTURE.md`, `DECISIONS.md`, `OPEN_QUESTIONS.md`, and package-map
 diagrams. No implementation is required for this decision step.
 
+#### P0.2 completion evidence
+
+- Accepted `@rxjs/observable-polyfill`, `rxjs`, and `@rxjs/test` as the three
+  target runtime products. Selected `@rxjs/observable` for physical removal in
+  P0.3 with no archive, rename, or compatibility reuse.
+- Assigned the base ambient `Observable`, `Subscriber`, `ObservableValue`, and
+  `EventTarget.when` declarations to the independently publishable polyfill
+  package. `rxjs` owns subpath-scoped Symbol augmentations, while `@rxjs/test`
+  remains implementation-neutral.
+- Required every public `rxjs` entry point to evaluate the conditional
+  polyfill initializer. The root exports non-operator core values without
+  installing the full Symbol catalog; a Symbol subpath installs only its own
+  capability and required kernel dependencies.
+- Preserved any existing `Observable` or `EventTarget.when` without probing,
+  warning, or replacement. A missing constructor receives the paired RxJS
+  fallback `Observable` and `Subscriber`; a missing `when` is filled only when
+  `EventTarget` exists.
+- Defined the stable
+  `Symbol.for('rxjs.observable.polyfill.info.v1')` metadata contract,
+  `observablePolyfillInfo`, and `getObservablePolyfillInfo`. Frozen
+  `{ packageName, version }` marker-object identity distinguishes installation
+  instances without UUID or crypto requirements.
+- Defined initialization as independent per window, iframe, worker, or server
+  isolate, with no realm traversal or transparent foreign-Observable support.
+  The initial capability claim covers browser/worker realms and maintained
+  Node releases; other runtimes and hardened surfaces remain unclaimed.
+- Rejected a separate RxJS 7 runtime compatibility product. Retained
+  `ColdObservable`, Subjects, and Symbol-keyed composition as intentional Next
+  APIs, while making documentation, classified evidence, and migration Skills
+  the supported migration direction. MCP remains optional and deferred.
+- Recorded D-039 through D-041, updated the charter, architecture, migration
+  policy, open questions, and package/dependency diagrams, and reserved all
+  runtime, manifest, package-removal, and fixture work for P0.3.
+
 #### P0.3 completion bar
 
+- `packages/observable` and its preparation/tooling references are removed.
+- The conditional polyfill, read-only version/instance metadata, and detection
+  helper implement D-041 without partially installing on failure.
+- Every `rxjs` public entry initializes its realm; the root exports only the
+  approved non-operator core, and each Symbol subpath installs only its selected
+  capability and kernel dependencies.
+- `@rxjs/test` continues to require an already active realm constructor and
+  never selects or replaces it.
 - All selected packages build from a clean checkout on a declared Node runtime.
 - Root and subpath exports map to existing sources and generated types.
 - Runtime dependencies are declared.
@@ -402,6 +447,11 @@ diagrams. No implementation is required for this decision step.
 - Repository metadata points to the correct package paths.
 - At least one ESM and one CommonJS import fixture passes for each claimed
   package format.
+- Fixtures prove missing-global installation and marker metadata, preservation
+  of native/foreign and earlier-version constructors, independent conditional
+  `EventTarget.when`, direct subpath initialization, a root with no operator
+  Symbols, separate-realm isolation, and clear failure on unsupported frozen
+  targets.
 
 #### P0.4 completion bar
 
@@ -424,7 +474,7 @@ diagrams. No implementation is required for this decision step.
 
 | Status    | ID    | Outcome                                                                                                          |
 | --------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
-| `PLANNED` | P1.1  | Implement the approved native selection and conditional fallback installation                                    |
+| `PLANNED` | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
 | `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
 | `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
 | `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
@@ -456,7 +506,7 @@ diagrams. No implementation is required for this decision step.
   pass; CI uploads raw reports, diffs, logs, inventories, and per-realm
   identities.
 - No production source, public API, ambient type, export, runtime dependency,
-  installation contract, or compatibility behavior changes.
+  installation contract, or migration-contract changes.
 
 #### P1.4b completion bar
 
@@ -481,7 +531,7 @@ diagrams. No implementation is required for this decision step.
   protocol details.
 - Corrected pinned platform behavior in `takeUntil`, `take`, `drop`, `every`,
   `reduce`, `inspect`, and Promise-returning consumers without adding
-  string-named RxJS compatibility behavior.
+  string-named legacy RxJS behavior.
 - Added a scoped abort-algorithm bridge because public `abort` event listeners
   run too late to model the DOM-standard cancellation order. Signals without
   registered Observable work continue through the captured native abort
@@ -533,7 +583,7 @@ diagrams. No implementation is required for this decision step.
   import verification, harness tests, doctor, and browser execution work on
   Node `24.12.0` without bypassing the engine check.
 - Made no production source, public API, ambient type, export, runtime
-  dependency, installation-contract, or compatibility-behavior change.
+  dependency, installation-contract, or migration-contract change.
 
 Phase exit:
 
@@ -576,7 +626,7 @@ Phase exit:
 | Status    | ID   | Outcome                                                                         |
 | --------- | ---- | ------------------------------------------------------------------------------- |
 | `PLANNED` | P3.1 | Inventory the former RxJS 7 public operator and creation API by migration value |
-| `PLANNED` | P3.2 | Create and maintain the compatibility ledger                                    |
+| `PLANNED` | P3.2 | Create and maintain the migration-evidence ledger                               |
 | `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                  |
 | `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family       |
 
@@ -584,31 +634,30 @@ Do not use “all former tests pass” as an unqualified milestone. The gate is 
 every supported API has portable or rewritten evidence and every divergence is
 explicit.
 
-### Phase 4 — RxJS 7 compatibility product
+### Phase 4 — Intentional API and migration contracts
 
-| Status    | ID   | Outcome                                                                               |
-| --------- | ---- | ------------------------------------------------------------------------------------- |
-| `PLANNED` | P4.1 | Decide the compatibility type, package, conversion, and cancellation contracts        |
-| `PLANNED` | P4.2 | Stabilize cold-per-subscription and subscription-facade primitives                    |
-| `PLANNED` | P4.3 | Implement the approved pipeable operator experience                                   |
-| `PLANNED` | P4.4 | Add supported subjects, compatibility schedulers, and interop by prioritized category |
-| `PLANNED` | P4.5 | Publish the compatibility support matrix and representative application fixtures      |
+| Status    | ID   | Outcome                                                                                      |
+| --------- | ---- | -------------------------------------------------------------------------------------------- |
+| `PLANNED` | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
+| `PLANNED` | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
+| `PLANNED` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
+| `PLANNED` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 
 Phase exit:
 
-- compatibility is opt-in and visible in imports and types;
-- conversions state whether they change sharing or cancellation;
-- every support claim maps to tests;
-- unsupported categories are documented.
+- intentional Next APIs are explicit in imports and types;
+- producer, sharing, and cancellation semantics are documented directly;
+- every migration mapping links behavioral evidence and required source work;
+- unsupported RxJS 7 categories are documented without an emulation promise.
 
 ### Phase 5 — Migration experience and AI enablement
 
-| Status     | ID   | Outcome                                                                         |
-| ---------- | ---- | ------------------------------------------------------------------------------- |
-| `PLANNED`  | P5.1 | Write migration guidance from the compatibility ledger and accepted divergences |
-| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications |
-| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution        |
-| `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning                 |
+| Status     | ID   | Outcome                                                                              |
+| ---------- | ---- | ------------------------------------------------------------------------------------ |
+| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
+| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution             |
+| `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning                      |
 
 AI tools must consume versioned project knowledge and produce reviewable
 changes. They must not infer migration safety solely from matching operator
@@ -620,7 +669,7 @@ names.
 | --------- | ---- | ------------------------------------------------------------------------------------- |
 | `PLANNED` | P6.1 | Finalize version naming, supported environments, support policy, and release channels |
 | `PLANNED` | P6.2 | Complete package, type, bundle, performance, and conformance gates                    |
-| `PLANNED` | P6.3 | Publish API, compatibility, migration, and contributor documentation                  |
+| `PLANNED` | P6.3 | Publish API, migration, and contributor documentation                                 |
 | `PLANNED` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 
 ## Dependencies
@@ -635,9 +684,9 @@ flowchart LR
     Boundary --> Kernel["Phase 2 extension kernel"]
     Harness --> Kernel
     Kernel --> Operators["Phase 3 operator restoration"]
-    Boundary --> Compat["Phase 4 compatibility"]
-    Operators --> Compat
-    Compat --> Migration["Phase 5 migration and AI enablement"]
+    Boundary --> Evidence["Phase 4 intentional API and migration contracts"]
+    Operators --> Evidence
+    Evidence --> Migration["Phase 5 migration and AI enablement"]
     Operators --> Migration
     Fallback --> Release["Phase 6 release"]
     Migration --> Release
@@ -650,13 +699,13 @@ conformance implementation depends on a runnable harness.
 
 | Risk                                                | Impact                                         | Likelihood | Current response                                                                                  |
 | --------------------------------------------------- | ---------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| Package boundaries remain implicit                  | Rework across every import, type, and test     | High       | P0.2 is restored as the single `NEXT` item                                                        |
+| Accepted package boundaries are not implemented     | Imports, types, and builds remain incoherent   | High       | P0.3 is the single `NEXT` item                                                                    |
 | Upstream proposal changes                           | Fallback and native behavior drift             | High       | Pin revisions before conformance claims                                                           |
 | Prototype code becomes accidental policy            | Semantics are preserved without review         | High       | Documents distinguish current fact from accepted direction                                        |
 | Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys | High       | P2.1 plus package fixtures                                                                        |
-| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge             | High       | Mandatory test classification and separate compatibility layer                                    |
-| Compatibility scope becomes unbounded               | Release cannot converge                        | Medium     | Support matrix and prioritized API categories                                                     |
-| Global patching fails in hardened realms            | Library cannot initialize                      | Medium     | Decide supported environments and fallback access patterns                                        |
+| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge             | High       | Mandatory classification; evidence never implies a runtime compatibility product                  |
+| Migration evidence is mistaken for emulation        | Users depend on unsupported RxJS 7 surfaces    | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                |
+| Global patching fails in hardened realms            | Library cannot initialize                      | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure              |
 | Tooling is designed before APIs stabilize           | Skills encode obsolete migrations              | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred              |
 | Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests  | High       | Package-import fixtures and release gates precede expansion                                       |
 | WPT runs accidentally exercise native Observable    | False confidence in fallback behavior          | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
@@ -666,7 +715,7 @@ conformance implementation depends on a runnable harness.
 
 - final documentation-site architecture;
 - a complete operator priority list;
-- final compatibility support percentages;
+- final migration automation coverage;
 - Skills/MCP schemas and permissions;
 - release dates.
 
@@ -1513,3 +1562,26 @@ conformance implementation depends on a runnable harness.
 - Confirmed the package build stops at the unchanged P0.3 `tshy` root-export
   baseline before source compilation. Recorded D-038 and restored P0.2 as the
   sole project-level `NEXT` item.
+
+### 2026-07-30 — P0.2 package and installation contract
+
+- Accepted `@rxjs/observable-polyfill`, `rxjs`, and `@rxjs/test` as the final
+  target package map and selected `@rxjs/observable` for removal in P0.3.
+- Made the polyfill package independently publishable and responsible for the
+  base ambient platform types. `rxjs` depends on it and initializes the current
+  realm through every public entry; `@rxjs/test` remains implementation-neutral.
+- Defined a non-install-all `rxjs` root for intentional non-operator core APIs
+  and capability-scoped Symbol subpaths.
+- Preserved existing Observable and `EventTarget.when` implementations,
+  specified paired fallback installation, and defined the read-only
+  `observablePolyfillInfo`/`getObservablePolyfillInfo` detection contract.
+- Limited initialization to the importing window, iframe, worker, or server
+  isolate and left transparent cross-realm operation, hardened surfaces, and
+  untested runtimes outside the initial support claim.
+- Superseded the proposed RxJS 7 compatibility library and pipeable facade.
+  Retained cold, Subject, and Symbol-composition APIs as intentional Next
+  contracts and made migration documentation and Skills the supported path.
+- Recorded D-039 through D-041, reconciled the charter, architecture,
+  migration-evidence policy, open questions, future phases, risks, and package
+  diagrams, marked P0.2 `DONE`, and advanced P0.3 as the sole `NEXT` item.
+- This decision-only step changed no package metadata or runtime code.

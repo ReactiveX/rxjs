@@ -7,10 +7,12 @@ instead of shipping a competing observable type. RxJS will provide a polyfill
 when the platform does not provide `Observable`, and will add its broader
 reactive-programming capabilities through Symbol-keyed extensions.
 
-The project also intends to provide a separate compatibility layer for
-applications migrating from RxJS 7. That layer should preserve as much of the
-RxJS 7 structure, pipeable operator experience, and behavior as is practical
-without weakening or disguising platform semantics.
+RxJS Next will not ship a separate RxJS 7 runtime-compatibility library.
+Producer-per-subscription values, Subjects, Symbol-keyed composition, and
+other useful library capabilities may remain first-class RxJS Next APIs, but
+they are specified on their own terms rather than as a blanket emulation
+promise. Migration from RxJS 7 will instead be supported by documentation and
+repository-grounded Skills, with broader MCP assistance considered later.
 
 The working project name is **RxJS Next**. The likely public version is RxJS 9
 because a cancelled RxJS 8 line already exists and reusing that version would
@@ -31,12 +33,12 @@ Restarting the library on top of the platform primitive has three benefits:
 - Applications can avoid paying for a second foundational Observable
   implementation when the runtime already supplies one.
 - RxJS can focus on the high-value library layer: operators, composition,
-  compatibility, migration, testing, and developer tooling.
+  migration, testing, and developer tooling.
 
 ## Goals
 
-1. **Platform foundation.** Use the runtime's native web-platform `Observable`
-   whenever it is available and suitable.
+1. **Platform foundation.** Preserve the runtime's existing web-platform
+   `Observable` whenever it is available.
 2. **Conforming fallback.** Provide a polyfill when `Observable` is absent. The
    polyfill should ultimately pass the important Observable Web Platform Tests.
    The test harness is pinned independently from the later work required to
@@ -47,14 +49,14 @@ Restarting the library on top of the platform primitive has three benefits:
 4. **Operator continuity.** Re-establish the useful RxJS operator catalog and
    validate it against the former RxJS 7 behavior tests, allowing explicit
    differences required by platform sharing and cancellation semantics.
-5. **Separate backward compatibility.** Provide an additional library that
-   preserves as much RxJS 7 behavior and structure as practical.
-6. **Pipeable migration path.** Support RxJS 7-style pipeable operators in the
-   compatibility work so large applications can migrate incrementally.
-7. **Migration intelligence.** Eventually ship Skills and MCP capabilities that
-   help users apply the library correctly and migrate from RxJS 7. Their
-   packaging, APIs, and permissions are deferred.
-8. **AI-ready development.** Keep project intent, architecture, decisions,
+5. **Intentional library APIs.** Keep useful APIs such as `ColdObservable`,
+   Subjects, and Symbol-keyed `pipe` when they have explicit RxJS Next
+   contracts, without presenting them as a separate RxJS 7 compatibility
+   surface.
+6. **Migration intelligence.** Ship robust Skills that help users apply RxJS
+   Next and migrate from RxJS 7. Broader MCP capabilities remain a possible
+   later addition; packaging, APIs, and permissions are deferred.
+7. **AI-ready development.** Keep project intent, architecture, decisions,
    tests, and open questions explicit enough for AI-assisted implementation to
    be safe and reviewable.
 
@@ -63,6 +65,8 @@ Restarting the library on top of the platform primitive has three benefits:
 - Treating the completed test-only harness and its reviewed failure baseline as
   proof that the current fallback already conforms.
 - Designing the final Skills or MCP products.
+- Shipping a runtime package that emulates the RxJS 7 public API, import map,
+  subscription facade, pipeable-operator surface, or scheduler system.
 - Claiming complete RxJS 7 behavioral compatibility on the platform
   `Observable`.
 - Preserving every RxJS 7 internal class, scheduler mechanism, import path, or
@@ -78,11 +82,12 @@ Restarting the library on top of the platform primitive has three benefits:
 
 ### One platform identity
 
-The main entry point selects the web-platform Observable constructor for the
-current realm and must not introduce a competing RxJS constructor. If a
-conforming native implementation is present, RxJS must not replace it.
-Cross-realm values and constructor selection require an explicit policy before
-the API is stabilized.
+Every public `rxjs` entry point conditionally initializes the web-platform
+Observable constructor for its current realm and must not introduce a
+competing RxJS constructor. Any existing constructor is preserved without
+probing or replacement. Each window, iframe, worker, or server isolate
+initializes independently; RxJS does not traverse child realms or promise
+transparent cross-realm Observable support.
 
 ### Extensions are explicit
 
@@ -109,23 +114,23 @@ and accidental replacement.
 ### Platform behavior stays platform behavior
 
 The platform Observable is shared while an active producer subscription exists
-and is ref-counted by its observers. RxJS operators in the platform layer must
-work with that model. Compatibility behavior that needs a producer per
-subscriber belongs in the compatibility layer.
+and is ref-counted by its observers. RxJS operators on that surface must work
+with that model. A first-class API such as `ColdObservable` may deliberately
+create a producer per direct subscription, but that contract remains explicit
+in its type and does not redefine the platform Observable.
 
 ### Cancellation is signal-based
 
 Platform-layer cancellation and teardown flow through `AbortSignal`,
-`Subscriber.signal`, and `Subscriber.addTeardown()`. A legacy
-`Subscription.unsubscribe()` facade may exist in the compatibility layer, but
-it must not redefine the platform lifecycle.
+`Subscriber.signal`, and `Subscriber.addTeardown()`. RxJS Next does not ship a
+legacy `Subscription.unsubscribe()` facade that redefines that lifecycle.
 
 ### Behavior is proved, not implied
 
 The platform implementation is governed by a pinned specification/WPT baseline.
-The operator library is governed by focused unit tests plus a classified subset
-of RxJS 7 tests. Compatibility claims require an explicit ledger of supported
-behavior and intentional differences.
+The operator library is governed by focused unit tests plus classified RxJS 7
+behavioral evidence. Passing former tests proves only the represented behavior;
+it does not create an RxJS 7 runtime-compatibility claim.
 
 ### Packaging is part of architecture
 
@@ -136,16 +141,16 @@ runtime code.
 
 ## Quality attributes
 
-| Attribute              | Required outcome                                                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Platform fidelity      | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched              |
-| Interoperability       | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                       |
-| Explicit compatibility | RxJS 7 emulation is opt-in and cannot be mistaken for native behavior                                                              |
-| Extensibility          | A new operator can be added through one documented Symbol-extension pattern                                                        |
-| Testability            | Native, polyfilled, producer-per-subscription, shared-active-producer, cancellation, and type behavior can be tested independently |
-| Packaging integrity    | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems        |
-| Migration clarity      | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                                 |
-| AI change safety       | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing                  |
+| Attribute           | Required outcome                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Platform fidelity   | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched              |
+| Interoperability    | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                       |
+| Product focus       | Intentional RxJS Next APIs are specified directly; no runtime-emulation product is implied                                         |
+| Extensibility       | A new operator can be added through one documented Symbol-extension pattern                                                        |
+| Testability         | Native, polyfilled, producer-per-subscription, shared-active-producer, cancellation, and type behavior can be tested independently |
+| Packaging integrity | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems        |
+| Migration clarity   | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                                 |
+| AI change safety    | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing                  |
 
 ## Success criteria
 
@@ -158,14 +163,12 @@ The project is ready for a major release when:
   constructor-preservation, cancellation, and typing convention;
 - the supported operator set passes its rewritten or retained RxJS 7 tests,
   with intentional semantic differences recorded;
-- the compatibility package has an explicit support matrix and passes its
-  claimed RxJS 7 behavior suite;
 - all documented public entry points build and pass import/type tests in every
   supported environment;
 - migration documentation explains sharing, cancellation, pipeable operators,
   subjects, and other accepted breaking changes;
-- the Skills and MCP deliverables, if included in the release, have their own
-  product contract and validation;
+- the migration Skills included in the release have their own product contract
+  and validation; any MCP deliverable does as well;
 - no unresolved release-blocking decision remains in `OPEN_QUESTIONS.md`.
 
 ## Stakeholders and audience

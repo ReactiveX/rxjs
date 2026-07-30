@@ -5,259 +5,148 @@ answer them implicitly through implementation. When a decision is made, update
 `DECISIONS.md`, this file, the architecture, and the active project plan
 together.
 
+D-039 through D-041 resolve the P0.2 package and acquisition questions:
+
+- the published runtime map is `@rxjs/observable-polyfill`, `rxjs`, and
+  `@rxjs/test`;
+- `@rxjs/observable` is removed in P0.3 and no RxJS 7 runtime compatibility
+  package replaces it;
+- the polyfill package owns the base ambient platform types;
+- every public `rxjs` entry point conditionally initializes its own realm;
+- an existing `Observable` or `EventTarget.when` is preserved without probing
+  or replacement;
+- the stable fallback marker and helper identify an RxJS-installed constructor;
+- child and foreign realms are not traversed or transparently supported.
+
 ## Release-blocking package and runtime questions
 
-### 1. What is the final package map?
-
-Current facts:
-
-- `@rxjs/observable-polyfill` contains the platform prototype.
-- `rxjs` contains Symbol extensions and early compatibility primitives.
-- `@rxjs/observable` is an inherited RxJS 7-style Observable core, remains in
-  the workspace, and is still named in the root preparation script.
-- The pnpm workspace temporarily exposes `@rxjs/observable-polyfill` at the
-  root so current source and tests can run without a flat dependency layout.
-  This development-only bridge is not evidence for the final package map.
-
-Decide:
-
-- whether `@rxjs/observable` is removed, archived, renamed, or becomes part of
-  the explicit compatibility product;
-- whether the polyfill remains independently publishable;
-- the name and dependency direction of the compatibility package;
-- which package owns ambient TypeScript declarations.
-
-### 2. How is native-versus-polyfill selection installed?
-
-Decide whether users:
-
-- import a dedicated polyfill entry point explicitly;
-- receive a conditional fallback through the main `rxjs` entry point;
-- use separate browser/server entry points; or
-- use a loader that returns the selected constructor without global mutation.
-
-The answer must cover detection, non-conforming native implementations, workers,
-server runtimes, multiple realms, and test isolation.
-
-The current pnpm workspace hoist affects repository resolution only. It does
-not install the fallback for published consumers and therefore does not answer
-this question.
-
-### 3. What Symbol identity details remain?
+### 1. What Symbol identity and installation details remain?
 
 D-037 resolves the construction seam. Public operator and factory Symbols stay
-exact and module-owned. Only the internal construction protocol uses the
-namespaced, ABI-versioned global key
-`Symbol.for('rxjs.kernel.create.v1')`. This lets an operator from one compatible
-RxJS copy honor a `ColdObservable` created by another copy. Installation keeps
-an existing callable implementation and rejects a non-callable collision.
+exact and module-owned. Only the internal construction protocol uses
+`Symbol.for('rxjs.kernel.create.v1')`.
+
+D-041 separately uses
+`Symbol.for('rxjs.observable.polyfill.info.v1')` for read-only fallback
+metadata. That marker identifies the installed fallback; it does not globalize
+public extension Symbols or attest conformance.
 
 Still decide:
 
 - whether public exact Symbols are stable across major versions;
 - the supported behavior when multiple versions install different
-  implementations under their separate exact operator Symbols;
-- whether and how public Symbols and the global construction protocol cross
-  the supported realm boundaries;
-- whether a stronger compatibility marker is needed to distinguish an
-  arbitrary callable occupying the versioned protocol slot;
+  implementations under separate exact operator Symbols;
+- whether a stronger marker is needed to distinguish an arbitrary callable in
+  the construction-protocol slot;
 - removal or correction of the unreviewed `Symbol.for('buffer')` exception;
-- the common idempotent installer and conflict policy for public extension
-  Symbols.
+- the common idempotent installer and conflict policy for public extensions;
+- extension property descriptors and the exact diagnostic for unsupported
+  non-extensible constructors or prototypes.
 
-D-038 adds four more exact, module-owned public Symbols for async iteration.
-They follow the accepted collision-isolation policy but do not settle
-cross-version identity, duplicate-install conflict handling, or realm behavior.
+### 2. How are side-effectful extension modules built and shaken safely?
 
-### 4. What does importing an extension guarantee?
+D-040 settles the public import contract: the root initializes the platform and
+exports non-operator core values without installing the complete Symbol
+catalog; each Symbol subpath initializes the platform and installs only its own
+capability and required kernel dependencies.
 
-Decide:
+Still decide:
 
-- whether every subpath imports the fallback installer;
-- whether consumers must initialize Observable before any extension import;
-- whether the root entry point installs all extensions or only exports Symbols;
-- how tree shaking interacts with side-effectful prototype patching;
-- whether patch properties are writable, configurable, enumerable, or guarded;
-- what happens when the native prototype is non-extensible.
+- package `sideEffects` metadata and bundler fixtures;
+- whether a root re-export can remain free of transitive operator evaluation;
+- how generated declarations preserve subpath-scoped ambient augmentation;
+- how the common installer reports exact-Symbol conflicts;
+- the supported ESM/CommonJS interoperation model for one-time side effects.
 
-### 5. Which environments and module systems are supported?
+### 3. Which exact runtime versions and module systems are supported?
 
-Node 24 is now accepted and continuously exercised for repository tooling and
-the Observable WPT harness. That does not answer the published-package support
-question below.
+D-041 establishes the initial capability boundary: browser windows, worker
+realms, and maintained Node releases are candidates when the required web
+primitives exist. Deno, Bun, edge runtimes, hardened globals, and
+non-extensible prototypes are unclaimed until tested.
 
-Define minimum browser, worker, Node, Deno, and other runtime expectations,
-including required support or fallback for `WeakRef`, `AbortSignal.any`,
-`reportError`, `Symbol.dispose`, and DOM types. Also define ESM, CommonJS, and
-bundler support before package exports are stabilized.
+Before package exports stabilize, define:
+
+- minimum browser and maintained Node versions;
+- the required or supplied behavior for `WeakRef`, `AbortSignal.any`,
+  `reportError`, `Symbol.dispose`, `EventTarget`, and DOM types;
+- ESM, CommonJS, and supported bundler guarantees;
+- which browser and Node fixtures make those claims blocking.
 
 ## Platform-layer design questions
 
-### 6. Which specification revision completes the first conformance baseline?
+### 4. Which specification revision completes the first conformance baseline?
 
-The first test-harness revision is resolved: D-009 pins Observable WPT commit
-`6a009d73f0d315941b90cac13a9523a2a08c631b`, and changes require an
-explicit verified import and review. The harness can enforce its attested
-failure baseline without claiming conformance.
+The WPT harness pins commit
+`6a009d73f0d315941b90cac13a9523a2a08c631b`. Choose the matching Observable
+specification commit, the ownership and update policy for both pins, and the
+browser-support policy for later revisions.
 
-Choose the matching Observable specification commit, the conformance threshold
-and ownership for advancing both pins, and the browser-support policy after
-the current fallback is ready for strict conformance work.
+### 5. How are same-realm subclasses and borrowed methods preserved?
 
-### 7. How are realms and subclasses preserved?
+D-037 resolves `ColdObservable`: RxJS Symbol operators return plain
+ColdObservables, while native string methods return fresh platform
+Observables. D-041 rejects transparent cross-realm operation; each realm must
+initialize itself.
 
-The prototype uses `this.constructor` to construct many results. D-037 resolves
-the compatibility subclass used by `ColdObservable`: RxJS Symbol operators
-return a plain ColdObservable, while native string methods return fresh
-platform Observables. Decide the remaining required behavior for:
+Still decide the required same-realm behavior for:
 
 - native subclasses;
-- cross-realm Observable instances;
 - borrowed Symbol methods;
 - static methods invoked on subclasses;
 - constructors with incompatible signatures;
 - values converted through `Observable.from`.
 
-### 8. How is each RxJS Symbol variant related to its platform counterpart?
+### 6. How is each RxJS Symbol variant related to its platform counterpart?
 
-D-002 and D-003 settle the general ownership model. The platform owns
-string-named methods such as `.map` and `.filter`, and RxJS also exports
-same-familiar-name Symbols so both `observable.map(project)` and
-`observable[map](project)` exist. RxJS never replaces the string method. The
-Symbol implementation may delegate to the platform implementation or supply a
-richer RxJS contract.
-
-D-031 resolves one concrete overlap: the exact RxJS `find` Symbol retains its
-predicate/index Observable contract while the platform string-named `find()`
-remains a Promise consumer. The per-operator policy remains open for other
-overlaps.
+D-002 and D-003 settle the ownership model. The platform owns string-named
+methods, and RxJS may export a same-familiar-name exact Symbol without changing
+that method.
 
 Decide per overlapping operator:
 
-- which inputs, overloads, return types, and edge cases the RxJS form adds;
-- whether delegation is observable or merely an implementation detail;
-- which behavior and type tests both forms share;
-- how documentation distinguishes the two forms without implying false parity;
-- how native and fallback test modes prove that installing the Symbol leaves
-  the string-named platform method untouched.
+- added inputs, overloads, return types, and edge cases;
+- whether delegation is observable or only an implementation detail;
+- shared and distinct behavior/type tests;
+- documentation that prevents false parity claims;
+- native and fallback evidence that the platform method remains untouched.
 
-### 9. What is the canonical extension implementation pattern?
-
-The branch has both `create.ts` and
-`util/create-operator-observable.ts`, inconsistent import extensions, and a mix
-of static, instance, and standalone functions.
+### 7. What is the canonical extension implementation pattern?
 
 Define one pattern for:
 
-- patch installation;
-- ambient type augmentation;
-- constructor selection;
-- input conversion;
-- cancellation wiring;
-- error forwarding;
-- tests;
-- exports and documentation.
+- patch installation and ambient type augmentation;
+- constructor selection and input conversion;
+- cancellation wiring and error forwarding;
+- tests, exports, and documentation.
 
-D-038 provides evidence for Symbol extensions that return a non-Observable:
-the four async-iteration methods subscribe directly to the receiver and keep
-state in a returned generator, so they do not use `[create]`. Their direct
-prototype assignments remain subject to the common installation decision
-rather than establishing that pattern by themselves.
-
-## Compatibility questions
-
-### 10. What exactly does “as much RxJS 7 compatibility as possible” cover?
-
-Choose the supported surface by category:
-
-- `Observable`, `Subscription`, and teardown behavior;
-- creation functions;
-- pipeable operators and `OperatorFunction` types;
-- subjects;
-- schedulers and time;
-- interop protocols;
-- AJAX, fetch, and WebSocket helpers;
-- import paths and deprecated aliases.
-
-Each category needs a support status, not a blanket compatibility claim.
-
-The framework-neutral testing and marble boundary is resolved by D-012 and
-`TESTING_DESIGN.md`. Compatibility-specific test coverage still needs to be
-classified in the compatibility ledger as APIs are restored.
-
-### 11. What does a compatibility observable return?
-
-D-037 resolves the current `ColdObservable` experiment: RxJS Symbol operators
-return plain ColdObservables, while native string methods return platform
-Observables. This does not yet choose the final compatibility product, package,
-or conversion API.
-
-Decide whether the stabilized compatibility surface retains that model or
-instead returns:
-
-- platform Observable instances with adapters;
-- a wrapper that exposes both platform and RxJS 7 contracts; or
-- a distinct type requiring explicit conversion.
-
-The answer controls sharing, cancellation, subject behavior, typing, and escape
-back to the platform layer.
-
-### 12. What are the pipeable operator type and execution contracts?
-
-Define the equivalents of `OperatorFunction<T, R>`, `MonoTypeOperatorFunction`,
-`pipe`, and `source.pipe(...)`, including whether they compose platform and
-compatibility observables and how cancellation crosses the boundary.
-
-### 13. Which RxJS 7 semantic differences are acceptable?
-
-Establish a maintainer-approved policy for differences caused by:
-
-- shared active producer work;
-- ref counting;
-- `AbortSignal` cancellation;
-- teardown timing and ordering;
-- synchronous reentrancy;
-- error reporting;
-- scheduler removal or redesign;
-- native platform operator behavior.
-
-D-032 settles only the synchronous platform Symbol boundary for `generate`
-and `expand`. It does not decide whether a compatibility product supports
-RxJS schedulers or how scheduler arguments, providers, and classes are
-represented.
-
-D-034 settles the main platform package's host boundary: it resolves scheduling
-APIs directly from `globalThis` and exposes no RxJS-owned scheduling providers.
-This does not decide whether the separate compatibility product eventually
-offers scheduler-shaped adapters.
+The async-iteration Symbols show how non-Observable results can subscribe
+directly, but their current assignments do not settle the common installer.
 
 ## Delivery and migration questions
 
-### 14. What is the final major version and support relationship with RxJS 7?
+### 8. What is the final major version and support relationship with RxJS 7?
 
-Confirm RxJS 9 or choose another name. Define RxJS 7 maintenance expectations,
-pre-release naming, and whether compatibility packages share the same version.
+Confirm RxJS 9 or choose another name. Define RxJS 7 maintenance expectations
+and pre-release naming. There is no compatibility package to version.
 
-### 15. How will migration be measured?
+### 9. How will migration be measured?
 
 Choose representative applications, frameworks, bundle configurations, and
-behavioral test suites. Define the acceptable level of automated migration and
-the criteria for calling an application migrated.
+behavioral suites. Define the acceptable level of automated migration and the
+criteria for calling an application migrated.
 
-### 16. How are Skills and MCP capabilities shipped?
+### 10. How are Skills and possible MCP capabilities shipped?
 
-After the runtime APIs stabilize, decide whether the tools are:
+D-008 makes robust migration Skills the intended assistance path and leaves
+broader MCP support optional. After the runtime APIs stabilize, decide:
 
-- included in an npm package;
-- published as a separate plugin or package;
-- generated from repository documentation;
-- versioned with RxJS or independently;
-- allowed to modify code, run migrations, inspect projects, or access external
-  services.
+- plugin, package, or generated-document distribution;
+- independent versus RxJS-coupled versioning;
+- permissions to inspect, modify, test, or migrate projects;
+- whether any MCP server is justified beyond the Skill portfolio;
+- validation and review requirements for generated changes.
 
-This design is deferred and should not block runtime work.
-
-The repository now contains a portable `rxjs-next-marble-migration` Skill as
-source and has independently vetted it. That implementation does not settle
-distribution, versioning, permissions, plugin packaging, or MCP capabilities;
-those parts of this question remain deferred.
+The repository's portable `rxjs-next-marble-migration` Skill is evidence for
+the approach, not a decision about public distribution, permissions, or MCP
+packaging.
