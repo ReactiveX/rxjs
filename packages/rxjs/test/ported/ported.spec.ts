@@ -15,6 +15,10 @@ const nativeObservableAtLoad = globalThis.Observable;
 // isolated shard. The manifest retains the original program for later repair.
 const nonTerminatingConvertedPrograms = new Map<string, string>([
   [
+    'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
+    'The source-skipped RxJS 7 case synchronously returns catchError’s caught source forever before virtual time can reach an observation boundary.',
+  ],
+  [
     'spec/schedulers/TestScheduler-spec.ts:198:TestScheduler > createHotObservable() > should create a hot observable',
     'The direct-subscription manual-TestScheduler conversion does not yield control or finalize under rxTest.',
   ],
