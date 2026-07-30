@@ -114,6 +114,7 @@
         "./src/publish.ts",
         "./src/race.ts",
         "./src/reduce.ts",
+        "./src/ref-count.ts",
         "./src/repeat.ts",
         "./src/repeat-when.ts",
         "./src/replay-subject.ts",
@@ -594,6 +595,13 @@
       "import": "./dist/esm/reduce.js",
       "require": "./dist/commonjs/reduce.js",
       "types": "./dist/types/reduce.d.ts"
+    },
+    "./ref-count": {
+      "browser": "./dist/browser/ref-count.js",
+      "webpack": "./dist/webpack/ref-count.js",
+      "import": "./dist/esm/ref-count.js",
+      "require": "./dist/commonjs/ref-count.js",
+      "types": "./dist/types/ref-count.d.ts"
     },
     "./repeat": {
       "browser": "./dist/browser/repeat.js",
