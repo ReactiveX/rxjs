@@ -817,6 +817,14 @@
       "status": "Present; parity unverified",
       "note": "Collects inner sources until outer completion, then delegates tuple formation to hardened zip and projection to the exact map Symbol."
     },
+    "zip": {
+      "symbol": "zipWith",
+      "module": "zip-with",
+      "adapter": "zipSourcesWithProjection",
+      "mapping": "source[zipWith](...otherSources)[map](project?)",
+      "status": "Compatibility alias",
+      "note": "Normalizes the deprecated RxJS 7 zip operator to the exact zipWith Symbol and applies its optional result selector through the exact map Symbol."
+    },
     "zipWith": {
       "symbol": "zipWith",
       "module": "zip-with",

@@ -421,6 +421,22 @@ export function createRuntime(options: {
     if (typeof implementation !== 'function') {
       throw new Error(`Operator ${operator.name} (via ${mapping.symbol}) is not installed on the active Observable.`);
     }
+    if (mapping.adapter === 'zipSourcesWithProjection') {
+      const projection = typeof operator.args.at(-1) === 'function' ? operator.args.at(-1) : undefined;
+      const sources = withoutTrailingFunction(operator.args);
+      const zipped = implementation.call(current, ...sources) as Record<PropertyKey, (...args: unknown[]) => unknown>;
+      if (projection === undefined) {
+        return zipped;
+      }
+      const mapSymbol = capabilities.operators.map;
+      const mapImplementation = zipped[mapSymbol];
+      if (typeof mapImplementation !== 'function') {
+        throw new Error('The exact map Symbol is required for the legacy zip result selector.');
+      }
+      return mapImplementation.call(zipped, (values: readonly unknown[]) =>
+        (projection as (...projectedValues: readonly unknown[]) => unknown)(...values)
+      ) as Record<PropertyKey, (...args: unknown[]) => unknown>;
+    }
     return implementation.call(current, ...adaptOperatorArguments(mapping.adapter, operator.args)) as Record<
       PropertyKey,
       (...args: unknown[]) => unknown
