@@ -169,6 +169,14 @@
       "status": "Present; parity unverified",
       "note": "Legacy result-selector overloads are not represented."
     },
+    "finalize": {
+      "symbol": "finalize",
+      "module": "finalize",
+      "adapter": "identity",
+      "mapping": "source[finalize](callback)",
+      "status": "Present; parity unverified",
+      "note": "Runs once after completion, error, or last-observer cancellation without replacing the platform finally method."
+    },
     "filter": {
       "symbol": "filter",
       "module": "filter",
@@ -360,6 +368,14 @@
       "mapping": "source[switchMap](() => innerSource)",
       "status": "Partial unified mapping",
       "note": "Legacy result-selector overloads are not represented."
+    },
+    "tap": {
+      "symbol": "tap",
+      "module": "tap",
+      "adapter": "identity",
+      "mapping": "source[tap](observerOrNext, error?, complete?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves notification side-effect ordering plus subscribe, unsubscribe, and finalize lifecycle hooks."
     },
     "take": {
       "symbol": "take",

@@ -66,6 +66,7 @@
         "./src/default-if-empty.ts",
         "./src/each-value-from.ts",
         "./src/exhaust-map.ts",
+        "./src/finalize.ts",
         "./src/filter.ts",
         "./src/index.ts",
         "./src/interval.ts",
@@ -82,6 +83,7 @@
         "./src/skip-while.ts",
         "./src/subject.ts",
         "./src/switch-map.ts",
+        "./src/tap.ts",
         "./src/take.ts",
         "./src/take-last.ts",
         "./src/take-while.ts",
@@ -198,6 +200,13 @@
       "require": "./dist/commonjs/exhaust-map.js",
       "types": "./dist/types/exhaust-map.d.ts"
     },
+    "./finalize": {
+      "browser": "./dist/browser/finalize.js",
+      "webpack": "./dist/webpack/finalize.js",
+      "import": "./dist/esm/finalize.js",
+      "require": "./dist/commonjs/finalize.js",
+      "types": "./dist/types/finalize.d.ts"
+    },
     "./filter": {
       "browser": "./dist/browser/filter.js",
       "webpack": "./dist/webpack/filter.js",
@@ -310,6 +319,13 @@
       "import": "./dist/esm/switch-map.js",
       "require": "./dist/commonjs/switch-map.js",
       "types": "./dist/types/switch-map.d.ts"
+    },
+    "./tap": {
+      "browser": "./dist/browser/tap.js",
+      "webpack": "./dist/webpack/tap.js",
+      "import": "./dist/esm/tap.js",
+      "require": "./dist/commonjs/tap.js",
+      "types": "./dist/types/tap.d.ts"
     },
     "./take": {
       "browser": "./dist/browser/take.js",
