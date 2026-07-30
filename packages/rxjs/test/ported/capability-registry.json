@@ -433,6 +433,14 @@
       "status": "Present; parity unverified",
       "note": "Delegates unseeded minimum selection and lifecycle behavior to the exact reduce Symbol."
     },
+    "multicast": {
+      "symbol": "multicast",
+      "module": "multicast",
+      "adapter": "identity",
+      "mapping": "source[multicast](subjectOrFactory, selector?)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected compatibility Observable without a selector, or delegates selector forms to the exact Symbol-keyed connect contract."
+    },
     "onErrorResumeNext": {
       "symbol": "onErrorResumeNext",
       "module": "on-error-resume-next",
