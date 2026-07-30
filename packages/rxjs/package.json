@@ -106,6 +106,7 @@
         "./src/replay-subject.ts",
         "./src/retry.ts",
         "./src/retry-when.ts",
+        "./src/sample.ts",
         "./src/scan.ts",
         "./src/sequence-error.ts",
         "./src/single.ts",
@@ -518,6 +519,13 @@
       "import": "./dist/esm/retry-when.js",
       "require": "./dist/commonjs/retry-when.js",
       "types": "./dist/types/retry-when.d.ts"
+    },
+    "./sample": {
+      "browser": "./dist/browser/sample.js",
+      "webpack": "./dist/webpack/sample.js",
+      "import": "./dist/esm/sample.js",
+      "require": "./dist/commonjs/sample.js",
+      "types": "./dist/types/sample.d.ts"
     },
     "./scan": {
       "browser": "./dist/browser/scan.js",
