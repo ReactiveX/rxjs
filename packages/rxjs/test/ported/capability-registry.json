@@ -465,6 +465,14 @@
       "status": "Present; parity unverified",
       "note": "Traverses one or more string, number, or Symbol keys through the exact map Symbol and returns undefined after a nullish path segment."
     },
+    "publish": {
+      "symbol": "publish",
+      "module": "publish",
+      "adapter": "identity",
+      "mapping": "source[publish](selector?)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected retained-Subject result without a selector, or a fresh selector-scoped Subject for each active platform run."
+    },
     "race": {
       "symbol": "race",
       "module": "race",
