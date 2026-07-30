@@ -911,15 +911,15 @@ Owner source: `spec/operators/filter-spec.ts`
 
 Owner source: `spec/operators/finalize-spec.ts`
 
-| Case ID                                                                              | Behavioral test                     | Source                                | Failing mode    | Classification       | Disposition   | Concise failure                       | Status |
-| ------------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------- | ------ |
-| `spec/operators/finalize-spec.ts:116:finalize > should handle throw`                 | should handle throw                 | `spec/operators/finalize-spec.ts:116` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`  | should handle basic hot observable  | `spec/operators/finalize-spec.ts:135` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable` | should handle basic cold observable | `spec/operators/finalize-spec.ts:154` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`           | should handle basic error           | `spec/operators/finalize-spec.ts:173` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`        | should handle unsubscription        | `spec/operators/finalize-spec.ts:192` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:78:finalize > should handle empty`                  | should handle empty                 | `spec/operators/finalize-spec.ts:78`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
-| `spec/operators/finalize-spec.ts:97:finalize > should handle never`                  | should handle never                 | `spec/operators/finalize-spec.ts:97`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `TODO` |
+| Case ID                                                                              | Behavioral test                     | Source                                | Failing mode    | Classification       | Disposition   | Concise failure                       | Status       |
+| ------------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------- | --------------- | -------------------- | ------------- | ------------------------------------- | ------------ |
+| `spec/operators/finalize-spec.ts:116:finalize > should handle throw`                 | should handle throw                 | `spec/operators/finalize-spec.ts:116` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:135:finalize > should handle basic hot observable`  | should handle basic hot observable  | `spec/operators/finalize-spec.ts:135` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:154:finalize > should handle basic cold observable` | should handle basic cold observable | `spec/operators/finalize-spec.ts:154` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:173:finalize > should handle basic error`           | should handle basic error           | `spec/operators/finalize-spec.ts:173` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:192:finalize > should handle unsubscription`        | should handle unsubscription        | `spec/operators/finalize-spec.ts:192` | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:78:finalize > should handle empty`                  | should handle empty                 | `spec/operators/finalize-spec.ts:78`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
+| `spec/operators/finalize-spec.ts:97:finalize > should handle never`                  | should handle never                 | `spec/operators/finalize-spec.ts:97`  | cold + polyfill | `compatibility-only` | `missing-api` | Missing operator capability: finalize | `IN-PROCESS` |
 
 ### `find`
 
@@ -2413,13 +2413,13 @@ Owner source: `spec/operators/takeWhile-spec.ts`
 
 Owner source: `spec/operators/tap-spec.ts`
 
-| Case ID                                                                                                              | Behavioral test                                                               | Source                           | Failing mode    | Classification       | Disposition    | Concise failure                  | Status |
-| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------- | --------------- | -------------------- | -------------- | -------------------------------- | ------ |
-| `spec/operators/tap-spec.ts:15:tap > should mirror multiple values and complete`                                     | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `TODO` |
-| `spec/operators/tap-spec.ts:223:tap > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/tap-spec.ts:223` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `TODO` |
-| `spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/tap-spec.ts:240` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `TODO` |
-| `spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete`                                    | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:260` | cold + polyfill | `compatibility-only` | `deduplicated` | Missing operator capability: tap | `TODO` |
-| `spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error`                        | should mirror multiple values and terminate with error                        | `spec/operators/tap-spec.ts:276` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `TODO` |
+| Case ID                                                                                                              | Behavioral test                                                               | Source                           | Failing mode    | Classification       | Disposition    | Concise failure                  | Status       |
+| -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------- | --------------- | -------------------- | -------------- | -------------------------------- | ------------ |
+| `spec/operators/tap-spec.ts:15:tap > should mirror multiple values and complete`                                     | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:15`  | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:223:tap > should allow unsubscribing explicitly and early`                               | should allow unsubscribing explicitly and early                               | `spec/operators/tap-spec.ts:223` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly` | should not break unsubscription chains when result is unsubscribed explicitly | `spec/operators/tap-spec.ts:240` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:260:tap > should mirror multiple values and complete`                                    | should mirror multiple values and complete                                    | `spec/operators/tap-spec.ts:260` | cold + polyfill | `compatibility-only` | `deduplicated` | Missing operator capability: tap | `IN-PROCESS` |
+| `spec/operators/tap-spec.ts:276:tap > should mirror multiple values and terminate with error`                        | should mirror multiple values and terminate with error                        | `spec/operators/tap-spec.ts:276` | cold + polyfill | `compatibility-only` | `missing-api`  | Missing operator capability: tap | `IN-PROCESS` |
 
 ### `TestScheduler`
 
@@ -5054,7 +5054,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-TAP — `tap`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 5 tracked case(s); 5 cold failures; 5 polyfill failures; 0 fixed.
 - **Current surface/gap:** 4 missing-capability case(s); 1 duplicate registration(s).
 - **Required classification review:** 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
@@ -5075,7 +5075,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 
 ### RX7-FINALIZE — `finalize`
 
-- **Packet status:** `TODO`
+- **Packet status:** `IN-PROCESS`
 - **Evidence:** 7 tracked case(s); 7 cold failures; 7 polyfill failures; 0 fixed.
 - **Current surface/gap:** 7 missing-capability case(s).
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
