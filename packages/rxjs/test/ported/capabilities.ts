@@ -47,6 +47,7 @@ export async function loadCapabilities(): Promise<{
     animationFramesModule,
     behaviorSubjectModule,
     bufferModule,
+    bufferToggleModule,
     catchErrorModule,
     coldObservableModule,
     combineLatestAllModule,
@@ -131,6 +132,7 @@ export async function loadCapabilities(): Promise<{
     import('../../src/animation-frames.js'),
     import('../../src/behavior-subject.js'),
     import('../../src/buffer.js'),
+    import('../../src/buffer-toggle.js'),
     import('../../src/catch-error.js'),
     import('../../src/cold-observable.js'),
     import('../../src/combine-latest-all.js'),
@@ -216,6 +218,7 @@ export async function loadCapabilities(): Promise<{
   const capabilities = {
     operators: {
       buffer: bufferModule.buffer,
+      bufferToggle: bufferToggleModule.bufferToggle,
       catchError: catchErrorModule.catchError,
       combineLatestAll: combineLatestAllModule.combineLatestAll,
       combineLatest: combineLatestModule.combineLatest,

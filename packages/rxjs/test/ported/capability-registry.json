@@ -33,6 +33,14 @@
       "status": "Partial unified mapping",
       "note": "Adapts count-sized buffers, including overlapping and gapped startBufferEvery windows, completion partials, and RxJS 7 error behavior."
     },
+    "bufferToggle": {
+      "symbol": "bufferToggle",
+      "module": "buffer-toggle",
+      "adapter": "identity",
+      "mapping": "source[bufferToggle](openings, closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Supports overlapping buffers, closes on the first closing value but not closing completion, and flushes live buffers in opening order on source completion."
+    },
     "bufferTime": {
       "symbol": "buffer",
       "module": "buffer",
