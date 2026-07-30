@@ -473,6 +473,14 @@
       "status": "Compatibility-only",
       "note": "Returns a manually connected retained-Subject result without a selector, or a fresh selector-scoped Subject for each active platform run."
     },
+    "publishLast": {
+      "symbol": "publishLast",
+      "module": "publish-last",
+      "adapter": "identity",
+      "mapping": "source[publishLast]()",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected result backed by one retained AsyncSubject that emits only the final value after completion."
+    },
     "race": {
       "symbol": "race",
       "module": "race",
