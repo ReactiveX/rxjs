@@ -511,3 +511,47 @@ Status meanings:
   after termination are host-reported and do not replace the already-delivered
   terminal notification. No string-named `tap` or `finalize` method is added,
   and the platform `finally` method remains unchanged.
+
+## D-026 — Collect higher-order combination inputs before activating them
+
+- **Status:** Accepted
+- **Decision:** The Symbol-keyed `zipAll` and `combineLatestAll` collect every
+  inner Observable value until their outer source completes, then activate the
+  collected inputs through the existing hardened `zip` or exact static
+  `combineLatest` contract. Optional legacy projection delegates to the exact
+  RxJS `map` Symbol. `zipWith` delegates directly to standalone `zip` with the
+  receiver as the first input.
+- **Rationale:** Higher-order “all” operators have a two-phase lifecycle: the
+  outer source defines the complete input set, and only its successful
+  completion starts combination. Reimplementing the combination engines would
+  duplicate their source ordering, buffering, completion, and cancellation
+  rules.
+- **Consequence:** An empty outer source completes without activating inner
+  work. Outer errors discard collected inputs. `zipAll` completes when the
+  shortest collected input can no longer form a tuple. `combineLatestAll`
+  retains RxJS 7's wait-for-all-completions behavior when an input completes
+  without a value; in particular, `never + empty` remains active. Concurrent
+  observers share collection and inner work, last-observer cancellation closes
+  both phases, and restart begins with an empty collection.
+
+## D-027 — Scope distinct and reduction state to one shared activation
+
+- **Status:** Accepted
+- **Decision:** Stateful Symbol operators keep one state machine per active
+  platform subscriber. `distinct`, `distinctUntilChanged`, and
+  `distinctUntilKeyChanged` therefore share remembered keys across concurrent
+  observers and reset them on restart. `reduce`, `count`, `every`, `min`, and
+  `max` likewise share accumulation, predicate indices, and comparer work.
+  `reduce` distinguishes an omitted seed from an explicitly supplied
+  `undefined` seed by call arity.
+- **Rationale:** Observer-local sets, indices, or accumulators would duplicate
+  source-side work and contradict the platform's shared, ref-counted producer
+  lifecycle. Seed arity and Set equality are observable RxJS 7 contracts, not
+  implementation details.
+- **Consequence:** Empty unseeded reduction completes without emitting, while
+  an explicit `undefined` seed emits `undefined`. `min` and `max` reuse
+  unseeded reduction so the first value initializes state. `distinct` uses
+  JavaScript Set equality, subscribes to its main source before its optional
+  flush source, and clears remembered keys on each flush value. Predicate,
+  selector, comparer, source, and flush errors terminate the shared activation;
+  cancellation closes every active source through `AbortSignal`.
