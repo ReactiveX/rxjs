@@ -438,6 +438,7 @@ export async function loadCapabilities(): Promise<{
       ColdObservable: coldObservableModule.ColdObservable,
       connectable: connectableModule.connectable,
       ConnectableObservable: connectableModule.ConnectableObservable,
+      config: undefined,
       EMPTY: emptyModule.EMPTY,
       EmptyError: emptyErrorModule.EmptyError,
       firstValueFrom: 'first',
@@ -471,6 +472,9 @@ export function createRuntime(options: {
   readonly capabilities: Awaited<ReturnType<typeof loadCapabilities>>;
 }): PortRuntime {
   const { testCase, mode, rxTest, capabilities } = options;
+  const portedConfig: { onUnhandledError: ((error: unknown) => void) | null } = {
+    onUnhandledError: null,
+  };
 
   const applyOperator = (
     current: Record<PropertyKey, (...args: unknown[]) => unknown>,
@@ -543,7 +547,11 @@ export function createRuntime(options: {
       return current;
     },
     rxTest(callback: (context: RxTestContext) => void | PromiseLike<void>): Promise<void> {
+      const onUnhandledError = portedConfig.onUnhandledError;
       return rxTest((context) => {
+        if (onUnhandledError) {
+          globalThis.reportError = onUnhandledError;
+        }
         const migratedContext = Object.create(context) as RxTestContext;
         Object.defineProperty(migratedContext, 'hot', {
           configurable: true,
@@ -562,7 +570,11 @@ export function createRuntime(options: {
   };
 
   for (const imported of testCase.imports) {
-    installImport(runtime, imported, capabilities);
+    if (imported.module === 'rxjs' && imported.imported === 'config') {
+      runtime[imported.local] = portedConfig;
+    } else {
+      installImport(runtime, imported, capabilities);
+    }
   }
   return runtime as PortRuntime;
 }

@@ -1052,6 +1052,13 @@
       "status": "Compatibility-only",
       "note": "Provides the concrete manually connected compatibility class used by standalone connectable and legacy multicasting operators."
     },
+    "config": {
+      "module": "global",
+      "adapter": "portedConfig",
+      "mapping": "ported runtime unhandled-error hook",
+      "status": "Test compatibility fixture",
+      "note": "Captures the RxJS 7 onUnhandledError test hook and routes platform reportError calls through it for the lifetime of one rxTest run."
+    },
     "EMPTY": {
       "module": "empty",
       "adapter": "identity",
