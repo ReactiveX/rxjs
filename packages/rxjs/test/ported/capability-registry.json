@@ -713,6 +713,14 @@
       "status": "Present; parity unverified",
       "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence. Source completion completes live windows, source errors error them, and outer cancellation silently releases them."
     },
+    "windowToggle": {
+      "symbol": "windowToggle",
+      "module": "window-toggle",
+      "adapter": "identity",
+      "mapping": "source[windowToggle](openings, closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Emits overlapping read-only windows, closes each window on the first closing value, and silently releases live windows on outer cancellation. This cancellation behavior intentionally does not reproduce RxJS 7's disposed-Subject ObjectUnsubscribedError."
+    },
     "withLatestFrom": {
       "symbol": "withLatestFrom",
       "module": "with-latest-from",
