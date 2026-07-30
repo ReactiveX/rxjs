@@ -250,12 +250,12 @@
       "note": "RxJS 7 flatMap is an alias of mergeMap."
     },
     "first": {
-      "symbol": "elementAt",
-      "module": "element-at",
-      "adapter": "first",
-      "mapping": "source[elementAt](0)",
-      "status": "Partial unified mapping",
-      "note": "Represents the no-predicate first-value path; predicate, default-value, and empty-source error behavior remain parity evidence."
+      "symbol": "first",
+      "module": "first",
+      "adapter": "identity",
+      "mapping": "source[first](predicate?, defaultValue?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves predicate, default-value arity, EmptyError, early cancellation, and the distinct RxJS Symbol contract without replacing the platform first() Promise consumer."
     },
     "ignoreElements": {
       "symbol": "mergeMap",
@@ -266,12 +266,12 @@
       "note": "Maps each input to an ambient empty Observable while retaining source completion and error behavior."
     },
     "last": {
-      "symbol": "takeLast",
-      "module": "take-last",
-      "adapter": "last",
-      "mapping": "source[takeLast](1)",
-      "status": "Partial unified mapping",
-      "note": "Represents the no-predicate last-value path; predicate, default-value, and empty-source error behavior remain parity evidence."
+      "symbol": "last",
+      "module": "last",
+      "adapter": "identity",
+      "mapping": "source[last](predicate?, defaultValue?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves predicate, default-value arity, EmptyError, completion-time selection, and the distinct RxJS Symbol contract without replacing the platform last() Promise consumer."
     },
     "map": {
       "symbol": "map",
