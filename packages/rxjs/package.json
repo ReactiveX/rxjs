@@ -111,6 +111,7 @@
         "./src/partition.ts",
         "./src/pipe.ts",
         "./src/pluck.ts",
+        "./src/publish.ts",
         "./src/race.ts",
         "./src/reduce.ts",
         "./src/repeat.ts",
@@ -572,6 +573,13 @@
       "import": "./dist/esm/pluck.js",
       "require": "./dist/commonjs/pluck.js",
       "types": "./dist/types/pluck.d.ts"
+    },
+    "./publish": {
+      "browser": "./dist/browser/publish.js",
+      "webpack": "./dist/webpack/publish.js",
+      "import": "./dist/esm/publish.js",
+      "require": "./dist/commonjs/publish.js",
+      "types": "./dist/types/publish.d.ts"
     },
     "./race": {
       "browser": "./dist/browser/race.js",
