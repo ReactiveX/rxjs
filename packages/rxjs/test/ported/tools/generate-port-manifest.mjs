@@ -59,10 +59,71 @@ const harnessRewritePrograms = new Map([
     'spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler',
     buildSynchronousCatchErrorHarnessRewrite(),
   ],
+  [
+    'spec/operators/skipUntil-spec.ts:293:skipUntil > should skip all elements if notifier is unsubscribed explicitly before the notifier emits',
+    buildCancelledSkipUntilNotifierHarnessRewrite(),
+  ],
 ]);
 // Subscription replacements close original open logs only where the synthetic
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
+  [
+    'spec/operators/skipUntil-spec.ts:181:skipUntil > should not complete if hot source observable does not complete',
+    {
+      observable: boundedSubscription(0, 16),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 16)]]),
+    },
+  ],
+  [
+    'spec/operators/skipUntil-spec.ts:195:skipUntil > should not complete if cold source observable never completes',
+    {
+      observable: boundedSubscription(0, 16),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 16)]]),
+    },
+  ],
+  [
+    'spec/operators/skipUntil-spec.ts:265:skipUntil > should not complete if source does not complete if notifier completes without emission',
+    {
+      observable: boundedSubscription(0, 14),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 14)]]),
+    },
+  ],
+  [
+    'spec/operators/skipUntil-spec.ts:279:skipUntil > should not complete if source and notifier are both hot never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['skipSubs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/skipUntil-spec.ts:316:skipUntil > should unsubscribe the notifier after its first nexted value',
+    {
+      // RxJS 7 uses `^` to shift this expected diagram's zero point after the
+      // leading pre-zero frame. rxTest reserves that token for hot sources, so
+      // remove the zero marker while retaining the resulting absolute frames.
+      marbles: new Map([['expected', '----------o---o---o---o---|']]),
+    },
+  ],
+  [
+    'spec/operators/takeUntil-spec.ts:136:takeUntil operator > should not complete when notifier is empty if source observable does not complete',
+    {
+      observable: boundedSubscription(0, 3),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 3)]]),
+    },
+  ],
+  [
+    'spec/operators/takeUntil-spec.ts:150:takeUntil operator > should not complete when source and notifier do not complete',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([
+        ['e1subs', boundedSubscription(0, 1)],
+        ['e2subs', boundedSubscription(0, 1)],
+      ]),
+    },
+  ],
   [
     'spec/Subject-spec.ts:608:Subject > asObservable > should handle subject never emits',
     { observable: '^!' },
@@ -1414,6 +1475,8 @@ function extractCases({ path, sourceText }) {
           ? harnessRewrite
             ? 'The source case was skipped in RxJS 7; its unbounded synchronous recovery loop is preserved with an explicit cancellation boundary.'
             : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
+          : harnessRewrite
+            ? 'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.'
           : verifiedActive
             ? 'Mechanically migrated and verified against the ColdObservable mode.'
             : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
@@ -1501,6 +1564,53 @@ expect(projectionAttempts).to.equal(1000);
 expect(handledErrors).to.equal(999);
 expect(controller.signal.aborted).to.equal(true);
 expect(notifications).to.deep.equal([]);
+}
+`;
+}
+
+function buildCancelledSkipUntilNotifierHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, skipUntil } = runtime;
+const notifierController = new AbortController();
+let notifierSink = null;
+let notifierCancellationCount = 0;
+await rxTest(async ({ hot, expectObservable, expectSubscriptions }) => {
+  const e1 = hot('  --a--b--c--d--e--|');
+  const e1subs = [
+    '               ^----------------!',
+    '               ^----------------!',
+  ];
+  // The legacy Subject fixture exposed unsubscribe() on the producer itself.
+  // Model that cancellation at the platform AbortSignal boundary: detaching
+  // the producer sink sends no next, error, or complete notification, so the
+  // skipUntil gate must remain closed until the source completes.
+  const skip = new Observable((subscriber) => {
+    notifierSink = subscriber;
+    const cancelNotifier = () => {
+      notifierCancellationCount++;
+      notifierSink = null;
+    };
+    notifierController.signal.addEventListener('abort', cancelNotifier, { once: true });
+    subscriber.addTeardown(() => {
+      notifierController.signal.removeEventListener('abort', cancelNotifier);
+      notifierSink = null;
+    });
+  });
+  const expected = '-----------------|';
+
+  e1.subscribe((value) => {
+    if (value === 'd' && !notifierController.signal.aborted) {
+      notifierSink?.next('x');
+    }
+    notifierController.abort();
+  });
+
+  expectObservable(applyOperators(e1, [skipUntil(skip)])).toBe(expected);
+  expectSubscriptions(e1.subscriptions).toBe(e1subs);
+});
+expect(notifierController.signal.aborted).to.equal(true);
+expect(notifierCancellationCount).to.equal(1);
+expect(notifierSink).to.equal(null);
 }
 `;
 }
@@ -2004,9 +2114,11 @@ function createMigrationTransformer({
           }
           const subscriptionBoundary =
             ts.isIdentifier(declaration.name) && observationBoundary?.subscriptions?.get(declaration.name.text);
+          const marbleReplacement =
+            ts.isIdentifier(declaration.name) && observationBoundary?.marbles?.get(declaration.name.text);
           const retainedInitializer = replaceSubscriptionBoundary(
             declaration.initializer,
-            subscriptionBoundary,
+            marbleReplacement ?? subscriptionBoundary,
             factory
           );
           const retainedDeclaration =
@@ -2114,7 +2226,7 @@ function createMigrationTransformer({
           );
         }
         if (
-          observationBoundary &&
+          typeof observationBoundary?.observable === 'string' &&
           ts.isIdentifier(node.expression) &&
           node.expression.text === 'expectObservable' &&
           node.arguments.length === 1
