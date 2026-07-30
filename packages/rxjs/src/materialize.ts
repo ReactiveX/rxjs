@@ -1,0 +1,31 @@
+import { create } from './create.js';
+import { Notification, type ObservableNotification } from './notification.js';
+
+export const materialize: unique symbol = Symbol('materialize');
+
+declare global {
+  interface Observable<T> {
+    [materialize](): Observable<Notification<T> & ObservableNotification<T>>;
+  }
+}
+
+Observable.prototype[materialize] = function <T>(
+  this: Observable<T>
+): Observable<Notification<T> & ObservableNotification<T>> {
+  return this[create]((subscriber) => {
+    this.subscribe(
+      {
+        next: (value) => subscriber.next(Notification.createNext(value)),
+        error: (error) => {
+          subscriber.next(Notification.createError(error));
+          subscriber.complete();
+        },
+        complete: () => {
+          subscriber.next(Notification.createComplete());
+          subscriber.complete();
+        },
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};
