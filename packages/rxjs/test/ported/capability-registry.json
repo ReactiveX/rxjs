@@ -938,6 +938,13 @@
       "status": "Present; parity unverified",
       "note": "Uses the public RxJS 7-compatible missing-match error value."
     },
+    "Notification": {
+      "module": "notification",
+      "adapter": "identity",
+      "mapping": "Notification",
+      "status": "Compatibility-only",
+      "note": "Provides the deprecated RxJS 7 Notification class, its shared completion instance, dispatch helpers, and Observable conversion."
+    },
     "noop": {
       "module": "noop",
       "adapter": "identity",
