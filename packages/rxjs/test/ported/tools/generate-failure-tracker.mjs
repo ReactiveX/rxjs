@@ -326,6 +326,13 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
           !isMissingCapabilityDiagnostic(item.diagnostic)
       )
   );
+  const recommendedPacketLine = firstPacket
+    ? `- **Recommended next work packet:** [${packetId(firstPacket.name)}](#${packetAnchor(firstPacket.name)}) (\`${firstPacket.name}\`)`
+    : '- **Recommended next work packet:** None; every tracked row is `FIXED`.';
+  const auditStateLine =
+    failingNow.length > 0
+      ? 'The audit commands intentionally exit nonzero while parity failures remain:'
+      : 'The authoritative audit commands now exit successfully:';
   const lines = [
     '# RxJS 7 ported-test failure tracker',
     '',
@@ -343,9 +350,9 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
     `- **Current failure overlap:** ${formatCount(both)} both modes; ${formatCount(coldOnly)} cold only; ` +
       `${formatCount(polyfillOnly)} polyfill only`,
     `- **Fixed since first capture:** ${formatCount(fixed.length)}`,
-    `- **Recommended next work packet:** [${packetId(firstPacket.name)}](#${packetAnchor(firstPacket.name)}) (\`${firstPacket.name}\`)`,
+    recommendedPacketLine,
     '',
-    'The audit commands intentionally exit nonzero while parity failures remain:',
+    auditStateLine,
     '',
     '```sh',
     'pnpm --filter rxjs run test:unit:audit --reporter=json --outputFile=/tmp/rxjs-next-ported-cold.json',

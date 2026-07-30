@@ -50,7 +50,7 @@
     {
       "id": "spec/Observable-spec.ts:50:Observable > should allow empty ctor, which is effectively a never-observable",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -58,10 +58,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "cold: rxTest observable assertion failed.; polyfill: this.init is not a function"
     },
     {
@@ -81,7 +78,7 @@
     {
       "id": "spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -89,16 +86,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected false to be true"
     },
     {
       "id": "spec/Observable-spec.ts:1353:Observable.lift > should compose through concat",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -106,16 +100,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/Observable-spec.ts:1366:Observable.lift > should compose through merge",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -123,16 +114,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/Observable-spec.ts:1380:Observable.lift > should compose through race",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -140,16 +128,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected false to be true"
     },
     {
       "id": "spec/Observable-spec.ts:1400:Observable.lift > should compose through zip",
       "group": "Observable",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -157,10 +142,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected false to be true"
     },
     {
@@ -432,7 +414,7 @@
     {
       "id": "spec/deprecation-equivalents/multicasting-deprecations-spec.ts:98:should be equivalent for publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })` for async sources that repeat [equivalence-7:publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })`]",
       "group": "multicasting-deprecations",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -440,10 +422,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -547,7 +526,7 @@
     {
       "id": "spec/deprecation-equivalents/multicasting-deprecations-spec.ts:107:should be equivalent for publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })` for async sources that retry [equivalence-7:publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })`]",
       "group": "multicasting-deprecations",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -555,10 +534,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -774,7 +750,7 @@
     {
       "id": "spec/deprecation-equivalents/multicasting-deprecations-spec.ts:125:should be equivalent for publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })` for async sources that repeat [equivalence-7:publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })`]",
       "group": "multicasting-deprecations",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -782,10 +758,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -1281,7 +1254,7 @@
     {
       "id": "spec/observables/dom/ajax-spec.ts:534:ajax > should error on timeout of asynchronous request",
       "group": "ajax",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1289,16 +1262,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "ajax is not a function"
     },
     {
       "id": "spec/observables/dom/animationFrames-spec.ts:17:animationFrames > should animate",
       "group": "animationFrames",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1306,16 +1276,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/dom/animationFrames-spec.ts:37:animationFrames > should use any passed timestampProvider",
       "group": "animationFrames",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1323,16 +1290,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'stub')"
     },
     {
       "id": "spec/observables/dom/animationFrames-spec.ts:60:animationFrames > should compose with take",
       "group": "animationFrames",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1340,16 +1304,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'spy')"
     },
     {
       "id": "spec/observables/dom/animationFrames-spec.ts:86:animationFrames > should compose with takeUntil",
       "group": "animationFrames",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1357,10 +1318,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'spy')"
     },
     {
@@ -1912,7 +1870,7 @@
     {
       "id": "spec/observables/from-spec.ts:21:from > should create an observable from an array",
       "group": "from",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1920,16 +1878,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element",
       "group": "fromEvent",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1937,16 +1892,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Unsupported RxJS 7 fromEvent target: the platform mapping requires an EventTarget."
     },
     {
       "id": "spec/observables/fromEventPattern-spec.ts:18:fromEventPattern > should create an observable from the handler API",
       "group": "fromEventPattern",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1954,10 +1906,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -2033,7 +1982,7 @@
     {
       "id": "spec/observables/generate-spec.ts:103:generate > should accept a scheduler",
       "group": "generate",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2041,10 +1990,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -2078,7 +2024,7 @@
     {
       "id": "spec/observables/generate-spec.ts:150:generate > should emit error if result selector throws on scheduler",
       "group": "generate",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2086,10 +2032,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -2109,7 +2052,7 @@
     {
       "id": "spec/observables/generate-spec.ts:176:generate > should emit error after first value if iterate function throws on scheduler",
       "group": "generate",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2117,10 +2060,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -2140,7 +2080,7 @@
     {
       "id": "spec/observables/generate-spec.ts:202:generate > should emit error if condition function throws on scheduler",
       "group": "generate",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2148,10 +2088,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -2227,7 +2164,7 @@
     {
       "id": "spec/observables/merge-spec.ts:282:merge(...observables, Scheduler) > should merge single lowerCaseO into RxJS Observable",
       "group": "merge",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2235,16 +2172,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/observables/merge-spec.ts:311:merge(...observables, Scheduler, number) > should handle scheduler",
       "group": "merge",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2252,16 +2186,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/observables/merge-spec.ts:322:merge(...observables, Scheduler, number) > should handle scheduler with concurrency limits",
       "group": "merge",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2269,10 +2200,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -2292,7 +2220,7 @@
     {
       "id": "spec/observables/of-spec.ts:16:of > should create a cold observable that emits 1, 2, 3",
       "group": "of",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2300,10 +2228,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -2645,7 +2570,7 @@
     {
       "id": "spec/observables/range-spec.ts:17:range > should create an observable with numbers 1 to 10",
       "group": "range",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2653,16 +2578,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/range-spec.ts:49:range > should work for two subscribers",
       "group": "range",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2670,16 +2592,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/range-spec.ts:101:range > should accept only one argument where count is argument and start is zero",
       "group": "range",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2687,16 +2606,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2704,16 +2620,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:51:timer > should start after delay and periodically emit values",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2721,16 +2634,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:63:timer > should start immediately and periodically emit values",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2738,16 +2648,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:75:timer > should stop emitting values when subscription is done",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2755,16 +2662,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
       "id": "spec/observables/timer-spec.ts:99:timer > should start after delay and periodically emit values",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2772,31 +2676,26 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
         "cold"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:128:timer > should accept Infinity as the first argument",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2804,16 +2703,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/observables/timer-spec.ts:136:timer > should accept Infinity as the second argument",
       "group": "timer",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2821,10 +2717,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
@@ -3922,7 +3815,7 @@
     {
       "id": "spec/operators/bufferTime-spec.ts:15:bufferTime operator > should emit buffers at intervals",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3930,16 +3823,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:35:bufferTime operator > should emit buffers at intervals test 2",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3947,16 +3837,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:52:bufferTime operator > should emit buffers at intervals or when the buffer is full",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3964,16 +3851,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:103:bufferTime operator > should emit buffers at intervals or when the buffer is full test 2",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3981,16 +3865,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:124:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -3998,16 +3879,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:146:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay or when the buffer is full",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4015,16 +3893,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:168:bufferTime operator > should emit buffers with timeSpan 10 and creationInterval 7",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4032,16 +3907,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:198:bufferTime operator > should emit buffers but handle source ending with an error",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4049,16 +3921,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:225:bufferTime operator > should emit buffers and allow result to unsubscribed early",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4066,16 +3935,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4083,16 +3949,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:275:bufferTime operator > should handle empty",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4100,16 +3963,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:290:bufferTime operator > should handle never",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4117,16 +3977,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:303:bufferTime operator > should handle throw",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4134,16 +3991,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:315:bufferTime operator > should handle errors",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4151,16 +4005,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:332:bufferTime operator > should emit buffers that have been created at intervals and close after the specified delay with errors",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4168,16 +4019,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:355:bufferTime operator > should not throw when subscription synchronously unsubscribed after emit",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4185,16 +4033,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:373:bufferTime operator > should not have errors when take follows and maxBufferSize is provided",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4202,16 +4047,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/bufferTime-spec.ts:392:bufferTime operator > should not mutate the buffer on reentrant next",
       "group": "bufferTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4219,10 +4061,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest exceeded maxTaskExecutions (100000)."
     },
     {
@@ -4242,7 +4081,7 @@
     {
       "id": "spec/operators/bufferToggle-spec.ts:32:bufferToggle operator > should emit buffers that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument",
       "group": "bufferToggle",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4250,9 +4089,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -4818,7 +4655,7 @@
     {
       "id": "spec/operators/combineLatest-legacy-spec.ts:35:combineLatest > should work with two nevers",
       "group": "combineLatest-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4826,16 +4663,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatest-legacy-spec.ts:51:combineLatest > should work with never and empty",
       "group": "combineLatest-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4843,16 +4677,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatest-legacy-spec.ts:67:combineLatest > should work with empty and never",
       "group": "combineLatest-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4860,10 +4691,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -4908,7 +4736,7 @@
     {
       "id": "spec/operators/combineLatest-legacy-spec.ts:142:combineLatest > should work with hot-single and never",
       "group": "combineLatest-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4916,16 +4744,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatest-legacy-spec.ts:161:combineLatest > should work with never and hot-single",
       "group": "combineLatest-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -4933,10 +4758,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -5712,7 +5534,7 @@
     {
       "id": "spec/operators/combineLatestWith-spec.ts:38:combineLatestWith > should work with two nevers",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5720,16 +5542,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:57:combineLatestWith > should work with never and empty",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5737,16 +5556,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:76:combineLatestWith > should work with empty and never",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5754,10 +5570,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -5805,7 +5618,7 @@
     {
       "id": "spec/operators/combineLatestWith-spec.ts:163:combineLatestWith > should work with hot-single and never",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5813,16 +5626,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/combineLatestWith-spec.ts:185:combineLatestWith > should work with never and hot-single",
       "group": "combineLatestWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5830,10 +5640,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -6133,7 +5940,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:15:concat operator > should concatenate two cold observables",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6141,10 +5948,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -6374,7 +6178,7 @@
     {
       "id": "spec/operators/concat-legacy-spec.ts:324:concat operator > should accept scheduler with multiple observables",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6382,16 +6186,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/concat-legacy-spec.ts:341:concat operator > should accept scheduler without observable parameters",
       "group": "concat-legacy",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6399,10 +6200,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -6548,7 +6346,7 @@
     {
       "id": "spec/operators/concatAll-spec.ts:500:concatAll operator > should be able to work on a different scheduler",
       "group": "concatAll",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6556,16 +6354,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/concatAll-spec.ts:532:concatAll operator > should concatAll a nested observable with a single inner observable, and a scheduler",
       "group": "concatAll",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -6573,10 +6368,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -7100,7 +6892,7 @@
     {
       "id": "spec/operators/connect-spec.ts:13:connect > should connect a source through a selector function",
       "group": "connect",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7108,16 +6900,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/connect-spec.ts:25:connect > should connect a source through a selector function and use the provided connector",
       "group": "connect",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7125,10 +6914,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -7708,7 +7494,7 @@
     {
       "id": "spec/operators/delay-spec.ts:16:delay > should delay by specified timeframe",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7716,16 +7502,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:31:delay > should not delay at all if the delay number is negative",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7733,16 +7516,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:45:delay > should delay by absolute time period",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7750,16 +7530,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:60:delay > should not delay at all if the absolute time is in the past",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7767,16 +7544,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:75:delay > should delay by absolute time period after source ends",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7784,16 +7558,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:90:delay > should raise error when source raises error",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7801,16 +7572,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:105:delay > should raise error when source raises error before absolute delay fires",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7818,16 +7586,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:120:delay > should raise error when source raises error after absolute delay fires",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7835,16 +7600,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:135:delay > should delay when source does not emit",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7852,16 +7614,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:149:delay > should not delay when source is empty",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7869,16 +7628,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:163:delay > should delay complete when a value is scheduled",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7886,16 +7642,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:177:delay > should not complete when source does not complete",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7903,16 +7656,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:193:delay > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7920,16 +7670,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:213:delay > should not complete when source never completes",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7937,16 +7684,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/operators/delay-spec.ts:227:delay > should unsubscribe scheduled actions after execution",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7954,16 +7698,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/delay-spec.ts:259:delay > should be possible to delay complete by composition",
       "group": "delay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -7971,10 +7712,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
@@ -8036,7 +7774,7 @@
     {
       "id": "spec/operators/delayWhen-spec.ts:99:delayWhen > should delay by selector and completes after value emits",
       "group": "delayWhen",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8044,15 +7782,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/delayWhen-spec.ts:120:delayWhen > should delay, but not emit if the selector never emits a notification",
       "group": "delayWhen",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8060,9 +7796,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -8096,7 +7830,7 @@
     {
       "id": "spec/operators/delayWhen-spec.ts:175:delayWhen > should delay by first value from selector",
       "group": "delayWhen",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8104,15 +7838,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/delayWhen-spec.ts:196:delayWhen > should delay by selector that does not completes",
       "group": "delayWhen",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -8120,9 +7852,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -9528,7 +9258,7 @@
     {
       "id": "spec/operators/endWith-spec.ts:181:endWith > should accept scheduler as last argument with single value",
       "group": "endWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9536,16 +9266,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/endWith-spec.ts:192:endWith > should accept scheduler as last argument with multiple value",
       "group": "endWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9553,10 +9280,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -10234,7 +9958,7 @@
     {
       "id": "spec/operators/expand-spec.ts:32:expand > should work with scheduler",
       "group": "expand",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10242,10 +9966,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -10923,7 +10644,7 @@
     {
       "id": "spec/operators/find-spec.ts:154:find > should unsubscribe when the predicate is matched",
       "group": "find",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -10931,10 +10652,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
@@ -11094,7 +10812,7 @@
     {
       "id": "spec/operators/findIndex-spec.ts:153:findIndex > should unsubscribe when the predicate is matched",
       "group": "findIndex",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11102,10 +10820,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
@@ -11223,7 +10938,7 @@
     {
       "id": "spec/operators/first-spec.ts:136:first > should unsubscribe when the first value is received",
       "group": "first",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -11231,10 +10946,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
@@ -12808,7 +12520,7 @@
     {
       "id": "spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable",
       "group": "mergeMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -12816,9 +12528,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -12878,7 +12588,7 @@
     {
       "id": "spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "mergeMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -12886,9 +12596,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -13072,7 +12780,7 @@
     {
       "id": "spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async",
       "group": "mergeMap",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13080,10 +12788,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -13156,7 +12861,7 @@
     {
       "id": "spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "mergeMapTo",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13164,9 +12869,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -13308,7 +13011,7 @@
     {
       "id": "spec/operators/mergeScan-spec.ts:56:mergeScan > should mergeScan values and be able to asynchronously project them",
       "group": "mergeScan",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13316,16 +13019,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/mergeScan-spec.ts:84:mergeScan > should not stop ongoing async projections when source completes",
       "group": "mergeScan",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13333,16 +13033,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/mergeScan-spec.ts:112:mergeScan > should interrupt ongoing async projections when result is unsubscribed early",
       "group": "mergeScan",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13350,16 +13047,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/mergeScan-spec.ts:135:mergeScan > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "mergeScan",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13367,10 +13061,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -14188,7 +13879,7 @@
     {
       "id": "spec/operators/observeOn-spec.ts:15:observeOn > should observe on specified scheduler",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14196,16 +13887,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:26:observeOn > should observe after specified delay",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14213,16 +13901,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:40:observeOn > should observe when source raises error",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14230,16 +13915,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:51:observeOn > should observe when source is empty",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14247,16 +13929,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:62:observeOn > should observe when source does not complete",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14264,16 +13943,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:73:observeOn > should allow unsubscribing early and explicitly",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14281,16 +13957,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/observeOn-spec.ts:87:observeOn > should not break unsubscription chains when the result is unsubscribed explicitly",
       "group": "observeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14298,10 +13971,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -15357,7 +15027,7 @@
     {
       "id": "spec/operators/publishReplay-spec.ts:49:publishReplay operator > should multicast the same values to multiple observers, bufferSize=1",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15365,15 +15035,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/publishReplay-spec.ts:70:publishReplay operator > should multicast the same values to multiple observers, bufferSize=2",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15381,15 +15049,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/publishReplay-spec.ts:91:publishReplay operator > should multicast an error from the source to multiple observers",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15397,9 +15063,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -15433,7 +15097,7 @@
     {
       "id": "spec/operators/publishReplay-spec.ts:180:publishReplay operator > with refCount() > should connect when first subscriber subscribes",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15441,15 +15105,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/publishReplay-spec.ts:199:publishReplay operator > with refCount() > should disconnect when last subscriber unsubscribes",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15457,15 +15119,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/publishReplay-spec.ts:217:publishReplay operator > with refCount() > should NOT be retryable",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15473,15 +15133,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/publishReplay-spec.ts:236:publishReplay operator > with refCount() > should NOT be repeatable",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15489,9 +15147,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -15567,7 +15223,7 @@
     {
       "id": "spec/operators/publishReplay-spec.ts:480:publishReplay operator > should emit an error when the selector returns an Observable that emits an error",
       "group": "publishReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -15575,9 +15231,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -16507,7 +16161,7 @@
     {
       "id": "spec/operators/repeatWhen-spec.ts:339:repeatWhen operator > should handle a host source that completes via operator like take, and a hot notifier",
       "group": "repeatWhen",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -16515,10 +16169,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -17266,7 +16917,7 @@
     {
       "id": "spec/operators/sampleTime-spec.ts:14:sampleTime > should get samples on a delay",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17274,16 +16925,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:27:sampleTime > should sample nothing if new value has not arrived",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17291,16 +16939,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:40:sampleTime > should sample if new value has arrived, even if it is the same value",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17308,16 +16953,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:53:sampleTime > should sample nothing if source has not nexted by time of sample",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17325,16 +16967,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:66:sampleTime > should raise error if source raises error",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17342,16 +16981,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:79:sampleTime > should allow unsubscribing explicitly and early",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17359,16 +16995,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:93:sampleTime > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17376,16 +17009,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:113:sampleTime > should completes if source does not emits",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17393,16 +17023,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:125:sampleTime > should raise error if source throws immediately",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17410,16 +17037,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
       "id": "spec/operators/sampleTime-spec.ts:137:sampleTime > should not complete if source does not complete",
       "group": "sampleTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17427,10 +17051,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: sampleTime"
     },
     {
@@ -17702,7 +17323,7 @@
     {
       "id": "spec/operators/share-spec.ts:723:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 when synchronously resubscribing and using a deferred reset notifier",
       "group": "share",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17710,10 +17331,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "scheduled is not a function"
     },
     {
@@ -17761,7 +17379,7 @@
     {
       "id": "spec/operators/share-spec.ts:813:share > share(config) with async/deferred reset notifiers > should not reset on refCount 0 if reset notifier errors before emitting any value",
       "group": "share",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17769,16 +17387,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'onUnhandledError')"
     },
     {
       "id": "spec/operators/share-spec.ts:840:share > share(config) with async/deferred reset notifiers > should not reset on error if reset notifier errors before emitting any value",
       "group": "share",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17786,16 +17401,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'onUnhandledError')"
     },
     {
       "id": "spec/operators/share-spec.ts:865:share > share(config) with async/deferred reset notifiers > should not reset on complete if reset notifier errors before emitting any value",
       "group": "share",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -17803,10 +17415,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'onUnhandledError')"
     },
     {
@@ -19492,7 +19101,7 @@
     {
       "id": "spec/operators/shareReplay-spec.ts:38:shareReplay > should multicast the same values to multiple observers, bufferSize=1",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19500,15 +19109,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:58:shareReplay > should multicast the same values to multiple observers, bufferSize=2",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19516,15 +19123,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:78:shareReplay > should multicast an error from the source to multiple observers",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19532,9 +19137,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -19554,7 +19157,7 @@
     {
       "id": "spec/operators/shareReplay-spec.ts:111:shareReplay > should multicast a never source",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19562,10 +19165,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -19585,7 +19185,7 @@
     {
       "id": "spec/operators/shareReplay-spec.ts:137:shareReplay > should replay results to subsequent subscriptions if source completes, bufferSize=2",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19593,15 +19193,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:157:shareReplay > should completely restart for subsequent subscriptions if source errors, bufferSize=2",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19609,15 +19207,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:178:shareReplay > should be retryable, bufferSize=2",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19625,15 +19221,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:209:shareReplay > should not restart due to unsubscriptions if refCount is false",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19641,16 +19235,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:226:shareReplay > should restart due to unsubscriptions if refCount is true",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19658,10 +19249,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -19681,7 +19269,7 @@
     {
       "id": "spec/operators/shareReplay-spec.ts:291:shareReplay > should default to refCount being false",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19689,16 +19277,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/shareReplay-spec.ts:343:shareReplay > should not skip values on a sync source",
       "group": "shareReplay",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -19706,10 +19291,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -20849,7 +20431,7 @@
     {
       "id": "spec/operators/startWith-spec.ts:146:startWith > should allow unsubscribing explicitly and early",
       "group": "startWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20857,16 +20439,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/startWith-spec.ts:161:startWith > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "startWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20874,16 +20453,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/startWith-spec.ts:180:startWith > should start with empty if given value is not specified",
       "group": "startWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20891,16 +20467,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/startWith-spec.ts:193:startWith > should accept scheduler as last argument with single value",
       "group": "startWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20908,16 +20481,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/startWith-spec.ts:206:startWith > should accept scheduler as last argument with multiple value",
       "group": "startWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20925,16 +20495,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:15:subscribeOn > should subscribe on specified scheduler",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20942,16 +20509,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:28:subscribeOn > should start subscribe after specified delay",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20959,16 +20523,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:42:subscribeOn > should unsubscribe when source raises error",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20976,16 +20537,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:55:subscribeOn > should subscribe when source is empty",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -20993,16 +20551,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:68:subscribeOn > should subscribe when source does not complete",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21010,16 +20565,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:81:subscribeOn > should allow unsubscribing early and explicitly",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21027,16 +20579,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:95:subscribeOn > should not break unsubscription chains when the result is unsubscribed explicitly",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21044,16 +20593,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/operators/subscribeOn-spec.ts:113:subscribeOn > should properly support a delayTime of Infinity",
       "group": "subscribeOn",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21061,10 +20607,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
@@ -22876,7 +22419,7 @@
     {
       "id": "spec/operators/timeInterval-spec.ts:16:timeInterval > should record the time interval between source elements",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22884,16 +22427,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:33:timeInterval > should record interval if source emit elements",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22901,16 +22441,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeInterval is not a constructor"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:51:timeInterval > should completes without record interval if source does not emits",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22918,16 +22455,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:62:timeInterval > should complete immediately if source is empty",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22935,16 +22469,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:73:timeInterval > should record interval then does not completes if source emits but not completes",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22952,16 +22483,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeInterval is not a constructor"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:89:timeInterval > should allow unsubscribing explicitly and early",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22969,16 +22497,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeInterval is not a constructor"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:108:timeInterval > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22986,16 +22511,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeInterval is not a constructor"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:131:timeInterval > should not completes if source never completes",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23003,16 +22525,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:142:timeInterval > raise error if source raises error",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23020,16 +22539,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:153:timeInterval > should record interval then raise error if source raises error after emit",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23037,16 +22553,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeInterval is not a constructor"
     },
     {
       "id": "spec/operators/timeInterval-spec.ts:169:timeInterval > should raise error if source immediately throws",
       "group": "timeInterval",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23054,16 +22567,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeout-spec.ts:17:timeout operator > should timeout after a specified timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23071,16 +22581,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:31:timeout operator > should emit and TimeoutError on timeout with appropriate due as number",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23088,16 +22595,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:59:timeout operator > should emit and TimeoutError on timeout with appropriate due as Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23105,16 +22609,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:91:timeout operator > should not timeout if source completes within absolute timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23122,16 +22623,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:106:timeout operator > should not timeout if source emits within timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23139,16 +22637,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:118:timeout operator > should allow unsubscribing explicitly and early",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23156,16 +22651,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:133:timeout operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23173,16 +22665,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:152:timeout operator > should timeout after a specified timeout period between emit with default error while source emits",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23190,16 +22679,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:166:timeout operator > should timeout at a specified Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23207,16 +22693,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:188:timeout operator > config > should timeout after a specified timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23224,16 +22707,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:206:timeout operator > config > should emit and TimeoutError on timeout with appropriate due as number",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23241,16 +22721,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:234:timeout operator > config > should emit and TimeoutError on timeout with appropriate due as Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23258,16 +22735,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:266:timeout operator > config > should not timeout if source completes within absolute timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23275,16 +22749,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:278:timeout operator > config > should not timeout if source emits within timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23292,16 +22763,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:290:timeout operator > config > should allow unsubscribing explicitly and early",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23309,16 +22777,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:305:timeout operator > config > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23326,16 +22791,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:324:timeout operator > config > should timeout after a specified timeout period between emit with default error while source emits",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23343,16 +22805,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:338:timeout operator > config > should timeout at a specified Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23360,16 +22819,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:353:timeout operator > config > should timeout at a specified time for first value only",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23377,16 +22833,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:368:timeout operator > config > should not timeout for long delays if only first is specified",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23394,16 +22847,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:383:timeout operator > config > should not timeout for long delays if only first is specified as Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23411,16 +22861,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:398:timeout operator > config > should timeout for long delays if first is specified as Date AND each is specified",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23428,16 +22875,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:416:timeout operator > using with > should timeout after a specified period then subscribe to the passed observable",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23445,16 +22889,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:438:timeout operator > using with > should timeout at a specified date then subscribe to the passed observable",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23462,16 +22903,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:461:timeout operator > using with > should timeout after a specified period between emit then subscribe to the passed observable when source emits",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23479,16 +22917,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:483:timeout operator > using with > should allow unsubscribing explicitly and early",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23496,16 +22931,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:501:timeout operator > using with > should not break unsubscription chain when unsubscribed explicitly",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23513,16 +22945,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:523:timeout operator > using with > should not subscribe to withObservable after explicit unsubscription",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23530,16 +22959,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:544:timeout operator > using with > should timeout after a specified period then subscribe to the passed observable when source is empty",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23547,16 +22973,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:561:timeout operator > using with > should timeout after a specified period between emit then never completes if other source does not complete",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23564,16 +22987,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:578:timeout operator > using with > should timeout after a specified period then subscribe to the passed observable when source raises error after timeout",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23581,16 +23001,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:595:timeout operator > using with > should timeout after a specified period between emit then never completes if other source emits but not complete",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23598,16 +23015,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:612:timeout operator > using with > should not timeout if source completes within timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23615,16 +23029,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:628:timeout operator > using with > should not timeout if source raises error within timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23632,16 +23043,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:644:timeout operator > using with > should not timeout if source emits within timeout period",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23649,16 +23057,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:660:timeout operator > using with > should not timeout if source completes within specified Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23666,16 +23071,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:677:timeout operator > using with > should not timeout if source raises error within specified Date",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23683,16 +23085,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeout-spec.ts:694:timeout operator > using with > should not timeout if source emits synchronously when subscribed",
       "group": "timeout",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23700,16 +23099,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "TimeoutError is not a constructor"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:15:timeoutWith operator > should timeout after a specified period then subscribe to the passed observable",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23717,16 +23113,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:32:timeoutWith operator > should timeout at a specified date then subscribe to the passed observable",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23734,16 +23127,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:50:timeoutWith operator > should timeout after a specified period between emit then subscribe to the passed observable when source emits",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23751,16 +23141,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:67:timeoutWith operator > should allow unsubscribing explicitly and early",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23768,16 +23155,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:85:timeoutWith operator > should not break unsubscription chain when unsubscribed explicitly",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23785,16 +23169,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:107:timeoutWith operator > should not subscribe to withObservable after explicit unsubscription",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23802,16 +23183,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:128:timeoutWith operator > should timeout after a specified period then subscribe to the passed observable when source is empty",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23819,16 +23197,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:145:timeoutWith operator > should timeout after a specified period between emit then never completes if other source does not complete",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23836,16 +23211,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:162:timeoutWith operator > should timeout after a specified period then subscribe to the passed observable when source raises error after timeout",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23853,16 +23225,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:179:timeoutWith operator > should timeout after a specified period between emit then never completes if other source emits but not complete",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23870,16 +23239,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:196:timeoutWith operator > should not timeout if source completes within timeout period",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23887,16 +23253,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:212:timeoutWith operator > should not timeout if source raises error within timeout period",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23904,16 +23267,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:228:timeoutWith operator > should not timeout if source emits within timeout period",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23921,16 +23281,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:244:timeoutWith operator > should not timeout if source completes within specified Date",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23938,16 +23295,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timeoutWith-spec.ts:261:timeoutWith operator > should not timeout if source raises error within specified Date",
       "group": "timeoutWith",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23955,16 +23309,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:15:timestamp > should record the time stamp per each source elements",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23972,16 +23323,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:32:timestamp > should record stamp if source emit elements",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -23989,16 +23337,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:50:timestamp > should completes without record stamp if source does not emits",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24006,16 +23351,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:61:timestamp > should complete immediately if source is empty",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24023,16 +23365,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:72:timestamp > should record stamp then does not completes if source emits but not completes",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24040,16 +23379,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:88:timestamp > should allow unsubscribing explicitly and early",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24057,16 +23393,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:107:timestamp > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24074,16 +23407,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:130:timestamp > should not completes if source never completes",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24091,16 +23421,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:141:timestamp > raise error if source raises error",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24108,16 +23435,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:152:timestamp > should record stamp then raise error if source raises error after emit",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24125,16 +23449,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/timestamp-spec.ts:168:timestamp > should raise error if source immediately throws",
       "group": "timestamp",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24142,10 +23463,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -24542,7 +23860,7 @@
     {
       "id": "spec/operators/windowTime-spec.ts:14:windowTime > should emit windows given windowTimeSpan and windowCreationInterval",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24550,16 +23868,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:38:windowTime > should close windows after max count is reached",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24567,16 +23882,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:60:windowTime > should close window after max count is reached with windowCreationInterval",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24584,16 +23896,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:81:windowTime > should emit windows given windowTimeSpan",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24601,16 +23910,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:102:windowTime > should emit windows given windowTimeSpan and windowCreationInterval",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24618,16 +23924,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:126:windowTime > should return a single empty window if source is empty",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24635,16 +23938,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:143:windowTime > should split a Just source into a single window identical to source",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24652,16 +23952,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:160:windowTime > should be able to split a never Observable into timely empty windows",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24669,16 +23966,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:184:windowTime > should emit an error-only window if outer is a simple throw-Observable",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24686,16 +23980,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:201:windowTime > should handle source Observable which eventually emits an error",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24703,16 +23994,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:224:windowTime > should emit windows given windowTimeSpan and windowCreationInterval, but outer is unsubscribed early",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24720,16 +24008,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:247:windowTime > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24737,16 +24022,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/operators/windowTime-spec.ts:274:windowTime > should not error if maxWindowSize is hit while nexting to other windows.",
       "group": "windowTime",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -24754,10 +24036,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
@@ -26624,7 +25903,7 @@
     {
       "id": "spec/scheduled/scheduled-spec.ts:14:scheduled > should schedule a sync observable",
       "group": "scheduled",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26632,16 +25911,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/scheduled/scheduled-spec.ts:21:scheduled > should schedule an array",
       "group": "scheduled",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26649,16 +25925,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/scheduled/scheduled-spec.ts:28:scheduled > should schedule an iterable",
       "group": "scheduled",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26666,16 +25939,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/scheduled/scheduled-spec.ts:35:scheduled > should schedule an observable-like",
       "group": "scheduled",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26683,16 +25953,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/schedulers/AnimationFrameScheduler-spec.ts:24:Scheduler.animationFrame > should act like the async scheduler if delay > 0",
       "group": "AnimationFrameScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26700,16 +25967,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/schedulers/AnimationFrameScheduler-spec.ts:41:Scheduler.animationFrame > should cancel animationFrame actions when delay > 0",
       "group": "AnimationFrameScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26717,16 +25981,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'spy')"
     },
     {
       "id": "spec/schedulers/AsapScheduler-spec.ts:24:Scheduler.asap > should act like the async scheduler if delay > 0",
       "group": "AsapScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26734,16 +25995,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/schedulers/AsapScheduler-spec.ts:40:Scheduler.asap > should cancel asap actions when delay > 0",
       "group": "AsapScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26751,16 +26009,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'createSandbox')"
     },
     {
       "id": "spec/schedulers/QueueScheduler-spec.ts:18:Scheduler.queue > should act like the async scheduler if delay > 0",
       "group": "QueueScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26768,16 +26023,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:16:TestScheduler > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26785,16 +26037,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:21:TestScheduler > should have frameTimeFactor set initially",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26802,16 +26051,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'frameTimeFactor')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:26:TestScheduler > parseMarbles() > should parse a marble string into a series of notifications and types",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26819,16 +26065,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:35:TestScheduler > parseMarbles() > should parse a marble string, allowing spaces too",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26836,16 +26079,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:44:TestScheduler > parseMarbles() > should parse a marble string with a subscription point",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26853,16 +26093,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:53:TestScheduler > parseMarbles() > should parse a marble string with an error",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26870,16 +26107,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:62:TestScheduler > parseMarbles() > should default in the letter for the value if no value hash was passed",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26887,16 +26121,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:71:TestScheduler > parseMarbles() > should handle grouped values",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26904,16 +26135,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:80:TestScheduler > parseMarbles() > should ignore whitespace when runMode=true",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26921,16 +26149,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:91:TestScheduler > parseMarbles() > should support time progression syntax when runMode=true",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26938,16 +26163,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:102:TestScheduler > parseMarbles() > should support emoji characters",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26955,16 +26177,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'parseMarbles')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:114:TestScheduler > parseMarblesAsSubscriptions() > should parse a subscription marble string into a subscriptionLog",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26972,16 +26191,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 3 to equal 30"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:120:TestScheduler > parseMarblesAsSubscriptions() > should parse a subscription marble string with an unsubscription",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -26989,16 +26205,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 3 to equal 30"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:126:TestScheduler > parseMarblesAsSubscriptions() > should parse a subscription marble string with a synchronous unsubscription",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27006,16 +26219,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Time marble diagrams cannot contain \"(\"."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:132:TestScheduler > parseMarblesAsSubscriptions() > should ignore whitespace when runMode=true",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27023,16 +26233,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 4 to equal 40"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:139:TestScheduler > parseMarblesAsSubscriptions() > should support time progression syntax when runMode=true",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27040,16 +26247,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 61212.2 to equal 61230.2"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:146:TestScheduler > parseMarblesAsSubscriptions() > should throw if found more than one subscription point",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27057,16 +26261,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected [Function] to throw an error"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:150:TestScheduler > parseMarblesAsSubscriptions() > should throw if found more than one unsubscription point",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27074,16 +26275,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected [Function] to throw an error"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:156:TestScheduler > createTime() > should parse a simple time marble string to a number",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27091,16 +26289,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 5 to equal 50"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:162:TestScheduler > createTime() > should progress time with whitespace",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27108,16 +26303,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected +0 to equal 50"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:169:TestScheduler > createTime() > should progress time with mix of whitespace and dashes",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27125,16 +26317,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 2 to equal 40"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:198:TestScheduler > createHotObservable() > should create a hot observable",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27142,16 +26331,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "[non-terminating-conversion] spec/schedulers/TestScheduler-spec.ts:198:TestScheduler > createHotObservable() > should create a hot observable: The direct-subscription manual-TestScheduler conversion does not yield control or finalize under rxTest."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:213:TestScheduler > jasmine helpers > rxTestScheduler > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27159,16 +26345,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:219:TestScheduler > jasmine helpers > cold() > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27176,16 +26359,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:237:TestScheduler > jasmine helpers > hot() > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27193,16 +26373,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:242:TestScheduler > jasmine helpers > hot() > should create a hot observable",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27210,16 +26387,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected [Observable] to be an instance of Subject"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:250:TestScheduler > jasmine helpers > time() > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27227,16 +26401,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:255:TestScheduler > jasmine helpers > time() > should parse a simple time marble string to a number",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27244,16 +26415,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected 5 to equal 50"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:261:TestScheduler > jasmine helpers > expectObservable() > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27261,16 +26429,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:270:TestScheduler > jasmine helpers > expectObservable() > should append to flushTests array",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27278,16 +26443,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:279:TestScheduler > jasmine helpers > expectObservable() > should handle never",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27295,10 +26457,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 2 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -27332,7 +26491,7 @@
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:300:TestScheduler > jasmine helpers > expectSubscriptions() > should exist",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27340,16 +26499,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "expected undefined to exist"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:309:TestScheduler > jasmine helpers > expectSubscriptions() > should append to flushTests array",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27357,16 +26513,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:361:TestScheduler > TestScheduler.run() > marble diagrams > should ignore whitespace",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27374,31 +26527,26 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:390:TestScheduler > TestScheduler.run() > should provide the correct helpers",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest subscriptions assertion failed."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:427:TestScheduler > TestScheduler.run() > should have no maximum frame count",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27406,16 +26554,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: delay"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:451:TestScheduler > TestScheduler.run() > should flush automatically",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27423,16 +26568,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:472:TestScheduler > TestScheduler.run() > should support explicit flushing",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27440,16 +26582,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "testScheduler is not defined"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:497:TestScheduler > TestScheduler.run() > should pass-through return values, e.g. Promises",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27457,16 +26596,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'then')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:508:TestScheduler > TestScheduler.run() > should restore changes upon thrown errors",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27474,16 +26610,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'frameTimeFactor')"
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:569:TestScheduler > TestScheduler.run() > animate > should schedule async requests within animate()",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27491,16 +26624,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'schedule' of 'animationFrameProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:591:TestScheduler > TestScheduler.run() > animate > should schedule sync requests within animate()",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27508,16 +26638,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'schedule' of 'animationFrameProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:610:TestScheduler > TestScheduler.run() > animate > should support request cancellation within animate()",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27525,16 +26652,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'schedule' of 'animationFrameProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:632:TestScheduler > TestScheduler.run() > immediate and interval > should schedule immediates",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27542,16 +26666,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setImmediate' of 'immediateProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:647:TestScheduler > TestScheduler.run() > immediate and interval > should support clearing immediates",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27559,16 +26680,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setImmediate' of 'immediateProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:663:TestScheduler > TestScheduler.run() > immediate and interval > should schedule intervals",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27576,16 +26694,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setInterval' of 'intervalProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:679:TestScheduler > TestScheduler.run() > immediate and interval > should reschedule intervals until cleared",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27593,16 +26708,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setInterval' of 'intervalProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:698:TestScheduler > TestScheduler.run() > immediate and interval > should schedule timeouts",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27610,16 +26722,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setTimeout' of 'timeoutProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:713:TestScheduler > TestScheduler.run() > immediate and interval > should schedule immediates before intervals and timeouts",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27627,16 +26736,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot destructure property 'setImmediate' of 'immediateProvider' as it is undefined."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:739:TestScheduler > TestScheduler.run() > schedulers > should support animationFrame, async and asap schedulers",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27644,16 +26750,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:756:TestScheduler > TestScheduler.run() > schedulers > should emit asap notifications before async notifications",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27661,16 +26764,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/schedulers/TestScheduler-spec.ts:769:TestScheduler > TestScheduler.run() > schedulers > should support intervals with zero duration",
       "group": "TestScheduler",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27678,10 +26778,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest observable assertion failed."
     },
     {
@@ -27743,7 +26840,7 @@
     {
       "id": "spec/subjects/ReplaySubject-spec.ts:247:ReplaySubject > with windowTime=4 > should replay previous values since 4 time units ago when subscribed",
       "group": "ReplaySubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27751,16 +26848,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/subjects/ReplaySubject-spec.ts:279:ReplaySubject > with windowTime=4 > should replay last values since 4 time units ago when subscribed",
       "group": "ReplaySubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27768,16 +26862,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/subjects/ReplaySubject-spec.ts:303:ReplaySubject > with windowTime=4 > should only replay bufferSize items when 4 time units ago more were emitted",
       "group": "ReplaySubject",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27785,16 +26876,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTestScheduler is not defined"
     },
     {
       "id": "spec/testing/index-spec.ts:5:index > should export TestScheduler",
       "group": "@rxjs/test",
-      "status": "TODO",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -27802,10 +26890,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-29",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Cannot read properties of undefined (reading 'TestScheduler')"
     }
   ]
