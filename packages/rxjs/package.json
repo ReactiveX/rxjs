@@ -88,6 +88,7 @@
         "./src/find.ts",
         "./src/first.ts",
         "./src/fork-join.ts",
+        "./src/from-event-pattern.ts",
         "./src/generate.ts",
         "./src/group-by.ts",
         "./src/identity.ts",
@@ -408,6 +409,13 @@
       "import": "./dist/esm/fork-join.js",
       "require": "./dist/commonjs/fork-join.js",
       "types": "./dist/types/fork-join.d.ts"
+    },
+    "./from-event-pattern": {
+      "browser": "./dist/browser/from-event-pattern.js",
+      "webpack": "./dist/webpack/from-event-pattern.js",
+      "import": "./dist/esm/from-event-pattern.js",
+      "require": "./dist/commonjs/from-event-pattern.js",
+      "types": "./dist/types/from-event-pattern.d.ts"
     },
     "./generate": {
       "browser": "./dist/browser/generate.js",
