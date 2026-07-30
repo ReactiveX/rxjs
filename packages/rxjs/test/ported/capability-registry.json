@@ -169,6 +169,14 @@
       "status": "Present; parity unverified",
       "note": "Legacy result-selector overloads are not represented."
     },
+    "filter": {
+      "symbol": "filter",
+      "module": "filter",
+      "adapter": "identity",
+      "mapping": "source[filter](predicate, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "The RxJS Symbol form preserves predicate index, thisArg, type guards, errors, and cancellation without replacing the platform string method."
+    },
     "flatMap": {
       "symbol": "mergeMap",
       "module": "merge-map",
@@ -200,6 +208,14 @@
       "mapping": "source[takeLast](1)",
       "status": "Partial unified mapping",
       "note": "Represents the no-predicate last-value path; predicate, default-value, and empty-source error behavior remain parity evidence."
+    },
+    "map": {
+      "symbol": "map",
+      "module": "map",
+      "adapter": "identity",
+      "mapping": "source[map](project, thisArg?)",
+      "status": "Present; parity unverified",
+      "note": "The RxJS Symbol form preserves projection index, thisArg, errors, and cancellation without replacing the platform string method."
     },
     "mapTo": {
       "symbol": "mergeMap",
@@ -344,6 +360,14 @@
       "mapping": "source[switchMap](() => innerSource)",
       "status": "Partial unified mapping",
       "note": "Legacy result-selector overloads are not represented."
+    },
+    "take": {
+      "symbol": "take",
+      "module": "take",
+      "adapter": "identity",
+      "mapping": "source[take](count)",
+      "status": "Present; parity unverified",
+      "note": "Completes after the requested count and cancels upstream through the derived subscriber signal; nonpositive counts do not activate the source."
     },
     "takeLast": {
       "symbol": "takeLast",

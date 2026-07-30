@@ -66,8 +66,10 @@
         "./src/default-if-empty.ts",
         "./src/each-value-from.ts",
         "./src/exhaust-map.ts",
+        "./src/filter.ts",
         "./src/index.ts",
         "./src/interval.ts",
+        "./src/map.ts",
         "./src/merge-map.ts",
         "./src/merge.ts",
         "./src/pipe.ts",
@@ -80,6 +82,7 @@
         "./src/skip-while.ts",
         "./src/subject.ts",
         "./src/switch-map.ts",
+        "./src/take.ts",
         "./src/take-last.ts",
         "./src/take-while.ts",
         "./src/throttle.ts",
@@ -195,6 +198,13 @@
       "require": "./dist/commonjs/exhaust-map.js",
       "types": "./dist/types/exhaust-map.d.ts"
     },
+    "./filter": {
+      "browser": "./dist/browser/filter.js",
+      "webpack": "./dist/webpack/filter.js",
+      "import": "./dist/esm/filter.js",
+      "require": "./dist/commonjs/filter.js",
+      "types": "./dist/types/filter.d.ts"
+    },
     "./index": {
       "browser": "./dist/browser/index.js",
       "webpack": "./dist/webpack/index.js",
@@ -208,6 +218,13 @@
       "import": "./dist/esm/interval.js",
       "require": "./dist/commonjs/interval.js",
       "types": "./dist/types/interval.d.ts"
+    },
+    "./map": {
+      "browser": "./dist/browser/map.js",
+      "webpack": "./dist/webpack/map.js",
+      "import": "./dist/esm/map.js",
+      "require": "./dist/commonjs/map.js",
+      "types": "./dist/types/map.d.ts"
     },
     "./merge": {
       "browser": "./dist/browser/merge.js",
@@ -293,6 +310,13 @@
       "import": "./dist/esm/switch-map.js",
       "require": "./dist/commonjs/switch-map.js",
       "types": "./dist/types/switch-map.d.ts"
+    },
+    "./take": {
+      "browser": "./dist/browser/take.js",
+      "webpack": "./dist/webpack/take.js",
+      "import": "./dist/esm/take.js",
+      "require": "./dist/commonjs/take.js",
+      "types": "./dist/types/take.d.ts"
     },
     "./take-last": {
       "browser": "./dist/browser/take-last.js",
