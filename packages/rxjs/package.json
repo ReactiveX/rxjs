@@ -138,6 +138,7 @@
         "./src/window.ts",
         "./src/window-count.ts",
         "./src/window-toggle.ts",
+        "./src/window-when.ts",
         "./src/with-latest-from.ts",
         "./src/zip-all.ts",
         "./src/zip-with.ts",
@@ -754,6 +755,13 @@
       "import": "./dist/esm/window-toggle.js",
       "require": "./dist/commonjs/window-toggle.js",
       "types": "./dist/types/window-toggle.d.ts"
+    },
+    "./window-when": {
+      "browser": "./dist/browser/window-when.js",
+      "webpack": "./dist/webpack/window-when.js",
+      "import": "./dist/esm/window-when.js",
+      "require": "./dist/commonjs/window-when.js",
+      "types": "./dist/types/window-when.d.ts"
     },
     "./with-latest-from": {
       "browser": "./dist/browser/with-latest-from.js",
