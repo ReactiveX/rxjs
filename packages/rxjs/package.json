@@ -58,6 +58,7 @@
         "./src/buffered-values-from.ts",
         "./src/cold-observable.ts",
         "./src/cold-subject.ts",
+        "./src/combine-latest-all.ts",
         "./src/combine-latest.ts",
         "./src/combine.ts",
         "./src/concat.ts",
@@ -99,6 +100,8 @@
         "./src/timeout.ts",
         "./src/timer.ts",
         "./src/with-latest-from.ts",
+        "./src/zip-all.ts",
+        "./src/zip-with.ts",
         "./src/zip.ts"
       ]
     },
@@ -151,6 +154,13 @@
       "import": "./dist/esm/cold-subject.js",
       "require": "./dist/commonjs/cold-subject.js",
       "types": "./dist/types/cold-subject.d.ts"
+    },
+    "./combine-latest-all": {
+      "browser": "./dist/browser/combine-latest-all.js",
+      "webpack": "./dist/webpack/combine-latest-all.js",
+      "import": "./dist/esm/combine-latest-all.js",
+      "require": "./dist/commonjs/combine-latest-all.js",
+      "types": "./dist/types/combine-latest-all.d.ts"
     },
     "./combine": {
       "browser": "./dist/browser/combine.js",
@@ -439,6 +449,20 @@
       "import": "./dist/esm/with-latest-from.js",
       "require": "./dist/commonjs/with-latest-from.js",
       "types": "./dist/types/with-latest-from.d.ts"
+    },
+    "./zip-all": {
+      "browser": "./dist/browser/zip-all.js",
+      "webpack": "./dist/webpack/zip-all.js",
+      "import": "./dist/esm/zip-all.js",
+      "require": "./dist/commonjs/zip-all.js",
+      "types": "./dist/types/zip-all.d.ts"
+    },
+    "./zip-with": {
+      "browser": "./dist/browser/zip-with.js",
+      "webpack": "./dist/webpack/zip-with.js",
+      "import": "./dist/esm/zip-with.js",
+      "require": "./dist/commonjs/zip-with.js",
+      "types": "./dist/types/zip-with.d.ts"
     },
     "./zip": {
       "browser": "./dist/browser/zip.js",

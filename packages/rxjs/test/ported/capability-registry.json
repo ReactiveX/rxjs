@@ -57,6 +57,14 @@
       "status": "Partial unified mapping",
       "note": "Adapts variadic sources to the current array form; projection overloads remain unrepresented."
     },
+    "combineLatestAll": {
+      "symbol": "combineLatestAll",
+      "module": "combine-latest-all",
+      "adapter": "identity",
+      "mapping": "source[combineLatestAll](project?)",
+      "status": "Present; parity unverified",
+      "note": "Collects inner sources until outer completion, then delegates combination to the exact static combineLatest Symbol and projection to map."
+    },
     "combineLatestWith": {
       "symbol": "combineLatest",
       "module": "combine-latest",
@@ -496,6 +504,22 @@
       "mapping": "source[withLatestFrom]([otherSources], project?)",
       "status": "Unified mapping",
       "note": "Adapts variadic other sources to the current array form and preserves the optional projection overload."
+    },
+    "zipAll": {
+      "symbol": "zipAll",
+      "module": "zip-all",
+      "adapter": "identity",
+      "mapping": "source[zipAll](project?)",
+      "status": "Present; parity unverified",
+      "note": "Collects inner sources until outer completion, then delegates tuple formation to hardened zip and projection to the exact map Symbol."
+    },
+    "zipWith": {
+      "symbol": "zipWith",
+      "module": "zip-with",
+      "adapter": "identity",
+      "mapping": "source[zipWith](...otherSources)",
+      "status": "Present; parity unverified",
+      "note": "Delegates receiver-first variadic tuple formation to the hardened standalone zip contract."
     }
   },
   "staticFactories": {

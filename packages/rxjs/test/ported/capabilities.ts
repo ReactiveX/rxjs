@@ -48,6 +48,7 @@ export async function loadCapabilities(): Promise<{
     behaviorSubjectModule,
     bufferModule,
     coldObservableModule,
+    combineLatestAllModule,
     combineLatestModule,
     concatModule,
     countModule,
@@ -90,12 +91,15 @@ export async function loadCapabilities(): Promise<{
     timeoutModule,
     timerModule,
     withLatestFromModule,
+    zipAllModule,
+    zipWithModule,
     zipModule,
   ] = await Promise.all([
     import('../../src/animation-frames.js'),
     import('../../src/behavior-subject.js'),
     import('../../src/buffer.js'),
     import('../../src/cold-observable.js'),
+    import('../../src/combine-latest-all.js'),
     import('../../src/combine-latest.js'),
     import('../../src/concat.js'),
     import('../../src/count.js'),
@@ -138,12 +142,15 @@ export async function loadCapabilities(): Promise<{
     import('../../src/timeout.js'),
     import('../../src/timer.js'),
     import('../../src/with-latest-from.js'),
+    import('../../src/zip-all.js'),
+    import('../../src/zip-with.js'),
     import('../../src/zip.js'),
   ]);
 
   const capabilities = {
     operators: {
       buffer: bufferModule.buffer,
+      combineLatestAll: combineLatestAllModule.combineLatestAll,
       combineLatest: combineLatestModule.combineLatest,
       concat: concatModule.concat,
       count: countModule.count,
@@ -177,6 +184,8 @@ export async function loadCapabilities(): Promise<{
       throttle: throttleModule.throttle,
       timeout: timeoutModule.timeout,
       withLatestFrom: withLatestFromModule.withLatestFrom,
+      zipAll: zipAllModule.zipAll,
+      zipWith: zipWithModule.zipWith,
     },
     staticFactories: {
       animationFrames: animationFramesModule.animationFrames,
