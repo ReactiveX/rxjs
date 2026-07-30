@@ -88,7 +88,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "Missing operator capability: catchError"
+      "diagnostic": "[non-terminating-conversion] spec/Observable-spec.ts:903:Observable > should handle sync errors within a test scheduler: The source-skipped RxJS 7 case synchronously returns catchError’s caught source forever before virtual time can reach an observation bound…"
     },
     {
       "id": "spec/Observable-spec.ts:1330:Observable.lift > should compose through combineLatest",
@@ -1561,7 +1561,7 @@
     {
       "id": "spec/observables/forkJoin-spec.ts:16:forkJoin > should join the last values of the provided observables into an array",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1569,16 +1569,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:62:forkJoin > should accept single observable",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1586,16 +1583,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:72:forkJoin > forkJoin([input1, input2, input3]) > should join the last values of the provided observables into an array",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1603,16 +1597,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:84:forkJoin > forkJoin([input1, input2, input3]) > should allow emit null or undefined",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1620,16 +1611,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:98:forkJoin > forkJoin([input1, input2, input3]) > should accept array of observable contains single",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1637,16 +1625,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:108:forkJoin > forkJoin([input1, input2, input3]) > should accept lowercase-o observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1654,16 +1639,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:120:forkJoin > forkJoin([input1, input2, input3]) > should accept empty lowercase-o observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1671,16 +1653,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:143:forkJoin > forkJoin([input1, input2, input3]) > should accept array of observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1688,16 +1667,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:155:forkJoin > forkJoin([input1, input2, input3]) > should not emit if any of source observable is empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1705,16 +1681,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:167:forkJoin > forkJoin([input1, input2, input3]) > should complete early if any of source is empty and completes before than others",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1722,16 +1695,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:179:forkJoin > forkJoin([input1, input2, input3]) > should complete when all sources are empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1739,16 +1709,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:190:forkJoin > forkJoin([input1, input2, input3]) > should not complete when only source never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1756,16 +1723,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:199:forkJoin > forkJoin([input1, input2, input3]) > should not complete when one of the sources never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1773,16 +1737,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:210:forkJoin > forkJoin([input1, input2, input3]) > should complete when one of the sources never completes but other completes without values",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1790,16 +1751,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:221:forkJoin > forkJoin([input1, input2, input3]) > should complete if source is not provided",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1807,16 +1765,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:230:forkJoin > forkJoin([input1, input2, input3]) > should complete if sources list is empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1824,16 +1779,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:239:forkJoin > forkJoin([input1, input2, input3]) > should raise error when any of source raises error with empty observable",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1841,16 +1793,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:250:forkJoin > forkJoin([input1, input2, input3]) > should raise error when any of source raises error with source that never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1858,16 +1807,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:261:forkJoin > forkJoin([input1, input2, input3]) > should raise error when source raises error",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1875,16 +1821,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:272:forkJoin > forkJoin([input1, input2, input3]) > should allow unsubscribing early and explicitly",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1892,16 +1835,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:289:forkJoin > forkJoin([input1, input2, input3]) > should unsubscribe other Observables, when one of them errors",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1909,16 +1849,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:323:forkJoin > forkJoin({ foo, bar, baz }) > should join the last values of the provided observables into an array",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1926,16 +1863,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:336:forkJoin > forkJoin({ foo, bar, baz }) > should allow emit null or undefined",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1943,16 +1877,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:350:forkJoin > forkJoin({ foo, bar, baz }) > should accept array of observable contains single",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1960,16 +1891,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:361:forkJoin > forkJoin({ foo, bar, baz }) > should accept lowercase-o observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1977,16 +1905,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:374:forkJoin > forkJoin({ foo, bar, baz }) > should accept empty lowercase-o observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -1994,16 +1919,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:399:forkJoin > forkJoin({ foo, bar, baz }) > should accept an object of observables",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2011,16 +1933,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:412:forkJoin > forkJoin({ foo, bar, baz }) > should not emit if any of source observable is empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2028,16 +1947,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:426:forkJoin > forkJoin({ foo, bar, baz }) > should complete early if any of source is empty and completes before than others",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2045,16 +1961,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:439:forkJoin > forkJoin({ foo, bar, baz }) > should complete when all sources are empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2062,16 +1975,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:451:forkJoin > forkJoin({ foo, bar, baz }) > should not complete when only source never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2079,16 +1989,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:462:forkJoin > forkJoin({ foo, bar, baz }) > should not complete when one of the sources never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2096,16 +2003,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:474:forkJoin > forkJoin({ foo, bar, baz }) > should complete when one of the sources never completes but other completes without values",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2113,16 +2017,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:502:forkJoin > forkJoin({ foo, bar, baz }) > should complete if sources object is empty",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2130,16 +2031,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:511:forkJoin > forkJoin({ foo, bar, baz }) > should raise error when any of source raises error with empty observable",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2147,16 +2045,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:523:forkJoin > forkJoin({ foo, bar, baz }) > should raise error when any of source raises error with source that never completes",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2164,16 +2059,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:535:forkJoin > forkJoin({ foo, bar, baz }) > should raise error when source raises error",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2181,16 +2073,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:547:forkJoin > forkJoin({ foo, bar, baz }) > should allow unsubscribing early and explicitly",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2198,16 +2087,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
       "id": "spec/observables/forkJoin-spec.ts:567:forkJoin > forkJoin({ foo, bar, baz }) > should unsubscribe other Observables, when one of them errors",
       "group": "forkJoin",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -2215,10 +2101,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "forkJoin is not a function"
     },
     {
@@ -5035,7 +4918,7 @@
     {
       "id": "spec/operators/catchError-spec.ts:18:catchError operator > should catch error and replace with a cold Observable",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5043,16 +4926,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:30:catchError operator > should catch error and replace it with Observable.of()",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5060,16 +4940,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:53:catchError operator > should catch error and replace it with a cold Observable",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5077,16 +4954,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:69:catchError operator > should allow unsubscribing explicitly and early",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5094,16 +4968,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:87:catchError operator > should not break unsubscription chain when unsubscribed explicitly",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5111,16 +4982,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:107:catchError operator > should unsubscribe from a caught hot caught observable when unsubscribed explicitly",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5128,16 +4996,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:124:catchError operator > should unsubscribe from a caught cold caught observable when unsubscribed explicitly",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5145,16 +5010,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:141:catchError operator > should unsubscribe from a caught cold caught interop observable when unsubscribed explicitly",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5162,16 +5024,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:193:catchError operator > should catch error and replace it with a hot Observable",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5179,16 +5038,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:209:catchError operator > should catch and allow the cold observable to be repeated with the third (caught) argument",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5196,16 +5052,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:240:catchError operator > should catch and allow the hot observable to proceed with the third (caught) argument",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5213,16 +5066,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:271:catchError operator > should catch and replace a Observable.throw() as the source",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5230,16 +5080,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:284:catchError operator > should mirror the source if it does not raise errors",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5247,16 +5094,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:297:catchError operator > should complete if you return Observable.empty()",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5264,16 +5108,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:313:catchError operator > should raise error if you return Observable.throw()",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5281,16 +5122,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:329:catchError operator > should never terminate if you return NEVER",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5298,16 +5136,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
       "id": "spec/operators/catchError-spec.ts:382:catchError operator > should catch errors throw from within the constructor",
       "group": "catchError",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -5315,10 +5150,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: catchError"
     },
     {
@@ -9020,7 +8852,7 @@
     {
       "id": "spec/operators/distinct-spec.ts:26:distinct > should distinguish between values and does not complete",
       "group": "distinct",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9028,16 +8860,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinct-spec.ts:37:distinct > should not complete if source never completes",
       "group": "distinct",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9045,16 +8874,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
       "id": "spec/operators/distinct-spec.ts:48:distinct > should not complete if source does not complete",
       "group": "distinct",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -9062,10 +8888,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -11911,7 +11734,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "EmptyError is not a constructor"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/first-spec.ts:59:first > should return the default value if source observable was empty",
@@ -12896,7 +12719,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "EmptyError is not a constructor"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/last-spec.ts:36:last > should error on empty",
@@ -12913,7 +12736,7 @@
         "cold",
         "polyfill"
       ],
-      "diagnostic": "EmptyError is not a constructor"
+      "diagnostic": "rxTest observable assertion failed."
     },
     {
       "id": "spec/operators/last-spec.ts:47:last > should go on forever on never",
@@ -13450,7 +13273,7 @@
     {
       "id": "spec/operators/max-spec.ts:26:max > should be never when source is never",
       "group": "max",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13458,10 +13281,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -13481,7 +13301,7 @@
     {
       "id": "spec/operators/max-spec.ts:48:max > should be never when source doesn't complete",
       "group": "max",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13489,10 +13309,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -13610,7 +13427,7 @@
     {
       "id": "spec/operators/max-spec.ts:207:max > should handle a constant predicate on an never hot observable",
       "group": "max",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -13618,10 +13435,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -14649,7 +14463,7 @@
     {
       "id": "spec/operators/min-spec.ts:26:min > should be never when source is never",
       "group": "min",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14657,10 +14471,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -14680,7 +14491,7 @@
     {
       "id": "spec/operators/min-spec.ts:48:min > should be never when source doesn't complete",
       "group": "min",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14688,10 +14499,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -14781,7 +14589,7 @@
     {
       "id": "spec/operators/min-spec.ts:171:min > should handle a constant predicate on an never hot observable",
       "group": "min",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -14789,10 +14597,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "rxTest finished with 1 open observation(s). Complete the source or provide an unsubscription marble."
     },
     {
@@ -21602,7 +21407,7 @@
     {
       "id": "spec/operators/single-spec.ts:15:single operator > should raise error from empty predicate if observable emits multiple time",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21610,16 +21415,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:26:single operator > should raise error from empty predicate if observable does not emit",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21627,16 +21429,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:37:single operator > should return only element from empty predicate if observable emits only once",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21644,16 +21443,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:48:single operator > should allow unsubscribing explicitly and early",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21661,16 +21457,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:60:single operator > should not break unsubscription chains when result is unsubscribed explicitly",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21678,16 +21471,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:78:single operator > should raise error from empty predicate if observable emits error",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21695,16 +21485,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:89:single operator > should raise error from predicate if observable emits error",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21712,16 +21499,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:100:single operator > should raise error if predicate throws error",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21729,16 +21513,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:120:single operator > should return element from predicate if observable have single matching element",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21746,16 +21527,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:131:single operator > should raise error from predicate if observable have multiple matching element",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21763,16 +21541,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:142:single operator > should raise error from predicate if observable does not emit",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21780,16 +21555,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:153:single operator > should raise error from predicate if observable does not contain matching element",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21797,16 +21569,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:164:single operator > should call predicate with indices starting at 0",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21814,16 +21583,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:190:single operator > should error for synchronous empty observables when no arguments are provided",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21831,16 +21597,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:202:single operator > should error for async empty observables when no arguments are provided",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21848,16 +21611,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:214:single operator > should error for hot observables that do not emit while active when no arguments are provided",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21865,16 +21625,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:226:single operator > should error for synchronous empty observables when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21882,16 +21639,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:238:single operator > should error for async empty observables when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21899,16 +21653,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:250:single operator > should error for hot observables that do not emit while active when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21916,16 +21667,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:262:single operator > should error for synchronous observables that emit when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21933,16 +21681,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:274:single operator > should error for async observables that emit when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21950,16 +21695,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:286:single operator > should error for hot observables that emit while active when predicate never passes",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21967,16 +21709,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:298:single operator > should error for synchronous observables when the predicate passes more than once",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -21984,16 +21723,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:310:single operator > should error for async observables that emit when the predicate passes more than once",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22001,16 +21737,13 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
       "id": "spec/operators/single-spec.ts:322:single operator > should error for hot observables that emit while active when the predicate passes more than once",
       "group": "single",
-      "status": "IN-PROCESS",
+      "status": "FIXED",
       "blocker": null,
       "firstObservedAt": "2026-07-29",
       "firstObservedModes": [
@@ -22018,10 +21751,7 @@
         "polyfill"
       ],
       "lastObservedAt": "2026-07-30",
-      "failingModes": [
-        "cold",
-        "polyfill"
-      ],
+      "failingModes": [],
       "diagnostic": "Missing operator capability: single"
     },
     {
