@@ -16,19 +16,19 @@
   "scripts": {
     "build": "tshy",
     "lint": "eslint ./src",
-    "test": "vitest --run",
-    "test:watch": "vitest",
-    "test:ported": "node test/ported/run-mode.mjs all",
-    "test:ported:cold": "node test/ported/run-mode.mjs cold",
-    "test:ported:polyfill": "node test/ported/run-mode.mjs polyfill",
-    "test:ported:native": "node test/ported/run-mode.mjs native",
-    "test:ported:audit": "node test/ported/run-mode.mjs audit",
-    "test:ported:audit:polyfill": "node test/ported/run-mode.mjs audit-polyfill",
-    "test:ported:audit:record": "node test/ported/tools/record-mode-audit.mjs",
-    "test:ported:report": "node test/ported/report.mjs",
-    "test:ported:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
-    "test:ported:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
-    "test:ported:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
+    "test": "pnpm run test:unit",
+    "test:unit": "vitest --run src && node test/ported/run-mode.mjs all",
+    "test:watch": "vitest src",
+    "test:unit:cold": "node test/ported/run-mode.mjs cold",
+    "test:unit:polyfill": "node test/ported/run-mode.mjs polyfill",
+    "test:unit:native": "node test/ported/run-mode.mjs native",
+    "test:unit:audit": "node test/ported/run-mode.mjs audit",
+    "test:unit:audit:polyfill": "node test/ported/run-mode.mjs audit-polyfill",
+    "test:unit:audit:record": "node test/ported/tools/record-mode-audit.mjs",
+    "test:unit:report": "node test/ported/report.mjs",
+    "test:unit:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
+    "test:unit:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
+    "test:unit:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
   },
   "devDependencies": {
     "chai": "4.4.1"

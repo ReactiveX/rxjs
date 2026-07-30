@@ -17,7 +17,7 @@ const options = parseArguments(process.argv.slice(2));
 if (!options.coldReport || !options.polyfillReport) {
   throw new Error(
     'Both --cold-report=<path> and --polyfill-report=<path> are required. ' +
-      'Create them with the complete test:ported:audit and test:ported:audit:polyfill commands.'
+      'Create them with the complete test:unit:audit and test:unit:audit:polyfill commands.'
   );
 }
 
@@ -348,9 +348,9 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
     'The audit commands intentionally exit nonzero while parity failures remain:',
     '',
     '```sh',
-    'pnpm --filter rxjs run test:ported:audit --reporter=json --outputFile=/tmp/rxjs-next-ported-cold.json',
-    'pnpm --filter rxjs run test:ported:audit:polyfill --reporter=json --outputFile=/tmp/rxjs-next-ported-polyfill.json',
-    'pnpm --filter rxjs run test:ported:failures:generate ' +
+    'pnpm --filter rxjs run test:unit:audit --reporter=json --outputFile=/tmp/rxjs-next-ported-cold.json',
+    'pnpm --filter rxjs run test:unit:audit:polyfill --reporter=json --outputFile=/tmp/rxjs-next-ported-polyfill.json',
+    'pnpm --filter rxjs run test:unit:failures:generate ' +
       '--cold-report=/tmp/rxjs-next-ported-cold.json ' +
       '--polyfill-report=/tmp/rxjs-next-ported-polyfill.json',
     '```',
@@ -418,7 +418,7 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
       `- **Implementation objective:** ${implementationObjective(group.name, counts)}`,
       `- **Dependencies or blocker:** ${dependencyText(counts)}`,
       '- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict ' +
-        '`pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.',
+        '`pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.',
       '- **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed ' +
         'expectation has the required compatibility or intentional-divergence decision recorded.',
       '',
@@ -441,7 +441,7 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
     'After generating, verify the committed files without rewriting them:',
     '',
     '```sh',
-    'pnpm --filter rxjs run test:ported:failures:generate ' +
+    'pnpm --filter rxjs run test:unit:failures:generate ' +
       '--cold-report=/tmp/rxjs-next-ported-cold.json ' +
       '--polyfill-report=/tmp/rxjs-next-ported-polyfill.json --check',
     '```',

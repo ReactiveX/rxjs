@@ -505,7 +505,7 @@ in each available mode.
 
 Cold mode activates `ColdObservable` for producer-per-subscription evidence.
 Platform modes use the ambient `globalThis.Observable`; tests do not import a
-fallback constructor. The default `test:ported` gate registers every case as
+fallback constructor. The RxJS `test:unit` gate registers every ported case as
 an ordinary test in cold and polyfill modes: a converted-program failure,
 missing API, unsupported harness dependency, source-skipped case, or exact
 duplicate fails the command instead of being quarantined or inverted with an

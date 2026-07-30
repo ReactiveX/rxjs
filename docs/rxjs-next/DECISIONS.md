@@ -222,8 +222,9 @@ Status meanings:
   unqualified platform gate. Constructor selection must also precede Symbol
   extension installation to test the intended realm identity.
 - **Consequence:** All source cases are executable registrations in cold,
-  fallback-platform, and native-if-present modes. The default ported-test gate
-  runs every applicable registration as an ordinary test, including exact
+  fallback-platform, and native-if-present modes. The RxJS package's
+  `test:unit` gate runs every applicable ported registration as an ordinary
+  test, including exact
   duplicates and cases with known capability or conversion gaps. Any failure
   remains a process failure; recorded pass baselines are diagnostic evidence
   and cannot quarantine, skip, or invert a result. Unified capability adapters

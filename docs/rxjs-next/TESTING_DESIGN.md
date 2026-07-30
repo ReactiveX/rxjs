@@ -604,12 +604,12 @@ and `capability-registry.json` record present, partial, unified, platform, and
 missing surfaces.
 
 ```sh
-pnpm --filter rxjs run test:ported
-pnpm --filter rxjs run test:ported:native
-pnpm --filter rxjs run test:ported:audit
-pnpm --filter rxjs run test:ported:audit:polyfill
-pnpm --filter rxjs run test:ported:report
-pnpm --filter rxjs run test:ported:parity:check
+pnpm --filter rxjs run test:unit
+pnpm --filter rxjs run test:unit:native
+pnpm --filter rxjs run test:unit:audit
+pnpm --filter rxjs run test:unit:audit:polyfill
+pnpm --filter rxjs run test:unit:report
+pnpm --filter rxjs run test:unit:parity:check
 ```
 
 Detailed counts, duplicates, missing capabilities, and unsupported-case

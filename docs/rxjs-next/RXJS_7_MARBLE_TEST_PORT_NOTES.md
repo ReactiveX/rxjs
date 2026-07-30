@@ -167,21 +167,21 @@ required RxJS Symbol surface.
 From the repository root:
 
 ```sh
-pnpm --filter rxjs run test:ported
-pnpm --filter rxjs run test:ported:cold
-pnpm --filter rxjs run test:ported:polyfill
-pnpm --filter rxjs run test:ported:native
-pnpm --filter rxjs run test:ported:audit
-pnpm --filter rxjs run test:ported:audit:polyfill
-pnpm --filter rxjs run test:ported:report
-pnpm --filter rxjs run test:ported:parity:generate
-pnpm --filter rxjs run test:ported:parity:check
+pnpm --filter rxjs run test:unit
+pnpm --filter rxjs run test:unit:cold
+pnpm --filter rxjs run test:unit:polyfill
+pnpm --filter rxjs run test:unit:native
+pnpm --filter rxjs run test:unit:audit
+pnpm --filter rxjs run test:unit:audit:polyfill
+pnpm --filter rxjs run test:unit:report
+pnpm --filter rxjs run test:unit:parity:generate
+pnpm --filter rxjs run test:unit:parity:check
 ```
 
-`test:ported` runs the normal cold and polyfill modes. `test:ported:native`
-auto-detects the global constructor. All of these commands are intentionally
-nonzero while parity failures remain. The older audit command names remain as
-single-mode aliases for producing complete JSON evidence. Vitest arguments
+`test:unit` runs the focused source specs followed by the normal cold and
+polyfill modes. `test:unit:native` auto-detects the global constructor. The
+parity commands are intentionally nonzero while failures remain. The audit
+commands provide single-mode complete JSON evidence. Vitest arguments
 pass through, so a focused run can use:
 
 Default commands suppress thousands of successful internal case IDs.
@@ -196,15 +196,15 @@ heartbeat interval. Passing explicit Vitest arguments opts into direct
 reporter output when individual case detail is useful.
 
 ```sh
-pnpm --filter rxjs run test:ported:audit -- --testNamePattern mergeMap
+pnpm --filter rxjs run test:unit:audit -- --testNamePattern mergeMap
 ```
 
 To refresh a reviewed baseline, first produce a complete JSON audit and then
 record it:
 
 ```sh
-pnpm --filter rxjs run test:ported:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
-pnpm --filter rxjs run test:ported:audit:record -- cold /tmp/cold-audit.json
+pnpm --filter rxjs run test:unit:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
+pnpm --filter rxjs run test:unit:audit:record -- cold /tmp/cold-audit.json
 ```
 
 The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
@@ -231,7 +231,7 @@ The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
 
 ## Strict-runner verification on 2026-07-25
 
-- The default `test:ported` command registered all 2,338 applicable cases with
+- The default `test:unit` command registered all 2,338 applicable cases with
   ordinary test semantics in each mode; recorded baselines did not participate
   in registration.
 - Regenerated failure reasons use “failing parity evidence” rather than stale

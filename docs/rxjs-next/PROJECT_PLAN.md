@@ -1288,3 +1288,30 @@ conformance implementation depends on a runnable harness.
   RxJS package at the Observable package's TypeScript project. Neither command
   reached a change-specific diagnostic.
 - P0.T3 remains the single project-level `NEXT` item.
+
+### 2026-07-29 — Workspace test-command normalization
+
+- Audited all five workspace package manifests and confirmed that
+  `@rxjs/observable-polyfill`, `@rxjs/observable`, `@rxjs/test`, `rxjs`, and
+  `rxjs.dev` each expose a package-level `test` command for their relevant
+  suite.
+- Renamed the RxJS ported-test command surface from `test:ported:*` to
+  `test:unit:*` while retaining `test/ported` as the source-provenance
+  boundary. The ordinary RxJS `test` target now delegates to `test:unit`,
+  which runs 101 focused source tests before the complete cold and polyfill
+  parity modes. Watch mode remains limited to the focused source suite.
+- Updated the command guide, testing architecture and decision record, port
+  notes, generated parity and failure-ledger instructions, and their
+  generators. The parity-document freshness and fresh failure-tracker checks
+  passed, and no user-facing `test:ported` command remains outside historical
+  plan evidence.
+- Package `test` commands passed for `@rxjs/observable-polyfill` (53 tests),
+  `@rxjs/observable` (18), and `@rxjs/test` (72). The renamed RxJS target passed
+  all 101 focused tests, then exercised all 2,338 cases in both modes and
+  remained intentionally red at 865 passes and 1,473 failures per mode on the
+  existing P0.T3 queue.
+- The `rxjs.dev` `test` command correctly invokes the Angular unit-test target,
+  but the existing legacy toolchain fails before collection with
+  `ts26.createNull is not a function`. Command examples now pass Angular
+  options directly through pnpm without an extra `--`.
+- P0.T3 remains the single project-level `NEXT` item.

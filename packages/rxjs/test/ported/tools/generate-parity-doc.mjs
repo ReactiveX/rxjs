@@ -194,8 +194,8 @@ type parity.
 Regenerate after adding or changing capabilities:
 
 \`\`\`sh
-pnpm --filter rxjs run test:ported:parity:generate
-pnpm --filter rxjs run test:ported:parity:check
+pnpm --filter rxjs run test:unit:parity:generate
+pnpm --filter rxjs run test:unit:parity:check
 \`\`\`
 
 ## Mapping rules

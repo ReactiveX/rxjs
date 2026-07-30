@@ -20,7 +20,7 @@ Here are the most important tasks you might need to use:
 - `pnpm run serve-and-sync` - run both the `docs-watch` and `start` in the same console.
 - `pnpm run lint` - check that the doc-viewer code follows our style rules.
 - `pnpm run test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
-- `pnpm run test -- --watch=false` - run all the unit tests once.
+- `pnpm run test --watch=false` - run all the unit tests once.
 - `pnpm run e2e` - run all the e2e tests for the doc-viewer.
 
 - `pnpm run docs` - generate all the docs from the source files.

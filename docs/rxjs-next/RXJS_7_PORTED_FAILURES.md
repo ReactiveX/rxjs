@@ -17,9 +17,9 @@ This ledger records every RxJS 7 ported test that failed in the authoritative co
 The audit commands intentionally exit nonzero while parity failures remain:
 
 ```sh
-pnpm --filter rxjs run test:ported:audit --reporter=json --outputFile=/tmp/rxjs-next-ported-cold.json
-pnpm --filter rxjs run test:ported:audit:polyfill --reporter=json --outputFile=/tmp/rxjs-next-ported-polyfill.json
-pnpm --filter rxjs run test:ported:failures:generate --cold-report=/tmp/rxjs-next-ported-cold.json --polyfill-report=/tmp/rxjs-next-ported-polyfill.json
+pnpm --filter rxjs run test:unit:audit --reporter=json --outputFile=/tmp/rxjs-next-ported-cold.json
+pnpm --filter rxjs run test:unit:audit:polyfill --reporter=json --outputFile=/tmp/rxjs-next-ported-polyfill.json
+pnpm --filter rxjs run test:unit:failures:generate --cold-report=/tmp/rxjs-next-ported-cold.json --polyfill-report=/tmp/rxjs-next-ported-polyfill.json
 ```
 
 ## Status protocol
@@ -2950,7 +2950,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Repair the migrated NEVER test by adding an explicit observation/unsubscription boundary so `rxTest` can finish while preserving the claim that the source emits and completes neither; do not change NEVER runtime semantics.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -2967,7 +2967,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -2984,7 +2984,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -3002,7 +3002,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -3020,7 +3020,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -3038,7 +3038,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 3 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (3)</summary>
@@ -3057,7 +3057,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -3077,7 +3077,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -3097,7 +3097,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -3117,7 +3117,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3138,7 +3138,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3159,7 +3159,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3180,7 +3180,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3201,7 +3201,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable; 1 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3222,7 +3222,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 6 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (6)</summary>
@@ -3244,7 +3244,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 6 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (6)</summary>
@@ -3266,7 +3266,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 6 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (6)</summary>
@@ -3288,7 +3288,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -3311,7 +3311,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -3334,7 +3334,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 8 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (8)</summary>
@@ -3358,7 +3358,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 8 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (8)</summary>
@@ -3382,7 +3382,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 10 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (10)</summary>
@@ -3408,7 +3408,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -3435,7 +3435,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -3462,7 +3462,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -3489,7 +3489,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable; 1 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -3517,7 +3517,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 12 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -3545,7 +3545,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 12 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -3573,7 +3573,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 14 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -3603,7 +3603,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 14 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -3633,7 +3633,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -3664,7 +3664,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -3698,7 +3698,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (19)</summary>
@@ -3733,7 +3733,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 20 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (20)</summary>
@@ -3769,7 +3769,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 21 portable. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (21)</summary>
@@ -3806,7 +3806,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 48 harness rewrite. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** None recorded. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (48)</summary>
@@ -3870,7 +3870,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (3)</summary>
@@ -3889,7 +3889,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable; 1 harness rewrite; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -3909,7 +3909,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 3 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -3929,7 +3929,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3950,7 +3950,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3971,7 +3971,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -3992,7 +3992,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -4015,7 +4015,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable; 6 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -4038,7 +4038,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 6 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -4061,7 +4061,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 portable; 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (9)</summary>
@@ -4086,7 +4086,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 8 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (10)</summary>
@@ -4112,7 +4112,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 9 portable; 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -4139,7 +4139,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 10 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -4166,7 +4166,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -4194,7 +4194,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -4224,7 +4224,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 portable; 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -4254,7 +4254,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -4284,7 +4284,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 10 portable; 4 harness rewrite; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -4315,7 +4315,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable; 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -4347,7 +4347,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 portable; 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -4381,7 +4381,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 17 portable; 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (20)</summary>
@@ -4417,7 +4417,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 portable; 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (20)</summary>
@@ -4453,7 +4453,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 portable; 9 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (28)</summary>
@@ -4497,7 +4497,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 portable; 46 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (47)</summary>
@@ -4560,7 +4560,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 portable; 22 harness rewrite; 25 compatibility-only; 3 unsupported/obsolete. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary; reproduce and repair mapped runtime mismatches without weakening assertions; review unsupported evidence and record rationale plus user impact before removal or replacement.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface; unsupported/obsolete cases require rationale and user-impact review. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (52)</summary>
@@ -4628,7 +4628,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 117 harness rewrite; 11 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Correct converted harness programs while preserving their original behavioral claims; define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (128)</summary>
@@ -4772,7 +4772,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4789,7 +4789,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4806,7 +4806,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4823,7 +4823,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4840,7 +4840,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4857,7 +4857,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4874,7 +4874,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 1 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (1)</summary>
@@ -4891,7 +4891,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -4909,7 +4909,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -4927,7 +4927,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -4945,7 +4945,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -4963,7 +4963,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 2 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (2)</summary>
@@ -4981,7 +4981,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (3)</summary>
@@ -5000,7 +5000,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 3 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (3)</summary>
@@ -5019,7 +5019,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 4 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (4)</summary>
@@ -5039,7 +5039,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -5060,7 +5060,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 5 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (5)</summary>
@@ -5081,7 +5081,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5104,7 +5104,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5127,7 +5127,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5150,7 +5150,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5173,7 +5173,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5196,7 +5196,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 7 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (7)</summary>
@@ -5219,7 +5219,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 8 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (8)</summary>
@@ -5243,7 +5243,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 9 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (9)</summary>
@@ -5268,7 +5268,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 9 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (9)</summary>
@@ -5293,7 +5293,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 10 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (10)</summary>
@@ -5319,7 +5319,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -5346,7 +5346,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 11 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (11)</summary>
@@ -5373,7 +5373,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 12 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -5401,7 +5401,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 12 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (12)</summary>
@@ -5429,7 +5429,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (13)</summary>
@@ -5458,7 +5458,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (13)</summary>
@@ -5487,7 +5487,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (13)</summary>
@@ -5516,7 +5516,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (13)</summary>
@@ -5545,7 +5545,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 13 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (13)</summary>
@@ -5574,7 +5574,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 14 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -5604,7 +5604,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 14 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -5634,7 +5634,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 14 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (14)</summary>
@@ -5664,7 +5664,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5695,7 +5695,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5726,7 +5726,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5757,7 +5757,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5788,7 +5788,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5819,7 +5819,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 15 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (15)</summary>
@@ -5850,7 +5850,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 16 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -5882,7 +5882,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 16 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -5914,7 +5914,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 16 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -5946,7 +5946,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 16 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -5978,7 +5978,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 16 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (16)</summary>
@@ -6010,7 +6010,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 17 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (17)</summary>
@@ -6043,7 +6043,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 17 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (17)</summary>
@@ -6076,7 +6076,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -6110,7 +6110,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -6144,7 +6144,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -6178,7 +6178,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -6212,7 +6212,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 18 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (18)</summary>
@@ -6246,7 +6246,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (19)</summary>
@@ -6281,7 +6281,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (19)</summary>
@@ -6316,7 +6316,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (19)</summary>
@@ -6351,7 +6351,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 19 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (19)</summary>
@@ -6386,7 +6386,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 20 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (20)</summary>
@@ -6422,7 +6422,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 20 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (20)</summary>
@@ -6458,7 +6458,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (21)</summary>
@@ -6495,7 +6495,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (21)</summary>
@@ -6532,7 +6532,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (21)</summary>
@@ -6569,7 +6569,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 21 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (21)</summary>
@@ -6606,7 +6606,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 22 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (22)</summary>
@@ -6644,7 +6644,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 22 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (22)</summary>
@@ -6682,7 +6682,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 22 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (22)</summary>
@@ -6720,7 +6720,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 25 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (25)</summary>
@@ -6761,7 +6761,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 30 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (30)</summary>
@@ -6807,7 +6807,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 31 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (31)</summary>
@@ -6854,7 +6854,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 32 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (32)</summary>
@@ -6902,7 +6902,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 32 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (32)</summary>
@@ -6950,7 +6950,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 28 compatibility-only; 8 unsupported/obsolete. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary; review unsupported evidence and record rationale plus user impact before removal or replacement.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface; unsupported/obsolete cases require rationale and user-impact review. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (36)</summary>
@@ -7002,7 +7002,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 38 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (38)</summary>
@@ -7056,7 +7056,7 @@ Work packets are ordered for delegation: the small portable `never` harness corr
 - **Required classification review:** 39 compatibility-only. Reconfirm each classification before changing production behavior; preserve the original claim in any harness rewrite.
 - **Implementation objective:** Define and implement each absent capability at the approved platform or compatibility boundary.
 - **Dependencies or blocker:** Compatibility-only cases must not be implemented in the platform layer; P0.2 and compatibility questions 10–13 may constrain their final package and surface. Mark individual rows `BLOCKED` only when a named dependency prevents the next concrete step.
-- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:ported` gate. Confirm no unrelated owner group regresses.
+- **Verification:** Run both complete audit modes, regenerate this tracker, and run the normal strict `pnpm --filter rxjs run test:unit` gate. Confirm no unrelated owner group regresses.
 - **Completion bar:** Every affected case passes in both authoritative modes and is `FIXED`; any changed expectation has the required compatibility or intentional-divergence decision recorded.
 
 <details><summary>Affected case IDs (39)</summary>
@@ -7110,5 +7110,5 @@ The generator validates that both reports cover all 2,338 unique manifest case I
 After generating, verify the committed files without rewriting them:
 
 ```sh
-pnpm --filter rxjs run test:ported:failures:generate --cold-report=/tmp/rxjs-next-ported-cold.json --polyfill-report=/tmp/rxjs-next-ported-polyfill.json --check
+pnpm --filter rxjs run test:unit:failures:generate --cold-report=/tmp/rxjs-next-ported-cold.json --polyfill-report=/tmp/rxjs-next-ported-polyfill.json --check
 ```

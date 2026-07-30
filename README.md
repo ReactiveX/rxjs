@@ -50,27 +50,29 @@ Projects: `@rxjs/observable-polyfill`, `@rxjs/observable`, `@rxjs/test`,
 
 | Command                                               | When to use it                           |
 | ----------------------------------------------------- | ---------------------------------------- |
-| `pnpm --filter rxjs run test:watch` ⭐                | Re-run RxJS tests while editing          |
-| `pnpm --filter rxjs exec vitest --run <test-file>` ⭐ | Run focused RxJS tests once              |
+| `pnpm --filter rxjs run test:watch` ⭐                | Re-run focused RxJS source tests         |
+| `pnpm --filter rxjs exec vitest --run <test-file>` ⭐ | Run one focused RxJS test once           |
 | `pnpm --filter @rxjs/observable-polyfill run test`    | Test the platform Observable fallback    |
 | `pnpm --filter @rxjs/test run test:package`           | Test, build, type-check, and import-test |
+| `pnpm --filter <project> run test`                    | Run a package's relevant tests           |
 | `pnpm --filter <project> run lint`                    | Lint one package                         |
 | `pnpm --filter <project> run build`                   | Build one package                        |
 
-The full `rxjs` test command includes strict, intentionally failing RxJS 7
-parity cases. Use `pnpm --filter rxjs run test:ported` only when auditing that
-compatibility work. Some package builds and lints also have known P0.3 failures.
+The `rxjs` `test` command delegates to `test:unit`: it runs focused source
+specs, then the strict cold and polyfill RxJS 7 parity cases. That parity suite
+is intentionally failing while P0.T3 remains active. Some package builds and
+lints also have known P0.3 failures.
 Use focused checks for normal development; see the
 [active project plan](docs/rxjs-next/PROJECT_PLAN.md) for current baselines.
 
 ### Documentation site
 
-| Command                                            | Use it for                |
-| -------------------------------------------------- | ------------------------- |
-| `pnpm --filter rxjs.dev run start` ⭐              | Start the local site      |
-| `pnpm --filter rxjs.dev run docs`                  | Regenerate API content    |
-| `pnpm --filter rxjs.dev run build`                 | Build the production site |
-| `pnpm --filter rxjs.dev run test -- --watch=false` | Run site tests once       |
+| Command                                         | Use it for                |
+| ----------------------------------------------- | ------------------------- |
+| `pnpm --filter rxjs.dev run start` ⭐           | Start the local site      |
+| `pnpm --filter rxjs.dev run docs`               | Regenerate API content    |
+| `pnpm --filter rxjs.dev run build`              | Build the production site |
+| `pnpm --filter rxjs.dev run test --watch=false` | Run site tests once       |
 
 See the [documentation app guide](apps/rxjs.dev/README.md) for Docker,
 end-to-end, and deployment workflows.
