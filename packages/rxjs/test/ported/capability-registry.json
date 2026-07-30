@@ -271,7 +271,7 @@
       "adapter": "expand",
       "mapping": "source[expand](project, { concurrent })",
       "status": "Present; scheduler overload deferred",
-      "note": "Adapts legacy numeric concurrency to the options contract; scheduler arguments remain scheduler-last."
+      "note": "Adapts legacy numeric concurrency to the options contract. Scheduler arguments are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
     },
     "finalize": {
       "symbol": "finalize",
@@ -511,7 +511,7 @@
       "adapter": "identity",
       "mapping": "source[publishReplay](bufferSize?, windowTime?, selector?, scheduler?)",
       "status": "Compatibility-only",
-      "note": "Uses a retained replay connector for manual results and a fresh connector for selector runs; defined scheduler arguments remain scheduler-last."
+      "note": "Uses a retained replay connector for manual results and a fresh connector for selector runs. Defined scheduler arguments are not a public platform contract; their ported timing claims use explicit test-harness rewrites."
     },
     "race": {
       "symbol": "race",
@@ -623,7 +623,7 @@
       "adapter": "identity",
       "mapping": "source[shareReplay](configOrBufferSize?, windowTime?)",
       "status": "Present; platform lifecycle review required",
-      "note": "Uses share with a size/host-time-bounded replay connector, persistent successful terminal cache, error reset, and optional ref-count reset. Active platform late observers cannot receive connector history; ColdObservable and post-terminal activations can. Defined scheduler arguments fail explicitly and remain scheduler-last."
+      "note": "Uses share with a size/host-time-bounded replay connector, persistent successful terminal cache, error reset, and optional ref-count reset. Active platform late observers cannot receive connector history; ColdObservable and post-terminal activations can. Defined scheduler arguments are not a public platform contract; their ported timing claims use explicit test-harness rewrites."
     },
     "single": {
       "symbol": "single",
@@ -671,7 +671,7 @@
       "adapter": "startWith",
       "mapping": "source[startWith](...values)",
       "status": "Present; scheduler overload deferred",
-      "note": "Synchronously emits configured prefix values before source activation; legacy trailing scheduler overloads remain scheduler-last."
+      "note": "Synchronously emits configured prefix values before source activation. Legacy trailing scheduler overloads are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
     },
     "subscribeOn": {
       "symbol": "subscribeOn",
@@ -964,7 +964,7 @@
       "adapter": "generate",
       "mapping": "Observable[generate](options | initialState, condition, iterate, resultSelector?)",
       "status": "Present; scheduler overload deferred",
-      "note": "Supports synchronous positional and options-object generation; scheduler fields and trailing scheduler arguments remain scheduler-last."
+      "note": "Supports synchronous positional and options-object generation. Scheduler fields and trailing scheduler arguments are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
     },
     "iif": {
       "kind": "platform",

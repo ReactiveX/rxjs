@@ -618,8 +618,10 @@ RxJS 7 `expand(project, numericConcurrency)` maps to
 `source[expand](project, { concurrent: numericConcurrency })`. Reusing one
 projected platform fixture during recursion retains the case-scoped
 shared/ref-counted expectation from D-013 rather than manufacturing a cold
-inner. The legacy scheduler forms of `startWith`, `generate`, and `expand`
-remain explicit scheduler-last evidence.
+inner. Legacy scheduler forms of `startWith`, `generate`, and `expand` are not
+public platform contracts. Their ported behavioral claims execute through
+explicit `@rxjs/test` scheduling rewrites at the compatibility boundary; see
+D-033.
 
 ## Compatibility boundary
 
@@ -726,6 +728,15 @@ Verified on 2026-07-24 from commit `9e94c090e`:
 | RxJS package build              | Fails                                                                                 | `tshy` rejects the array-valued root export configuration before compilation                                                                                             |
 | Workspace project discovery     | Passes with the Nx daemon disabled                                                    | Discovers `@rxjs/observable-polyfill`, `@rxjs/observable`, `rxjs`, and `rxjs.dev`                                                                                        |
 | Attested Observable WPT harness | Strict command fails on current conformance gaps; explicit baseline diagnostic passes | 37-file approved closure, 52 generated URLs, 52 passing exact-identity attestations, readable terminal failures, three identical baseline runs, and a warm offline rerun |
+
+The P0.T3 parity baseline was verified on 2026-07-29. The strict
+`pnpm --filter rxjs test` command passed 705 focused source tests, then passed
+all 2,338 registrations in both cold and polyfill modes. The durable ledger
+retains all 1,923 cases that failed an earlier complete audit and marks every
+row `FIXED`. The final manifest contains 1,503 active, 831
+compatibility/expected-failure, and 4 exact-deduplicate registrations; those
+dispositions remain classification metadata and do not weaken ordinary test
+semantics.
 
 The repository development engine declaration accepts Node 18, Node 20, and
 Node 24. The blocking Observable WPT workflow uses Node 24, and the harness

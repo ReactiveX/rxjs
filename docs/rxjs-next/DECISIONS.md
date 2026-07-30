@@ -669,6 +669,27 @@ Status meanings:
   Last-observer cancellation closes source and projected work through
   `AbortSignal` and discards queued recursive work. The parity adapter
   translates RxJS 7 numeric `expand` concurrency to `{ concurrent }`. Legacy
-  scheduler fields and trailing scheduler arguments remain scheduler-last
-  compatibility work instead of being treated as ordinary values or silently
-  accepted by these Symbol contracts.
+  scheduler fields and trailing scheduler arguments are handled by D-033
+  instead of being treated as ordinary values or silently accepted by these
+  Symbol contracts.
+
+## D-033 — Resolve legacy scheduler evidence at the compatibility-test boundary
+
+- **Status:** Accepted
+- **Decision:** Do not restore RxJS 7 scheduler classes, providers, parser
+  internals, or general scheduler arguments in the platform package to satisfy
+  ported tests. Host-timed public Symbols use platform timers, animation
+  frames, or narrow timestamp providers. Ported cases whose durable claim
+  depends on legacy scheduling use explicit generator-owned `@rxjs/test`
+  timing rewrites or test-local compatibility sentinels.
+- **Rationale:** RxJS 7 schedulers combine public API, execution policy, and
+  cold-observable assumptions that do not belong in the platform lifecycle
+  layer. The virtual host environment can preserve notification timing,
+  subscription windows, cancellation, ordering, and error evidence without
+  presenting test machinery as a supported runtime abstraction.
+- **Consequence:** Passing scheduler-related ported cases is evidence for the
+  represented behavior, not a promise that an RxJS 7 scheduler object or class
+  is accepted by the corresponding platform Symbol. `observeOn` and
+  `subscribeOn` expose host-delay contracts, legacy overloads remain explicitly
+  deferred in the capability map, and production scheduling continues to use
+  `AbortSignal` cancellation and the platform `Subscriber` lifecycle.

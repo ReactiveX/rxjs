@@ -353,9 +353,11 @@ RxJS 7 `takeUntil`, `skipUntil`, `pluck`, `find`, `findIndex`,
 directly to exact instance Symbols. `partition` and `generate` map to exact
 static Symbols. Numeric legacy `expand(project, concurrent)` maps to
 `source[expand](project, { concurrent })`. Trailing or embedded scheduler forms
-for `startWith`, `generate`, and `expand` remain unresolved scheduler
-compatibility evidence; they are neither silently discarded nor recorded as an
-approved divergence.
+for `startWith`, `generate`, and `expand` are not public platform-layer
+contracts. Their ported notification, subscription, and error claims execute
+through explicit `@rxjs/test` scheduling rewrites. This resolves the behavioral
+evidence without silently accepting scheduler arguments or restoring RxJS 7
+scheduler classes in production.
 
 Generator-owned rewrites bound independently observed notifier and window
 lifecycles without changing the RxJS 7 notification or subscription claims.
