@@ -76,6 +76,8 @@
         "./src/exhaust-map.ts",
         "./src/finalize.ts",
         "./src/filter.ts",
+        "./src/find-index.ts",
+        "./src/find.ts",
         "./src/first.ts",
         "./src/fork-join.ts",
         "./src/identity.ts",
@@ -89,6 +91,7 @@
         "./src/min.ts",
         "./src/not-found-error.ts",
         "./src/noop.ts",
+        "./src/partition.ts",
         "./src/pipe.ts",
         "./src/pluck.ts",
         "./src/race.ts",
@@ -295,6 +298,20 @@
       "require": "./dist/commonjs/filter.js",
       "types": "./dist/types/filter.d.ts"
     },
+    "./find-index": {
+      "browser": "./dist/browser/find-index.js",
+      "webpack": "./dist/webpack/find-index.js",
+      "import": "./dist/esm/find-index.js",
+      "require": "./dist/commonjs/find-index.js",
+      "types": "./dist/types/find-index.d.ts"
+    },
+    "./find": {
+      "browser": "./dist/browser/find.js",
+      "webpack": "./dist/webpack/find.js",
+      "import": "./dist/esm/find.js",
+      "require": "./dist/commonjs/find.js",
+      "types": "./dist/types/find.d.ts"
+    },
     "./first": {
       "browser": "./dist/browser/first.js",
       "webpack": "./dist/webpack/first.js",
@@ -387,6 +404,13 @@
       "types": "./dist/types/noop.d.ts"
     },
     "./package.json": "./package.json",
+    "./partition": {
+      "browser": "./dist/browser/partition.js",
+      "webpack": "./dist/webpack/partition.js",
+      "import": "./dist/esm/partition.js",
+      "require": "./dist/commonjs/partition.js",
+      "types": "./dist/types/partition.d.ts"
+    },
     "./pipe": {
       "browser": "./dist/browser/pipe.js",
       "webpack": "./dist/webpack/pipe.js",
