@@ -125,6 +125,68 @@ const observationBoundaries = new Map([
     { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
   ],
   [
+    'spec/operators/distinctUntilKeyChanged-spec.ts:41:distinctUntilKeyChanged > should distinguish between values and does not complete',
+    {
+      observable: boundedSubscription(0, 19),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 19)]]),
+    },
+  ],
+  [
+    'spec/operators/distinctUntilKeyChanged-spec.ts:77:distinctUntilKeyChanged > should not complete if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/distinctUntilKeyChanged-spec.ts:88:distinctUntilKeyChanged > should not complete if source does not complete',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/reduce-spec.ts:207:reduce > should not complete with seed if source emits but does not complete',
+    {
+      observable: boundedSubscription(0, 5),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 5)]]),
+    },
+  ],
+  [
+    'spec/operators/reduce-spec.ts:220:reduce > should not complete with seed if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/reduce-spec.ts:233:reduce > should not complete without seed if source emits but does not completes',
+    {
+      observable: boundedSubscription(0, 8),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 8)]]),
+    },
+  ],
+  [
+    'spec/operators/reduce-spec.ts:246:reduce > should not complete without seed if source never completes',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/skip-spec.ts:144:skip > should not complete if source never completes without emit',
+    { observable: '^!', subscriptions: new Map([['e1subs', '^!']]) },
+  ],
+  [
+    'spec/operators/skip-spec.ts:155:skip > should skip values before total and never completes if source emits and does not complete',
+    {
+      observable: boundedSubscription(0, 10),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 10)]]),
+    },
+  ],
+  [
+    'spec/operators/skip-spec.ts:166:skip > should skip all values and never completes if total is more than numbers of value and source does not complete',
+    {
+      observable: boundedSubscription(0, 10),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 10)]]),
+    },
+  ],
+  [
+    'spec/operators/skip-spec.ts:177:skip > should skip all values and never completes if total is same asnumbers of value and source does not complete',
+    {
+      observable: boundedSubscription(0, 10),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 10)]]),
+    },
+  ],
+  [
     'spec/operators/audit-spec.ts:369:audit operator > should handle a never source',
     { observable: '^!', subscriptions: new Map([['subs', '^!']]) },
   ],
