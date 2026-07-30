@@ -138,20 +138,26 @@ describe('windowCount', () => {
     ]);
   });
 
-  it('tears down the source and completes every live window when the outer result is cancelled', () => {
+  it('tears down the source and silently releases live windows when the outer result is cancelled', () => {
     const source = controllable<number>();
     const controller = new AbortController();
+    const windowControllers: AbortController[] = [];
     const windowTerminals: string[] = [];
 
     source.observable[windowCount](3, 1).subscribe(
       (window) => {
         const index = windowTerminals.length;
+        const windowController = new AbortController();
+        windowControllers.push(windowController);
         windowTerminals.push('active');
-        window.subscribe({
-          complete: () => {
-            windowTerminals[index] = 'complete';
+        window.subscribe(
+          {
+            complete: () => {
+              windowTerminals[index] = 'complete';
+            },
           },
-        });
+          { signal: windowController.signal }
+        );
       },
       { signal: controller.signal }
     );
@@ -163,7 +169,11 @@ describe('windowCount', () => {
 
     expect(source.subscriber.active).toBe(false);
     expect(source.teardowns).toBe(1);
-    expect(windowTerminals).toEqual(['complete', 'complete']);
+    expect(windowTerminals).toEqual(['active', 'active']);
+
+    for (const windowController of windowControllers) {
+      windowController.abort();
+    }
   });
 
   it('shares and ref-counts one run across outer observers, then restarts with fresh windows', () => {
@@ -176,6 +186,7 @@ describe('windowCount', () => {
     const secondWindows: Observable<number>[] = [];
     const restartedWindows: Observable<number>[] = [];
     const sharedWindowTerminals: string[] = [];
+    const sharedWindowController = new AbortController();
 
     windows.subscribe((window) => firstWindows.push(window), { signal: firstController.signal });
     windows.subscribe((window) => secondWindows.push(window), { signal: secondController.signal });
@@ -190,15 +201,22 @@ describe('windowCount', () => {
     expect(secondWindows).toHaveLength(1);
     expect(firstWindows[1]).toBe(secondWindows[0]);
 
-    firstWindows[0]!.subscribe({ complete: () => sharedWindowTerminals.push('initial complete') });
-    firstWindows[1]!.subscribe({ complete: () => sharedWindowTerminals.push('shared complete') });
+    firstWindows[0]!.subscribe(
+      { complete: () => sharedWindowTerminals.push('initial complete') },
+      { signal: sharedWindowController.signal }
+    );
+    firstWindows[1]!.subscribe(
+      { complete: () => sharedWindowTerminals.push('shared complete') },
+      { signal: sharedWindowController.signal }
+    );
 
     firstController.abort();
     expect(source.teardowns).toBe(0);
 
     secondController.abort();
     expect(source.teardowns).toBe(1);
-    expect(sharedWindowTerminals).toEqual(['initial complete', 'shared complete']);
+    expect(sharedWindowTerminals).toEqual([]);
+    sharedWindowController.abort();
 
     windows.subscribe((window) => restartedWindows.push(window), { signal: restartedController.signal });
 

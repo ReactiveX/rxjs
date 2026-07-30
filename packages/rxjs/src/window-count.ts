@@ -28,6 +28,10 @@ Observable.prototype[windowCount] = function <T>(
       }
     };
 
+    const releaseWindows = () => {
+      windows = [];
+    };
+
     const errorWindows = (error: unknown) => {
       const activeWindows = windows;
       windows = [];
@@ -42,7 +46,9 @@ Observable.prototype[windowCount] = function <T>(
       subscriber.next(window.asObservable());
     };
 
-    subscriber.addTeardown(closeWindows);
+    // Cancellation is not completion. Release the operator's references to
+    // live windows without sending them a terminal notification.
+    subscriber.addTeardown(releaseWindows);
 
     // RxJS 7 makes the initial window observable before source activation.
     openWindow();
