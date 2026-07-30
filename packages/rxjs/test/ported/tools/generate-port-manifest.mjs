@@ -75,10 +75,67 @@ const harnessRewritePrograms = new Map([
     'spec/operators/windowCount-spec.ts:155:windowCount > should not break unsubscription chains when result is unsubscribed explicitly',
     buildCancelledWindowCountHarnessRewrite(true),
   ],
+  [
+    'spec/operators/window-spec.ts:105:window > should return a single Never window if source is Never',
+    buildNeverWindowHarnessRewrite(),
+  ],
+  [
+    'spec/operators/window-spec.ts:123:window > should be able to split a never Observable into timely empty windows',
+    buildTimedNeverWindowHarnessRewrite(),
+  ],
+  [
+    'spec/operators/window-spec.ts:203:window > should stop emitting windows when outer is unsubscribed early',
+    buildCancelledWindowHarnessRewrite(false),
+  ],
+  [
+    'spec/operators/window-spec.ts:223:window > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildCancelledWindowHarnessRewrite(true),
+  ],
+  [
+    'spec/operators/windowToggle-spec.ts:176:windowToggle > should emit windows using varying cold closings, outer unsubscribed early',
+    buildCancelledWindowToggleHarnessRewrite(false),
+  ],
+  [
+    'spec/operators/windowToggle-spec.ts:210:windowToggle > should not break unsubscription chains when result is unsubscribed explicitly',
+    buildCancelledWindowToggleHarnessRewrite(true),
+  ],
+  [
+    'spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early',
+    buildReleasedWindowToggleHarnessRewrite(),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:682:groupBy operator > should allow subscribing late to an inner Observable, outer completes',
+    buildLateGroupTerminalHarnessRewrite('complete'),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:705:groupBy operator > should allow subscribing late to an inner Observable, outer throws',
+    buildLateGroupTerminalHarnessRewrite('error'),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:733:groupBy operator > should allow subscribing late to inner, unsubscribe outer early',
+    buildLateGroupAfterOuterCancellationHarnessRewrite(),
+  ],
+  [
+    'spec/operators/groupBy-spec.ts:1436:groupBy operator > should not error for late subscribed inners if outer is unsubscribed before inners are subscribed',
+    buildVeryLateGroupsAfterOuterCancellationHarnessRewrite(),
+  ],
+]);
+const intentionalDivergenceReasons = new Map([
+  [
+    'spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early',
+    'Intentional RxJS Next divergence: outer cancellation silently releases read-only windows, and late observation is accepted but remains silent.',
+  ],
 ]);
 // Subscription replacements close original open logs only where the synthetic
 // observation boundary itself performs the corresponding unsubscription.
 const observationBoundaries = new Map([
+  [
+    'spec/operators/groupBy-spec.ts:160:groupBy operator > should handle a never Observable',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
   [
     'spec/operators/isEmpty-spec.ts:47:isEmpty > should not complete if source never emits',
     {
@@ -119,6 +176,20 @@ const observationBoundaries = new Map([
     {
       observable: boundedSubscription(0, 2),
       subscriptions: new Map([['e1subs', boundedSubscription(0, 2)]]),
+    },
+  ],
+  [
+    'spec/operators/sample-spec.ts:84:sample > should not complete when the notifier completes, nor should it emit',
+    {
+      observable: boundedSubscription(0, 34),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 34)]]),
+    },
+  ],
+  [
+    'spec/operators/sample-spec.ts:218:sample > should not completes if source does not complete',
+    {
+      observable: boundedSubscription(0, 15),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 15)]]),
     },
   ],
   [
@@ -204,6 +275,36 @@ const observationBoundaries = new Map([
         ['e1subs', boundedSubscription(0, 1)],
         ['e2subs', boundedSubscription(0, 1)],
       ]),
+    },
+  ],
+  [
+    'spec/operators/repeatWhen-spec.ts:183:repeatWhen operator > should apply a never notifier on an empty source',
+    { observable: boundedSubscription(0, 1) },
+  ],
+  [
+    'spec/operators/repeatWhen-spec.ts:251:repeatWhen operator > should return a never-ending result if the notifier is never',
+    { observable: boundedSubscription(0, 42) },
+  ],
+  [
+    'spec/operators/repeatWhen-spec.ts:310:repeatWhen operator > should mirror a basic cold source with no termination, given a never notifier',
+    {
+      observable: boundedSubscription(0, 12),
+      subscriptions: new Map([['subs', boundedSubscription(0, 12)]]),
+    },
+  ],
+  [
+    'spec/operators/retryWhen-spec.ts:186:retryWhen > should return a never observable given a just-throw source and never notifier',
+    { observable: boundedSubscription(0, 1) },
+  ],
+  [
+    'spec/operators/retryWhen-spec.ts:198:retryWhen > should hide errors using a never notifier on a source with eventual error',
+    { observable: boundedSubscription(0, 42) },
+  ],
+  [
+    'spec/operators/retryWhen-spec.ts:257:retryWhen > should mirror a basic cold source with no termination, given an empty notifier',
+    {
+      observable: boundedSubscription(0, 12),
+      subscriptions: new Map([['subs', boundedSubscription(0, 12)]]),
     },
   ],
   [
@@ -1032,6 +1133,74 @@ const observationBoundaries = new Map([
       ]),
     },
   ],
+  [
+    'spec/operators/delayWhen-spec.ts:154:delayWhen > should not emit if selector never emits',
+    {
+      observable: boundedSubscription(0, 9),
+      subscriptions: new Map([
+        [
+          'selectorSubs',
+          new Map([
+            [0, boundedSubscription(2, 9)],
+            [1, boundedSubscription(5, 9)],
+          ]),
+        ],
+      ]),
+    },
+  ],
+  [
+    'spec/operators/materialize-spec.ts:114:materialize > should materialize stream that does not complete',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/dematerialize-spec.ts:80:dematerialize > should dematerialize stream does not completes',
+    {
+      observable: boundedSubscription(0, 6),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 6)]]),
+    },
+  ],
+  [
+    'spec/operators/dematerialize-spec.ts:91:dematerialize > should dematerialize stream never completes',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/mergeScan-spec.ts:242:mergeScan > should handle a never projected Observable',
+    { observable: boundedSubscription(0, 22) },
+  ],
+  [
+    'spec/operators/mergeScan-spec.ts:268:mergeScan > handle never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
+  [
+    'spec/operators/switchScan-spec.ts:181:switchScan > should switch inner cold observables, inner never completes',
+    {
+      observable: boundedSubscription(0, 37),
+      subscriptions: new Map([['ysubs', boundedSubscription(19, 37)]]),
+    },
+  ],
+  [
+    'spec/operators/switchScan-spec.ts:286:switchScan > should switch inner empty and never',
+    {
+      observable: boundedSubscription(0, 30),
+      subscriptions: new Map([['ysubs', boundedSubscription(19, 30)]]),
+    },
+  ],
+  [
+    'spec/operators/switchScan-spec.ts:383:switchScan > should handle outer never',
+    {
+      observable: boundedSubscription(0, 1),
+      subscriptions: new Map([['e1subs', boundedSubscription(0, 1)]]),
+    },
+  ],
 ]);
 const expectedValueDictionaries = new Map([
   [
@@ -1121,6 +1290,29 @@ const sharedManyConcurrentTwo = observableMessages([
   [37, 'N', 'l'],
   [41, 'C'],
 ]);
+const sharedWindowToggleClosingResult = observableMessages([
+  [
+    8,
+    'N',
+    observableMessages([
+      [1, 'N', 'c'],
+      [4, 'N', 'd'],
+      [7, 'N', 'e'],
+      [10, 'N', 'f'],
+      [10, 'C'],
+    ]),
+  ],
+  [
+    16,
+    'N',
+    observableMessages([
+      [2, 'N', 'f'],
+      [2, 'C'],
+    ]),
+  ],
+  [24, 'N', observableMessages([[3, 'C']])],
+  [27, 'C'],
+]);
 const modeAwareObservableExpectations = new Map([
   [
     'spec/operators/expand-spec.ts:15:expand > should recursively map-and-flatten each item to an Observable',
@@ -1193,6 +1385,14 @@ const modeAwareObservableExpectations = new Map([
   ['spec/operators/mergeMapTo-spec.ts:292:mergeMapTo > should mergeMapTo many outer to many inner, and outer throws', new Map([['pipe', sharedManyOuterThrows]])],
   ['spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw', new Map([['pipe', sharedManyBothThrow]])],
   ['spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector', new Map([['result', sharedManyConcurrentTwo]])],
+  [
+    'spec/operators/windowToggle-spec.ts:44:windowToggle > should emit windows that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
+    new Map([['source', sharedWindowToggleClosingResult]]),
+  ],
+  [
+    'spec/operators/mergeScan-spec.ts:354:mergeScan > should not emit accumulator if inner completes without value after source completes',
+    new Map([['result', observableMessages([[9, 'C']])]]),
+  ],
 ]);
 const modeAwareSubscriptionExpectations = new Map([
   [
@@ -1286,6 +1486,18 @@ const modeAwareSubscriptionExpectations = new Map([
   [
     'spec/operators/mergeMapTo-spec.ts:356:mergeMapTo > should mergeMapTo to many cold Observable, with parameter concurrency=2, without resultSelector',
     new Map([['x', [boundedSubscription(1, 21), boundedSubscription(21, 41)]]]),
+  ],
+  [
+    'spec/operators/delayWhen-spec.ts:154:delayWhen > should not emit if selector never emits',
+    new Map([['selector', [boundedSubscription(2, 9)]]]),
+  ],
+  [
+    'spec/operators/windowToggle-spec.ts:44:windowToggle > should emit windows that are opened by an observable from the first argument and closed by an observable returned by the function in the second argument',
+    new Map([['e3', [boundedSubscription(8, 18), boundedSubscription(24, 27)]]]),
+  ],
+  [
+    'spec/operators/mergeScan-spec.ts:354:mergeScan > should not emit accumulator if inner completes without value after source completes',
+    new Map([['x', [boundedSubscription(3, 8)]]]),
   ],
 ]);
 
@@ -1487,6 +1699,8 @@ function extractCases({ path, sourceText }) {
         support: caseSupport,
       });
       const availability = assessAvailability(usedImports);
+      const harnessRewrite = harnessRewritePrograms.get(id);
+      const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
       const unrepresentedZipProjection = hasUnrepresentedZipProjection({
         path,
         callback,
@@ -1555,7 +1769,7 @@ function extractCases({ path, sourceText }) {
           support: caseSupport,
           wrapManualHelpers: !runMode,
         });
-      } else if (availability.missing.length > 0) {
+      } else if (availability.missing.length > 0 && !intentionalDivergenceReason) {
         classification = 'compatibility-only';
         disposition = 'missing-api';
         reason = `Required runtime capabilities are unavailable: ${availability.missing.join(', ')}.`;
@@ -1568,7 +1782,7 @@ function extractCases({ path, sourceText }) {
           support: caseSupport,
           wrapManualHelpers: !runMode,
         });
-      } else if (availability.external.length > 0) {
+      } else if (availability.external.length > 0 && !intentionalDivergenceReason) {
         classification = 'harness-rewrite';
         disposition = 'missing-api';
         reason = `Required external test capabilities are unavailable: ${availability.external.join(', ')}.`;
@@ -1582,9 +1796,11 @@ function extractCases({ path, sourceText }) {
           wrapManualHelpers: !runMode,
         });
       } else {
-        const harnessRewrite = harnessRewritePrograms.get(id);
-        classification =
-          harnessRewrite || reviewFlags.includes('multiple-observers') || !runMode ? 'harness-rewrite' : 'portable';
+        classification = intentionalDivergenceReason
+          ? 'intentional-divergence'
+          : harnessRewrite || reviewFlags.includes('multiple-observers') || !runMode
+            ? 'harness-rewrite'
+            : 'portable';
         const verifiedActive =
           !reviewFlags.includes('source-skipped') &&
           isVerifiedColdPass({
@@ -1597,9 +1813,10 @@ function extractCases({ path, sourceText }) {
             ? 'The source case was skipped in RxJS 7; its unbounded synchronous recovery loop is preserved with an explicit cancellation boundary.'
             : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
           : harnessRewrite
-            ? 'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.'
-          : verifiedActive
-            ? 'Mechanically migrated and verified against the ColdObservable mode.'
+            ? (intentionalDivergenceReason ??
+              'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.')
+            : verifiedActive
+              ? 'Mechanically migrated and verified against the ColdObservable mode.'
             : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram =
@@ -1732,6 +1949,736 @@ await rxTest(async ({ hot, expectObservable, expectSubscriptions }) => {
 expect(notifierController.signal.aborted).to.equal(true);
 expect(notifierCancellationCount).to.equal(1);
 expect(notifierSink).to.equal(null);
+}
+`;
+}
+
+function buildLateGroupTerminalHarnessRewrite(kind) {
+  const terminal = kind === 'complete' ? '|' : '#';
+  const terminalObserver =
+    kind === 'complete'
+      ? `complete: () => lateEvents.push({
+              frame: now(),
+              notification: { kind: 'C' },
+            }),`
+      : `error: (error) => lateEvents.push({
+              frame: now(),
+              notification: { kind: 'E', error },
+            }),`;
+  const outerObserver = kind === 'complete' ? '' : 'error: () => {},';
+  const expectedNotification =
+    kind === 'complete' ? `{ kind: 'C' }` : `{ kind: 'E', error: 'error' }`;
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, groupBy } = runtime;
+await rxTest(async ({ expectSubscriptions, flush, hot, now, schedule }) => {
+  const values = {
+    a: '  foo',
+    b: ' FoO ',
+    d: 'foO ',
+    i: 'FOO ',
+    l: '    fOo    ',
+  };
+  const source = hot('--a-b---d---------i-----l-${terminal}', values);
+  const lateEvents = [];
+
+  applyOperators(source, [groupBy((value) => value.toLowerCase().trim())]).subscribe({
+    next: (group) => {
+      // The group opens at frame 2. Preserve the original relative delay of
+      // 26 frames, then subscribe after the source has already terminated.
+      schedule(() => {
+        group.subscribe({
+          ${terminalObserver}
+        });
+      }, 26);
+    },
+    ${outerObserver}
+  });
+
+  expectSubscriptions(source.subscriptions).toBe('^-------------------------!');
+  await flush();
+  expect(lateEvents).to.deep.equal([
+    {
+      frame: 28,
+      notification: ${expectedNotification},
+    },
+  ]);
+});
+}
+`;
+}
+
+function buildLateGroupAfterOuterCancellationHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, groupBy } = runtime;
+await rxTest(async ({ expectSubscriptions, flush, hot, now, schedule }) => {
+  const values = {
+    a: '  foo',
+    b: ' FoO ',
+    d: 'foO ',
+    i: 'FOO ',
+    l: '    fOo    ',
+  };
+  const source = hot('--a-b---d---------i-----l-#', values);
+  const outerController = new AbortController();
+  const innerController = new AbortController();
+  const outerEvents = [];
+  const innerEvents = [];
+  let innerSnapshot;
+
+  applyOperators(source, [groupBy((value) => value.toLowerCase().trim())]).subscribe(
+    {
+      next: (group) => {
+        outerEvents.push({
+          frame: now(),
+          notification: { kind: 'N', value: group.key },
+        });
+        // The group opens at frame 2. The original scheduler delay is 12
+        // frames, so this observation begins at frame 14, after outer
+        // cancellation has released the source at frame 12.
+        schedule(() => {
+          group.subscribe(
+            {
+              next: (value) => innerEvents.push({
+                frame: now(),
+                notification: { kind: 'N', value },
+              }),
+              error: (error) => innerEvents.push({
+                frame: now(),
+                notification: { kind: 'E', error },
+              }),
+              complete: () => innerEvents.push({
+                frame: now(),
+                notification: { kind: 'C' },
+              }),
+            },
+            { signal: innerController.signal }
+          );
+        }, 12);
+      },
+      error: (error) => outerEvents.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => outerEvents.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  );
+
+  schedule(() => outerController.abort(), 12);
+  schedule(() => {
+    innerSnapshot = [...innerEvents];
+    innerController.abort();
+  }, 27);
+
+  expectSubscriptions(source.subscriptions).toBe('^-----------!');
+  await flush();
+  expect(outerEvents).to.deep.equal([
+    {
+      frame: 2,
+      notification: { kind: 'N', value: 'foo' },
+    },
+  ]);
+  expect(innerSnapshot).to.deep.equal([]);
+  expect(innerEvents).to.deep.equal([]);
+});
+}
+`;
+}
+
+function buildVeryLateGroupsAfterOuterCancellationHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, groupBy, Subject } = runtime;
+await rxTest(async ({ flush, hot, now, schedule }) => {
+  const source = hot('-----^----a----b-----a------b----a----b---#');
+  const outerController = new AbortController();
+  const subjectControllers = {
+    a: new AbortController(),
+    b: new AbortController(),
+  };
+  const groupControllers = [];
+  const subjects = {
+    a: new Subject(),
+    b: new Subject(),
+  };
+  const groupKeys = [];
+  const subjectEvents = {
+    a: [],
+    b: [],
+  };
+  let snapshot;
+
+  for (const key of ['a', 'b']) {
+    subjects[key].subscribe(
+      {
+        next: (value) => subjectEvents[key].push({
+          frame: now(),
+          notification: { kind: 'N', value },
+        }),
+        error: (error) => subjectEvents[key].push({
+          frame: now(),
+          notification: { kind: 'E', error },
+        }),
+        complete: () => subjectEvents[key].push({
+          frame: now(),
+          notification: { kind: 'C' },
+        }),
+      },
+      { signal: subjectControllers[key].signal }
+    );
+  }
+
+  applyOperators(source, [groupBy((value) => value)]).subscribe(
+    {
+      next: (group) => {
+        groupKeys.push(group.key);
+        // Preserve the original 1,000-frame relative delay. Both group
+        // observations start long after outer cancellation at frame 19.
+        schedule(() => {
+          const controller = new AbortController();
+          groupControllers.push(controller);
+          group.subscribe(subjects[group.key], { signal: controller.signal });
+        }, 1000);
+      },
+    },
+    { signal: outerController.signal }
+  );
+
+  schedule(() => outerController.abort(), 19);
+  schedule(() => {
+    snapshot = {
+      a: [...subjectEvents.a],
+      b: [...subjectEvents.b],
+    };
+    for (const controller of groupControllers) {
+      controller.abort();
+    }
+    subjectControllers.a.abort();
+    subjectControllers.b.abort();
+  }, 1020);
+
+  await flush();
+  expect(groupKeys).to.deep.equal(['a', 'b']);
+  expect(snapshot).to.deep.equal({ a: [], b: [] });
+  expect(subjectEvents).to.deep.equal({ a: [], b: [] });
+});
+}
+`;
+}
+
+function buildNeverWindowHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, window } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, now, schedule }) => {
+  const source = cold('------');
+  const closings = cold('------');
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  const result = applyOperators(source, [window(closings)]);
+
+  result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  );
+
+  schedule(() => {
+    // The pinned diagrams assert silence through frame 5. End the harness-only
+    // observations at frame 6 without adding a terminal notification.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, 6);
+
+  expectSubscriptions(source.subscriptions).toBe('^-----!');
+  expectSubscriptions(closings.subscriptions).toBe('^-----!');
+  await flush();
+  expect(actual).to.deep.equal([
+    {
+      frame: 0,
+      notification: { kind: 'N', value: [] },
+    },
+  ]);
+});
+}
+`;
+}
+
+function buildTimedNeverWindowHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, window } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, hot, now, schedule }) => {
+  const source = hot('^--------');
+  const closings = cold('--x--x--|');
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  const result = applyOperators(source, [window(closings)]);
+
+  result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  );
+
+  schedule(() => {
+    // Preserve the original open outer result and final open window through
+    // frame 8, then release both observations at the finite evidence horizon.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, 9);
+
+  expectSubscriptions(source.subscriptions).toBe('^--------!');
+  expectSubscriptions(closings.subscriptions).toBe('^-------!');
+  await flush();
+  expect(actual).to.deep.equal([
+    {
+      frame: 0,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 2, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 2,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 3, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 5,
+      notification: { kind: 'N', value: [] },
+    },
+  ]);
+});
+}
+`;
+}
+
+function buildCancelledWindowHarnessRewrite(withUnsubscriptionChain) {
+  const runtimeImports = withUnsubscriptionChain
+    ? 'rxTest, applyOperators, expect, mergeMap, of, window'
+    : 'rxTest, applyOperators, expect, window';
+  const operators = withUnsubscriptionChain
+    ? '[mergeMap((value) => of(value)), window(closings), mergeMap((inner) => of(inner))]'
+    : '[window(closings)]';
+  return `async function migrated(runtime) {
+const { ${runtimeImports} } = runtime;
+await rxTest(async ({ expectSubscriptions, flush, hot, now, schedule }) => {
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  schedule(() => {
+    // Bound materialized inner windows before applying the pinned outer
+    // unsubscription, so cancellation is not misreported as completion.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, 8);
+
+  const source = hot('-1-2-^3-4-5-6-7-8-9-|');
+  const closings = hot('---^---x---x---x---x---x---|');
+  const result = applyOperators(source, ${operators});
+
+  // Match expectObservable's frame-zero observation: pre-subscription hot
+  // values are dispatched before the result is observed.
+  schedule(() => result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  ), 0);
+
+  expectSubscriptions(source.subscriptions).toBe('^-------!');
+  expectSubscriptions(closings.subscriptions).toBe('^-------!');
+  await flush();
+  expect(actual).to.deep.equal([
+    {
+      frame: 0,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 1, notification: { kind: 'N', value: '3' } },
+          { frame: 3, notification: { kind: 'N', value: '4' } },
+          { frame: 4, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 4,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 1, notification: { kind: 'N', value: '5' } },
+          { frame: 3, notification: { kind: 'N', value: '6' } },
+        ],
+      },
+    },
+  ]);
+});
+}
+`;
+}
+
+function buildCancelledWindowToggleHarnessRewrite(withUnsubscriptionChain) {
+  const runtimeImports = withUnsubscriptionChain
+    ? 'rxTest, applyOperators, expect, mergeMap, of, windowToggle'
+    : 'rxTest, applyOperators, expect, windowToggle';
+  const operators = withUnsubscriptionChain
+    ? '[mergeMap((value) => of(value)), windowToggle(openings, () => close[closingIndex++]), mergeMap((inner) => of(inner))]'
+    : '[windowToggle(openings, () => close[closingIndex++])]';
+  const horizon = withUnsubscriptionChain ? 15 : 17;
+  const firstClosing = withUnsubscriptionChain ? '---------------s--|' : '-------------s---|';
+  const secondClosing = withUnsubscriptionChain ? '----(s|)' : '-----(s|)';
+  const sourceSubscription = withUnsubscriptionChain ? '^--------------!' : '^----------------!';
+  const secondClosingSubscription = withUnsubscriptionChain ? '--------------^!' : '--------------^--!';
+  const expected = withUnsubscriptionChain
+    ? `[
+    {
+      frame: 2,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 2, notification: { kind: 'N', value: 'b' } },
+          { frame: 6, notification: { kind: 'N', value: 'c' } },
+          { frame: 10, notification: { kind: 'N', value: 'd' } },
+        ],
+      },
+    },
+    {
+      frame: 14,
+      notification: { kind: 'N', value: [] },
+    },
+  ]`
+    : `[
+    {
+      frame: 2,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 2, notification: { kind: 'N', value: 'b' } },
+          { frame: 6, notification: { kind: 'N', value: 'c' } },
+          { frame: 10, notification: { kind: 'N', value: 'd' } },
+          { frame: 13, notification: { kind: 'C' } },
+        ],
+      },
+    },
+    {
+      frame: 14,
+      notification: {
+        kind: 'N',
+        value: [
+          { frame: 2, notification: { kind: 'N', value: 'e' } },
+        ],
+      },
+    },
+  ]`;
+  return `async function migrated(runtime) {
+const { ${runtimeImports} } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, hot, now, schedule }) => {
+  const outerController = new AbortController();
+  const innerControllers = [];
+  const actual = [];
+  schedule(() => {
+    // Materialized windows are independent observations. End them before the
+    // pinned outer cancellation so teardown is not reinterpreted as a window
+    // completion notification.
+    for (const innerController of innerControllers) {
+      innerController.abort();
+    }
+    outerController.abort();
+  }, ${horizon});
+
+  const openings = cold('--x-----------y--------z---|');
+  const close = [
+    cold('${firstClosing}'),
+    cold('${secondClosing}'),
+    cold('---------------(s|)'),
+  ];
+  const source = hot('--a--^---b---c---d---e---f---g---h------|');
+  let closingIndex = 0;
+  const result = applyOperators(source, ${operators});
+
+  // Match expectObservable's frame-zero priority after pre-subscription hot
+  // values and before the first post-zero source event.
+  schedule(() => result.subscribe(
+    {
+      next: (inner) => {
+        const outerFrame = now();
+        const messages = [];
+        const innerController = new AbortController();
+        innerControllers.push(innerController);
+        actual.push({
+          frame: outerFrame,
+          notification: { kind: 'N', value: messages },
+        });
+        inner.subscribe(
+          {
+            next: (value) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'E', error },
+            }),
+            complete: () => messages.push({
+              frame: now() - outerFrame,
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: innerController.signal }
+        );
+      },
+      error: (error) => actual.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => actual.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  ), 0);
+
+  expectSubscriptions(source.subscriptions).toBe('${sourceSubscription}');
+  expectSubscriptions(openings.subscriptions).toBe('${sourceSubscription}');
+  expectSubscriptions(close[0].subscriptions).toBe('--^------------!');
+  expectSubscriptions(close[1].subscriptions).toBe('${secondClosingSubscription}');
+  expectSubscriptions(close[2].subscriptions).toBe([]);
+  await flush();
+  expect(actual).to.deep.equal(${expected});
+});
+}
+`;
+}
+
+function buildReleasedWindowToggleHarnessRewrite() {
+  return `async function migrated(runtime) {
+const { rxTest, applyOperators, expect, windowToggle } = runtime;
+await rxTest(async ({ cold, expectSubscriptions, flush, hot, now, schedule }) => {
+  const outerController = new AbortController();
+  const earlyWindowController = new AbortController();
+  const lateWindowController = new AbortController();
+  const outerEvents = [];
+  const earlyWindowEvents = [];
+  const lateWindowEvents = [];
+  let releasedWindow;
+  let lateObservationError;
+  let lateSnapshot;
+
+  // Register cancellation before fixture work at the same timestamp. This
+  // preserves the original expectObservable unsubscription priority.
+  schedule(() => outerController.abort(), 9);
+
+  const openings = cold('o-------------------------|');
+  const closing = cold('-');
+  const source = hot('--a--b--c--d--e--f--g--h--|');
+  const result = applyOperators(source, [windowToggle(openings, () => closing)]);
+
+  schedule(() => result.subscribe(
+    {
+      next: (inner) => {
+        releasedWindow = inner;
+        outerEvents.push({
+          frame: now(),
+          notification: { kind: 'N' },
+        });
+        inner.subscribe(
+          {
+            next: (value) => earlyWindowEvents.push({
+              frame: now(),
+              notification: { kind: 'N', value },
+            }),
+            error: (error) => earlyWindowEvents.push({
+              frame: now(),
+              notification: { kind: 'E', error },
+            }),
+            complete: () => earlyWindowEvents.push({
+              frame: now(),
+              notification: { kind: 'C' },
+            }),
+          },
+          { signal: earlyWindowController.signal }
+        );
+      },
+      error: (error) => outerEvents.push({
+        frame: now(),
+        notification: { kind: 'E', error },
+      }),
+      complete: () => outerEvents.push({
+        frame: now(),
+        notification: { kind: 'C' },
+      }),
+    },
+    { signal: outerController.signal }
+  ), 0);
+
+  schedule(() => {
+    try {
+      releasedWindow.subscribe(
+        {
+          next: (value) => lateWindowEvents.push({
+            frame: now(),
+            notification: { kind: 'N', value },
+          }),
+          error: (error) => lateWindowEvents.push({
+            frame: now(),
+            notification: { kind: 'E', error },
+          }),
+          complete: () => lateWindowEvents.push({
+            frame: now(),
+            notification: { kind: 'C' },
+          }),
+        },
+        { signal: lateWindowController.signal }
+      );
+    } catch (error) {
+      lateObservationError = error;
+    }
+  }, 15);
+  schedule(() => {
+    lateSnapshot = [...lateWindowEvents];
+    earlyWindowController.abort();
+    lateWindowController.abort();
+  }, 16);
+
+  expectSubscriptions(source.subscriptions).toBe('^--------!');
+  expectSubscriptions(openings.subscriptions).toBe('^--------!');
+  expectSubscriptions(closing.subscriptions).toBe('^--------!');
+  await flush();
+  expect(outerEvents).to.deep.equal([
+    {
+      frame: 0,
+      notification: { kind: 'N' },
+    },
+  ]);
+  expect(earlyWindowEvents).to.deep.equal([
+    { frame: 2, notification: { kind: 'N', value: 'a' } },
+    { frame: 5, notification: { kind: 'N', value: 'b' } },
+    { frame: 8, notification: { kind: 'N', value: 'c' } },
+  ]);
+  expect(lateObservationError).to.equal(undefined);
+  expect(lateSnapshot).to.deep.equal([]);
+  expect(lateWindowEvents).to.deep.equal([]);
+});
 }
 `;
 }
@@ -3036,7 +3983,7 @@ function createSubscriptionFrameRecord(args, factory, visit) {
     factory.createCallExpression(factory.createIdentifier('__subscriptionFrame'), undefined, [
       marbles,
       factory.createStringLiteral(marker),
-      factory.createIdentifier('time'),
+      factory.createIdentifier('__rxTime'),
     ]);
   return factory.createObjectLiteralExpression(
     [
