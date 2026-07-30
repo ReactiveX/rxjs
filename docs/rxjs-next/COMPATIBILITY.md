@@ -172,6 +172,12 @@ its optional timestamp provider and RxJS 7 `{ timestamp, elapsed }` result
 shape while scheduling and cancelling through the host animation-frame APIs
 virtualized by `@rxjs/test`.
 
+The unified `timeout` Symbol accepts `first`, `each`, `with`, and `meta`.
+Legacy numeric and `Date` timeout overloads and `timeoutWith` map into that
+configuration without restoring a scheduler argument. Expiry aborts the source
+before subscribing to the fallback. The default path exposes a `TimeoutError`
+whose `info` retains the RxJS 7 timeout context.
+
 Selector-based `retry` invokes its delay selector with one-based consecutive
 retry counts, including when the retry budget is infinite. A notifier value
 cancels that notifier before the next source attempt starts; notifier

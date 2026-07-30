@@ -435,6 +435,7 @@ contract through the property key.
 - `ColdSubject`
 - `behaviorSubject`
 - `replaySubject`
+- `TimeoutError`
 - `eachValueFrom`
 - `bufferedValuesFrom`
 - `zip`
@@ -476,6 +477,12 @@ required by their RxJS 7 evidence; they do not introduce a general scheduler
 abstraction. `animationFrames` uses the host animation-frame callback timestamp
 for its default `timestamp`, derives `elapsed` from the active timestamp
 provider, and cancels through the platform subscriber lifecycle.
+
+The unified `timeout` Symbol supports initial and per-value host deadlines.
+Expiry aborts the source before activating the configured fallback; absent a
+fallback it errors with the exported `TimeoutError` and its `seen`,
+`lastValue`, and `meta` context. Source completion, source error, and result
+cancellation all cancel pending timeout work through `AbortSignal`.
 
 `Subject.asObservable()` does not add a string-named method to
 `Observable.prototype`. The returned base-Observable view forwards
