@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { ArgumentOutOfRangeError } from './argument-out-of-range-error.js';
 import '@rxjs/observable-polyfill';
 
 export const elementAt: unique symbol = Symbol('elementAt');
@@ -11,6 +12,10 @@ declare global {
 }
 
 Observable.prototype[elementAt] = function <T, D>(this: Observable<T>, index: number, ...defaultValue: [] | [D]): Observable<T | D> {
+  if (index < 0) {
+    throw new ArgumentOutOfRangeError();
+  }
+
   const hasDefault = defaultValue.length === 1;
   return this[create]((subscriber) => {
     let count = 0;
@@ -30,8 +35,10 @@ Observable.prototype[elementAt] = function <T, D>(this: Observable<T>, index: nu
         complete: () => {
           if (hasDefault) {
             subscriber.next(defaultValue[0]);
+            subscriber.complete();
+          } else {
+            subscriber.error(new ArgumentOutOfRangeError());
           }
-          subscriber.complete();
         },
       },
       { signal: subscriber.signal }

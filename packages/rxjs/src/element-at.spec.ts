@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import '@rxjs/observable-polyfill';
+import { ArgumentOutOfRangeError } from './argument-out-of-range-error.js';
 import { elementAt } from './element-at.js';
 
 describe('elementAt', () => {
@@ -20,7 +21,7 @@ describe('elementAt', () => {
 
   it('distinguishes an explicit undefined default from an omitted default', () => {
     const explicitDefaultResults: (number | undefined | 'complete')[] = [];
-    const omittedDefaultResults: (number | 'complete')[] = [];
+    const omittedDefaultErrors: unknown[] = [];
     const source = new Observable<number>((subscriber) => subscriber.complete());
 
     source[elementAt](0, undefined).subscribe({
@@ -28,11 +29,16 @@ describe('elementAt', () => {
       complete: () => explicitDefaultResults.push('complete'),
     });
     source[elementAt](0).subscribe({
-      next: (value) => omittedDefaultResults.push(value),
-      complete: () => omittedDefaultResults.push('complete'),
+      error: (error) => omittedDefaultErrors.push(error),
     });
 
     expect(explicitDefaultResults).toEqual([undefined, 'complete']);
-    expect(omittedDefaultResults).toEqual(['complete']);
+    expect(omittedDefaultErrors).toEqual([new ArgumentOutOfRangeError()]);
+  });
+
+  it('throws synchronously for a negative index', () => {
+    const source = Observable.from([1, 2, 3]);
+
+    expect(() => source[elementAt](-1)).toThrow(ArgumentOutOfRangeError);
   });
 });
