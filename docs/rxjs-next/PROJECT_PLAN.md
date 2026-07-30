@@ -14,9 +14,10 @@ all cases must become executable parity registrations even when their
 capabilities are absent. The exhaustive follow-up is complete: 2,201 physical
 test declarations expand to 2,338 uniquely identified registrations, including
 parameterized and source-skipped evidence. The user has now temporarily
-prioritized P0.T3: a durable failure ledger and operator/function work queue for
-driving every cold and polyfill parity failure to resolution. Package-boundary
-work at P0.2 remains sequenced immediately afterward. A later user-prioritized
+prioritized and completed P0.T3: the durable failure ledger retains every
+original failure, all 2,338 registrations pass in cold and polyfill modes, and
+the strict RxJS unit gate is green. Package-boundary work at P0.2 is again the
+single active item. A later user-prioritized
 runner follow-up also removed expected-failure quarantine from the default
 ported command and added live shard progress. The
 user-prioritized repository package-manager migration to pnpm 10 is complete
@@ -68,10 +69,10 @@ item.
 | `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                    |
 | `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                          |
 | `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                          |
-| `NEXT`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                  |
+| `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                  |
 | `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                        |
 | `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                             |
-| `PLANNED` | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
+| `NEXT`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                |
 | `PLANNED` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                     |
 | `PLANNED` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                               |
 | `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                              |
@@ -287,6 +288,23 @@ item.
   row is `FIXED`, and the normal strict ported-test gate passes.
 - Completion evidence and the final session log are recorded before restoring
   P0.2 as the single `NEXT` item.
+
+#### P0.T3 completion evidence
+
+- The durable ledger retains all 1,923 cases that failed an authoritative
+  audit, assigns each to exactly one of 140 work packets, and marks every row
+  `FIXED`.
+- Complete cold and polyfill audits each passed all 2,338 registrations with
+  zero failures. The final manifest has 1,503 active, 831
+  compatibility/expected-failure, and 4 exact-deduplicate registrations; every
+  non-duplicate registration still executes with ordinary strict semantics.
+- `pnpm --filter rxjs test` passed 705 focused source tests, then both complete
+  parity modes.
+- Scheduler-specific RxJS 7 evidence is resolved at the explicit
+  compatibility-test boundary recorded in D-033. No public scheduler class,
+  general scheduler argument, string-named RxJS method, or global-registry
+  Symbol was introduced.
+- P0.2 is restored as the single `NEXT` item.
 
 #### P0.DX1 completion evidence
 
@@ -1336,3 +1354,27 @@ conformance implementation depends on a runnable harness.
   in the scheduler-last queue. The strict `test:unit` gate remains red only on
   unresolved packets. P0.T3 remains the single project-level `NEXT` item, and
   P0.2 is not advanced.
+
+### 2026-07-29 — P0.T3 completion
+
+- Completed the remaining operator, creation, composition, lifecycle, replay,
+  and scheduler-timing packets in small reviewed commits. The final host-time
+  surface includes exact Symbols for `timestamp`, `timeInterval`,
+  `sampleTime`, `delay`, `bufferTime`, `windowTime`, `observeOn`, and
+  `subscribeOn`, plus corrected `animationFrames` and `timeout` lifecycle
+  behavior.
+- Kept platform timing on host APIs and `AbortSignal` cancellation. Legacy
+  scheduler classes, providers, queue/parser internals, and scheduler arguments
+  were not restored in production; their ported behavioral claims run through
+  explicit `@rxjs/test` timing rewrites and test-local compatibility evidence
+  under D-033.
+- Regenerated the authoritative manifest and ran complete audits. Cold passed
+  2,338 of 2,338 cases, and polyfill passed 2,338 of 2,338 cases. The failure
+  tracker retains all 1,923 historical failures across 140 packets and marks
+  every row `FIXED`.
+- Passed the strict `pnpm --filter rxjs test` contributor gate: 98 focused
+  source-test files with 705 tests, followed by both complete parity modes.
+  Parity-document freshness and zero-failure ledger regeneration checks also
+  passed.
+- Marked P0.T3 `DONE` and restored P0.2 as the single project-level `NEXT`
+  item.
