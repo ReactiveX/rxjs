@@ -489,6 +489,14 @@
       "status": "Compatibility-only",
       "note": "Returns a manually connected result backed by one retained AsyncSubject that emits only the final value after completion."
     },
+    "publishReplay": {
+      "symbol": "publishReplay",
+      "module": "publish-replay",
+      "adapter": "identity",
+      "mapping": "source[publishReplay](bufferSize?, windowTime?, selector?, scheduler?)",
+      "status": "Compatibility-only",
+      "note": "Uses a retained replay connector for manual results and a fresh connector for selector runs; defined scheduler arguments remain scheduler-last."
+    },
     "race": {
       "symbol": "race",
       "module": "race",
