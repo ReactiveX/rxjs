@@ -188,6 +188,12 @@ same host-time boundary and exposes read-only platform windows. Completion and
 error terminate active windows; cancellation does not. Its compatibility
 mapping drops only the legacy scheduler argument.
 
+The exact `observeOn(delay)` and `subscribeOn(delay)` Symbols represent host
+delay behavior, not SchedulerLike overloads. Ported scheduler evidence maps
+only the private `rxTest` scheduler sentinel to these delays; arbitrary
+scheduler objects remain unsupported. Cancellation removes queued
+notifications or a queued source activation through `AbortSignal`.
+
 Selector-based `retry` invokes its delay selector with one-based consecutive
 retry counts, including when the retry budget is infinite. A notifier value
 cancels that notifier before the next source attempt starts; notifier

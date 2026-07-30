@@ -107,6 +107,7 @@
         "./src/not-found-error.ts",
         "./src/notification.ts",
         "./src/noop.ts",
+        "./src/observe-on.ts",
         "./src/pairwise.ts",
         "./src/partition.ts",
         "./src/pipe.ts",
@@ -135,6 +136,7 @@
         "./src/skip-while.ts",
         "./src/start-with.ts",
         "./src/subject.ts",
+        "./src/subscribe-on.ts",
         "./src/switch-map.ts",
         "./src/switch-scan.ts",
         "./src/tap.ts",
@@ -549,6 +551,13 @@
       "require": "./dist/commonjs/noop.js",
       "types": "./dist/types/noop.d.ts"
     },
+    "./observe-on": {
+      "browser": "./dist/browser/observe-on.js",
+      "webpack": "./dist/webpack/observe-on.js",
+      "import": "./dist/esm/observe-on.js",
+      "require": "./dist/commonjs/observe-on.js",
+      "types": "./dist/types/observe-on.d.ts"
+    },
     "./package.json": "./package.json",
     "./pairwise": {
       "browser": "./dist/browser/pairwise.js",
@@ -745,6 +754,13 @@
       "import": "./dist/esm/subject.js",
       "require": "./dist/commonjs/subject.js",
       "types": "./dist/types/subject.d.ts"
+    },
+    "./subscribe-on": {
+      "browser": "./dist/browser/subscribe-on.js",
+      "webpack": "./dist/webpack/subscribe-on.js",
+      "import": "./dist/esm/subscribe-on.js",
+      "require": "./dist/commonjs/subscribe-on.js",
+      "types": "./dist/types/subscribe-on.d.ts"
     },
     "./switch-map": {
       "browser": "./dist/browser/switch-map.js",
