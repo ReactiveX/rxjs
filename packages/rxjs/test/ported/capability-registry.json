@@ -281,6 +281,14 @@
       "status": "Present; parity unverified",
       "note": "Preserves predicate, default-value arity, EmptyError, early cancellation, and the distinct RxJS Symbol contract without replacing the platform first() Promise consumer."
     },
+    "groupBy": {
+      "symbol": "groupBy",
+      "module": "group-by",
+      "adapter": "identity",
+      "mapping": "source[groupBy](keySelector, optionsOrElement?, duration?, connector?)",
+      "status": "Present; scheduler-internal cases deferred",
+      "note": "Emits hot read-only keyed group views with options and deprecated positional selector forms; active group observers may retain source work after outer cancellation."
+    },
     "ignoreElements": {
       "symbol": "mergeMap",
       "module": "merge-map",
