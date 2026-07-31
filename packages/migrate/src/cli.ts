@@ -1,7 +1,38 @@
 #!/usr/bin/env node
 
-import { migrateMochaChaiToVitest, mochaChaiToVitestAdapter } from './mocha-chai-vitest.js';
-import { migrateTestFiles } from './node.js';
+import { applyMigrationPlan, planMigrationFiles } from './node.js';
+import { mochaChaiToVitestAdapter } from './mocha-chai-vitest.js';
+import type { MigrateFilesOptions, MigratedFile } from './node.js';
+import type { MigrationMode } from './types.js';
+
+export const migrationCliReportSchemaVersion = 1 as const;
+
+export const migrationCliExitCodes = {
+  success: 0,
+  refused: 1,
+  invalidArguments: 2,
+  operationalFailure: 3,
+} as const;
+
+export type MigrationCliExitCode = (typeof migrationCliExitCodes)[keyof typeof migrationCliExitCodes];
+
+export interface MigrationCliReport {
+  readonly schemaVersion: typeof migrationCliReportSchemaVersion;
+  readonly operation: 'dry-run' | 'write';
+  readonly status: 'completed' | 'refused';
+  readonly mode: MigrationMode | null;
+  readonly framework: 'preserve' | 'mocha-chai-vitest';
+  readonly files: readonly MigratedFile[];
+}
+
+export interface MigrationCliErrorReport {
+  readonly schemaVersion: typeof migrationCliReportSchemaVersion;
+  readonly status: 'error';
+  readonly error: {
+    readonly code: 'invalid-arguments' | 'operational-failure';
+    readonly message: string;
+  };
+}
 
 interface CliOptions {
   readonly files: string[];
@@ -9,85 +40,103 @@ interface CliOptions {
   outputRoot?: string;
   repository?: string;
   sha?: string;
-  mode: 'cold' | 'platform';
+  mode?: MigrationMode;
   framework: 'preserve' | 'mocha-chai-vitest';
   write: boolean;
   help: boolean;
 }
 
-export async function runCli(argv: readonly string[]): Promise<number> {
-  const options = parseArguments(argv);
-  if (options.help) {
-    process.stdout.write(`${usage()}\n`);
-    return 0;
-  }
-  if (options.files.length === 0 || !options.sourceRoot || !options.repository || !options.sha) {
-    process.stderr.write(`${usage()}\n`);
-    return 2;
-  }
-  if (options.write && !options.outputRoot) {
-    process.stderr.write('rxjs-migrate: --out-dir is required with --write.\n');
-    return 2;
+type RunnableCliOptions = CliOptions & Required<Pick<CliOptions, 'sourceRoot' | 'repository' | 'sha'>>;
+
+export interface MigrationCliIo {
+  readonly stdout: Pick<NodeJS.WriteStream, 'write'>;
+  readonly stderr: Pick<NodeJS.WriteStream, 'write'>;
+}
+
+/**
+ * Creates the same structured result for programmatic and command-line users.
+ * A write is attempted only after every result in the dry-run plan succeeds.
+ */
+export async function createMigrationCliReport(
+  options: MigrateFilesOptions,
+  framework: MigrationCliReport['framework'] = options.frameworkAdapter ? 'mocha-chai-vitest' : 'preserve'
+): Promise<MigrationCliReport> {
+  const plan = await planMigrationFiles({ ...options, write: false });
+  const refused = plan.files.some(({ result }) => result.status === 'refused');
+  if (options.write && !refused) await applyMigrationPlan(plan, { overwrite: options.overwrite });
+  return {
+    schemaVersion: migrationCliReportSchemaVersion,
+    operation: options.write ? 'write' : 'dry-run',
+    status: refused ? 'refused' : 'completed',
+    mode: options.mode ?? null,
+    framework,
+    files: plan.files,
+  };
+}
+
+export async function runCli(argv: readonly string[], io: MigrationCliIo = process): Promise<MigrationCliExitCode> {
+  let options: CliOptions;
+  try {
+    options = parseArguments(argv);
+    if (options.help) {
+      io.stdout.write(`${usage()}\n`);
+      return migrationCliExitCodes.success;
+    }
+    validateArguments(options);
+  } catch (error: unknown) {
+    writeJson(io.stderr, errorReport('invalid-arguments', messageFor(error)));
+    return migrationCliExitCodes.invalidArguments;
   }
 
   const frameworkAdapter = options.framework === 'mocha-chai-vitest' ? mochaChaiToVitestAdapter : undefined;
-  const migrated = await migrateTestFiles({
-    files: options.files,
-    sourceRoot: options.sourceRoot,
-    outputRoot: options.outputRoot,
-    sourceRepository: options.repository,
-    sourceSha: options.sha,
-    mode: options.mode,
-    frameworkAdapter,
-    write: options.write,
-  });
-
-  if (!options.write && migrated.length === 1) {
-    const first = migrated[0];
-    if (first) process.stdout.write(first.result.code);
-  } else {
-    process.stdout.write(
-      `${JSON.stringify(
-        migrated.map(({ sourcePath, outputPath, result }) => ({
-          sourcePath,
-          outputPath,
-          changed: result.changed,
-          diagnostics: result.diagnostics,
-        })),
-        null,
-        2
-      )}\n`
+  try {
+    const report = await createMigrationCliReport(
+      {
+        files: options.files,
+        sourceRoot: options.sourceRoot,
+        outputRoot: options.outputRoot,
+        sourceRepository: options.repository,
+        sourceSha: options.sha,
+        mode: options.mode,
+        frameworkAdapter,
+        write: options.write,
+      },
+      options.framework
     );
+    writeJson(io.stdout, report);
+    return report.status === 'refused' ? migrationCliExitCodes.refused : migrationCliExitCodes.success;
+  } catch (error: unknown) {
+    writeJson(io.stderr, errorReport('operational-failure', messageFor(error)));
+    return migrationCliExitCodes.operationalFailure;
   }
-  return migrated.some(({ result }) => result.diagnostics.some(({ code }) => code === 'missing-capability')) ? 1 : 0;
 }
 
 function parseArguments(argv: readonly string[]): CliOptions {
-  const options: CliOptions = { files: [], mode: 'cold', framework: 'preserve', write: false, help: false };
+  const options: CliOptions = { files: [], framework: 'preserve', write: false, help: false };
   for (let index = 0; index < argv.length; index++) {
     const argument = argv[index];
     if (!argument) continue;
     switch (argument) {
       case '--source-root':
-        options.sourceRoot = argv[++index];
+        options.sourceRoot = requiredValue(argv, ++index, argument);
         break;
       case '--out-dir':
-        options.outputRoot = argv[++index];
+        options.outputRoot = requiredValue(argv, ++index, argument);
         break;
       case '--source-repo':
-        options.repository = argv[++index];
+        options.repository = requiredValue(argv, ++index, argument);
         break;
       case '--source-sha':
-        options.sha = argv[++index];
+        options.sha = requiredValue(argv, ++index, argument);
         break;
       case '--mode': {
-        const mode = argv[++index];
+        const mode = requiredValue(argv, ++index, argument);
         if (mode !== 'cold' && mode !== 'platform') throw new Error(`Unknown mode: ${mode}`);
         options.mode = mode;
         break;
       }
       case '--framework': {
-        const framework = argv[++index];
+        const framework = requiredValue(argv, ++index, argument);
         if (framework !== 'preserve' && framework !== 'mocha-chai-vitest') throw new Error(`Unknown framework: ${framework}`);
         options.framework = framework;
         break;
@@ -107,6 +156,35 @@ function parseArguments(argv: readonly string[]): CliOptions {
   return options;
 }
 
+function validateArguments(options: CliOptions): asserts options is RunnableCliOptions {
+  const missing = [
+    options.files.length === 0 ? 'at least one source file' : undefined,
+    options.sourceRoot ? undefined : '--source-root',
+    options.repository ? undefined : '--source-repo',
+    options.sha ? undefined : '--source-sha',
+  ].filter((value): value is string => value !== undefined);
+  if (missing.length > 0) throw new Error(`Missing required argument${missing.length === 1 ? '' : 's'}: ${missing.join(', ')}`);
+  if (options.write && !options.outputRoot) throw new Error('--out-dir is required with --write');
+}
+
+function requiredValue(argv: readonly string[], index: number, option: string): string {
+  const value = argv[index];
+  if (!value || value.startsWith('-')) throw new Error(`${option} requires a value`);
+  return value;
+}
+
+function errorReport(code: MigrationCliErrorReport['error']['code'], message: string): MigrationCliErrorReport {
+  return { schemaVersion: migrationCliReportSchemaVersion, status: 'error', error: { code, message } };
+}
+
+function writeJson(stream: Pick<NodeJS.WriteStream, 'write'>, value: MigrationCliReport | MigrationCliErrorReport): void {
+  stream.write(`${JSON.stringify(value, null, 2)}\n`);
+}
+
+function messageFor(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 function usage(): string {
   return [
     'Usage: rxjs-migrate [options] <test files...>',
@@ -116,20 +194,12 @@ function usage(): string {
     '          --framework preserve|mocha-chai-vitest',
     '          --write --out-dir <dir>',
     '',
-    'Without --write the command is a dry run and prints a single migrated file.',
+    'Without --write the command is a dry run. Results and errors are JSON.',
   ].join('\n');
 }
 
 if (process.argv[1]?.replaceAll('\\', '/').endsWith('/cli.js')) {
-  runCli(process.argv.slice(2)).then(
-    (status) => {
-      process.exitCode = status;
-    },
-    (error: unknown) => {
-      process.stderr.write(`rxjs-migrate: ${error instanceof Error ? error.message : String(error)}\n`);
-      process.exitCode = 1;
-    }
-  );
+  runCli(process.argv.slice(2)).then((status) => {
+    process.exitCode = status;
+  });
 }
-
-void migrateMochaChaiToVitest;
