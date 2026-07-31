@@ -991,7 +991,7 @@ Status meanings:
 
 ## D-044 — Publish one-time migration tooling and make its output project-owned
 
-- **Status:** Accepted
+- **Status:** Superseded in part by D-046
 - **Decision:** Publish `@rxjs/migrate` as a development-only package containing
   a framework-neutral RxJS 7 semantic transform, caller-supplied capability
   maps, a dry-run-first CLI, reusable Skill assets, and bounded read-only MCP
@@ -1013,6 +1013,11 @@ Status meanings:
   as repository-specific harness behavior. Broader framework adapters and the
   eventual Skill/plugin portfolio can evolve without changing this package's
   runtime-independent boundary.
+- **Supersession:** D-046 retains the deterministic package, dry-run-first CLI,
+  framework boundary, and project-owned output. It replaces the assumption
+  that a bundled test-migration Skill and source-content MCP together form the
+  migration product. The complete product is agent-first, has one canonical
+  packaged Skill, and has no accepted MCP release surface.
 
 ## D-045 — Require the pinned Observable WPT suite to pass completely
 
@@ -1043,3 +1048,42 @@ Status meanings:
   revision becomes the target. The matching written-spec reference must be
   reviewed and updated when applicable. Scheduled newer-Chrome runs are
   advisory and never change either pin or weaken the all-pass gate.
+
+## D-046 — Make migration agent-first with one canonical Skill and no MCP product
+
+- **Status:** Accepted
+- **Decision:** The primary RxJS 7-to-Next migration product is one portable
+  Agent Skill that assesses the repository, establishes or strengthens a
+  passing RxJS 7 behavioral baseline, records explicit target contracts,
+  invokes bounded deterministic transforms, and iterates through build and test
+  repair with the developer. `@rxjs/migrate` is the versioned deterministic
+  engine used by that Skill; it cannot select ambiguous lifecycle semantics or
+  claim that its output completes a migration.
+- **Canonical source:** `packages/migrate/skill` is the only authored Skill
+  source and shares the `@rxjs/migrate` package version. Codex, Claude, and
+  Cursor receive validated copies or links plus thin discovery, invocation,
+  permission, and update adapters. Harness-specific material must not fork the
+  workflow or capability claims.
+- **MCP:** The P0.M1 source-content MCP prototype is not part of the accepted
+  release architecture. Its operations mirror the local library and CLI and
+  do not justify a separate protocol, dependency, permission, or validation
+  surface. P0.M3 removes it. Reintroducing MCP requires a new accepted decision
+  identifying a necessary capability that the CLI, library, Skill resources,
+  and host agent tools cannot provide adequately.
+- **Evidence:** Deterministic engine behavior is proved with golden or
+  invariant output, diagnostics, compilation, idempotence, path containment,
+  CLI/API equivalence, and behavioral fixtures. Agent output is not graded by
+  exact patch text; it is graded by the RxJS 7 baseline, target-contract
+  manifest, required warnings and escalations, compile/build/test outcomes,
+  intentional divergences, and refusal to weaken evidence.
+- **Rationale:** Platform sharing versus producer-per-direct-subscription
+  behavior is an application decision that syntax alone cannot recover. A
+  local coding agent can combine repository evidence, developer intent, the
+  deterministic engine, and project commands without an MCP intermediary. One
+  versioned Skill prevents Codex, Claude, and Cursor instructions from drifting
+  away from the engine they orchestrate.
+- **Consequence:** P0.M3 hardens and bounds the engine, P0.M4 implements the
+  canonical Skill and harness adapters, and P0.M5 qualifies the workflow on
+  representative repositories. A transformed file, green narrow test, or
+  operator-name match is never sufficient proof that a project is migrated.
+- **Details:** `MIGRATION_TOOLING_DESIGN.md`.
