@@ -402,8 +402,23 @@ platform layer to recover RxJS 7 producer-per-subscription semantics. See
 The executable cases are ordinary checked-in Vitest source under `cold/` and
 `platform/`, not generator-owned output. A static `migration-report.json`
 retains file-to-case identity for JSON audits. `@rxjs/migrate` is the reusable
-one-time authoring tool; its framework adapter is optional, and its output
-becomes source owned by the destination project.
+deterministic authoring engine; its framework adapter is optional, and its
+output becomes source owned by the destination project. The engine does not
+classify lifecycle intent or establish migration completion.
+
+## Agent-first migration contract
+
+The canonical migration Skill is the primary product surface. It requires an
+RxJS 7 build-and-test baseline, characterization evidence for affected
+behavior, and a reviewed contract manifest before writes. Every affected
+pipeline receives an explicit lifecycle target; `unsupported` and `unresolved`
+items stop automation and remain visible for maintainer review.
+
+The deterministic `@rxjs/migrate` engine performs only bounded, reviewable
+rewrites selected by that workflow. Completion requires both mechanical
+fixture evidence and agent-outcome evidence across each supported harness.
+There is no accepted migration MCP surface. See D-046 and
+`MIGRATION_TOOLING_DESIGN.md`.
 
 The generated `compatibility-only` label remains stable provenance metadata.
 Under D-039 it means that the claim cannot be made for the shared platform
@@ -555,9 +570,9 @@ from semantic audits.
 - repeated subscriptions used as retries, refreshes, or cache invalidation;
 - custom Observable subclasses and interop protocols.
 
-Future Skills and any MCP capabilities should derive their advice from the
-migration-evidence ledger and accepted decisions rather than from general RxJS
-knowledge alone.
+The canonical Skill and deterministic engine derive their advice and mappings
+from the migration-evidence ledger and accepted decisions rather than from
+general RxJS knowledge alone.
 
 ## Migration exit criteria
 
@@ -566,8 +581,11 @@ A release-ready migration story requires:
 - a published migration status for each prioritized RxJS 7 API category;
 - an explicit mapping to a Next import/type surface or an unsupported status;
 - a populated migration-evidence ledger for every mapped public API;
+- a reviewed migration contract manifest with an explicit lifecycle target for
+  every affected pipeline;
 - passing behavioral tests tied back to RxJS 7 evidence;
 - migration guidance for every intentional divergence;
-- representative application fixtures;
+- representative mechanical fixtures and agent evaluations that pass build,
+  behavior, idempotence, containment, and cross-harness outcome gates;
 - no language that implies an RxJS 7 runtime package, facade, or blanket
   compatibility guarantee.

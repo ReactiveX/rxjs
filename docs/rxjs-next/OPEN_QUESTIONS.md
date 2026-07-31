@@ -129,26 +129,23 @@ directly, but their current assignments do not settle the common installer.
 Confirm RxJS 9 or choose another name. Define RxJS 7 maintenance expectations
 and pre-release naming. There is no compatibility package to version.
 
-### 8. How will migration be measured?
+### 8. Which representative repositories and thresholds qualify migration?
 
-Choose representative applications, frameworks, bundle configurations, and
-behavioral suites. Define the acceptable level of automated migration and the
-criteria for calling an application migrated.
+D-046 resolves how migration is measured: deterministic transforms must pass
+the mechanical fixture lane, and the complete workflow must pass the agent
+outcome lane defined in `MIGRATION_TOOLING_DESIGN.md`. P0.M5 must still select
+the representative applications, frameworks, bundle configurations, behavior
+suites, and minimum pass thresholds required for a release claim.
 
-### 9. How are Skills and possible MCP capabilities shipped?
+### 9. Which final distribution channels and harness versions are supported?
 
-D-044 resolves the first distribution slice: `@rxjs/migrate` contains a
-portable Skill, programmatic transform, dry-run-first CLI, framework adapter
-boundary, and source-content-only read-only MCP server. It is versioned with
-the workspace during the exploratory phase. The remaining question is the
-broader portfolio and release policy:
+D-046 resolves the product boundary: `packages/migrate/skill` is the single
+canonical, package-versioned Skill; Codex, Claude Code, and Cursor receive thin
+installed or synchronized adapters that preserve its digest. The deterministic
+API and dry-run-first CLI remain subordinate engine surfaces. The P0.M1 MCP
+prototype is removed in P0.M3 and is not an accepted release surface.
 
-- independent versus RxJS-coupled versioning;
-- which additional production and test-framework adapters deserve first-party
-  support;
-- whether a future plugin should orchestrate filesystem inspection, writes,
-  and test execution around the deliberately read-only MCP core;
-- release-grade validation requirements for migrated changes.
-
-The package does not settle the shape of a broader migration plugin or grant
-an MCP server project-level write authority.
+P0.M5 must still choose the final plugin or marketplace distribution channels,
+supported harness versions, adapter support window, and release-grade
+qualification policy. Adding MCP later would require a new accepted decision
+and product contract.

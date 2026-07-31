@@ -1,8 +1,11 @@
 # `@rxjs/migrate`
 
-One-time source migration tools for moving RxJS 7 code to RxJS Next. The
-current well-tested path migrates RxJS 7 `TestScheduler` marble specs from
-Mocha/Chai to ordinary Vitest specs that call `rxTest` directly.
+Deterministic source-migration tools used by the RxJS Next agent-first
+migration workflow. The current well-tested path migrates RxJS 7
+`TestScheduler` marble specs from Mocha/Chai to ordinary Vitest specs that call
+`rxTest` directly. The engine is not a complete migration product and does not
+choose lifecycle semantics; see
+[`MIGRATION_TOOLING_DESIGN.md`](../../docs/rxjs-next/MIGRATION_TOOLING_DESIGN.md).
 
 The package separates two concerns:
 
@@ -59,15 +62,15 @@ const result = migrateTestSource(source, {
 
 `defaultTestSchedulerCapabilities` is a conservative starter set, not a claim
 of complete RxJS 7 compatibility. Projects can pass a reviewed capability map
-to the API or MCP tools. Unsupported constructs remain visible as diagnostics
+to the API or CLI. Unsupported constructs remain visible as diagnostics
 instead of being hidden behind compatibility helpers.
 
-## MCP server
+## P0.M1 MCP prototype
 
-`rxjs-migrate-mcp` is a stdio MCP server with read-only analysis and migration
-tools. It accepts source content and returns source content plus diagnostics;
-it cannot read or write the caller's filesystem. Filesystem changes remain an
-explicit CLI or host responsibility.
+The source tree still contains the exploratory `rxjs-migrate-mcp` server from
+P0.M1. D-046 excludes it from the accepted release product, and P0.M3 removes
+its binary, export, dependencies, and tests. Do not build integrations against
+this prototype.
 
 ## Review requirements
 

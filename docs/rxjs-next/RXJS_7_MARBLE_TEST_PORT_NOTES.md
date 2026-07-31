@@ -250,9 +250,11 @@ order, so human test names contain no machine-only prefixes.
 ## Skill boundary
 
 Reusable migration tooling is published from `packages/migrate` as
-`@rxjs/migrate`. It contains the framework-neutral semantic transform,
+`@rxjs/migrate`. P0.M1 established a framework-neutral semantic transform,
 caller-supplied capability-map boundary, dry-run-first CLI, bundled Skill,
-Mocha/Chai-to-Vitest adapter, and source-content-only read-only MCP tools.
+Mocha/Chai-to-Vitest adapter, and source-content-only read-only MCP prototype.
+D-046 accepts only the deterministic engine, one canonical Skill, and thin
+harness adapters as the release product; P0.M3 removes the MCP prototype.
 Other test frameworks can preserve their syntax or provide another adapter.
 
 Repository-specific revision discovery, dispositions, native/polyfill mode

@@ -11,8 +11,10 @@ RxJS Next will not ship a separate RxJS 7 runtime-compatibility library.
 Producer-per-subscription values, Subjects, Symbol-keyed composition, and
 other useful library capabilities may remain first-class RxJS Next APIs, but
 they are specified on their own terms rather than as a blanket emulation
-promise. Migration from RxJS 7 will instead be supported by documentation,
-Skills, one-time source transforms, and bounded read-only MCP assistance.
+promise. Migration from RxJS 7 will instead be supported by documentation and
+an agent-first workflow: one canonical portable Skill directs reviewed project
+work while deterministic one-time transforms handle only bounded source
+rewrites.
 
 The working project name is **RxJS Next**. The likely public version is RxJS 9
 because a cancelled RxJS 8 line already exists and reusing that version would
@@ -53,9 +55,10 @@ Restarting the library on top of the platform primitive has three benefits:
    Subjects, and Symbol-keyed `pipe` when they have explicit RxJS Next
    contracts, without presenting them as a separate RxJS 7 compatibility
    surface.
-6. **Migration intelligence.** Ship robust, reviewable one-time tooling that
-   helps users apply RxJS Next and migrate from RxJS 7. Keep test-framework
-   syntax adaptable, project writes explicit, and MCP authority read-only.
+6. **Migration intelligence.** Ship a robust, reviewable agent-first workflow
+   that helps users apply RxJS Next and migrate from RxJS 7. Keep lifecycle
+   classification explicit, deterministic rewrites bounded, test-framework
+   syntax adaptable, and project writes under host-agent review.
 7. **AI-ready development.** Keep project intent, architecture, decisions,
    tests, and open questions explicit enough for AI-assisted implementation to
    be safe and reviewable.
@@ -64,8 +67,9 @@ Restarting the library on top of the platform primitive has three benefits:
 
 - Treating the completed test-only harness and its reviewed failure baseline as
   proof that the current fallback already conforms.
-- Designing the complete migration Skill/plugin portfolio beyond the focused
-  `@rxjs/migrate` package.
+- Implementing or qualifying migration surfaces beyond the canonical Skill,
+  deterministic engine, and supported harness adapters selected for the
+  foundation release.
 - Shipping a runtime package that emulates the RxJS 7 public API, import map,
   subscription facade, pipeable-operator surface, or scheduler system.
 - Claiming complete RxJS 7 behavioral compatibility on the platform
@@ -168,8 +172,8 @@ The project is ready for a major release when:
   supported environment;
 - migration documentation explains sharing, cancellation, pipeable operators,
   subjects, and other accepted breaking changes;
-- the migration Skills included in the release have their own product contract
-  and validation; any MCP deliverable does as well;
+- the canonical migration Skill and deterministic engine pass their mechanical
+  fixture, agent-outcome, installation, and cross-harness validation gates;
 - no unresolved release-blocking decision remains in `OPEN_QUESTIONS.md`.
 
 ## Stakeholders and audience

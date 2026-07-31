@@ -646,6 +646,9 @@ rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.
 Reusable authoring support lives in the independently publishable
 `@rxjs/migrate` package. Its semantic transform is independent of test-runner
 syntax; Mocha/Chai-to-Vitest is the first adapter, and callers may preserve or
-replace it. The package also includes a dry-run-first CLI, portable Skill
-assets, and read-only source-content MCP tools. None participates in test
-collection or execution after migrated files are accepted.
+replace it. P0.M1 also included a dry-run-first CLI, portable Skill assets, and
+read-only source-content MCP tools. Under D-046, the accepted product is the
+deterministic engine plus one canonical Skill and thin harness adapters; P0.M3
+removes the MCP prototype. None participates in test collection or execution
+after migrated files are accepted. Mechanical fixture evidence and agent
+workflow evidence remain separate gates.
