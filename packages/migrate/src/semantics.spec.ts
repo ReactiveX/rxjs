@@ -1,8 +1,19 @@
 import { describe, expect, it } from 'vitest';
+import { defaultCapabilityRegistry } from './capabilities.js';
 import { migrateTestSource } from './index.js';
 import { migrateTestSchedulerSemantics } from './semantics.js';
 
 describe('migrateTestSchedulerSemantics', () => {
+  it('refuses a capability registry produced for another engine', () => {
+    const source = "import { map } from 'rxjs/operators';\nconst result = source.pipe(map(value => value));\n";
+    const result = migrateTestSchedulerSemantics(source, {
+      capabilityRegistry: { ...defaultCapabilityRegistry, engineVersion: 'other-engine' },
+    });
+
+    expect(result.status).toBe('refused');
+    expect(result.code).toBe(source);
+    expect(result.diagnostics[0]?.code).toBe('invalid-capability-registry');
+  });
   it('creates a direct awaited rxTest body with Symbol composition and provenance', () => {
     const source = `
       import { expect } from 'chai';

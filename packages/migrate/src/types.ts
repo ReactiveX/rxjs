@@ -100,6 +100,7 @@ export const diagnosticNextActions = [
   'fix-input',
   'update-engine',
   'move-path-inside-root',
+  'use-compatible-registry',
 ] as const;
 export type DiagnosticNextActionCode = (typeof diagnosticNextActions)[number];
 
@@ -120,6 +121,7 @@ export const migrationDiagnosticCodes = [
   'path-outside-root',
   'invalid-contract-manifest',
   'conflicting-provenance',
+  'invalid-capability-registry',
 ] as const;
 export type MigrationDiagnosticCode = (typeof migrationDiagnosticCodes)[number];
 
@@ -138,7 +140,7 @@ export interface MigrationDiagnostic {
 
 export interface SemanticMigrationOptions {
   readonly mode?: MigrationMode;
-  readonly capabilities?: readonly CapabilityMapping[];
+  readonly capabilityRegistry?: CapabilityRegistry;
   readonly provenance?: SourceProvenance;
   readonly fileName?: string;
 }
@@ -230,4 +232,35 @@ export interface MigrationContractManifest {
   readonly intentionalDivergences: readonly IntentionalDivergence[];
   readonly verification: readonly VerificationResult[];
   readonly blockers: readonly MigrationBlocker[];
+}
+
+export const contractReadinessStates = ['ready', 'ready-with-accepted-blockers', 'incomplete'] as const;
+export type ContractReadinessState = (typeof contractReadinessStates)[number];
+
+export const contractReadinessCodes = [
+  'engine-version-mismatch',
+  'capability-registry-version-mismatch',
+  'skill-digest-mismatch',
+  'baseline-not-green',
+  'verification-missing',
+  'verification-not-green',
+  'unit-unresolved',
+  'unit-unsupported',
+  'approval-pending',
+  'diagnostic-unresolved',
+  'divergence-unapproved',
+  'blocker-unaccepted',
+  'blocker-accepted',
+] as const;
+export type ContractReadinessCode = (typeof contractReadinessCodes)[number];
+
+export interface ContractReadinessFinding {
+  readonly code: ContractReadinessCode;
+  readonly path: string;
+  readonly message: string;
+}
+
+export interface ContractReadinessAssessment {
+  readonly state: ContractReadinessState;
+  readonly findings: readonly ContractReadinessFinding[];
 }

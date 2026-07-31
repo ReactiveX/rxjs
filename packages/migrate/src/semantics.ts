@@ -1,6 +1,8 @@
 import ts from 'typescript';
-import { defaultTestSchedulerCapabilities } from './capabilities.js';
-import { diagnosticForNode, parseDiagnostics, sortDiagnostics } from './diagnostics.js';
+import { defaultCapabilityRegistry } from './capabilities.js';
+import { diagnosticForNode, diagnosticForOffsets, parseDiagnostics, sortDiagnostics } from './diagnostics.js';
+import { capabilityRegistrySchema } from './schemas.js';
+import { migrationEngineVersion } from './version.js';
 import type {
   ArgumentAdapter,
   CapabilityMapping,
@@ -19,7 +21,33 @@ export function migrateTestSchedulerSemantics(source: string, options: SemanticM
     return { status: 'refused', code: source, diagnostics: syntaxDiagnostics, imports: [] };
   }
 
-  const capabilities = new Map((options.capabilities ?? defaultTestSchedulerCapabilities).map((entry) => [entry.legacyName, entry]));
+  const registry = options.capabilityRegistry ?? defaultCapabilityRegistry;
+  const registryValidation = capabilityRegistrySchema.safeParse(registry);
+  if (!registryValidation.success || registry.engineVersion !== migrationEngineVersion) {
+    const detail = !registryValidation.success
+      ? registryValidation.error.issues[0]?.message ?? 'The registry does not match the supported schema.'
+      : `Registry engine ${registry.engineVersion} does not match installed engine ${migrationEngineVersion}.`;
+    return {
+      status: 'refused',
+      code: source,
+      diagnostics: [
+        diagnosticForOffsets(sourceFile, 0, source.length, {
+          code: 'invalid-capability-registry',
+          message: `The capability registry cannot govern this transform. ${detail}`,
+          severity: 'error',
+          disposition: 'refused',
+          refusalScope: 'file',
+          classification: 'harness-rewrite',
+          nextAction: {
+            code: 'use-compatible-registry',
+            message: 'Use a schema-valid capability registry produced for the installed migration engine.',
+          },
+        }),
+      ],
+      imports: [],
+    };
+  }
+  const capabilities = new Map(registryValidation.data.capabilities.map((entry) => [entry.legacyName, entry]));
   const operatorLocals = collectOperatorLocals(sourceFile, capabilities);
   const unsafeOperatorLocals = collectUnsafeOperatorLocals(sourceFile, operatorLocals);
   const testSchedulerTypeLocals = collectTestSchedulerTypeLocals(sourceFile);

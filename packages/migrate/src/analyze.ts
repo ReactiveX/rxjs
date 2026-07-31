@@ -1,6 +1,6 @@
 import ts from 'typescript';
-import { defaultTestSchedulerCapabilities } from './capabilities.js';
-import type { CapabilityMapping, MigrationMode } from './types.js';
+import { defaultCapabilityRegistry } from './capabilities.js';
+import type { CapabilityRegistry, MigrationMode } from './types.js';
 
 export interface TestSourceAnalysis {
   readonly mode: MigrationMode | 'unselected';
@@ -13,10 +13,10 @@ export interface TestSourceAnalysis {
 
 export function analyzeTestSource(
   source: string,
-  options: { readonly mode?: MigrationMode; readonly capabilities?: readonly CapabilityMapping[] } = {}
+  options: { readonly mode?: MigrationMode; readonly capabilityRegistry?: CapabilityRegistry } = {}
 ): TestSourceAnalysis {
   const sourceFile = ts.createSourceFile('analysis-input.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
-  const available = new Set((options.capabilities ?? defaultTestSchedulerCapabilities).map(({ legacyName }) => legacyName));
+  const available = new Set((options.capabilityRegistry ?? defaultCapabilityRegistry).capabilities.map(({ legacyName }) => legacyName));
   const testSchedulerVariables: string[] = [];
   const importedOperators: string[] = [];
 

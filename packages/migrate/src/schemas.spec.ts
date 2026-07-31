@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { defaultCapabilityRegistry } from './capabilities.js';
-import { parseCapabilityRegistry, parseMigrationContractManifest } from './schemas.js';
+import { assessMigrationContractReadiness, parseCapabilityRegistry, parseMigrationContractManifest } from './schemas.js';
 import { capabilityRegistryVersion, migrationEngineVersion } from './version.js';
 
 const span = {
@@ -72,5 +72,29 @@ describe('migration schemas', () => {
         units: [{ ...manifest.units[0], sourceLocations: [{ ...span, file: '../outside.ts' }] }],
       })
     ).toThrow(/repository-relative path/);
+
+    expect(assessMigrationContractReadiness(manifest).state).toBe('incomplete');
+
+    const readyManifest = parseMigrationContractManifest({
+      ...manifest,
+      units: [
+        {
+          ...manifest.units[0],
+          lifecycle: 'platform-shared',
+          approval: { status: 'approved', approvedBy: 'maintainer', approvedAt: '2026-07-31T00:00:00Z', rationale: 'Reviewed.' },
+        },
+      ],
+      verification: [
+        { id: 'target:test', command: 'pnpm test', environment: { node: '24.12.0' }, status: 'passed', exitCode: 0, summary: 'green' },
+      ],
+      blockers: [],
+    });
+    expect(assessMigrationContractReadiness(readyManifest)).toEqual({ state: 'ready', findings: [] });
+    expect(() =>
+      parseMigrationContractManifest({
+        ...readyManifest,
+        units: [{ ...readyManifest.units[0], approval: { status: 'approved', approvedBy: 'maintainer', rationale: 'Missing timestamp.' } }],
+      })
+    ).toThrow(/approval timestamp/);
   });
 });

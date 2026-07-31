@@ -13,8 +13,10 @@ import {
   targetLifecycles,
   verificationStatuses,
   type CapabilityRegistry,
+  type ContractReadinessAssessment,
   type MigrationContractManifest,
 } from './types.js';
+import { capabilityRegistryVersion, migrationEngineVersion } from './version.js';
 
 const nonEmptyString = z.string().min(1);
 const relativePath = nonEmptyString.refine(
@@ -229,14 +231,78 @@ export function parseMigrationContractManifest(input: unknown): MigrationContrac
   return migrationContractManifestSchema.parse(input);
 }
 
+export function assessMigrationContractReadiness(
+  manifest: MigrationContractManifest,
+  options: { readonly expectedSkillDigest?: string } = {}
+): ContractReadinessAssessment {
+  const findings: ContractReadinessAssessment['findings'][number][] = [];
+  const add = (code: ContractReadinessAssessment['findings'][number]['code'], path: string, message: string): void => {
+    findings.push({ code, path, message });
+  };
+
+  if (manifest.engineVersion !== migrationEngineVersion) {
+    add('engine-version-mismatch', 'engineVersion', `Expected ${migrationEngineVersion}, received ${manifest.engineVersion}.`);
+  }
+  if (manifest.capabilityRegistryVersion !== capabilityRegistryVersion) {
+    add(
+      'capability-registry-version-mismatch',
+      'capabilityRegistryVersion',
+      `Expected ${capabilityRegistryVersion}, received ${manifest.capabilityRegistryVersion}.`
+    );
+  }
+  if (options.expectedSkillDigest && manifest.skillDigest !== options.expectedSkillDigest) {
+    add('skill-digest-mismatch', 'skillDigest', 'The manifest Skill digest does not match the installed canonical Skill.');
+  }
+  manifest.baseline.forEach((result, index) => {
+    if (result.status === 'failed' || result.status === 'not-run') {
+      add('baseline-not-green', `baseline.${index}`, `Baseline ${result.id} is ${result.status}.`);
+    }
+  });
+  if (manifest.verification.length === 0) add('verification-missing', 'verification', 'No post-migration verification was recorded.');
+  manifest.verification.forEach((result, index) => {
+    if (result.status === 'failed' || result.status === 'not-run') {
+      add('verification-not-green', `verification.${index}`, `Verification ${result.id} is ${result.status}.`);
+    }
+  });
+  manifest.units.forEach((unit, index) => {
+    if (unit.lifecycle === 'unresolved') add('unit-unresolved', `units.${index}.lifecycle`, `Unit ${unit.id} has no selected lifecycle.`);
+    if (unit.lifecycle === 'unsupported') add('unit-unsupported', `units.${index}.lifecycle`, `Unit ${unit.id} is unsupported.`);
+    if (unit.approval.status === 'pending') add('approval-pending', `units.${index}.approval`, `Unit ${unit.id} is pending approval.`);
+  });
+  manifest.diagnostics.forEach((diagnostic, index) => {
+    if (diagnostic.disposition !== 'informational') {
+      add('diagnostic-unresolved', `diagnostics.${index}`, `Diagnostic ${diagnostic.id} still requires resolution or escalation.`);
+    }
+  });
+  manifest.intentionalDivergences.forEach((divergence, index) => {
+    if (divergence.approval.status !== 'approved') {
+      add('divergence-unapproved', `intentionalDivergences.${index}.approval`, 'An intentional divergence is not approved.');
+    }
+  });
+  manifest.blockers.forEach((blocker, index) => {
+    add(
+      blocker.accepted ? 'blocker-accepted' : 'blocker-unaccepted',
+      `blockers.${index}`,
+      blocker.accepted ? `Accepted blocker remains: ${blocker.reason}` : `Unaccepted blocker remains: ${blocker.reason}`
+    );
+  });
+
+  const incomplete = findings.some(({ code }) => code !== 'blocker-accepted' && code !== 'unit-unsupported');
+  const acceptedBlockers = findings.some(({ code }) => code === 'blocker-accepted' || code === 'unit-unsupported');
+  return { state: incomplete ? 'incomplete' : acceptedBlockers ? 'ready-with-accepted-blockers' : 'ready', findings };
+}
+
 function validateApproval(
-  approval: { readonly status: string; readonly approvedBy?: string; readonly rationale?: string },
+  approval: { readonly status: string; readonly approvedBy?: string; readonly approvedAt?: string; readonly rationale?: string },
   context: z.RefinementCtx,
   path: readonly (string | number)[]
 ): void {
   if (approval.status !== 'approved') return;
   if (!approval.approvedBy) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'approvedBy'], message: 'Approved work requires an approver.' });
+  }
+  if (!approval.approvedAt) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'approvedAt'], message: 'Approved work requires an approval timestamp.' });
   }
   if (!approval.rationale) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'rationale'], message: 'Approved work requires a rationale.' });
