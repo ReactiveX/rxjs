@@ -81,7 +81,11 @@ export const capabilityRegistrySchema: z.ZodType<CapabilityRegistry> = z
       const capability = registry.capabilities[index];
       if (!capability) continue;
       if (ids.has(capability.id)) {
-        context.addIssue({ code: z.ZodIssueCode.custom, path: ['capabilities', index, 'id'], message: `Duplicate capability ID: ${capability.id}` });
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['capabilities', index, 'id'],
+          message: `Duplicate capability ID: ${capability.id}`,
+        });
       }
       ids.add(capability.id);
       if (names.has(capability.legacyName)) {
@@ -132,7 +136,7 @@ export const migrationContractUnitSchema = z
       .object({
         status: z.enum(approvalStates),
         approvedBy: nonEmptyString.optional(),
-        approvedAt: nonEmptyString.optional(),
+        approvedAt: z.string().datetime().optional(),
         rationale: nonEmptyString.optional(),
       })
       .strict(),
@@ -151,7 +155,7 @@ export const intentionalDivergenceSchema = z
       .object({
         status: z.enum(approvalStates),
         approvedBy: nonEmptyString.optional(),
-        approvedAt: nonEmptyString.optional(),
+        approvedAt: z.string().datetime().optional(),
         rationale: nonEmptyString.optional(),
       })
       .strict(),
@@ -302,7 +306,11 @@ function validateApproval(
     context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'approvedBy'], message: 'Approved work requires an approver.' });
   }
   if (!approval.approvedAt) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'approvedAt'], message: 'Approved work requires an approval timestamp.' });
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: [...path, 'approvedAt'],
+      message: 'Approved work requires an approval timestamp.',
+    });
   }
   if (!approval.rationale) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: [...path, 'rationale'], message: 'Approved work requires a rationale.' });

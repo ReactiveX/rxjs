@@ -4,6 +4,8 @@ import { applyMigrationPlan, planMigrationFiles } from './node.js';
 import { mochaChaiToVitestAdapter } from './mocha-chai-vitest.js';
 import type { MigrateFilesOptions, MigratedFile } from './node.js';
 import type { MigrationMode } from './types.js';
+import { defaultCapabilityRegistry } from './capabilities.js';
+import { migrationEngineVersion } from './version.js';
 
 export const migrationCliReportSchemaVersion = 1 as const;
 
@@ -18,6 +20,8 @@ export type MigrationCliExitCode = (typeof migrationCliExitCodes)[keyof typeof m
 
 export interface MigrationCliReport {
   readonly schemaVersion: typeof migrationCliReportSchemaVersion;
+  readonly engineVersion: string;
+  readonly capabilityRegistryVersion: string;
   readonly operation: 'dry-run' | 'write';
   readonly status: 'completed' | 'refused';
   readonly mode: MigrationMode | null;
@@ -66,6 +70,8 @@ export async function createMigrationCliReport(
   if (options.write && !refused) await applyMigrationPlan(plan, { overwrite: options.overwrite });
   return {
     schemaVersion: migrationCliReportSchemaVersion,
+    engineVersion: migrationEngineVersion,
+    capabilityRegistryVersion: (options.capabilityRegistry ?? defaultCapabilityRegistry).registryVersion,
     operation: options.write ? 'write' : 'dry-run',
     status: refused ? 'refused' : 'completed',
     mode: options.mode ?? null,

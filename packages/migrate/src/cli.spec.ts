@@ -2,13 +2,7 @@ import { access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promise
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import {
-  createMigrationCliReport,
-  migrationCliExitCodes,
-  migrationCliReportSchemaVersion,
-  runCli,
-  type MigrationCliIo,
-} from './cli.js';
+import { createMigrationCliReport, migrationCliExitCodes, migrationCliReportSchemaVersion, runCli, type MigrationCliIo } from './cli.js';
 import { planMigrationFiles } from './node.js';
 
 describe('migration CLI', () => {
@@ -39,6 +33,8 @@ describe('migration CLI', () => {
     expect(exitCode).toBe(migrationCliExitCodes.success);
     expect(report).toEqual({
       schemaVersion: migrationCliReportSchemaVersion,
+      engineVersion: expect.any(String),
+      capabilityRegistryVersion: expect.any(String),
       operation: 'dry-run',
       status: 'completed',
       mode: null,
@@ -121,6 +117,14 @@ describe('migration CLI', () => {
     expect(operational.error.message).toContain('missing.ts');
   });
 
+  it('detects a CLI/API report mismatch in the negative control', async () => {
+    await writeFile(join(sourceRoot, 'example.ts'), 'export const value = 1;\n');
+    const report = await createMigrationCliReport(apiOptions('example.ts'));
+    const mismatched = { ...report, capabilityRegistryVersion: 'drifted' };
+
+    expect(() => assertEquivalentReports(report, mismatched)).toThrow('CLI/API report mismatch');
+  });
+
   function baseArguments(file: string): string[] {
     return ['--source-root', sourceRoot, '--source-repo', 'https://example.test/repository.git', '--source-sha', 'abc123', file];
   }
@@ -134,6 +138,10 @@ describe('migration CLI', () => {
     };
   }
 });
+
+function assertEquivalentReports(left: unknown, right: unknown): void {
+  if (JSON.stringify(left) !== JSON.stringify(right)) throw new Error('CLI/API report mismatch');
+}
 
 function capturedIo(): { io: MigrationCliIo; stdout(): string; stderr(): string } {
   let stdout = '';

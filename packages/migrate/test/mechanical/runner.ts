@@ -54,10 +54,7 @@ export function verifyRegistryCoverage(fixtures: readonly MechanicalFixture[]): 
   }
 }
 
-export function runMechanicalFixture(
-  fixture: MechanicalFixture,
-  transform: MechanicalTransform = migrateTestSource
-): MigrationResult {
+export function runMechanicalFixture(fixture: MechanicalFixture, transform: MechanicalTransform = migrateTestSource): MigrationResult {
   const sourceFile = ts.createSourceFile(fixture.fileName, fixture.input, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
   const sourceSyntaxDiagnostics = parseDiagnostics(sourceFile);
   const result = transform(fixture.input, { fileName: fixture.fileName });
@@ -66,11 +63,7 @@ export function runMechanicalFixture(
     throw new MechanicalFixtureError(fixture.id, 'source-refusal', 'Malformed source was reported as a successful transform.');
   }
   if (result.status !== fixture.expectedStatus) {
-    throw new MechanicalFixtureError(
-      fixture.id,
-      'status',
-      `Expected ${fixture.expectedStatus}, received ${result.status}.`
-    );
+    throw new MechanicalFixtureError(fixture.id, 'status', `Expected ${fixture.expectedStatus}, received ${result.status}.`);
   }
   if (fixture.exactOutput && result.code !== fixture.expected) {
     throw new MechanicalFixtureError(fixture.id, 'output', 'Transformed bytes differ from the checked-in expected output.');
@@ -89,8 +82,17 @@ export function runMechanicalFixture(
   }
 
   const second = transform(result.code, { fileName: fixture.fileName });
-  if (second.code !== result.code) {
-    throw new MechanicalFixtureError(fixture.id, 'idempotence', 'A second transform changed the output bytes.');
+  const expectedSecondStatus = result.status === 'refused' ? 'refused' : 'unchanged';
+  if (
+    second.code !== result.code ||
+    second.status !== expectedSecondStatus ||
+    JSON.stringify(second.diagnostics.map(projectDiagnostic)) !== JSON.stringify(actualDiagnostics)
+  ) {
+    throw new MechanicalFixtureError(
+      fixture.id,
+      'idempotence',
+      'A second transform changed the output bytes, result state, or structured diagnostics.'
+    );
   }
   return result;
 }
