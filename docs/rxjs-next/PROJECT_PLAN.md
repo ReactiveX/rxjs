@@ -41,10 +41,11 @@ guide is also concise, task-oriented, and explicit about known failing gates.
 The user has now made the complete agent-first migration experience the top
 project priority. The focused P0.M1 package is useful mechanical groundwork,
 but its nine package tests and unreferenced single source fixture do not prove
-general RxJS 7 migration safety. P0.M2 therefore designs the product contract,
-fixture/evaluation architecture, and portable distribution model for Codex,
-Claude, and Cursor before further implementation. P1.1 returns to `PLANNED`,
-and P0.M2 is now the sole `NEXT` item.
+general RxJS 7 migration safety. P0.M2 is complete: D-046 and
+`MIGRATION_TOOLING_DESIGN.md` define the agent-first product contract, explicit
+lifecycle classification, separate mechanical and agent evidence lanes, one
+canonical Skill with thin Codex/Claude/Cursor adapters, and no MCP release
+surface. P1.1 remains `PLANNED`, and P0.M3 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -111,8 +112,8 @@ item.
 | `DONE`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
 | `DONE`    | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
 | `DONE`    | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                 |
-| `NEXT`    | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
-| `PLANNED` | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
+| `DONE`    | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
+| `NEXT`    | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
 | `PLANNED` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
 | `PLANNED` | P0.M5  | Qualify the end-to-end agent workflow on representative repositories and behavioral outcome gates                  |
 | `DONE`    | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
@@ -421,7 +422,8 @@ item.
 
 - Added the publishable `@rxjs/migrate` workspace package with a
   framework-neutral migration core,
-  a one-time CLI, reusable Skill assets, and bounded local MCP capabilities.
+  a one-time CLI, reusable Skill assets, and an exploratory read-only MCP
+  prototype later excluded from the accepted release product by D-046.
 - Source- and target-test-framework concerns are adapters. The first supported
   path migrates Mocha/Chai tests to Vitest without coupling `rxTest` conversion
   semantics to Vitest.
@@ -506,6 +508,35 @@ item.
   road and `technical-business-documents` for the durable product contract;
   use TypeScript expertise only when P0.M3 begins implementation.
 
+#### P0.M2 completion evidence
+
+- Added `MIGRATION_TOOLING_DESIGN.md` as the controlling product and technical
+  design. It defines the eight-stage journey from authority discovery through
+  reviewed closeout, including RxJS 7 baseline and characterization gates.
+- Defined the migration contract manifest and six explicit lifecycle targets:
+  `platform-shared`, `producer-per-direct-subscription`, `subject-hot`,
+  `not-applicable`, `unsupported`, and `unresolved`. The last two remain
+  visible stop or escalation states.
+- Separated deterministic mechanical fixtures from nondeterministic agent
+  evaluations. The schemas require diagnostics, containment, dry-run/write
+  equivalence, idempotence, compilation, behavior, negative controls, contract
+  manifests, and refusal/escalation evidence.
+- Covered ColdObservable, platform sharing/ref counting, Subjects,
+  cancellation, teardown, timing, errors, input conversion, repeated
+  subscriptions, unsupported APIs, missing coverage, and mixed pipelines.
+- Selected `packages/migrate/skill` as the only authored Skill source. Thin
+  Codex, Claude Code, and Cursor placements consume the same package version
+  and content digest and have explicit discovery, invocation, permission,
+  update, and smoke-test requirements.
+- Recorded D-046, partially superseded D-044, and excluded the P0.M1 MCP
+  prototype from the release contract. P0.M3 owns its removal; any future MCP
+  requires a new accepted decision and independently validated product
+  contract.
+- Reconciled the charter, architecture, compatibility policy, open questions,
+  testing design, port notes, package README, risks, and downstream P0.M3-P0.M5
+  exit gates. This design slice intentionally changed no production code or
+  test baseline.
+
 #### P0.M3 completion bar
 
 - `@rxjs/migrate` exposes a programmatic core and dry-run-first,
@@ -535,9 +566,8 @@ item.
 - Codex, Claude, and Cursor each have tested installation, discovery,
   invocation, permission, and update instructions plus a minimal smoke
   scenario that reaches the same portable workflow.
-- Any MCP deliverable has a separately justified contract and validation. If
-  no concrete capability exceeds the CLI/local-agent boundary, the accepted
-  design records that MCP is unnecessary and ships none.
+- The accepted D-046 product ships no MCP. A future MCP would require a new
+  evidence-backed decision, product boundary, and independent validation.
 
 #### P0.M5 completion bar
 
@@ -637,7 +667,8 @@ diagrams. No implementation is required for this decision step.
 - Rejected a separate RxJS 7 runtime compatibility product. Retained
   `ColdObservable`, Subjects, and Symbol-keyed composition as intentional Next
   APIs, while making documentation, classified evidence, and migration Skills
-  the supported migration direction. MCP remains optional and deferred.
+  the supported migration direction. MCP was then optional and deferred;
+  D-046 later excluded it from the accepted migration product.
 - Recorded D-039 through D-041, updated the charter, architecture, migration
   policy, open questions, and package/dependency diagrams, and reserved all
   runtime, manifest, package-removal, and fixture work for P0.3.
@@ -955,12 +986,12 @@ Phase exit:
 
 ### Phase 5 — Migration experience and AI enablement
 
-| Status     | ID   | Outcome                                                                                 |
-| ---------- | ---- | --------------------------------------------------------------------------------------- |
-| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences    |
-| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications         |
-| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution                |
-| `DEFERRED` | P5.4 | Design broader plugin orchestration and write permissions beyond the read-only MCP core |
+| Status     | ID   | Outcome                                                                              |
+| ---------- | ---- | ------------------------------------------------------------------------------------ |
+| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
+| `DEFERRED` | P5.3 | Evaluate later RxJS usage Skills beyond the canonical migration workflow             |
+| `DEFERRED` | P5.4 | Evaluate optional integrations only under a new evidence-backed product decision     |
 
 AI tools must consume versioned project knowledge and produce reviewable
 changes. They must not infer migration safety solely from matching operator
@@ -1014,10 +1045,10 @@ conformance implementation depends on a runnable harness.
 | RxJS 7 suite pressures platform behavior backward      | Native and fallback layers diverge                        | High       | Mandatory classification; evidence never implies a runtime compatibility product                                         |
 | Migration evidence is mistaken for emulation           | Users depend on unsupported RxJS 7 surfaces               | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                                       |
 | Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                                     |
-| Tooling is designed before APIs stabilize              | Skills encode obsolete migrations                         | Medium     | P0.M2 requires versioned capability evidence and portable workflow invariants; P0.M3 expands only for accepted contracts |
-| Mechanical output is mistaken for a complete migration | Users silently receive the wrong Observable lifecycle     | High       | P0.M2 makes the agent workflow primary and requires explicit contract classification before codemods                     |
-| Agent output is judged only by source shape            | Nondeterministic rewrites can hide behavioral regressions | High       | P0.M2/P0.M5 require RxJS 7 baselines, contract manifests, compilation, and behavioral outcome gates                      |
-| Harness-specific instructions drift                    | Codex, Claude, and Cursor provide inconsistent safety     | Medium     | P0.M4 keeps one canonical portable Skill and tests only thin harness-specific installation adapters                      |
+| Tooling is designed before APIs stabilize              | Skills encode obsolete migrations                         | Medium     | D-046 requires versioned capability evidence and portable workflow invariants; P0.M3 expands only for accepted contracts |
+| Mechanical output is mistaken for a complete migration | Users silently receive the wrong Observable lifecycle     | High       | D-046 makes the agent workflow primary and requires explicit contract classification before codemods                     |
+| Agent output is judged only by source shape            | Nondeterministic rewrites can hide behavioral regressions | High       | D-046/P0.M5 require RxJS 7 baselines, contract manifests, compilation, and behavioral outcome gates                      |
+| Harness-specific instructions drift                    | Codex, Claude, and Cursor provide inconsistent safety     | Medium     | D-046 selects one canonical portable Skill; P0.M4 tests only thin harness installation adapters                          |
 | Current CI/release infrastructure assumes RxJS 7       | Published artifacts fail despite source tests             | High       | Package-import fixtures and release gates precede expansion                                                              |
 | WPT runs accidentally exercise native Observable       | False confidence in fallback behavior                     | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                                         |
 | WPT/browser setup is too large or network-dependent    | Slow or skipped local and CI validation                   | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts                        |
@@ -2104,3 +2135,26 @@ conformance implementation depends on a runnable harness.
   deliverable.
 - Set P0.M2 as the sole `NEXT` item. This was a plan-only reprioritization; no
   product code or test baseline changed.
+
+### 2026-07-31 — P0.M2 agent-first migration product design
+
+- Audited the P0.M1 package, its nine registered transform tests, unreferenced
+  source fixture, independently authored repository Skill, bundled package
+  Skill, and two-tool MCP prototype. Treated those as prototype evidence, not
+  as proof of a safe end-to-end migration product.
+- Added `MIGRATION_TOOLING_DESIGN.md` with the agent journey, version and
+  coverage assessment, RxJS 7 baseline and characterization gates, explicit
+  contract manifest, bounded mechanical work, iterative repair, and reviewed
+  closeout.
+- Defined separate mechanical and agent evaluation schemas, required behavior
+  categories, outcome gates, and negative controls. A transform cannot select
+  lifecycle intent or turn missing evidence into a completion claim.
+- Accepted D-046: `packages/migrate/skill` is the canonical Skill source; thin
+  Codex, Claude Code, and Cursor adapters preserve one package version and
+  digest; the deterministic engine remains subordinate; and no MCP ships.
+- Partially superseded D-044 and reconciled the charter, architecture,
+  compatibility policy, open questions, testing design, port notes, package
+  README, plan risks, and P0.M3-P0.M5 handoffs.
+- Verified formatting, documentation consistency, local links, and exactly one
+  active queue row. Marked P0.M2 `DONE` and advanced P0.M3 as the sole `NEXT`
+  item. No production code or test baseline changed.

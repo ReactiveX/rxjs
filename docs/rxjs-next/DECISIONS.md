@@ -118,7 +118,7 @@ Status meanings:
 
 ## D-008 — Provide migration Skills and defer MCP capabilities
 
-- **Status:** Superseded in part by D-044
+- **Status:** Superseded by D-046
 - **Decision:** Ship repository-grounded migration Skills that help users apply
   RxJS Next and migrate from RxJS 7. Broader MCP capabilities remain a
   possible later addition rather than a required runtime product.
@@ -129,6 +129,9 @@ Status meanings:
   release coupling until the RxJS Next runtime APIs and migration evidence are
   stable enough to encode. The existing marble-migration Skill is evidence for
   the approach, not the final distribution contract.
+- **Supersession:** D-044 implemented an exploratory package slice. D-046 now
+  defines the final agent-first boundary, one canonical Skill, thin harness
+  adapters, and no accepted MCP product.
 
 ## D-009 — Separate the attested WPT harness gate from conformance work
 
