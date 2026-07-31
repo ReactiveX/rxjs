@@ -17,7 +17,8 @@
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
-    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/duplicate-install.mjs",
+    "test:lifecycle": "pnpm run build && node test/lifecycle/run.mjs",
     "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:watch": "vitest"

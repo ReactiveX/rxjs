@@ -1,0 +1,121 @@
+{
+  "name": "@rxjs/migrate",
+  "version": "8.0.0-alpha.14",
+  "description": "One-time source migrations from RxJS 7 to RxJS Next",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "skill"
+  ],
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
+  "bin": {
+    "rxjs-migrate": "./dist/esm/cli.js",
+    "rxjs-migrate-mcp": "./dist/esm/mcp.js"
+  },
+  "scripts": {
+    "build": "tshy",
+    "lint": "eslint ./src",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReactiveX/rxjs.git",
+    "directory": "packages/migrate"
+  },
+  "keywords": [
+    "rxjs",
+    "migration",
+    "codemod",
+    "marble-testing",
+    "vitest"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "typescript": "~5.7.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "vitest": "^1.2.1"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [],
+        "outputs": [
+          "{projectRoot}/dist/commonjs",
+          "{projectRoot}/dist/esm"
+        ]
+      }
+    }
+  },
+  "tshy": {
+    "selfLink": false,
+    "exclude": [
+      "src/**/*.spec.ts"
+    ],
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts",
+      "./adapters/mocha-chai-vitest": "./src/mocha-chai-vitest.ts",
+      "./node": "./src/node.ts",
+      "./cli": "./src/cli.ts",
+      "./mcp": "./src/mcp.ts"
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./adapters/mocha-chai-vitest": {
+      "import": {
+        "types": "./dist/esm/mocha-chai-vitest.d.ts",
+        "default": "./dist/esm/mocha-chai-vitest.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/mocha-chai-vitest.d.ts",
+        "default": "./dist/commonjs/mocha-chai-vitest.js"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/esm/node.d.ts",
+        "default": "./dist/esm/node.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/node.d.ts",
+        "default": "./dist/commonjs/node.js"
+      }
+    },
+    "./cli": {
+      "import": {
+        "types": "./dist/esm/cli.d.ts",
+        "default": "./dist/esm/cli.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/cli.d.ts",
+        "default": "./dist/commonjs/cli.js"
+      }
+    },
+    "./mcp": {
+      "import": {
+        "types": "./dist/esm/mcp.d.ts",
+        "default": "./dist/esm/mcp.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/mcp.d.ts",
+        "default": "./dist/commonjs/mcp.js"
+      }
+    }
+  }
+}

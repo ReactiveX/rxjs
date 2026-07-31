@@ -118,7 +118,7 @@ Status meanings:
 
 ## D-008 — Provide migration Skills and defer MCP capabilities
 
-- **Status:** Accepted
+- **Status:** Superseded in part by D-044
 - **Decision:** Ship repository-grounded migration Skills that help users apply
   RxJS Next and migrate from RxJS 7. Broader MCP capabilities remain a
   possible later addition rather than a required runtime product.
@@ -691,8 +691,8 @@ Status meanings:
   internals, or general scheduler arguments in the platform package to satisfy
   ported tests. Host-timed public Symbols use platform timers, animation
   frames, or narrow timestamp providers. Ported cases whose durable claim
-  depends on legacy scheduling use explicit generator-owned `@rxjs/test`
-  timing rewrites or test-local migration sentinels.
+  depends on legacy scheduling use explicit `@rxjs/test` timing rewrites in
+  the checked-in migrated source or test-local migration sentinels.
 - **Rationale:** RxJS 7 schedulers combine public API, execution policy, and
   producer-per-subscription Observable assumptions that do not belong in the
   platform lifecycle layer. The virtual host environment can preserve notification timing,
@@ -876,8 +876,9 @@ Status meanings:
   - `rxjs` declares a runtime dependency on
     `@rxjs/observable-polyfill`. Its declarations augment the base platform
     types only for the exact Symbols imported by each entry point.
-  - `@rxjs/test` remains implementation-neutral. It consumes an Observable
-    already selected in its realm and does not install, replace, or select one.
+  - `@rxjs/test` uses the public `ColdObservable` for its explicit cold fixture.
+    Per D-043, that entry conditionally installs the fallback only when the
+    realm has no Observable and preserves an already selected constructor.
 - **Entry points:** The `rxjs` root conditionally initializes the platform and
   exports intentional non-operator core classes and values, including cold,
   Subject, connectable, notification, and public-error primitives. It does not
@@ -928,5 +929,87 @@ Status meanings:
 - **Consequence:** The first existing constructor wins, including an earlier
   RxJS fallback version; the helper reports its marker when present. P0.3
   implements a preflighted transactional installation and fixtures clear,
-  non-partial failure on unsupported frozen targets. P0.4 expands this package
-  evidence into one shared native/fallback lifecycle contract.
+  non-partial failure on unsupported frozen targets. P0.4 completes the shared
+  native/fallback lifecycle contract and proves that mixed ESM/CommonJS loads
+  preserve the first fallback installation's constructor, subscriber,
+  side-effect, abort-bridge, and marker identities. This does not settle P2.1's
+  broader extension-Symbol policy across versions and independently bundled
+  copies.
+
+## D-042 — Permit argument-free notification for `Subscriber<void>`
+
+- **Status:** Accepted
+- **Decision:** `Subscriber<void>.next()` is a valid TypeScript call. The RxJS
+  fallback emits `undefined` for that call. Non-void subscribers retain a
+  required value through the same ordinary `next(value: T)` signature, so
+  `Subscriber<number>.next()` remains a type error. The fallback runtime does
+  not throw solely because `next` was called without an argument; JavaScript
+  has no runtime generic with which to distinguish a void subscriber.
+- **Rationale:** Void producers should express a signal with `next()` instead
+  of rewriting call sites to the noisier `next(undefined)`. The public type
+  boundary should model that intent directly, and the cold/test subscriber
+  implementations must preserve it.
+- **Consequence:** The pinned WPT revision requires Web IDL argument-presence
+  checks for `Subscriber.next(any)` and therefore reports three strict
+  failures: Web IDL, window constructor, and worker constructor coverage.
+  D-041 still preserves a native constructor, whose own runtime may enforce
+  that Web IDL rule even though the ambient generic signature permits the call.
+  D-011 remains strict and continues to expose the fallback failures. P0.5
+  must record how explicit product-policy divergences relate to the chosen
+  specification and WPT baseline; vendored upstream tests are not modified.
+
+## D-043 — Keep rxTest source construction explicit and use stock Vitest reporting
+
+- **Status:** Accepted
+- **Decision:** `rxTest.cold()` returns a named test fixture extending
+  `ColdObservable`; its inherited `[create]` returns an ordinary
+  `ColdObservable`. `rxTest.hot()` returns an absolute-time broadcast fixture
+  extending the active `globalThis.Observable`; its explicit `[create]` returns
+  an ordinary instance of that active constructor. `rxTest.observable()`
+  constructs directly from the active global constructor and keeps its shared,
+  ref-counted lifecycle. Cold compatibility never replaces
+  `globalThis.Observable`.
+- **Test reporting:** The RxJS 7 corpus is materialized as formatted Vitest
+  `.spec.ts` files that call `rxTest` and public Symbols directly. These are
+  checked-in, destination-owned sources rather than regenerated artifacts. Normal runs
+  use Vitest's built-in default reporter unchanged. Complete audits use its
+  built-in JSON reporter, with manifest identity recovered from a static
+  migration report rather than machine IDs in test titles.
+- **Rationale:** Fixture-only subclass behavior must not leak into operator
+  results. Real test modules give failures repository paths and line numbers
+  that editors can open, while stock reporters avoid a bespoke output protocol
+  contributors must learn or maintain.
+- **Consequence:** Importing `@rxjs/test` imports the public cold entry and
+  therefore conditionally initializes the fallback in an empty realm while
+  preserving a native constructor. Cold migrated tests name
+  `ColdObservable` explicitly for cold construction and static factories.
+  Hot-derived operator results cross into the platform lifecycle, so the
+  reviewed cold audit records 2,296/2,338 passes; the fallback-platform audit
+  remains 2,316/2,338. The removed dynamic launcher, shard renderer, fake
+  source locations, and case-ID test-title prefixes are not compatibility
+  surfaces.
+
+## D-044 — Publish one-time migration tooling and make its output project-owned
+
+- **Status:** Accepted
+- **Decision:** Publish `@rxjs/migrate` as a development-only package containing
+  a framework-neutral RxJS 7 semantic transform, caller-supplied capability
+  maps, a dry-run-first CLI, reusable Skill assets, and bounded read-only MCP
+  tools. Test-framework syntax is handled by adapters; Mocha/Chai-to-Vitest is
+  the first supported pair, while preserving the existing framework remains
+  the default. Transformed files become ordinary source owned by the destination
+  project and are never maintained by a runtime generator.
+- **Rationale:** Users need reviewable changes that preserve real filenames,
+  direct `rxTest` usage, and normal runner behavior. Keeping framework syntax
+  separate from RxJS semantics permits Jest, Node test runner, or other targets
+  without encoding them into the marble model. The same semantic pipeline can
+  migrate production `pipe(...)` expressions even when no test framework or
+  `TestScheduler` is present.
+- **Consequence:** The CLI writes only with explicit `--write` and records
+  source repository, exact SHA, and path. MCP tools accept source content and
+  return source content plus diagnostics; they do not receive filesystem
+  authority. The repository dogfoods the package into checked-in `cold/` and
+  `platform/` Vitest specs, and keeps only its native/polyfill execution matrix
+  as repository-specific harness behavior. Broader framework adapters and the
+  eventual Skill/plugin portfolio can evolve without changing this package's
+  runtime-independent boundary.

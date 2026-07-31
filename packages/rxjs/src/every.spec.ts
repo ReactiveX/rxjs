@@ -1,6 +1,16 @@
-import { describe, expect, expectTypeOf, it } from 'vitest';
+import { beforeAll, describe, expect, expectTypeOf, it } from 'vitest';
 import '@rxjs/observable-polyfill';
-import { every } from './every.js';
+import type { every as everySymbol } from './every.js';
+
+type EverySymbol = typeof everySymbol;
+
+let every: EverySymbol;
+let platformEvery: Observable<unknown>['every'];
+
+beforeAll(async () => {
+  platformEvery = Observable.prototype.every;
+  ({ every } = await import('./every.js'));
+});
 
 describe('every', () => {
   it('emits true for an empty source and when every value matches', () => {
@@ -179,17 +189,18 @@ describe('every', () => {
     expect(sourceTeardowns).toBe(2);
   });
 
-  it('exports an exact unique Symbol, returns Observable<boolean>, and adds no string method', () => {
+  it('exports an exact unique Symbol, returns Observable<boolean>, and preserves the platform every method', () => {
     const result = fromValues(1, 2)[every](Boolean);
     const allFalsy = new Observable<0 | '' | null>(() => {})[every](Boolean);
     type HasStringNamedEvery = 'every' extends keyof Observable<unknown> ? true : false;
 
     expectTypeOf(result).toEqualTypeOf<Observable<boolean>>();
     expectTypeOf(allFalsy).toEqualTypeOf<Observable<false>>();
-    expectTypeOf<HasStringNamedEvery>().toEqualTypeOf<false>();
+    expectTypeOf<HasStringNamedEvery>().toEqualTypeOf<true>();
     expect(every.description).toBe('every');
     expect(Symbol.keyFor(every)).toBeUndefined();
-    expect('every' in Observable.prototype).toBe(false);
+    expect(Observable.prototype.every).toBe(platformEvery);
+    expect(Observable.prototype[every]).not.toBe(platformEvery);
   });
 });
 

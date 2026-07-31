@@ -45,21 +45,22 @@ make the Subject producer cold. See D-035 and D-036.
 
 The table describes architectural defaults, not every edge case.
 
-| Concern               | RxJS 7 baseline                                                                        | RxJS Next baseline                                                                                 | Migration implication                                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Producer execution    | A normal cold Observable creates independent work during each subscription             | Platform Observable shares one active producer; `ColdObservable` is an explicit separate Next type | Audit repeated subscriptions and choose the intended Next lifecycle explicitly                                      |
-| Hot/cold terminology  | A cold source creates its producer during subscription; an instantiated Subject is hot | Producer timing, sharing, replay, and ref counting are documented separately                       | Do not infer sharing from “hot” or “cold” alone                                                                     |
-| Subscription return   | `subscribe()` returns a `Subscription`                                                 | Platform `subscribe()` returns `undefined`                                                         | Replace captured subscriptions with `AbortController`/`AbortSignal` ownership                                       |
-| Cancellation          | `Subscription.unsubscribe()` and teardown chains                                       | `AbortSignal`, `Subscriber.signal`, and ref-count closure                                          | Review ownership, abort reasons, and final-observer behavior                                                        |
-| Teardown registration | Producer may return teardown logic; subscriptions aggregate finalizers                 | Producer calls `subscriber.addTeardown()`                                                          | Rewrite custom producers rather than relying on returned teardown functions                                         |
-| Teardown order        | RxJS 7 subscription finalizers follow RxJS aggregation semantics                       | The platform specification closes teardown callbacks in reverse insertion order                    | Treat order-sensitive teardown as a semantic migration                                                              |
-| Error reporting       | RxJS configuration and host error reporting rules                                      | Platform exception reporting and Web IDL callback behavior                                         | Audit unhandled, late, and observer-callback errors                                                                 |
-| Operators             | Mostly standalone pipeable functions returning Observables                             | Platform string methods plus exact RxJS Symbol extensions                                          | Migrate imports and invocation shape; verify lifecycle-sensitive behavior                                           |
-| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                          | Exact Symbol-keyed `pipe` may remain as a Next API                                                 | Do not assume RxJS 7 pipeable functions or types exist                                                              |
-| Subjects              | Subject family with established RxJS 7 semantics                                       | Intentional Next Subject APIs with directly documented contracts                                   | Verify late-observer, replay, terminal, and cancellation semantics                                                  |
-| Scheduling            | Scheduler arguments and scheduler classes affect many APIs                             | Host APIs and `@rxjs/test`; no general public RxJS scheduler abstraction                           | Remove scheduler arguments and review timing-sensitive code                                                         |
-| Input conversion      | Broad `ObservableInput` ecosystem and interop protocols                                | Platform `Observable.from` conversion order and categories                                         | Audit custom subscribables and legacy interop                                                                       |
-| Testing               | Marble tests assume RxJS scheduling and subscription records                           | `@rxjs/test` separates cold, hot, and platform lifecycle sources                                   | Choose the source model deliberately and rewrite only the harness mechanics needed to preserve the behavioral claim |
+| Concern               | RxJS 7 baseline                                                                        | RxJS Next baseline                                                                                     | Migration implication                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Producer execution    | A normal cold Observable creates independent work during each subscription             | Platform Observable shares one active producer; `ColdObservable` is an explicit separate Next type     | Audit repeated subscriptions and choose the intended Next lifecycle explicitly                                      |
+| Hot/cold terminology  | A cold source creates its producer during subscription; an instantiated Subject is hot | Producer timing, sharing, replay, and ref counting are documented separately                           | Do not infer sharing from “hot” or “cold” alone                                                                     |
+| Subscription return   | `subscribe()` returns a `Subscription`                                                 | Platform `subscribe()` returns `undefined`                                                             | Replace captured subscriptions with `AbortController`/`AbortSignal` ownership                                       |
+| Cancellation          | `Subscription.unsubscribe()` and teardown chains                                       | `AbortSignal`, `Subscriber.signal`, and ref-count closure                                              | Review ownership, abort reasons, and final-observer behavior                                                        |
+| Void notification     | `Subscriber<void>.next()` may omit its value                                           | Types permit the call and the fallback emits `undefined`; a preserved native runtime owns its behavior | Keep argument-free void signals; do not mechanically rewrite them to `next(undefined)`                              |
+| Teardown registration | Producer may return teardown logic; subscriptions aggregate finalizers                 | Producer calls `subscriber.addTeardown()`                                                              | Rewrite custom producers rather than relying on returned teardown functions                                         |
+| Teardown order        | RxJS 7 subscription finalizers follow RxJS aggregation semantics                       | The platform specification closes teardown callbacks in reverse insertion order                        | Treat order-sensitive teardown as a semantic migration                                                              |
+| Error reporting       | RxJS configuration and host error reporting rules                                      | Platform exception reporting and Web IDL callback behavior                                             | Audit unhandled, late, and observer-callback errors                                                                 |
+| Operators             | Mostly standalone pipeable functions returning Observables                             | Platform string methods plus exact RxJS Symbol extensions                                              | Migrate imports and invocation shape; verify lifecycle-sensitive behavior                                           |
+| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                          | Exact Symbol-keyed `pipe` may remain as a Next API                                                     | Do not assume RxJS 7 pipeable functions or types exist                                                              |
+| Subjects              | Subject family with established RxJS 7 semantics                                       | Intentional Next Subject APIs with directly documented contracts                                       | Verify late-observer, replay, terminal, and cancellation semantics                                                  |
+| Scheduling            | Scheduler arguments and scheduler classes affect many APIs                             | Host APIs and `@rxjs/test`; no general public RxJS scheduler abstraction                               | Remove scheduler arguments and review timing-sensitive code                                                         |
+| Input conversion      | Broad `ObservableInput` ecosystem and interop protocols                                | Platform `Observable.from` conversion order and categories                                             | Audit custom subscribables and legacy interop                                                                       |
+| Testing               | Marble tests assume RxJS scheduling and subscription records                           | `@rxjs/test` separates cold, hot, and platform lifecycle sources                                       | Choose the source model deliberately and rewrite only the harness mechanics needed to preserve the behavioral claim |
 
 ## Runtime policy
 
@@ -68,6 +69,9 @@ The table describes architectural defaults, not every edge case.
 The main RxJS platform layer:
 
 - operates on the selected native or fallback platform Observable;
+- types argument-free `next()` for `Subscriber<void>` while requiring a value
+  for non-void subscribers; the fallback delivers `undefined`, while a
+  preserved native constructor retains its own runtime argument semantics;
 - preserves shared, ref-counted active producer work;
 - uses signal-based cancellation;
 - installs RxJS-specific capabilities through Symbols;
@@ -208,6 +212,20 @@ subscription creates a producer and concurrent subscriptions share it.
 `hot()` creates its subject-like absolute-timeline producer before observers
 subscribe.
 
+The fixture construction protocol keeps those meanings from leaking through
+operator chains. A cold fixture extends `ColdObservable`, whose `[create]`
+returns an ordinary `ColdObservable`. A hot fixture extends the active
+`globalThis.Observable`, and its `[create]` returns an ordinary instance of
+that platform constructor rather than another hot fixture. `observable()`
+constructs directly from the active global constructor.
+
+Cold compatibility does not replace `globalThis.Observable`. Tests that need
+an explicit cold constructor or static factory import and name
+`ColdObservable`; platform tests use the ambient `Observable`. Importing
+`@rxjs/test` conditionally initializes the fallback through that public cold
+entry only when the realm has no Observable, while preserving an existing
+native constructor.
+
 All three source types use AbortSignal cancellation and share one virtual host
 event loop. This allows tests to mix Observable operators with application
 `setTimeout`, `setInterval`, animation-frame, idle-callback, and supported Node
@@ -218,14 +236,22 @@ whose outcome depends on producer multiplicity must choose `cold()` or
 `observable()` deliberately and receive the corresponding migration-evidence
 classification.
 
+RxJS 7 accepted a wider `ObservableInput` ecosystem than the platform
+`Observable.from` contract. A migrated test that owns a lowercase-`subscribe`
+or legacy interop helper retains that input and is classified as
+`compatibility-only`. It remains executable failure evidence where the current
+surface rejects the input. Replacing it with an ambient `Observable` is not a
+valid harness rewrite because doing so removes the input-conversion claim under
+test.
+
 This distinction also applies when a flattening test returns the same inner
 fixture more than once. In cold mode, each return creates the
 independent timeline asserted by RxJS 7. In platform mode, overlapping returns
 join one shared, ref-counted producer, so join time can change both the emitted
 notification sequence and the producer subscription log. A return after the
 shared producer closes starts a new timeline. Ported evidence for this case
-must keep the cold expectation intact and use an exact, generator-owned
-platform expectation; it must not recover the cold result by substituting a
+must keep the cold expectation intact and use an exact, checked-in platform
+expectation; it must not recover the cold result by substituting a
 cold fixture into platform execution.
 
 ## Operator parity policy
@@ -373,6 +399,12 @@ handling. Platform cases use the ambient Observable and do not redefine the
 platform layer to recover RxJS 7 producer-per-subscription semantics. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and `RxJS-7-parity.md`.
 
+The executable cases are ordinary checked-in Vitest source under `cold/` and
+`platform/`, not generator-owned output. A static `migration-report.json`
+retains file-to-case identity for JSON audits. `@rxjs/migrate` is the reusable
+one-time authoring tool; its framework adapter is optional, and its output
+becomes source owned by the destination project.
+
 The generated `compatibility-only` label remains stable provenance metadata.
 Under D-039 it means that the claim cannot be made for the shared platform
 surface; it does not name a package or promised facade.
@@ -491,6 +523,12 @@ For each supported operator or creation API:
    the intentional Next API claims that behavior.
 7. **Packaging fixture:** the API works through the published entry point, not
    only a source import.
+
+The P0.4 lifecycle gate implements steps 2 through 4 for the base constructor
+with one self-contained contract executed unchanged against the packaged
+fallback and a browser-native Observable. Package fixtures additionally cover
+missing initialization, preservation of existing side effects, mixed
+ESM/CommonJS duplicate installation, and ambient declaration visibility.
 
 ## Migration themes
 

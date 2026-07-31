@@ -1,13 +1,8 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { ColdObservable } from 'rxjs/cold-observable';
+import { create } from 'rxjs/create';
 import { RxTestAssertionError, rxTest } from './index.js';
 import { getObservableConstructor } from './platform-observable.js';
-
-beforeAll(async () => {
-  if (typeof globalThis.Observable !== 'function') {
-    const polyfillModule = '../../observable-polyfill/src/index.js';
-    await import(polyfillModule);
-  }
-});
 
 describe('rxTest', () => {
   it('creates cold observables and supports numeric marble durations', async () => {
@@ -47,6 +42,16 @@ describe('rxTest', () => {
     });
   });
 
+  it('constructs cold operator results as ordinary ColdObservables', async () => {
+    await rxTest(({ cold }) => {
+      const source = cold('a|');
+      const result = source[create](() => {});
+
+      expect(source).toBeInstanceOf(ColdObservable);
+      expect(result.constructor).toBe(ColdObservable);
+    });
+  });
+
   it('shares one active producer for platform test observables', async () => {
     await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
       const source = observable('--a--b--|');
@@ -64,6 +69,17 @@ describe('rxTest', () => {
       expectObservable(source).toBe('-a--b--|');
       expectObservable(source, '---^').toBe('----b--|');
       expectSubscriptions(source.subscriptions).toBe(['^------!', '---^---!']);
+    });
+  });
+
+  it('constructs hot operator results as ordinary platform Observables', async () => {
+    await rxTest(({ hot }) => {
+      const ObservableConstructor = getObservableConstructor();
+      const source = hot('a|');
+      const result = source[create](() => {});
+
+      expect(source.constructor).not.toBe(ObservableConstructor);
+      expect(result.constructor).toBe(ObservableConstructor);
     });
   });
 

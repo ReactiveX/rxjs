@@ -43,7 +43,8 @@ commands from the repository root.
 | `pnpm --filter <project> run`         | List a project's available scripts |
 | `pnpm --filter rxjs.dev run start` ⭐ | Start the documentation site       |
 
-Projects: `@rxjs/observable-polyfill`, `@rxjs/test`, `rxjs`, and `rxjs.dev`.
+Projects: `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/migrate`, `rxjs`,
+and `rxjs.dev`.
 
 ### Fast feedback
 
@@ -53,6 +54,7 @@ Projects: `@rxjs/observable-polyfill`, `@rxjs/test`, `rxjs`, and `rxjs.dev`.
 | `pnpm --filter rxjs exec vitest --run <test-file>` ⭐ | Run one focused RxJS test once           |
 | `pnpm --filter @rxjs/observable-polyfill run test`    | Test the platform Observable fallback    |
 | `pnpm --filter @rxjs/test run test:package`           | Test, build, type-check, and import-test |
+| `pnpm --filter @rxjs/migrate run test`                | Test the one-time migration tooling      |
 | `pnpm --filter <project> run test`                    | Run a package's relevant tests           |
 | `pnpm --filter <project> run lint`                    | Lint one package                         |
 | `pnpm --filter <project> run build`                   | Build one package                        |

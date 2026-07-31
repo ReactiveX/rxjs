@@ -1,0 +1,122 @@
+import type { CapabilityMapping } from './types.js';
+
+const exactOperators = [
+  'catchError',
+  'count',
+  'debounce',
+  'defaultIfEmpty',
+  'delay',
+  'distinct',
+  'distinctUntilChanged',
+  'distinctUntilKeyChanged',
+  'elementAt',
+  'every',
+  'exhaustMap',
+  'expand',
+  'filter',
+  'finalize',
+  'find',
+  'findIndex',
+  'first',
+  'isEmpty',
+  'last',
+  'map',
+  'mergeMap',
+  'pairwise',
+  'pluck',
+  'reduce',
+  'repeat',
+  'retry',
+  'scan',
+  'sequenceEqual',
+  'single',
+  'skip',
+  'skipLast',
+  'skipUntil',
+  'skipWhile',
+  'startWith',
+  'switchMap',
+  'take',
+  'takeLast',
+  'takeUntil',
+  'takeWhile',
+  'tap',
+  'throttle',
+  'throwIfEmpty',
+  'timeInterval',
+  'timeout',
+  'timestamp',
+  'windowCount',
+  'withLatestFrom',
+  'zipAll',
+  'zipWith',
+] as const;
+
+const moduleName = (name: string): string => name.replace(/[A-Z]/g, (character) => `-${character.toLowerCase()}`);
+
+const exactMappings = exactOperators.map(
+  (legacyName): CapabilityMapping => ({
+    legacyName,
+    symbolName: legacyName,
+    module: moduleName(legacyName),
+    argumentAdapter: 'identity',
+    status: 'exact',
+  })
+);
+
+const unifiedMappings = [
+  {
+    legacyName: 'bufferCount',
+    symbolName: 'buffer',
+    module: 'buffer',
+    argumentAdapter: 'buffer-count',
+    status: 'unified',
+  },
+  {
+    legacyName: 'concatMap',
+    symbolName: 'mergeMap',
+    module: 'merge-map',
+    argumentAdapter: 'concat-map',
+    status: 'partial',
+    review: 'Result-selector overloads require review.',
+  },
+  {
+    legacyName: 'concatAll',
+    symbolName: 'mergeMap',
+    module: 'merge-map',
+    argumentAdapter: 'concat-all',
+    status: 'unified',
+  },
+  {
+    legacyName: 'switchAll',
+    symbolName: 'switchMap',
+    module: 'switch-map',
+    argumentAdapter: 'switch-all',
+    status: 'unified',
+  },
+  {
+    legacyName: 'debounceTime',
+    symbolName: 'debounce',
+    module: 'debounce',
+    argumentAdapter: 'first-argument',
+    status: 'partial',
+    review: 'Scheduler arguments are not part of the RxJS Next contract.',
+  },
+  {
+    legacyName: 'audit',
+    symbolName: 'throttle',
+    module: 'throttle',
+    argumentAdapter: 'audit',
+    status: 'unified',
+  },
+  {
+    legacyName: 'auditTime',
+    symbolName: 'throttle',
+    module: 'throttle',
+    argumentAdapter: 'audit-time',
+    status: 'partial',
+    review: 'Scheduler arguments are not part of the RxJS Next contract.',
+  },
+] as const satisfies readonly CapabilityMapping[];
+
+export const defaultTestSchedulerCapabilities: readonly CapabilityMapping[] = [...exactMappings, ...unifiedMappings];

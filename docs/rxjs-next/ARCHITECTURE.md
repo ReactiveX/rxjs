@@ -17,9 +17,12 @@ The target architecture has three conceptual layers:
 
 The branch now has a buildable three-package foundation for the platform and
 extension layers, but it remains a prototype rather than a release. The
-fallback passes the pinned Observable WPT suite. P0.3 implements the package,
-installation, detection, and initial realm boundaries accepted in D-039 through
-D-041. P0.4 is the next safety-rail step.
+fallback passed the pinned Observable WPT suite before D-042 deliberately made
+an omitted `Subscriber.next()` argument produce `undefined`. The strict suite
+now reports three argument-presence failures while continuing to attest the
+RxJS fallback in all 52 realms. P0.3 implements the package, installation,
+detection, and initial realm boundaries accepted in D-039 through D-041. P0.4
+adds the shared lifecycle safety rail; P0.5 is the active revision-policy step.
 
 ## Architecture context
 
@@ -64,13 +67,14 @@ Migration tooling is not a runtime dependency.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                                       | Intended responsibility                                                                     | Current gap                                                                                               |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                      | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open                          |
-| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open                |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                          | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                                          |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                        | Implementation-neutral framework testing that consumes an already active realm Observable   | P0.4 must establish the shared native/fallback lifecycle contract while preserving constructor neutrality |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                             | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase                  |
+| Component                      | Current responsibility                                                                                                                                                       | Intended responsibility                                                                     | Current gap                                                                                     |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                      | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open                |
+| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open      |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                          | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                                |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                        | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                                  |
+| `packages/migrate`             | Provides one-time RxJS 7 source transforms, capability maps, framework adapters, Skill assets, CLI, and read-only MCP tools                                                  | Independently publishable development tool; never a runtime dependency                      | Mocha/Chai-to-Vitest is the first tested framework adapter; broader adapters remain incremental |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                             | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase        |
 
 ## Platform Observable lifecycle
 
@@ -132,6 +136,9 @@ platform surface.
 - ref-count closure when the observer set becomes empty;
 - explicit close state that aborts the subscriber signal before running
   teardown callbacks in reverse insertion order;
+- the ordinary `next(value: T)` TypeScript signature, which permits `next()`
+  when `T` is `void` while retaining a required value for non-void
+  subscribers; at runtime an omitted argument is delivered as `undefined`;
 - immediate execution of teardowns registered after closure;
 - a small `AbortController.prototype.abort` bridge for signals that have
   Observable work registered, because JavaScript exposes abort events but not
@@ -146,14 +153,37 @@ iterators use explicit protocol loops so the fallback can preserve iterator
 method sampling, `return(reason)`, abort timing, and pending-result behavior
 that `for await...of` intentionally hides.
 
-The structure and behavior pass the pinned Observable WPT revision in window,
-dedicated-worker, same-origin iframe, and Web IDL coverage. This is a bounded
-conformance claim, not a claim about later specification or WPT revisions.
+The structure and behavior previously passed the pinned Observable WPT
+revision in window, dedicated-worker, same-origin iframe, and Web IDL coverage.
+D-042 intentionally differs from that revision's required-argument rule:
+strict execution now passes 522/525 upstream subtests and fails the window,
+worker, and Web IDL checks that require omitted `Subscriber.next()` arguments
+to throw. This is a bounded, explicit product-policy divergence, not a broad
+conformance claim or a claim about later specification or WPT revisions.
 The abort-algorithm bridge is installed only with the fallback constructor. It
 still patches that realm's `AbortController.prototype.abort`, because
 JavaScript does not expose the required DOM abort-algorithm hook; controllers
 without registered Observable algorithms delegate directly to the captured
 platform method.
+
+### Shared native/fallback lifecycle contract
+
+P0.4 adds one self-contained contract under
+`packages/observable-polyfill/test/lifecycle`. The Node half clears the realm,
+imports the built package, verifies its frozen fallback marker, and exercises
+the selected fallback. The browser half serializes that exact contract into a
+disposable pinned-Chrome session and verifies that the selected constructor is
+native and unmarked. The contract covers activation and sharing, late joins,
+individual and last-observer abort, restart, completion, error, synchronous
+reentrancy, teardown registration and reverse ordering, and host reporting of
+thrown observer callbacks.
+
+The browser execution primitive is shared with the attested WPT harness rather
+than defining a second browser-selection path. Both the pinned blocking job and
+latest-Chrome advisory job run the lifecycle contract before WPT. Passing this
+contract demonstrates agreement only for its bounded lifecycle claims; the
+pinned WPT suite remains the conformance authority for the broader platform
+surface.
 
 ## Native selection and polyfill boundary
 
@@ -262,10 +292,13 @@ reported upstream subtests. All 52 implementation attestations passed.
 Top-level statuses were 33 `OK`, 15 `ERROR`, and 4 `TIMEOUT`; reported upstream
 subtest statuses were 314 `PASS`, 159 `FAIL`, 8 `TIMEOUT`, and 6 `NOTRUN`.
 
-After P1.4b, all 52 URLs report `OK`, all 525 upstream subtests report `PASS`,
-and all 52 implementation attestations pass against Chrome for Testing
-`150.0.7871.126`. Three further complete attested runs produced identical
-results before the obsolete failure metadata was removed.
+At P1.4b completion, all 52 URLs reported `OK`, all 525 upstream subtests
+reported `PASS`, and all 52 implementation attestations passed against Chrome
+for Testing `150.0.7871.126`. Three further complete attested runs produced
+identical results before the obsolete failure metadata was removed. D-042
+later changed the argument-presence contract: the current strict result is
+52/52 URLs reported, 522/525 upstream subtests passing, and 52/52 exact
+implementation attestations passing.
 
 For bounded network and execution cost, the official sparse WPT runner is
 cached by WPT revision, operating system, and Python version. Chrome for
@@ -630,48 +663,61 @@ The API makes lifecycle semantics explicit:
   creates another.
 
 The package does not expose `TestScheduler` or add scheduler arguments to the
-main library. It consumes the active Observable selected for the realm and
-does not force-install or replace that constructor. See
-`docs/rxjs-next/TESTING_DESIGN.md`, D-012, and D-034.
+main library. Its public `ColdObservable` dependency conditionally initializes
+the fallback when the realm has no Observable and preserves an existing native
+constructor. See `docs/rxjs-next/TESTING_DESIGN.md`, D-012, D-034, and D-043.
 
 The RxJS 7 marble-test evidence is maintained separately under
-`packages/rxjs/test/ported`. A generated, source-pinned manifest records one
+`packages/rxjs/test/ported`. A source-pinned manifest records one
 disposition for each of 2,338 registrations expanded from 2,201 physical
 declarations, including parameterized variants, source-skipped declarations,
 missing APIs, and obsolete scheduler internals. Every record has a unique case
 ID, executable program, and cold parity registration; unavailable capabilities
 fail explicitly instead of removing the source case from collection. The
-executable harness starts cold, fallback-platform, and native-if-present modes
-in isolated per-mode processes so the constructor is selected before extension
-modules load. Optional diagnostic sharding preserves that isolation while
-splitting registrations across processes. All 2,338 definitions are registered
-in each available mode.
+repository owns 147 formatted Vitest `.spec.ts` files for each of the cold and
+platform modes. They were produced by a one-time migration and are now normal
+checked-in source: each file imports `rxTest` and public RxJS Symbols directly,
+and each test has a real repository filename and line number. Modes
+run in isolated Vitest processes so the platform constructor is selected
+before extension modules load. All 2,338 definitions are registered in each
+available mode.
 
-Cold mode activates `ColdObservable` for producer-per-subscription evidence.
-Platform modes use the ambient `globalThis.Observable`; tests do not import a
-fallback constructor. The RxJS `test:unit` gate registers every ported case as
-an ordinary test in cold and polyfill modes: a converted-program failure,
-missing API, unsupported harness dependency, source-skipped case, or exact
-duplicate fails the command instead of being quarantined or inverted with an
-expected-failure wrapper. The launcher defaults to one process per mode to
-avoid repeating Vitest transformation and collection. Explicit shard-count and
-concurrency environment overrides remain available; when used, the launcher
-continues running every shard, renders completion and heartbeat state in one
-in-place interactive status line, and expands all failed shard diagnostics
-before returning nonzero. Ported Chai assertions temporarily provide Loupe's
-documented display hook for Observable values so failure formatting cannot
-invoke the platform `inspect` operator recursively; the hook is removed after
-the synchronous assertion.
-Non-interactive logs receive one final progress summary instead of a stream of
-updates. Dedicated platform cases assert the shared/ref-counted lifecycle
-directly. Native loading also verifies that the ambient constructor was not
-replaced. The recorded mode baselines remain diagnostic evidence and do not
-change default test outcomes. See
+Cold mode installs the fallback platform base without replacing the global
+with `ColdObservable`. Its `cold()` fixtures extend `ColdObservable`, and
+explicit cold constructors and static factories name `ColdObservable`
+directly. `hot()` fixtures extend the active global constructor and derive
+ordinary platform Observables; `observable()` directly uses the active global
+constructor and its shared/ref-counted lifecycle. Platform modes use the
+ambient `globalThis.Observable`; tests never import a fallback constructor.
+
+The RxJS `test:unit` gate registers every ported case as an ordinary test in
+cold and polyfill modes: a converted-program failure, missing API, unsupported
+harness dependency, source-skipped case, or exact duplicate fails the command
+instead of being quarantined or inverted with an expected-failure wrapper.
+Vitest's unmodified built-in default reporter provides human output and real
+clickable locations. Complete evidence runs use Vitest's built-in JSON
+reporter; the static migration report maps declaration order back to manifest
+case IDs without putting machine identifiers in test names. Tests use ordinary
+Vitest assertions and spies without a compatibility assertion layer. Dedicated
+platform cases assert the
+shared/ref-counted lifecycle directly. Native loading also verifies that the
+ambient constructor was not replaced. The recorded mode baselines remain
+diagnostic evidence and do not change default test outcomes. See
 `RXJS_7_MARBLE_TEST_PORT_NOTES.md` and D-013.
 
-The repo-committed `rxjs-next-marble-migration` Skill is a portable authoring
-guide, not part of this test runtime. Repository revision discovery, manifest
-generation, capability loading, and disposition policy remain outside it.
+RxJS 7 helper inputs that expose only a lowercase `subscribe` method or legacy
+interop protocol remain unchanged in the checked-in migration evidence. They
+are classified as `compatibility-only` and fail explicitly where the current
+surface rejects arbitrary subscribables. Replacing those inputs with platform
+Observables would change the behavioral claim rather than preserve it.
+
+The published `@rxjs/migrate` development package supplies the
+framework-neutral semantic transform, caller-supplied capability maps,
+Mocha/Chai-to-Vitest adapter, dry-run-first CLI, bundled Skill assets, and
+source-content-only MCP tools. Framework syntax is an adapter boundary, so
+projects may preserve their current runner or add another source/target pair
+without changing `rxTest` semantics. The repository's native/polyfill
+execution matrix remains local test infrastructure, not generated user code.
 
 `docs/rxjs-next/RxJS-7-parity.md` is the generated public-surface map. Its
 machine-readable capability registry distinguishes instance operator Symbols,
@@ -838,9 +884,9 @@ capability and internal kernel dependencies.
 The polyfill package owns the ambient TypeScript declarations for
 `Observable`, `Subscriber`, `ObservableValue`, and `EventTarget.when`.
 Individual `rxjs` entry points augment those base declarations only with the
-Symbols they export. `@rxjs/test` neither owns nor selects the active
-constructor; calling `rxTest` without prior realm initialization remains an
-explicit error.
+Symbols they export. `@rxjs/test` imports the public `ColdObservable` entry;
+that entry preserves an existing constructor or conditionally initializes the
+fallback when the realm is empty.
 
 ### Target dependency direction
 
@@ -850,23 +896,24 @@ The runtime dependency direction is acyclic:
 flowchart TD
     Standards["Pinned Observable spec and WPT baseline"] --> Polyfill["@rxjs/observable-polyfill"]
     Polyfill --> RxJS["rxjs core and Symbol subpaths"]
+    RxJS --> Test["@rxjs/test"]
     Active["Active realm Observable"] --> Test["@rxjs/test"]
-    RxJS -.->|application initializes realm| Active
-    RxJS --> Migration["Migration documentation and Skills"]
-    Test --> Migration
+    RxJS -.->|conditionally initializes realm| Active
+    RxJS -.-> Migrate["@rxjs/migrate development tool"]
+    Test -.-> Migrate
 ```
 
 The fallback must not depend on RxJS operators or migration tooling.
-`@rxjs/test` remains implementation-neutral rather than choosing a native or
-fallback constructor.
+`@rxjs/test` preserves an existing native constructor and otherwise receives
+the fallback through its public RxJS cold dependency.
 
 ## Repository workspace and tooling
 
 The repository uses pnpm 10.34.5 for local development, workspace execution,
 CI, and release preparation. `pnpm-workspace.yaml` is the authoritative
-workspace definition for the three packages under `packages/*` and the
+workspace definition for the four packages under `packages/*` and the
 `apps/rxjs.dev` application; the root project provides shared tooling, making
-five install projects in total. pnpm's default isolated linker keeps
+six install projects in total. pnpm's default isolated linker keeps
 package-local type dependencies separate without a public-hoist bridge. The
 docs application continues to resolve its declared RxJS 7 dependency from the
 registry rather than linking the exploratory local `rxjs` package.
@@ -912,16 +959,22 @@ The P0.3 package baseline was verified on 2026-07-30 with Node `24.12.0`:
 | Package fixtures                                | All three packages pass clean multi-dialect builds, declaration consumers, ESM imports, and CommonJS imports                                        |
 | Conditional installation fixtures               | Pass missing-global, marker, foreign/earlier constructor, independent `when`, direct-subpath, core-only root, worker-realm, and frozen-target cases |
 | Published-file dry runs                         | Contain `dist` runtime/declaration artifacts plus package metadata; no source specs or generated self-links                                         |
-| Polyfill and test-package source suites         | 49 polyfill/harness tests and 73 `@rxjs/test` tests pass                                                                                            |
-| Attested Observable WPT harness                 | 52/52 URLs, 525/525 upstream subtests, and 52/52 RxJS identity attestations pass                                                                    |
+| Polyfill and test-package source suites         | 49 polyfill/harness tests and 75 `@rxjs/test` tests pass                                                                                            |
+| Attested Observable WPT harness                 | 52/52 URLs and identity attestations pass; 522/525 upstream subtests pass, with three explicit D-042 argument-presence failures                     |
 
 Rebuilding the formerly disconnected polyfill entry also exposed that the
 historical focused RxJS source-test baseline had been consuming a stale
-fallback artifact. The rebuilt command currently reports 678/733 focused tests
-passing. Most failures call the Web-IDL-shaped `Subscriber.next()` without its
-required value; the remainder concern lifecycle expectations. P0.4 must
-establish one selected-implementation lifecycle contract before that diagnostic
-can again serve as a blocking package-independent gate.
+fallback artifact. P0.4 reconciled the focused suite to 733/733 passing tests
+against the rebuilt fallback. After removing invalid wrappers that had replaced
+RxJS 7 arbitrary-subscribable inputs, the complete cold migration audit now
+passes 2,296/2,338 and the fallback audit passes 2,316/2,338. The cold total
+reflects D-043: operator results derived from absolute-time hot fixtures use
+the platform lifecycle instead of inheriting cold behavior. Because the
+default ported command intentionally has no expected-failure quarantine, the
+all-mode RxJS command remains nonzero until those product gaps are resolved or
+explicitly retired.
+The package-independent lifecycle contract itself passes against both the
+packaged fallback and native Observable.
 
 The repository development engine declaration accepts Node 18, Node 20, and
 Node 24. The blocking Observable WPT workflow uses Node 24, and the harness
@@ -981,8 +1034,8 @@ These invariants should become automated fitness functions:
 | Risk                                                             | Impact                                                           | Mitigation direction                                                                                                        |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Living platform proposal changes                                 | Polyfill and operators drift from browsers                       | Pin revisions, track upstream, and advance deliberately                                                                     |
-| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically | D-041's conditional transaction and package fixtures cover acquisition; P0.4 expands lifecycle coverage                     |
-| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them         | Decide registry/version strategy and add duplicate-install fixtures                                                         |
+| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically | D-041's conditional transaction, package fixtures, and P0.4's shared lifecycle contract cover the selected base constructor |
+| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them         | Mixed ESM/CommonJS fallback installation is idempotent; P2.1 still owns extension-Symbol registry/version strategy          |
 | Prototype patching is restricted                                 | Extensions cannot install in hardened or unusual realms          | Keep those realms unclaimed and fail clearly without partial installation                                                   |
 | RxJS 7 tests encode different producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics   | Classify tests and keep cold evidence distinct from platform claims                                                         |
 | Migration evidence is mistaken for runtime compatibility         | Users depend on unsupported RxJS 7 imports or lifecycle behavior | State migration actions and unsupported surfaces without publishing an emulation package                                    |

@@ -220,8 +220,8 @@ pnpm --filter rxjs run test:unit:parity:check
 ## Test-harness relationship
 
 The machine-readable capability mapping is
-`packages/rxjs/test/ported/capability-registry.json`. The migration generator
-uses the import's role:
+`packages/rxjs/test/ported/capability-registry.json`. The checked-in migration
+evidence and reusable `@rxjs/migrate` tooling use the import's role:
 
 - an operator import becomes a descriptor that invokes
   `source[targetSymbol](...adaptedArgs)`;
@@ -231,4 +231,6 @@ uses the import's role:
   `missing-api` diagnostic.
 
 The complete per-case evidence remains in
-`packages/rxjs/test/ported/manifest.generated.json`.
+`packages/rxjs/test/ported/manifest.generated.json`. Executable specs are
+ordinary repository-owned files; `migration-report.json` retains their static
+case-ID mapping for audits.

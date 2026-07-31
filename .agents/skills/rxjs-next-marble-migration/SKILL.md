@@ -1,12 +1,13 @@
 ---
 name: rxjs-next-marble-migration
-description: Migrate RxJS 7 TestScheduler marble tests to RxJS Next rxTest while preserving the project's test framework, separating ColdObservable compatibility from shared platform Observable behavior, and recording missing APIs or semantic divergences. Use when application, library, or standalone test files contain TestScheduler.run, cold/hot marbles, expectObservable, expectSubscriptions, time, animate, or flush.
+description: Migrate RxJS 7 TestScheduler marble tests to RxJS Next rxTest, optionally through an explicit source-to-target test-framework adapter, while separating ColdObservable compatibility from shared platform Observable behavior and recording missing APIs or semantic divergences. Use when application, library, or standalone test files contain TestScheduler.run, cold/hot marbles, expectObservable, expectSubscriptions, time, animate, or flush.
 ---
 
 # RxJS Next marble migration
 
-Migrate behavioral evidence, not just syntax. Preserve the original test
-framework and test intent while making the Observable lifecycle explicit.
+Migrate behavioral evidence, not just syntax. Preserve test intent while making
+the Observable lifecycle explicit. Preserve the project's test framework by
+default; change it only through an explicit supported framework adapter.
 
 ## Inputs
 
@@ -14,11 +15,14 @@ Derive these from the selected files and project before asking:
 
 - the RxJS 7 test files or individual cases;
 - the existing test framework and assertion style;
+- the requested target test framework, which defaults to the existing one;
 - the RxJS Next operators available to the project;
 - whether the project wants cold compatibility, platform behavior, or both;
 - which environments can provide a native global `Observable`.
 
-Do not change test frameworks unless the user separately requests it.
+Do not guess a framework conversion. If the requested source/target pair is not
+supported, migrate the `rxTest` mechanics independently and report the
+framework conversion as a separate manual step.
 
 ## Workflow
 
@@ -31,8 +35,9 @@ Do not change test frameworks unless the user separately requests it.
 3. **Classify the case.** Use
    [references/classification-and-reporting.md](references/classification-and-reporting.md).
 4. **Create the cold baseline first.** Replace `TestScheduler.run` with
-   `rxTest`, keep the existing outer `describe`/`it`/`test` API, and preserve
-   marble values, errors, and subscription assertions.
+   `rxTest`, apply the selected framework adapter to the outer
+   `describe`/`it`/`test` and assertions if requested, and preserve marble
+   values, errors, and subscription assertions.
 5. **Build a capability map, then convert composition.** For every imported
    operator or creation function, record its exact Next Symbol, unified Next
    Symbol plus argument adapter, ambient-platform construction, or missing
@@ -61,8 +66,16 @@ complete before/after examples.
 
 ## Required safeguards
 
-- Preserve the project's test framework, assertion library, naming, and local
-  helpers unless a change is required by `rxTest`.
+- Preserve the project's framework, assertion library, naming, and local
+  helpers unless the user selected a supported framework adapter. Keep
+  framework conversion separate from `rxTest` and operator conversion.
+- Write ordinary owned test files. Do not leave generator warnings, hidden case
+  registries, dynamic test runners, or runtime loops standing in for direct
+  `it(...)`/`test(...)` declarations.
+- Follow the target project's filename convention and put the source
+  repository, exact revision, and source path in a file-level provenance
+  comment. Add case-level comments only when they explain a real migration
+  choice.
 - Return or await the `Promise<void>` from `rxTest`.
 - Keep cold compatibility tests and platform tests visibly distinct.
 - Run native and polyfill platform suites in isolated realms or processes so
@@ -80,7 +93,7 @@ complete before/after examples.
 
 Deliver:
 
-1. migrated test files or reviewable patches;
+1. ordinary migrated test files or reviewable patches that the project owns;
 2. a migration report based on
    [assets/migration-report-template.md](assets/migration-report-template.md);
 3. verification results separated into migration failures and product

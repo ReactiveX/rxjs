@@ -43,7 +43,9 @@ producer-per-subscription model:
 - concurrent observers do not share production.
 
 This is explicit test/compatibility behavior and does not change the main
-platform Observable.
+platform Observable. The fixture is a named subclass of `ColdObservable`;
+RxJS Symbol operators derive ordinary `ColdObservable` instances through the
+shared `[create]` protocol.
 
 ### `hot`
 
@@ -56,6 +58,12 @@ called, before any observer subscribes:
 - `^` establishes time zero and permits negative-time history;
 - `next`, `error`, and `complete` remain available for manual control.
 
+The fixture subclasses the active `globalThis.Observable` constructor so it
+works with either a preserved native implementation or the fallback. Its
+`[create]` protocol returns an ordinary instance of that active constructor,
+so operator results do not inherit the fixture's absolute-time broadcast
+machinery.
+
 ### `observable`
 
 `observable()` follows the platform lifecycle:
@@ -67,6 +75,9 @@ called, before any observer subscribes:
 - later observation starts a fresh activation;
 - its `subscriptions` log records producer activation windows, not raw observer
   count.
+
+It is constructed directly from the active `globalThis.Observable`; it does
+not select, replace, or import a fallback constructor.
 
 ## Public API
 
@@ -535,9 +546,10 @@ await rxTest(
 ## Packaging and verification
 
 `@rxjs/test` is a separate development-time package with a peer dependency on
-the matching `rxjs` release. It consumes the active Observable selected by the
-realm and does not import or force-install the fallback. This avoids replacing
-a conforming native implementation or creating a second Observable identity.
+the matching `rxjs` release. It imports the public `ColdObservable` used by
+`cold()`. That RxJS entry conditionally installs the fallback only when the
+realm has no Observable and preserves an existing native constructor, avoiding
+a second Observable identity.
 
 The package builds browser, webpack, ESM, and CommonJS dialects through the
 repository's normal `tshy` pipeline. Its source tests are excluded from
@@ -561,17 +573,22 @@ declarations. This includes parameterized variants and source-skipped evidence.
 Every record has a unique case ID and exactly one disposition, including
 missing capabilities and cases that only protect the former scheduler harness.
 
-Every record also has an executable program and is registered in the cold
-parity suite. Missing APIs and unavailable harness facilities are expected
-failures with source-linked diagnostics; they are not skipped or represented
-only as metadata.
+The executable evidence is 147 ordinary, formatted Vitest `.spec.ts` files for
+each of the cold and platform modes. A one-time migration produced them; the
+repository now owns them as normal source. Each file imports `describe`, `it`,
+`rxTest`, and the public RxJS Symbols it uses; every test calls `rxTest(...)`
+directly. File-level comments record the source repository, exact revision,
+and historic RxJS 7 path.
+Missing APIs and unavailable harness facilities fail as ordinary tests with
+source-linked diagnostics; they are not skipped or represented only as
+metadata.
 
-The executable cases use one shared definition format and a capability
-registry. Each mode runs in separate sharded processes so its constructor is
-active before Symbol extensions load:
+Each mode runs in its own Vitest process so its constructor is active before
+Symbol extensions load:
 
-- cold mode activates `ColdObservable`;
-- polyfill mode activates the platform fallback;
+- cold mode installs the fallback as the platform base, while `cold()` and
+  explicit cold factories use `ColdObservable` without replacing the global;
+- polyfill mode uses the platform fallback;
 - native mode preserves the ambient Observable and skips when none exists.
 
 Platform tests construct from the global `Observable` and never import the
@@ -581,7 +598,7 @@ where legacy producer-per-subscription expectations would be misleading.
 
 An exact migrated case may receive the internal port mode only when its
 subscription-multiplicity assertion intentionally differs between the RxJS 7
-cold lifecycle and the shared platform lifecycle. The generated cold branch
+cold lifecycle and the shared platform lifecycle. The checked-in cold branch
 must retain the original subscription evidence; the platform branch may change
 only the affected lifecycle expectation, such as two concurrent observers
 sharing one upstream subscription. Mode-aware rewrites must not hide value,
@@ -591,20 +608,18 @@ platform implementation producer-per-subscription.
 The default cold and polyfill gates register all 2,338 source cases as ordinary
 tests. Known implementation, capability, conversion, lifecycle, source-skip,
 and duplicate dispositions do not alter Vitest semantics: a test that throws
-fails the shard and the command. The historical verified-pass baselines remain
+fails the file and the command. The historical verified-pass baselines remain
 available for evidence reporting and deliberate JSON audit recording, but they
-cannot quarantine, skip, or invert a default result. Sharded JSON reports are
-merged only after validating complete, non-duplicated case-ID coverage.
-Dedicated platform lifecycle cases separately assert sharing and ref counting.
+cannot quarantine, skip, or invert a default result. Dedicated platform
+lifecycle cases separately assert sharing and ref counting.
 
-Default ported-test commands capture shard output so successful noise remains
-concise. Interactive terminals render one in-place status line, refreshed on
-shard completion and by a periodic heartbeat, with completed, running, queued,
-failed, and elapsed counts. Redirected and CI output receives one final
-progress summary rather than repeated updates. After all shards have run, every
-failed shard's cleaned Vitest diagnostics are expanded and the command returns
-nonzero. Supplying explicit Vitest arguments, including a reporter, restores
-direct Vitest output for focused investigation.
+The normal commands use Vitest's public built-in `default` reporter unchanged.
+Failures therefore print the real checked-in filename and line number, which
+editors and terminals can open directly. Audit commands use Vitest's built-in
+JSON reporter. The audit tools associate those results with manifest case IDs
+through the static migration report and declaration order, keeping machine IDs
+out of human test names while still validating complete, non-duplicated
+coverage.
 
 Operator imports are role-aware. An RxJS 7 pipeable call such as
 `source.pipe(operator(arg1, arg2))` becomes a runtime invocation of its mapped
@@ -627,3 +642,10 @@ pnpm --filter rxjs run test:unit:parity:check
 
 Detailed counts, duplicates, missing capabilities, and unsupported-case
 rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.
+
+Reusable authoring support lives in the independently publishable
+`@rxjs/migrate` package. Its semantic transform is independent of test-runner
+syntax; Mocha/Chai-to-Vitest is the first adapter, and callers may preserve or
+replace it. The package also includes a dry-run-first CLI, portable Skill
+assets, and read-only source-content MCP tools. None participates in test
+collection or execution after migrated files are accepted.

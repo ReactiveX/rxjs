@@ -205,9 +205,6 @@ class Subscriber<T> implements Observer<T> {
 
   next(value: T): void {
     this.#assertBrand();
-    if (arguments.length === 0) {
-      throw new TypeError('Subscriber.next requires a value');
-    }
 
     if (this.active) {
       const observers = Array.from(this.#observerList);

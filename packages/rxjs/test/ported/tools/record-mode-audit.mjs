@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const mode = process.argv[2];
@@ -12,8 +12,13 @@ if (!['cold', 'polyfill'].includes(mode) || !reportPath) {
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const manifestPath = resolve(toolDirectory, '../manifest.generated.json');
+const migrationReportPath = resolve(toolDirectory, '../migration-report.json');
 const outputPath = resolve(toolDirectory, `../verified-${mode}-passes.json`);
-const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+const packageDirectory = resolve(toolDirectory, '../../..');
+const [manifest, migrationReport] = await Promise.all([
+  readFile(manifestPath, 'utf8').then(JSON.parse),
+  readFile(migrationReportPath, 'utf8').then(JSON.parse),
+]);
 const report = JSON.parse(await readFile(resolve(reportPath), 'utf8'));
 
 if (report.numTotalTests !== manifest.totals.cases || report.numPendingTests !== 0) {
@@ -28,19 +33,30 @@ if (report.numPassedTests + report.numFailedTests !== report.numTotalTests) {
 }
 
 const manifestByCaseId = new Map(manifest.cases.map((testCase) => [testCase.id, testCase]));
-const assertions = report.testResults.flatMap((testResult) => testResult.assertionResults);
+const suiteMode = mode === 'cold' ? 'cold' : 'platform';
+const migratedFiles = new Map(migrationReport.modes[suiteMode].map((entry) => [entry.file, entry]));
+const assertions = [];
+for (const testResult of report.testResults) {
+  const file = relative(packageDirectory, testResult.name).replaceAll('\\', '/');
+  const migratedFile = migratedFiles.get(file);
+  if (!migratedFile) {
+    throw new Error(`Audit report contains an unexpected test file: ${file}`);
+  }
+  if (testResult.assertionResults.length !== migratedFile.caseIds.length) {
+    throw new Error(
+      `Audit result count does not match the migration report for ${file}: ` +
+        `${testResult.assertionResults.length} results, ${migratedFile.caseIds.length} case IDs.`
+    );
+  }
+  for (const [index, assertion] of testResult.assertionResults.entries()) {
+    assertions.push({ assertion, caseId: migratedFile.caseIds[index] });
+  }
+}
 const seenCaseIds = new Set();
 const caseIds = [];
-for (const assertion of assertions) {
-  const match = assertion.title.match(/^\[case-id:([^\]]+)\](?: |$)/);
-  let caseId;
-  try {
-    caseId = match ? decodeURIComponent(match[1]) : null;
-  } catch {
-    caseId = null;
-  }
+for (const { assertion, caseId } of assertions) {
   if (!caseId || !manifestByCaseId.has(caseId)) {
-    throw new Error(`Could not associate audit result with a manifest case ID: ${assertion.title}`);
+    throw new Error(`Could not associate audit result with a manifest case ID: ${caseId}`);
   }
   if (seenCaseIds.has(caseId)) {
     throw new Error(`Audit report contains more than one assertion for case ID: ${caseId}`);

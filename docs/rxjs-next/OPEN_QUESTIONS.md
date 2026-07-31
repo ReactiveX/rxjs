@@ -59,7 +59,10 @@ Still decide:
 
 P0.3 proves that the root can remain operator-free, that generated declarations
 preserve subpath-scoped augmentation, and that standalone ESM and CommonJS
-imports initialize correctly.
+imports initialize correctly. P0.4 additionally proves that mixed ESM/CommonJS
+loads of the base fallback preserve one installation in either order. The open
+question above is limited to public extension side effects, exact Symbols, and
+independently bundled or version-skewed copies.
 
 ### 3. Which exact runtime versions and module systems are supported?
 
@@ -83,7 +86,11 @@ Before the release support matrix stabilizes, define:
 The WPT harness pins commit
 `6a009d73f0d315941b90cac13a9523a2a08c631b`. Choose the matching Observable
 specification commit, the ownership and update policy for both pins, and the
-browser-support policy for later revisions.
+browser-support policy for later revisions. D-042 deliberately permits
+`Subscriber<void>.next()` and therefore differs from the pinned WPT
+argument-presence rule; the policy must say how such accepted product
+divergences are recorded without weakening the strict WPT diagnostic or
+editing upstream sources.
 
 ### 5. How are same-realm subclasses and borrowed methods preserved?
 
@@ -141,15 +148,18 @@ criteria for calling an application migrated.
 
 ### 10. How are Skills and possible MCP capabilities shipped?
 
-D-008 makes robust migration Skills the intended assistance path and leaves
-broader MCP support optional. After the runtime APIs stabilize, decide:
+D-044 resolves the first distribution slice: `@rxjs/migrate` contains a
+portable Skill, programmatic transform, dry-run-first CLI, framework adapter
+boundary, and source-content-only read-only MCP server. It is versioned with
+the workspace during the exploratory phase. The remaining question is the
+broader portfolio and release policy:
 
-- plugin, package, or generated-document distribution;
 - independent versus RxJS-coupled versioning;
-- permissions to inspect, modify, test, or migrate projects;
-- whether any MCP server is justified beyond the Skill portfolio;
-- validation and review requirements for generated changes.
+- which additional production and test-framework adapters deserve first-party
+  support;
+- whether a future plugin should orchestrate filesystem inspection, writes,
+  and test execution around the deliberately read-only MCP core;
+- release-grade validation requirements for migrated changes.
 
-The repository's portable `rxjs-next-marble-migration` Skill is evidence for
-the approach, not a decision about public distribution, permissions, or MCP
-packaging.
+The package does not settle the shape of a broader migration plugin or grant
+an MCP server project-level write authority.

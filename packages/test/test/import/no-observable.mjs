@@ -5,9 +5,8 @@ Reflect.deleteProperty(globalThis, 'Subscriber');
 
 const { rxTest } = await import('@rxjs/test');
 
-assert.equal(globalThis.Observable, undefined);
-assert.equal(globalThis.Subscriber, undefined);
-await assert.rejects(
-  rxTest(() => {}),
-  /@rxjs\/test requires the active realm to initialize the platform Observable before rxTest is called/
-);
+assert.equal(typeof globalThis.Observable, 'function');
+assert.equal(typeof globalThis.Subscriber, 'function');
+await rxTest(({ cold, expectObservable }) => {
+  expectObservable(cold('a|')).toBe('a|');
+});

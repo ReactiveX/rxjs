@@ -11,8 +11,8 @@ It is not the platform lifecycle.
 
 ## Platform Observable
 
-The platform Observable is cold until first observed, shared while active, and
-ref-counted:
+The platform Observable changes producer state over its lifetime and should not
+receive one blanket hot/cold label:
 
 - the first observer activates producer work;
 - concurrent observers join that work;

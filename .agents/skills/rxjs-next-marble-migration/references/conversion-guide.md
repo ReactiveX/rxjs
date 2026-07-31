@@ -1,10 +1,29 @@
 # Conversion guide
 
-## Preserve the outer test framework
+## Select the outer test-framework adapter
 
-Keep `describe`, `it`, `test`, hooks, spies, and the assertion library already
-used by the project. Only replace framework APIs when they depend directly on
-the removed TestScheduler surface.
+Framework preservation is the default adapter. Keep `describe`, `it`, `test`,
+hooks, spies, and the assertion library already used by the project unless the
+user selected a supported target framework.
+
+Treat a framework migration as a separate adapter over the same converted test
+body. For example, the first supported cross-framework path may translate
+Mocha/Chai imports, hooks, assertions, and spies to Vitest while the core
+conversion independently replaces `TestScheduler` and RxJS 7 composition.
+Report an unsupported framework pair instead of guessing its globals,
+assertions, spies, hooks, or configuration.
+
+Regardless of the adapter, emit direct ordinary test declarations. Materialize
+parameterized source cases into readable `it(...)` or `test(...)` declarations;
+do not add a runtime loop, hidden registry, or generated location shim.
+
+## File ownership and provenance
+
+Use the target project's filename convention. Start every migrated file with a
+short comment containing the source repository, exact revision, and source
+path. The result is owned source code: it must not say to edit or rerun a
+generator. Use case-level comments only to explain a semantic migration choice
+such as a lifecycle selection or scheduler-to-host-time rewrite.
 
 ## TestScheduler wrapper
 

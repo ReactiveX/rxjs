@@ -331,7 +331,7 @@ worker.onerror = (event) => fail(event.message || "worker failed");
 setTimeout(() => fail("native exposure probe timed out"), 5000);
 `;
 
-export async function probeNativeExposure(binaries) {
+export async function runBrowserAsyncScript({ binaries, script, args = [], label = 'Browser script' }) {
   const port = await getFreePort();
   const driver = spawn(binaries.chromedriver, [`--port=${port}`, '--allowed-ips=127.0.0.1'], {
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -374,10 +374,10 @@ export async function probeNativeExposure(binaries) {
       port,
       method: 'POST',
       pathname: `/session/${sessionId}/execute/async`,
-      body: { script: nativeProbeScript, args: [] },
+      body: { script, args },
     });
     if (result.value?.error) {
-      throw new Error(`Native exposure probe failed: ${result.value.error}`);
+      throw new Error(`${label} failed: ${result.value.error}`);
     }
     return result.value;
   } catch (error) {
@@ -392,6 +392,14 @@ export async function probeNativeExposure(binaries) {
     }
     driver.kill('SIGTERM');
   }
+}
+
+export async function probeNativeExposure(binaries) {
+  return runBrowserAsyncScript({
+    binaries,
+    script: nativeProbeScript,
+    label: 'Native exposure probe',
+  });
 }
 
 export async function verifyBrowser({ config, binaries, allowBrowserDrift }) {

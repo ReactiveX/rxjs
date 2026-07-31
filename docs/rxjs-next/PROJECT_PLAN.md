@@ -6,8 +6,11 @@ The project will establish a reliable platform Observable foundation before
 expanding the operator catalog and migration promises. The user temporarily
 prioritized the attested Observable WPT harness and fallback-conformance work
 ahead of the package and installation decision. Both slices are complete:
-the fallback passes the pinned suite while exact implementation identity is
-proved in every tested realm. The portable RxJS 7-to-Next marble-test migration
+the fallback reached a fully passing pinned suite while exact implementation
+identity was proved in every tested realm. D-042 subsequently accepted
+argument-free `Subscriber<void>.next()` and intentionally reopened three
+argument-presence results in that strict suite. The portable RxJS 7-to-Next
+marble-test migration
 Skill, its independent vetting, and the classified repository port are also
 complete. The user has clarified that preservation in a manifest is not enough:
 all cases must become executable parity registrations even when their
@@ -17,20 +20,25 @@ parameterized and source-skipped evidence. The user has now temporarily
 prioritized and completed P0.T3: the durable failure ledger retains every
 original failure, all 2,338 registrations pass in cold and polyfill modes, and
 the strict RxJS unit gate was green against the artifact then in use. P0.3
-later exposed that the focused portion had consumed a stale polyfill build;
-P0.4 owns the resulting lifecycle-test reconciliation. P0.2 has now accepted
+later exposed that the focused portion had consumed a stale polyfill build.
+P0.4 has reconciled that evidence with one reusable lifecycle contract that
+runs against the packaged fallback and a browser-native implementation, and
+has completed the package-import safety fixtures. P0.2 has now accepted
 the three-package map,
 conditional per-realm fallback contract, and migration-over-emulation
 direction. P0.3 has now implemented those package decisions, restored clean
-publication builds, and added the required import/realm evidence. P0.4 is the
-single active item and must establish one native/fallback lifecycle contract.
-A later user-prioritized
-runner follow-up also removed expected-failure quarantine from the default
-ported command and added live shard progress. The
-user-prioritized repository package-manager migration to pnpm 10 is complete
+publication builds, and added the required import/realm evidence. P0.5 will
+formalize the specification/WPT revision policy. A later
+user-prioritized runner follow-up removed expected-failure quarantine. P0.DX4
+replaced that custom dynamic launcher and shard renderer with real Vitest files
+and stock reporting. The user then clarified that those files must be ordinary
+owned migration results rather than generator-owned artifacts, and prioritized
+P0.M1 with a publishable, framework-adaptable migration package dogfooded on
+this repository. The user-prioritized repository package-manager migration to pnpm 10 is complete
 without deciding the P0.2 publication boundary. The root developer command
 guide is also concise, task-oriented, and explicit about known failing gates.
-Broader Skills/MCP product design remains deferred.
+The broader Skill portfolio remains deferred beyond that focused migration
+package. P0.5 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -66,25 +74,27 @@ item.
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status    | ID     | Outcome                                                                                                            |
-| --------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
-| `DONE`    | P0.1   | Record the charter, current architecture, migration policy, decisions, risks, open questions, and AI working rules |
-| `DONE`    | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                      |
-| `DONE`    | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                       |
-| `DONE`    | P0.T2b | Vet the migration Skill independently before using it on the repository                                            |
-| `DONE`    | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                              |
-| `DONE`    | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                |
-| `DONE`    | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                      |
-| `DONE`    | P0.T2f | Make the default ported-test gate strict and progress-visible                                                      |
-| `DONE`    | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue              |
-| `DONE`    | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                    |
-| `DONE`    | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                         |
-| `DONE`    | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                 |
-| `DONE`    | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
-| `DONE`    | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
-| `DONE`    | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
-| `NEXT`    | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
-| `PLANNED` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                          |
+| Status | ID     | Outcome                                                                                                            |
+| ------ | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| `DONE` | P0.1   | Record the charter, current architecture, migration policy, decisions, risks, open questions, and AI working rules |
+| `DONE` | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                      |
+| `DONE` | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                       |
+| `DONE` | P0.T2b | Vet the migration Skill independently before using it on the repository                                            |
+| `DONE` | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                              |
+| `DONE` | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                |
+| `DONE` | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                      |
+| `DONE` | P0.T2f | Make the default ported-test gate strict and progress-visible                                                      |
+| `DONE` | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue              |
+| `DONE` | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                    |
+| `DONE` | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                         |
+| `DONE` | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                 |
+| `DONE` | P0.DX4 | Materialize normal rxTest specs with stock Vitest reporting and real source locations                              |
+| `DONE` | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
+| `DONE` | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
+| `DONE` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
+| `DONE` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
+| `DONE` | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                 |
+| `NEXT` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                          |
 
 #### P0.1 completion evidence
 
@@ -370,6 +380,50 @@ item.
   with focused Node tests. The default `7.8.2` integration run, cache-hit
   reuse, and refresh behavior are recorded in the session log.
 
+#### P0.DX4 completion evidence
+
+- Materialized 147 formatted Vitest files per execution mode, with 2,338
+  direct `rxTest` cases in each and source-pinned RxJS 7 URL comments.
+- Removed the dynamic registration module and custom shard/progress launcher.
+  Normal runs use Vitest's public built-in default reporter unchanged, so
+  diagnostics point to real repository files and lines.
+- Made cold construction explicit without replacing `globalThis.Observable`:
+  cold fixtures extend `ColdObservable`, hot fixtures extend the active global
+  constructor and derive ordinary platform Observables, and `observable()`
+  directly models that global constructor.
+- Complete built-in JSON audits record 2,296/2,338 cold passes and
+  2,316/2,338 fallback-platform passes. Generated file/declaration order maps
+  audit results back to manifest case IDs without polluting human test names.
+- Kept P0.5 as the sole project-level `NEXT` item.
+
+#### P0.M1 completion evidence
+
+- Added the publishable `@rxjs/migrate` workspace package with a
+  framework-neutral migration core,
+  a one-time CLI, reusable Skill assets, and bounded local MCP capabilities.
+- Source- and target-test-framework concerns are adapters. The first supported
+  path migrates Mocha/Chai tests to Vitest without coupling `rxTest` conversion
+  semantics to Vitest.
+- Dogfooded its Mocha/Chai-to-Vitest adapter while adopting the repository's
+  ported corpus as ordinary human-readable
+  specs with local file names and file-level source repository, revision, and
+  path provenance. No test tells contributors to edit or rerun a generator.
+- Each migrated test calls `rxTest` through normal test-framework code. Any
+  migration-specific comment explains a real semantic rewrite; parameterized
+  source cases are materialized as direct tests rather than dynamic runners.
+- Cold and platform source lifecycles remain explicit in the test files. Only
+  the repository-owned platform execution matrix selects native versus
+  polyfill Observable implementations in isolated realms.
+- The former test-file generator is not part of the test, audit, or contributor
+  workflow. Stock Vitest reporters continue to provide clickable real paths.
+- Verified 9 package tests, lint, ESM/CommonJS imports, CLI dry run, package
+  build and publication dry run, and the portable Skill checks. Focused
+  `@rxjs/test` and RxJS source suites pass 75/75 and 733/733 tests.
+- Complete owned-file audits cover all 2,338 cases per mode and retain the
+  reviewed 2,296 cold and 2,316 fallback-platform passes. Representative
+  formerly dynamic suites pass 176/176 direct tests; the focused concat
+  failure reports its real checked-in file and line through stock Vitest.
+
 #### P0.I1 completion bar
 
 - Four exact instance Symbols expose lossless FIFO, lossless buffered, lossy
@@ -427,8 +481,9 @@ diagrams. No implementation is required for this decision step.
   P0.3 with no archive, rename, or compatibility reuse.
 - Assigned the base ambient `Observable`, `Subscriber`, `ObservableValue`, and
   `EventTarget.when` declarations to the independently publishable polyfill
-  package. `rxjs` owns subpath-scoped Symbol augmentations, while `@rxjs/test`
-  remains implementation-neutral.
+  package. `rxjs` owns subpath-scoped Symbol augmentations. At P0.2 acceptance,
+  `@rxjs/test` remained implementation-neutral; D-043 later gave its explicit
+  cold fixture a public `ColdObservable` dependency.
 - Required every public `rxjs` entry point to evaluate the conditional
   polyfill initializer. The root exports non-operator core values without
   installing the full Symbol catalog; a Symbol subpath installs only its own
@@ -521,10 +576,44 @@ diagrams. No implementation is required for this decision step.
 - Package fixtures detect missing initialization, wrong side effects, duplicate
   installation, and type visibility.
 
+#### P0.4 completion evidence
+
+- Added one self-contained lifecycle contract and executed that exact function
+  against the built `@rxjs/observable-polyfill` package in Node and the native
+  Observable in pinned Chrome `150.0.7871.126`.
+- The five grouped cases cover first activation, concurrent observers, late
+  join, individual and last-observer abort, restart, completion, error,
+  synchronous reentrancy, late teardown registration, reverse teardown order,
+  and thrown `next`, `error`, and `complete` callbacks.
+- Added mixed ESM/CommonJS duplicate-install fixtures in both load orders. They
+  prove that a second package dialect preserves the selected `Observable`,
+  paired `Subscriber`, `EventTarget.when`, abort bridge, and frozen marker
+  object identities.
+- The existing missing-global, foreign/native preservation, frozen-target,
+  declaration-consumer, and built ESM/CommonJS fixtures continue to prove
+  initialization, side-effect, and type-visibility boundaries for all three
+  packages.
+- Added the lifecycle contract to both pinned and latest-Chrome Observable CI
+  jobs. At P0.4 completion, the reusable browser-script runner passed the
+  pinned strict WPT gate: 52/52 URLs, 525/525 upstream subtests, and 52/52
+  implementation attestations. D-042 subsequently changed the void
+  notification contract; the current strict diagnostic passes 522/525
+  upstream subtests and retains all 52 identity attestations.
+- Reconciled the stale focused suite: 101 files and 733/733 tests pass against
+  the rebuilt fallback. A correction audit removed invalid platform-Observable
+  wrappers around RxJS 7 arbitrary-subscribable inputs. The complete cold
+  migration audit now passes 2,323/2,338 and the fallback audit passes
+  2,316/2,338. The 15 shared legacy-input failures and seven additional
+  fallback retry/shared-error failures remain executable product evidence; the
+  strict all-mode command therefore remains nonzero without weakening or
+  quarantining those cases.
+
 #### P0.5 completion bar
 
 - Exact upstream specification and WPT commit identifiers are recorded.
 - The relationship between upstream tests and local test modes is documented.
+- The policy explains how accepted product divergences such as D-042 are
+  recorded while the strict WPT command remains an honest nonzero diagnostic.
 - An update policy and owner are named.
 - This step does not require a complete WPT execution pipeline.
 
@@ -710,12 +799,12 @@ Phase exit:
 
 ### Phase 5 — Migration experience and AI enablement
 
-| Status     | ID   | Outcome                                                                              |
-| ---------- | ---- | ------------------------------------------------------------------------------------ |
-| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
-| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
-| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution             |
-| `DEFERRED` | P5.4 | Design MCP capabilities, permissions, packaging, and versioning                      |
+| Status     | ID   | Outcome                                                                                 |
+| ---------- | ---- | --------------------------------------------------------------------------------------- |
+| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences    |
+| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications         |
+| `DEFERRED` | P5.3 | Design the broader RxJS usage/migration Skill portfolio and distribution                |
+| `DEFERRED` | P5.4 | Design broader plugin orchestration and write permissions beyond the read-only MCP core |
 
 AI tools must consume versioned project knowledge and produce reviewable
 changes. They must not infer migration safety solely from matching operator
@@ -755,19 +844,19 @@ conformance implementation depends on a runnable harness.
 
 ## Risk register
 
-| Risk                                                | Impact                                               | Likelihood | Current response                                                                                  |
-| --------------------------------------------------- | ---------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
-| Native/fallback lifecycle evidence is not unified   | Package acquisition can pass while semantics diverge | High       | P0.4 is the single `NEXT` item                                                                    |
-| Upstream proposal changes                           | Fallback and native behavior drift                   | High       | Pin revisions before conformance claims                                                           |
-| Prototype code becomes accidental policy            | Semantics are preserved without review               | High       | Documents distinguish current fact from accepted direction                                        |
-| Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys       | High       | P2.1 plus package fixtures                                                                        |
-| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge                   | High       | Mandatory classification; evidence never implies a runtime compatibility product                  |
-| Migration evidence is mistaken for emulation        | Users depend on unsupported RxJS 7 surfaces          | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                |
-| Global patching fails in hardened realms            | Library cannot initialize                            | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure              |
-| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations                    | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred              |
-| Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests        | High       | Package-import fixtures and release gates precede expansion                                       |
-| WPT runs accidentally exercise native Observable    | False confidence in fallback behavior                | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                  |
-| WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation              | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts |
+| Risk                                                | Impact                                               | Likelihood | Current response                                                                                     |
+| --------------------------------------------------- | ---------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| Native/fallback lifecycle evidence regresses        | Package acquisition can pass while semantics diverge | Medium     | P0.4's shared contract blocks drift; seven fallback-only lifecycle failures are retained for Phase 1 |
+| Upstream proposal changes                           | Fallback and native behavior drift                   | High       | Pin revisions before conformance claims                                                              |
+| Prototype code becomes accidental policy            | Semantics are preserved without review               | High       | Documents distinguish current fact from accepted direction                                           |
+| Symbol identity fails with duplicate installs       | Extensions are present under inaccessible keys       | High       | P2.1 plus package fixtures                                                                           |
+| RxJS 7 suite pressures platform behavior backward   | Native and fallback layers diverge                   | High       | Mandatory classification; evidence never implies a runtime compatibility product                     |
+| Migration evidence is mistaken for emulation        | Users depend on unsupported RxJS 7 surfaces          | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                   |
+| Global patching fails in hardened realms            | Library cannot initialize                            | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                 |
+| Tooling is designed before APIs stabilize           | Skills encode obsolete migrations                    | Medium     | The portable marble Skill is vetted; broader Skill/MCP distribution remains deferred                 |
+| Current CI/release infrastructure assumes RxJS 7    | Published artifacts fail despite source tests        | High       | Package-import fixtures and release gates precede expansion                                          |
+| WPT runs accidentally exercise native Observable    | False confidence in fallback behavior                | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                     |
+| WPT/browser setup is too large or network-dependent | Slow or skipped local and CI validation              | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts    |
 
 ## Out of scope until activated
 
@@ -1627,7 +1716,8 @@ conformance implementation depends on a runnable harness.
   target package map and selected `@rxjs/observable` for removal in P0.3.
 - Made the polyfill package independently publishable and responsible for the
   base ambient platform types. `rxjs` depends on it and initializes the current
-  realm through every public entry; `@rxjs/test` remains implementation-neutral.
+  realm through every public entry. D-043 later added the public
+  `ColdObservable` dependency used by `@rxjs/test.cold()`.
 - Defined a non-install-all `rxjs` root for intentional non-operator core APIs
   and capability-scoped Symbol subpaths.
 - Preserved existing Observable and `EventTarget.when` implementations,
@@ -1695,3 +1785,120 @@ conformance implementation depends on a runnable harness.
   after rebuilding the polyfill, 678/733 focused RxJS tests pass before the
   ported parity launcher runs.
 - Marked P0.3 `DONE` and advanced P0.4 as the sole project-level `NEXT` item.
+
+### 2026-07-30 — P0.4 native/fallback lifecycle safety rail
+
+- Added one package-independent lifecycle contract and ran it unchanged against
+  the built fallback in Node and the native Observable in pinned Chrome
+  `150.0.7871.126`; all five grouped cases passed.
+- Covered shared activation, late joins, observer and producer cancellation,
+  restart, completion, error, synchronous reentrancy, teardown registration
+  and ordering, and host reporting for thrown observer callbacks.
+- Added mixed ESM/CommonJS duplicate-install fixtures in both load orders and
+  wired the lifecycle contract into the pinned and latest-Chrome WPT jobs.
+- Reconciled the rebuilt focused RxJS suite to 733/733 passing tests. A later
+  correction audit removed invalid wrappers that replaced RxJS 7
+  arbitrary-subscribable inputs, leaving those 15 claims as executable
+  compatibility failures instead of manufactured passes.
+- Recorded 2,323/2,338 cold passes and 2,316/2,338 fallback passes. The latter
+  includes the same 15 legacy-input failures plus seven fallback-only
+  retry/shared-error failures. The focused suites, package gates, package
+  source suites, parity/tracker freshness checks, shared lifecycle contract,
+  pinned-import verification, and the then-strict 525-subtest WPT conformance
+  gate pass.
+- Marked P0.4 `DONE` and advanced P0.5 as the sole project-level `NEXT` item.
+
+### 2026-07-30 — P0.4 `Subscriber<void>` correction
+
+- Removed the call-site workaround that changed void notifications from
+  `subscriber.next()` to `subscriber.next(undefined)`.
+- Kept the ordinary `next(value: T)` signature; TypeScript already permits its
+  argument to be omitted for `Subscriber<void>` while rejecting an omitted
+  value for `Subscriber<number>`. Cold and test subscribers need no special
+  overloads or casts.
+- Made an omitted fallback runtime argument emit `undefined`; added type and
+  runtime regression coverage and recorded D-042.
+- Passed all package builds, polyfill type/import/source tests, 73
+  `@rxjs/test` tests, the 733-test focused RxJS suite, and the five-case
+  native/fallback lifecycle contract. The later correction audit records 15
+  shared legacy-input failures and seven additional fallback lifecycle
+  failures without changing their programs.
+- The strict pinned WPT diagnostic now passes 522/525 upstream subtests and all
+  52 identity attestations. Its Web IDL, window, and worker argument-presence
+  failures are the explicit D-042 divergence; upstream sources remain
+  unchanged.
+- Kept P0.5 as the sole project-level `NEXT` item so the revision policy can
+  formalize how accepted divergences are recorded.
+
+### 2026-07-31 — `Subscriber<void>` correction audit
+
+- Removed the unnecessary conditional-tuple overloads, optional implementation
+  parameters, casts, and `dematerialize` workaround introduced during the
+  first correction attempt.
+- Confirmed with the repository TypeScript compiler that the ordinary
+  `next(value: T)` signature already permits `next()` for `T = void` and still
+  rejects an omitted value for `T = number`.
+- Restored `ColdSubscriber`, `PlatformSubscriber`, the independent test
+  subscriber, and `dematerialize` to their pre-correction source exactly.
+- Removed generated platform-Observable wrappers that had changed 15 RxJS 7
+  arbitrary-subscribable claims. Those programs now retain their original
+  inputs, carry `compatibility-only` classifications, and fail honestly.
+- Retained only the fallback runtime removal of the missing-argument throw,
+  one runtime regression test, one public type regression test, and the
+  documentation required for the resulting WPT divergence.
+- Corrected a native lifecycle-runner branch so assertion failures report
+  immediately instead of surfacing as browser timeouts, and regenerated the
+  stale manifest and failure ledger from complete audits.
+- Package builds, type coverage, 50 polyfill tests, 73 `@rxjs/test` tests, and
+  all 733 focused RxJS tests pass. The complete audits record 2,323 cold and
+  2,316 fallback passes out of 2,338. P0.5 remains the sole `NEXT` item.
+
+### 2026-07-31 — P0.DX4 real test files and stock reporting
+
+- Replaced the single dynamically registered parity suite and custom
+  shard/progress launcher with 294 formatted Vitest files: 147 cold and 147
+  platform files, each using normal `describe`, `it`, direct public Symbol
+  calls, and `await rxTest(...)`.
+- Kept RxJS 7 provenance as source comments while making every failure
+  location a real repository path and line. Normal commands use the
+  unmodified Vitest default reporter.
+- Refactored `rxTest` fixtures so cold explicitly extends `ColdObservable`, hot
+  extends the active global constructor and derives ordinary platform
+  Observables, and `observable()` directly uses `globalThis.Observable`.
+- Removed the cold-mode global constructor replacement. Cold static factories
+  now name `ColdObservable` explicitly in the migrated examples.
+- Used Vitest's built-in JSON reporter for complete evidence and mapped results
+  through a static migration report. Audits record 2,296 cold and 2,316
+  fallback-platform passes out of 2,338; the failure tracker was regenerated
+  without machine IDs in test titles.
+- `@rxjs/test` source and public type suites pass with 75 runtime tests. Native
+  mode remains explicitly skipped in the current Node realm. P0.5 remains the
+  sole `NEXT` item.
+
+### 2026-07-31 — P0.M1 owned migrations and `@rxjs/migrate`
+
+- Added the independently publishable `@rxjs/migrate` development package
+  with a framework-neutral semantic transform, caller-supplied capability
+  maps, a generic framework-adapter interface, a Mocha/Chai-to-Vitest adapter,
+  dry-run-first CLI, bundled Skill assets, and two read-only source-content MCP
+  tools. The transform also handles production `pipe(...)` expressions without
+  requiring a test framework or `TestScheduler`.
+- Dogfooded the package while adopting 294 files as ordinary repository-owned
+  Vitest source: 147 cold and 147 platform files, each with file-level source
+  repository, exact revision, and path provenance. All 2,338 cases per mode
+  are direct tests that call `rxTest`; parameterized registrations are
+  materialized rather than dynamically generated.
+- Removed the test-file generator, generated tree, custom Chai/spy support
+  layer, and generator script. The Vitest config now collects the owned files
+  directly with its stock default reporter. Audit and tracker tools use a
+  static migration report only for case identity.
+- Verified 9 migration-package tests, lint, builds, ESM/CommonJS imports, CLI
+  dry run, package publication contents, Skill helper/portability checks, 75
+  `@rxjs/test` tests, and 733 focused RxJS tests. Formerly dynamic share and
+  multicasting samples pass all 176 direct tests.
+- Complete JSON audits cover all 2,338 tests per mode and retain 2,296 cold and
+  2,316 fallback-platform passes with no pending tests. The reviewed product
+  failures remain ordinary failures; a focused concat run points to the real
+  checked-in spec line. Native mode skips explicitly in the current Node realm.
+- Recorded D-044, marked P0.M1 `DONE`, and advanced P0.5 as the sole `NEXT`
+  item.

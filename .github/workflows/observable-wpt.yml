@@ -69,6 +69,9 @@ jobs:
       - name: Verify the pinned import
         run: pnpm run wpt:verify-import
 
+      - name: Run native and fallback lifecycle contract
+        run: pnpm run test:lifecycle
+
       - name: Run the attested conformance suite
         run: pnpm run test:wpt
 
@@ -123,6 +126,13 @@ jobs:
 
       - name: Verify the pinned import
         run: pnpm run wpt:verify-import
+
+      - name: Run native and fallback lifecycle contract
+        run: pnpm run test:lifecycle
+        env:
+          RXJS_WPT_ALLOW_BROWSER_DRIFT: '1'
+          RXJS_WPT_CHROME_BINARY: ${{ steps.chrome.outputs.chrome-path }}
+          RXJS_WPT_CHROMEDRIVER: ${{ steps.chrome.outputs.chromedriver-path }}
 
       - name: Run advisory browser-drift conformance check
         run: pnpm run test:wpt

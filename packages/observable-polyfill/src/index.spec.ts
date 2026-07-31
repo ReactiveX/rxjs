@@ -55,6 +55,18 @@ describe('Observable', () => {
     expect(results).toEqual(['subscribe', 1, 2, 'abort', 'teardown', 'complete']);
   });
 
+  it('emits undefined when a void Subscriber calls next without an argument', () => {
+    const results: void[] = [];
+    const source = new Observable<void>((subscriber) => {
+      subscriber.next();
+      subscriber.complete();
+    });
+
+    source.subscribe((value) => results.push(value));
+
+    expect(results).toEqual([undefined]);
+  });
+
   it('handles errors correctly', () => {
     const results: (string | number)[] = [];
     const error = new Error('Test error');

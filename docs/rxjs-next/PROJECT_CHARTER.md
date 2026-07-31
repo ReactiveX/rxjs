@@ -11,8 +11,8 @@ RxJS Next will not ship a separate RxJS 7 runtime-compatibility library.
 Producer-per-subscription values, Subjects, Symbol-keyed composition, and
 other useful library capabilities may remain first-class RxJS Next APIs, but
 they are specified on their own terms rather than as a blanket emulation
-promise. Migration from RxJS 7 will instead be supported by documentation and
-repository-grounded Skills, with broader MCP assistance considered later.
+promise. Migration from RxJS 7 will instead be supported by documentation,
+Skills, one-time source transforms, and bounded read-only MCP assistance.
 
 The working project name is **RxJS Next**. The likely public version is RxJS 9
 because a cancelled RxJS 8 line already exists and reusing that version would
@@ -53,9 +53,9 @@ Restarting the library on top of the platform primitive has three benefits:
    Subjects, and Symbol-keyed `pipe` when they have explicit RxJS Next
    contracts, without presenting them as a separate RxJS 7 compatibility
    surface.
-6. **Migration intelligence.** Ship robust Skills that help users apply RxJS
-   Next and migrate from RxJS 7. Broader MCP capabilities remain a possible
-   later addition; packaging, APIs, and permissions are deferred.
+6. **Migration intelligence.** Ship robust, reviewable one-time tooling that
+   helps users apply RxJS Next and migrate from RxJS 7. Keep test-framework
+   syntax adaptable, project writes explicit, and MCP authority read-only.
 7. **AI-ready development.** Keep project intent, architecture, decisions,
    tests, and open questions explicit enough for AI-assisted implementation to
    be safe and reviewable.
@@ -64,7 +64,8 @@ Restarting the library on top of the platform primitive has three benefits:
 
 - Treating the completed test-only harness and its reviewed failure baseline as
   proof that the current fallback already conforms.
-- Designing the final Skills or MCP products.
+- Designing the complete migration Skill/plugin portfolio beyond the focused
+  `@rxjs/migrate` package.
 - Shipping a runtime package that emulates the RxJS 7 public API, import map,
   subscription facade, pipeable-operator surface, or scheduler system.
 - Claiming complete RxJS 7 behavioral compatibility on the platform

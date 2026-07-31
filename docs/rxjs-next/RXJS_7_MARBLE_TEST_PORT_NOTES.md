@@ -26,16 +26,16 @@ source location.
 
 | Disposition          |     Cases | Meaning                                                                                       |
 | -------------------- | --------: | --------------------------------------------------------------------------------------------- |
-| Active               |       401 | Converted case currently passes in the reviewed ColdObservable baseline                       |
-| Expected failure     |       506 | Converted case is executable but exposes an implementation, lifecycle, or conversion mismatch |
-| Missing API          |     1,416 | Converted test runs to a source-linked missing-capability diagnostic                          |
+| Active               |     2,119 | Converted case currently passes in the reviewed cold baseline                                 |
+| Expected failure     |       215 | Converted case is executable but exposes an implementation, lifecycle, or conversion mismatch |
+| Missing API          |         0 | No inventoried case is currently blocked on an unmapped public API                            |
 | Deduplicated         |         4 | Exact normalized duplicate; points to one canonical source claim                              |
-| Unsupported/obsolete |        11 | Retained runnable diagnostic for an obsolete scheduler-internal dependency                    |
+| Unsupported/obsolete |         0 | No registration is currently reduced to an obsolete-harness diagnostic                        |
 | **Total**            | **2,338** |                                                                                               |
 
 The compatibility classifications are separate from execution dispositions:
-871 portable, 209 harness rewrites, 1,247 compatibility-only, and 11
-unsupported-or-obsolete. A classification says what the old claim means; a
+1,885 portable, 418 harness rewrites, 20 intentional divergences, and 15
+compatibility-only cases. A classification says what the old claim means; a
 disposition says what the current port harness does with it.
 
 ### Source categories
@@ -59,8 +59,8 @@ The complete reviewed pass sets are stored in `verified-cold-passes.json` and
 `verified-polyfill-passes.json`. Baseline schema v2 identifies tests by unique
 case ID, not an ambiguous source line.
 
-- Cold audit: 432 passes and 1,906 failures.
-- Polyfill audit: 436 passes and 1,902 failures.
+- Cold audit: 2,296 passes and 42 failures.
+- Polyfill audit: 2,316 passes and 22 failures.
 - Native: deliberately raw and unverified until a realm with a native global
   `Observable` is available for review.
 
@@ -115,28 +115,21 @@ every affected case.
 
 ## Cases requiring human review
 
-Only 11 cases remain classified unsupported or obsolete:
-
-| Rationale                                                              | Cases |
-| ---------------------------------------------------------------------- | ----: |
-| Depends on scheduler-bound `phonyMarbelize` parser/notification state  |     8 |
-| Protects `TestScheduler` parser or queue internals, not Observable use |     3 |
-
-They have not been deleted or reduced to metadata. Each retains its converted
-program and is registered in every mode, where it produces an explicit
-source-linked diagnostic. One mechanically converted
-`createHotObservable()` case is guarded as a known non-terminating conversion
-instead of being allowed to hang the entire suite.
+No registration is currently classified as unsupported or obsolete. All
+2,338 cases have executable conversions. Expected failures remain ordinary
+tests and retain their source-linked provenance for product review.
 
 ## Execution modes and lifecycle differences
 
-Each mode starts in a separate process so the active constructor is selected
-before RxJS Symbol extensions load. The launcher shards the 2,338 registrations
-across isolated workers and merges audits only after proving unique, complete
-case-ID coverage.
+Each mode starts in a separate Vitest process so the active constructor is
+selected before RxJS Symbol extensions load. A one-time migration produced 147
+ordinary `.spec.ts` files per mode, with 2,338 direct `rxTest` cases and no
+runtime registration script. Those files are now checked-in source owned by
+this repository; there is no test-file generator in the contributor workflow.
 
-- **Cold:** installs the fallback, then activates `ColdObservable`. This is the
-  producer-per-subscription compatibility baseline.
+- **Cold:** installs the fallback as the platform base without replacing the
+  global with `ColdObservable`. `cold()` and explicit cold factories use
+  `ColdObservable`; derived results from `hot()` use the platform constructor.
 - **Polyfill:** activates the RxJS platform fallback and its shared,
   ref-counted producer lifecycle.
 - **Native:** preserves the ambient `globalThis.Observable`. It skips
@@ -180,34 +173,25 @@ pnpm --filter rxjs run test:unit:parity:check
 
 `test:unit` runs the focused source specs followed by the normal cold and
 polyfill modes. `test:unit:native` auto-detects the global constructor. The
-parity commands are intentionally nonzero while failures remain. The audit
-commands provide single-mode complete JSON evidence. Vitest arguments
-pass through, so a focused run can use:
-
-Default commands suppress thousands of successful internal case IDs.
-Interactive terminals show one in-place progress line, refreshed when a shard
-finishes and every ten seconds, with completed, running, queued, failed, and
-elapsed counts. Redirected and CI output receives only one final progress
-summary. Once all shards have run, every failed shard's diagnostics are
-expanded and the process finishes with an explicit uppercase `PASS` or `FAIL`.
-Set
-`RXJS_NEXT_PROGRESS_INTERVAL_MS` to a positive millisecond value to adjust the
-heartbeat interval. Passing explicit Vitest arguments opts into direct
-reporter output when individual case detail is useful.
+parity commands are intentionally nonzero while failures remain. Normal runs
+use Vitest's built-in default reporter unchanged, so failures point to the real
+checked-in file and line. A focused run can use Vitest's normal filtering:
 
 ```sh
-pnpm --filter rxjs run test:unit:audit -- --testNamePattern mergeMap
+pnpm --filter rxjs run test:unit:audit test/ported/cold/operators/merge-map.spec.ts -t "behavior name"
 ```
 
 To refresh a reviewed baseline, first produce a complete JSON audit and then
 record it:
 
 ```sh
-pnpm --filter rxjs run test:unit:audit -- --reporter=json --outputFile=/tmp/cold-audit.json
-pnpm --filter rxjs run test:unit:audit:record -- cold /tmp/cold-audit.json
+pnpm --filter rxjs run test:unit:audit --reporter=json --outputFile=/tmp/cold-audit.json
+pnpm --filter rxjs run test:unit:audit:record cold /tmp/cold-audit.json
 ```
 
-The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
+The recorder rejects partial, skipped, duplicate, or stale coverage. It maps
+Vitest results to case IDs through the static migration report and declaration
+order, so human test names contain no machine-only prefixes.
 
 ## Verification on 2026-07-25
 
@@ -245,14 +229,33 @@ The recorder rejects partial, skipped, duplicate, or stale case-ID coverage.
   without adding repeated progress lines.
 - No production Observable, operator, or compatibility implementation changed.
 
+## Real-file reporter verification on 2026-07-31
+
+- Replaced the dynamic registration launcher with 147 formatted Vitest files
+  per mode. Each test imports and calls `rxTest` directly; the repository owns
+  the files after the one-time migration.
+- Removed the custom shard/progress renderer. The normal commands now use
+  Vitest's public built-in default reporter unchanged, including real clickable
+  repository paths and line numbers.
+- Cold tests name `ColdObservable` explicitly instead of replacing
+  `globalThis.Observable`. Hot fixtures derive ordinary instances of the active
+  platform constructor; `observable()` continues to use that constructor
+  directly.
+- Complete built-in JSON audits recorded 2,296/2,338 cold passes and
+  2,316/2,338 polyfill passes. Audit identity comes from the static migration
+  report rather than machine IDs embedded in test titles.
+- Native mode skipped explicitly in Node `24.12.0`, where no native global
+  Observable was present.
+
 ## Skill boundary
 
-The reusable migration guidance lives in
-`.agents/skills/rxjs-next-marble-migration`. It understands RxJS 7 marble
-semantics, `rxTest`, cold compatibility, Symbol-based operator calls, and the
-global platform Observable, but contains no repository paths, branches, commit
-identifiers, package internals, or source-control commands.
+Reusable migration tooling is published from `packages/migrate` as
+`@rxjs/migrate`. It contains the framework-neutral semantic transform,
+caller-supplied capability-map boundary, dry-run-first CLI, bundled Skill,
+Mocha/Chai-to-Vitest adapter, and source-content-only read-only MCP tools.
+Other test frameworks can preserve their syntax or provide another adapter.
 
-Repository revision discovery, provenance, capability loading, dispositions,
-mode launchers, and baselines remain outside the Skill. Broader
-Skill/plugin/MCP distribution is still a separate product decision.
+Repository-specific revision discovery, dispositions, native/polyfill mode
+launching, and reviewed baselines remain outside the package. The static
+`migration-report.json` preserves source-to-owned-file identity without making
+the migration tool part of normal test execution.

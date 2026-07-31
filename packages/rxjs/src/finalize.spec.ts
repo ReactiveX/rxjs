@@ -74,14 +74,14 @@ describe('finalize', () => {
     expect(events).toEqual([]);
 
     secondController.abort();
-    expect(events).toEqual(['finalize', 'source teardown 1']);
+    expect(events).toEqual(['source teardown 1', 'finalize']);
 
     const restartedController = new AbortController();
     finalized.subscribe(() => {}, { signal: restartedController.signal });
     expect(activations).toBe(2);
 
     restartedController.abort();
-    expect(events).toEqual(['finalize', 'source teardown 1', 'finalize', 'source teardown 2']);
+    expect(events).toEqual(['source teardown 1', 'finalize', 'source teardown 2', 'finalize']);
   });
 
   it('host-reports a callback error after completion without changing completion', () => {

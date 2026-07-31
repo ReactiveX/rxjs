@@ -2949,6 +2949,13 @@ function extractCases({ path, sourceText }) {
       const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
       const unsupportedOrObsoleteReason = unsupportedOrObsoleteReasons.get(id);
       const schedulerOnlyReason = schedulerOnlyCaseReasons.get(id);
+      const legacySubscribableHelperReason = usedImports.some(
+        ({ module, imported }) =>
+          (module === '../helpers/test-helper' && imported === 'lowerCaseO') ||
+          (module === '../helpers/interop-helper' && imported === 'asInteropObservable')
+      )
+        ? 'The case exercises RxJS 7 arbitrary-subscribable input, which is outside the platform Observable.from contract and is retained as executable compatibility evidence.'
+        : undefined;
       const harnessRewriteReason =
         harnessRewriteReasons.get(id) ??
         getPortedSchedulerAdapterReason({
@@ -3044,9 +3051,11 @@ function extractCases({ path, sourceText }) {
       } else {
         classification = intentionalDivergenceReason
           ? 'intentional-divergence'
-          : harnessRewrite || harnessRewriteReason || reviewFlags.includes('multiple-observers') || !runMode
-            ? 'harness-rewrite'
-            : 'portable';
+          : legacySubscribableHelperReason
+            ? 'compatibility-only'
+            : harnessRewrite || harnessRewriteReason || reviewFlags.includes('multiple-observers') || !runMode
+              ? 'harness-rewrite'
+              : 'portable';
         const verifiedActive =
           !reviewFlags.includes('source-skipped') &&
           isVerifiedColdPass({
@@ -3061,12 +3070,14 @@ function extractCases({ path, sourceText }) {
             : 'The source case was skipped in RxJS 7; it is mechanically migrated as failing executable parity evidence.'
           : intentionalDivergenceReason
             ? intentionalDivergenceReason
-            : harnessRewrite || harnessRewriteReason
-              ? (harnessRewriteReason ??
-              'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.')
-              : verifiedActive
-                ? 'Mechanically migrated and verified against the ColdObservable mode.'
-                : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
+            : legacySubscribableHelperReason
+              ? legacySubscribableHelperReason
+              : harnessRewrite || harnessRewriteReason
+                ? (harnessRewriteReason ??
+                  'Case-specific harness rewrite preserves the original behavioral claim without restoring a removed RxJS 7 test fixture API.')
+                : verifiedActive
+                  ? 'Mechanically migrated and verified against the ColdObservable mode.'
+                  : 'Mechanically migrated; ColdObservable verification failed and production behavior is unchanged.';
         modes = ['cold', 'polyfill', 'native'];
         migratedProgram =
           harnessRewrite ??
@@ -5287,13 +5298,13 @@ const source = new Observable((subscriber) => {
 const observable = applyOperators(source, [
   map((value) => {
     projectionAttempts++;
-    if (projectionAttempts === 1000) {
-      controller.abort();
-    }
     throw 'four!';
   }),
   catchError((_error, caught) => {
     handledErrors++;
+    if (handledErrors === 1000) {
+      controller.abort();
+    }
     return caught;
   }),
 ]);
@@ -5307,7 +5318,7 @@ observable.subscribe(
 );
 expect(sourceAttempts).to.equal(1000);
 expect(projectionAttempts).to.equal(1000);
-expect(handledErrors).to.equal(999);
+expect(handledErrors).to.equal(1000);
 expect(controller.signal.aborted).to.equal(true);
 expect(notifications).to.deep.equal([]);
 }

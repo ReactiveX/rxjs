@@ -1,6 +1,10 @@
-import { describe, expect, expectTypeOf, it, vi } from 'vitest';
+import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest';
 import '@rxjs/observable-polyfill';
 import { catchError } from './catch-error.js';
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe('catchError', () => {
   it('replaces a failed source with any ObservableValue', () => {
@@ -164,13 +168,18 @@ describe('catchError', () => {
     const source = controllable<number>();
     const selector = vi.fn(() => ['replacement']);
     const controller = new AbortController();
+    const reportError = vi.fn();
+    const lateFailure = new Error('late failure');
+    vi.stubGlobal('reportError', reportError);
 
     source.observable[catchError](selector).subscribe(() => {}, { signal: controller.signal });
     controller.abort();
-    source.subscriber.error(new Error('late failure'));
+    source.subscriber.error(lateFailure);
 
     expect(selector).not.toHaveBeenCalled();
     expect(source.teardowns).toBe(1);
+    expect(reportError).toHaveBeenCalledTimes(1);
+    expect(reportError).toHaveBeenCalledWith(lateFailure);
   });
 
   it('shares source and replacement work, ref-counts cancellation, and restarts cleanly', () => {

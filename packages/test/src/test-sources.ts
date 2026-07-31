@@ -1,3 +1,5 @@
+import { ColdObservable } from 'rxjs/cold-observable';
+import { create } from 'rxjs/create';
 import {
   getObservableConstructor,
   type PlatformObserver as Observer,
@@ -12,29 +14,30 @@ interface MutableSubscriptionLog {
   unsubscribedFrame: number;
 }
 
-export function createColdTestObservable<T>(controller: VirtualTimeController, messages: readonly TestMessage<T>[]): TestColdObservable<T> {
-  const ObservableConstructor = getObservableConstructor();
+class ColdTestObservable<T> extends ColdObservable<T> {
+  readonly kind = 'cold' as const;
+  readonly messages: readonly TestMessage<T>[];
+  readonly subscriptions: MutableSubscriptionLog[] = [];
+  readonly #controller: VirtualTimeController;
 
-  class ColdTestObservable extends ObservableConstructor<T> {
-    readonly kind = 'cold' as const;
-    readonly messages = messages;
-    readonly subscriptions: MutableSubscriptionLog[] = [];
-
-    constructor() {
-      super(() => {});
-    }
-
-    subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions): void {
-      const log = openSubscriptionLog(controller, this.subscriptions);
-      const subscriber = new IndependentTestSubscriber(observer, options?.signal, () => closeSubscriptionLog(controller, log));
-      const subscribedAt = controller.now();
-      for (const message of messages) {
-        controller.scheduleAt(() => deliverMessage(subscriber, message), subscribedAt + message.frame, { signal: subscriber.signal });
-      }
-    }
+  constructor(controller: VirtualTimeController, messages: readonly TestMessage<T>[]) {
+    super(() => {});
+    this.#controller = controller;
+    this.messages = messages;
   }
 
-  return new ColdTestObservable();
+  subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions): void {
+    const log = openSubscriptionLog(this.#controller, this.subscriptions);
+    const subscriber = new IndependentTestSubscriber(observer, options?.signal, () => closeSubscriptionLog(this.#controller, log));
+    const subscribedAt = this.#controller.now();
+    for (const message of this.messages) {
+      this.#controller.scheduleAt(() => deliverMessage(subscriber, message), subscribedAt + message.frame, { signal: subscriber.signal });
+    }
+  }
+}
+
+export function createColdTestObservable<T>(controller: VirtualTimeController, messages: readonly TestMessage<T>[]): TestColdObservable<T> {
+  return new ColdTestObservable(controller, messages);
 }
 
 export function createHotTestObservable<T>(controller: VirtualTimeController, messages: readonly TestMessage<T>[]): TestHotObservable<T> {
@@ -65,6 +68,8 @@ export function createHotTestObservable<T>(controller: VirtualTimeController, me
         }, message.frame);
       }
     }
+
+    [create] = <R>(init: (subscriber: Subscriber<R>) => void): Observable<R> => new ObservableConstructor<R>(init);
 
     get active(): boolean {
       return this.#terminal === undefined;

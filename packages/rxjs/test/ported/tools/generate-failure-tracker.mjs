@@ -9,6 +9,7 @@ const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const packageDirectory = resolve(toolDirectory, '../../..');
 const repositoryRoot = resolve(packageDirectory, '../..');
 const manifestPath = resolve(toolDirectory, '../manifest.generated.json');
+const migrationReportPath = resolve(toolDirectory, '../migration-report.json');
 const defaultLedgerPath = resolve(toolDirectory, '../failure-tracker-ledger.json');
 const defaultOutputPath = resolve(repositoryRoot, 'docs/rxjs-next/RXJS_7_PORTED_FAILURES.md');
 const allowedStatuses = new Set(['TODO', 'IN-PROCESS', 'FIXED', 'BLOCKED']);
@@ -24,16 +25,17 @@ if (!options.coldReport || !options.polyfillReport) {
 const ledgerPath = resolve(options.ledger ?? defaultLedgerPath);
 const outputPath = resolve(options.output ?? defaultOutputPath);
 const capturedAt = options.capturedAt ?? new Date().toISOString().slice(0, 10);
-const [manifest, coldReport, polyfillReport, existingLedger] = await Promise.all([
+const [manifest, migrationReport, coldReport, polyfillReport, existingLedger] = await Promise.all([
   readJson(manifestPath),
+  readJson(migrationReportPath),
   readJson(resolve(options.coldReport)),
   readJson(resolve(options.polyfillReport)),
   readOptionalJson(ledgerPath),
 ]);
 const casesById = new Map(manifest.cases.map((testCase) => [testCase.id, testCase]));
 
-const cold = validateReport(coldReport, 'cold', casesById);
-const polyfill = validateReport(polyfillReport, 'polyfill', casesById);
+const cold = validateReport(coldReport, 'cold', casesById, migrationReport);
+const polyfill = validateReport(polyfillReport, 'polyfill', casesById, migrationReport);
 const nextLedger = mergeLedger({
   capturedAt,
   cold,
@@ -88,6 +90,9 @@ function parseArguments(arguments_) {
     polyfillReport: undefined,
   };
   for (const argument of arguments_) {
+    if (argument === '--') {
+      continue;
+    }
     if (argument === '--check') {
       parsed.check = true;
       continue;
@@ -132,8 +137,27 @@ async function readOptionalJson(path) {
   }
 }
 
-function validateReport(report, mode, casesById) {
-  const assertions = report.testResults.flatMap((testResult) => testResult.assertionResults);
+function validateReport(report, mode, casesById, migrationReport) {
+  const suiteMode = mode === 'cold' ? 'cold' : 'platform';
+  const migratedFiles = new Map(migrationReport.modes[suiteMode].map((entry) => [entry.file, entry]));
+  const mappedAssertions = [];
+  for (const testResult of report.testResults) {
+    const file = relative(packageDirectory, testResult.name).replaceAll('\\', '/');
+    const migratedFile = migratedFiles.get(file);
+    if (!migratedFile) {
+      throw new Error(`${mode} report contains an unexpected test file: ${file}`);
+    }
+    if (testResult.assertionResults.length !== migratedFile.caseIds.length) {
+      throw new Error(
+        `${mode} result count does not match the migration report for ${file}: ` +
+          `${testResult.assertionResults.length} results, ${migratedFile.caseIds.length} case IDs.`
+      );
+    }
+    for (const [index, assertion] of testResult.assertionResults.entries()) {
+      mappedAssertions.push({ assertion, caseId: migratedFile.caseIds[index] });
+    }
+  }
+  const assertions = mappedAssertions.map(({ assertion }) => assertion);
   const passed = assertions.filter((assertion) => assertion.status === 'passed');
   const failed = assertions.filter((assertion) => assertion.status === 'failed');
   const incomplete = assertions.filter((assertion) => assertion.status !== 'passed' && assertion.status !== 'failed');
@@ -156,10 +180,9 @@ function validateReport(report, mode, casesById) {
   }
 
   const assertionsById = new Map();
-  for (const assertion of assertions) {
-    const caseId = parseCaseId(assertion.title);
+  for (const { assertion, caseId } of mappedAssertions) {
     if (!caseId || !casesById.has(caseId)) {
-      throw new Error(`${mode} report contains an assertion without a known case ID: ${assertion.title}`);
+      throw new Error(`${mode} report contains an assertion without a known case ID: ${String(caseId)}`);
     }
     if (assertionsById.has(caseId)) {
       throw new Error(`${mode} report contains duplicate case ID: ${caseId}`);
@@ -171,23 +194,11 @@ function validateReport(report, mode, casesById) {
   }
   return {
     assertionsById,
-    failed: new Set(failed.map((assertion) => parseCaseId(assertion.title))),
+    failed: new Set(mappedAssertions.filter(({ assertion }) => assertion.status === 'failed').map(({ caseId }) => caseId)),
     failedCount: failed.length,
     passedCount: passed.length,
     total: assertions.length,
   };
-}
-
-function parseCaseId(title) {
-  const match = title.match(/^\[case-id:([^\]]+)\](?: |$)/);
-  if (!match) {
-    return undefined;
-  }
-  try {
-    return decodeURIComponent(match[1]);
-  } catch {
-    return undefined;
-  }
 }
 
 function mergeLedger({ capturedAt, cold, existingLedger, manifest, polyfill }) {
@@ -223,8 +234,8 @@ function mergeLedger({ capturedAt, cold, existingLedger, manifest, polyfill }) {
       failingModes.length === 0 && testCase.disposition !== 'missing-api'
         ? 'FIXED'
         : existing?.status === 'FIXED' || !existing
-          ? 'TODO'
-          : existing.status;
+        ? 'TODO'
+        : existing.status;
     cases.push({
       id: testCase.id,
       group: groupFor(testCase),
@@ -321,9 +332,7 @@ function renderTracker({ capturedAt, cold, ledger, manifest, outputPath, polyfil
       group.status !== 'FIXED' &&
       group.cases.some(
         (item) =>
-          item.status !== 'FIXED' &&
-          !isSchedulerLastCase(manifestById.get(item.id)) &&
-          !isMissingCapabilityDiagnostic(item.diagnostic)
+          item.status !== 'FIXED' && !isSchedulerLastCase(manifestById.get(item.id)) && !isMissingCapabilityDiagnostic(item.diagnostic)
       )
   );
   const recommendedPacketLine = firstPacket
@@ -496,9 +505,7 @@ function groupStatus(cases) {
 function isSchedulerLastCase(testCase) {
   const schedulerMarkers =
     /(?:SchedulerLike|TestScheduler|VirtualTimeScheduler|asyncScheduler|asapScheduler|queueScheduler|animationFrameScheduler|subscribeOn|observeOn|scheduled)/;
-  const importedSurface = testCase.imports
-    .map((item) => `${item.module} ${item.imported} ${item.local}`)
-    .join(' ');
+  const importedSurface = testCase.imports.map((item) => `${item.module} ${item.imported} ${item.local}`).join(' ');
   return (
     testCase.source.path.startsWith('spec/schedulers/') ||
     testCase.source.path.startsWith('spec/testing/') ||
