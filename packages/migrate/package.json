@@ -63,7 +63,8 @@
       ".": "./src/index.ts",
       "./adapters/mocha-chai-vitest": "./src/mocha-chai-vitest.ts",
       "./node": "./src/node.ts",
-      "./cli": "./src/cli.ts"
+      "./cli": "./src/cli.ts",
+      "./skill": "./src/skill-integrity.ts"
     }
   },
   "exports": {
@@ -106,6 +107,16 @@
       "require": {
         "types": "./dist/commonjs/cli.d.ts",
         "default": "./dist/commonjs/cli.js"
+      }
+    },
+    "./skill": {
+      "import": {
+        "types": "./dist/esm/skill-integrity.d.ts",
+        "default": "./dist/esm/skill-integrity.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/skill-integrity.d.ts",
+        "default": "./dist/commonjs/skill-integrity.js"
       }
     }
   }

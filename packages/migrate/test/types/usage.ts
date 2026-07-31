@@ -10,6 +10,7 @@ import {
 import { migrateMochaChaiToVitest, mochaChaiToVitestAdapter } from '@rxjs/migrate/adapters/mocha-chai-vitest';
 import { runCli } from '@rxjs/migrate/cli';
 import { localSpecOutputName, migrateTestFiles, planMigrationFiles, type MigrateFilesOptions } from '@rxjs/migrate/node';
+import { inspectSkillIntegrity, type SkillIntegrity } from '@rxjs/migrate/skill';
 
 const registry: CapabilityRegistry = parseCapabilityRegistry(defaultCapabilityRegistry);
 const result: MigrationResult = migrateTestSource('const value = 1;');
@@ -30,6 +31,7 @@ void planMigrationFiles(options);
 void migrateTestFiles(options);
 void localSpecOutputName({ sourcePath: 'source.spec.ts', sourceRoot: '.', mode: 'unselected' });
 void runCli(['--help']);
+void inspectSkillIntegrity('skill').then((integrity: SkillIntegrity) => integrity.digest);
 
 declare const manifestInput: unknown;
 const manifest: MigrationContractManifest = parseMigrationContractManifest(manifestInput);

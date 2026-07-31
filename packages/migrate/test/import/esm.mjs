@@ -5,6 +5,7 @@ import * as migrate from '@rxjs/migrate';
 import * as frameworkAdapter from '@rxjs/migrate/adapters/mocha-chai-vitest';
 import * as cli from '@rxjs/migrate/cli';
 import * as nodeAdapter from '@rxjs/migrate/node';
+import * as skill from '@rxjs/migrate/skill';
 
 const packageJson = createRequire(import.meta.url)('@rxjs/migrate/package.json');
 
@@ -14,3 +15,4 @@ assert.equal(typeof migrate.parseCapabilityRegistry, 'function');
 assert.equal(typeof frameworkAdapter.migrateMochaChaiToVitest, 'function');
 assert.equal(typeof nodeAdapter.planMigrationFiles, 'function');
 assert.equal(typeof cli.runCli, 'function');
+assert.equal(typeof skill.inspectSkillIntegrity, 'function');
