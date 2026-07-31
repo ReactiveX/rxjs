@@ -36,7 +36,10 @@ npx rxjs-migrate \
 The command writes nothing unless `--write --out-dir <directory>` is present.
 Written files are normal, locally named source files. They are meant to be
 reviewed, checked in, and maintained by the destination project; there is no
-runtime generator.
+runtime generator. Successful and refused batches are emitted as versioned
+JSON with the engine and capability-registry versions. Exit codes distinguish
+success (`0`), a structured migration refusal (`1`), invalid arguments (`2`),
+and operational failure (`3`). A refused batch writes no files.
 
 Use `--framework preserve` for Jest, Node test runner, another target, or a
 framework migration handled by another tool. The JavaScript API accepts a
@@ -46,11 +49,11 @@ pass.
 ## JavaScript API
 
 ```ts
-import { migrateTestSource, type FrameworkAdapter } from '@rxjs/migrate';
+import { defaultCapabilityRegistry, migrateTestSource, type FrameworkAdapter } from '@rxjs/migrate';
 
 const result = migrateTestSource(source, {
   mode: 'cold',
-  capabilities: projectCapabilities,
+  capabilityRegistry: defaultCapabilityRegistry,
   frameworkAdapter: myFrameworkAdapter satisfies FrameworkAdapter,
   provenance: {
     repository: 'https://github.com/example/project',
@@ -60,17 +63,36 @@ const result = migrateTestSource(source, {
 });
 ```
 
-`defaultTestSchedulerCapabilities` is a conservative starter set, not a claim
-of complete RxJS 7 compatibility. Projects can pass a reviewed capability map
-to the API or CLI. Unsupported constructs remain visible as diagnostics
-instead of being hidden behind compatibility helpers.
+`defaultCapabilityRegistry` is a versioned, fixture-backed contract, not a
+claim of complete RxJS 7 compatibility. A custom registry must use the same
+schema and name the installed engine version; incompatible registries are
+refused without changing source bytes. Unsupported constructs remain visible
+as diagnostics instead of being hidden behind compatibility helpers.
 
-## P0.M1 MCP prototype
+## Mechanically supported subset
 
-The source tree still contains the exploratory `rxjs-migrate-mcp` server from
-P0.M1. D-046 excludes it from the accepted release product, and P0.M3 removes
-its binary, export, dependencies, and tests. Do not build integrations against
-this prototype.
+The default registry currently proves direct, unshadowed `pipe(...)` calls for
+`filter`, `map`, `takeUntil`, `bufferCount`, `concatMap`, `concatAll`,
+`switchAll`, `debounceTime`, `audit`, and `auditTime`, subject to each mapping's
+published arity and overload preconditions. The registry is the authoritative
+machine-readable list. Aliases are tracked, while shadowed bindings, mixed
+unsupported pipelines, scheduler overloads, malformed input, and unsupported
+framework assertions are refused or preserved with structured findings.
+
+The package ships no MCP binary, export, or runtime dependency. D-046 keeps
+the library and dry-run-first CLI as the only deterministic engine surfaces.
+
+## Contract and Skill integrity
+
+`parseMigrationContractManifest` validates the versioned migration decision
+record. `assessMigrationContractReadiness` separately reports unresolved
+lifecycle choices, approvals, diagnostics, verification, and blockers so
+schema validity is never mistaken for completion.
+
+The Node-only `@rxjs/migrate/skill` subpath computes and verifies the canonical
+Skill's deterministic SHA-256 content descriptor. P0.M4 uses that primitive to
+synchronize generated harness discovery copies without creating a second
+authored workflow.
 
 ## Review requirements
 

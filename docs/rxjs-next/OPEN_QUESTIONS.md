@@ -142,8 +142,8 @@ suites, and minimum pass thresholds required for a release claim.
 D-046 resolves the product boundary: `packages/migrate/skill` is the single
 canonical, package-versioned Skill; Codex, Claude Code, and Cursor receive thin
 installed or synchronized adapters that preserve its digest. The deterministic
-API and dry-run-first CLI remain subordinate engine surfaces. The P0.M1 MCP
-prototype is removed in P0.M3 and is not an accepted release surface.
+API and dry-run-first CLI remain subordinate engine surfaces. P0.M3 removed
+the P0.M1 MCP prototype; it is not an accepted release surface.
 
 P0.M5 must still choose the final plugin or marketplace distribution channels,
 supported harness versions, adapter support window, and release-grade

@@ -1070,7 +1070,7 @@ Status meanings:
 - **MCP:** The P0.M1 source-content MCP prototype is not part of the accepted
   release architecture. Its operations mirror the local library and CLI and
   do not justify a separate protocol, dependency, permission, or validation
-  surface. P0.M3 removes it. Reintroducing MCP requires a new accepted decision
+  surface. P0.M3 removed it completely. Reintroducing MCP requires a new accepted decision
   identifying a necessary capability that the CLI, library, Skill resources,
   and host agent tools cannot provide adequately.
 - **Evidence:** Deterministic engine behavior is proved with golden or

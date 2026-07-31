@@ -420,6 +420,13 @@ fixture evidence and agent-outcome evidence across each supported harness.
 There is no accepted migration MCP surface. See D-046 and
 `MIGRATION_TOOLING_DESIGN.md`.
 
+Its default versioned registry currently claims only the ten mappings backed
+by checked-in source/target type evidence and exact mechanical fixtures:
+`filter`, `map`, `takeUntil`, `bufferCount`, `concatMap`, `concatAll`,
+`switchAll`, `debounceTime`, `audit`, and `auditTime`. The engine refuses
+unproved overloads, incompatible registries, ambiguous TestScheduler lifecycle
+selection, and transformations whose legacy imports cannot be removed safely.
+
 The generated `compatibility-only` label remains stable provenance metadata.
 Under D-039 it means that the claim cannot be made for the shared platform
 surface; it does not name a package or promised facade.

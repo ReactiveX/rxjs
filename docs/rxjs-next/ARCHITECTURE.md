@@ -67,14 +67,14 @@ Migration tooling is not a runtime dependency.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                                       | Intended responsibility                                                                     | Current gap                                                                                                                                            |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                      | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open                                                                       |
-| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open                                                             |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                          | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                                                                                       |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                        | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                                                                                         |
-| `packages/migrate`             | Contains the P0.M1 prototype: source transforms, capability maps, framework adapters, Skill assets, CLI, and read-only MCP tools                                             | Deterministic migration engine and canonical versioned Skill; never a runtime dependency    | Only nine transform registrations exist; fixture, installation, cross-harness, and outcome gates are incomplete, and the MCP prototype must be removed |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                             | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase                                                               |
+| Component                      | Current responsibility                                                                                                                                                       | Intended responsibility                                                                     | Current gap                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                      | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open                                 |
+| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open                       |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                          | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                                                 |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                        | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                                                   |
+| `packages/migrate`             | Provides a versioned deterministic engine, structured CLI, capability and contract schemas, package/fixture gates, and canonical Skill integrity primitives                  | Deterministic migration engine and canonical versioned Skill; never a runtime dependency    | P0.M4 Skill orchestration and harness adapters plus P0.M5 representative outcome qualification remain incomplete |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                             | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase                         |
 
 ## Platform Observable lifecycle
 
@@ -712,13 +712,14 @@ are classified as `compatibility-only` and fail explicitly where the current
 surface rejects arbitrary subscribables. Replacing those inputs with platform
 Observables would change the behavioral claim rather than preserve it.
 
-P0.M1 established an exploratory `@rxjs/migrate` package with a
-framework-neutral semantic transform, caller-supplied capability maps,
-Mocha/Chai-to-Vitest adapter, dry-run-first CLI, bundled Skill assets, and
-source-content-only MCP tools. D-046 narrows the accepted product: the package
-will contain the deterministic engine and the single canonical Skill, while
-thin Codex, Claude Code, and Cursor adapters expose that same versioned Skill.
-The MCP prototype is not a release surface and is removed in P0.M3. Framework
+P0.M1 established an exploratory `@rxjs/migrate` package. P0.M3 hardened its
+framework-neutral semantic transform, versioned capability registry,
+Mocha/Chai-to-Vitest adapter, structured dry-run-first CLI, contract schemas,
+safe batch writes, package gates, and canonical Skill integrity primitives.
+D-046 narrows the accepted product to that deterministic engine and the single
+canonical Skill, while thin Codex, Claude Code, and Cursor adapters expose the
+same versioned Skill. The former MCP prototype, bin, export, dependency, tests,
+and claims are removed. Framework
 syntax remains an adapter boundary, so projects may preserve their current
 runner or add another source/target pair without changing `rxTest` semantics.
 The repository's native/polyfill execution matrix remains local test
@@ -737,8 +738,9 @@ remain visible escalation points rather than transform defaults.
 The deterministic engine may parse source, apply reviewed capability mappings,
 adapt framework syntax, and return diagnostics. It must not choose lifecycle
 semantics, manufacture missing evidence, or declare a project migrated. A
-mechanical fixture lane proves transform, diagnostics, path containment,
-dry-run/write, idempotence, build, and behavior properties. A separate agent
+mechanical fixture lane now proves transform, diagnostics, source and target
+type checks, pinned RxJS 7 and Next behavior, path containment, dry-run/write,
+idempotence, imports, and packed publication properties. A separate agent
 evaluation lane proves that each supported harness reaches the same reviewed
 outcome from the same canonical Skill digest. `MIGRATION_TOOLING_DESIGN.md` is
 the controlling product and validation contract.

@@ -113,8 +113,8 @@ item.
 | `DONE`    | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
 | `DONE`    | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                 |
 | `DONE`    | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
-| `NEXT`    | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
-| `PLANNED` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
+| `DONE`    | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
+| `NEXT`    | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
 | `PLANNED` | P0.M5  | Qualify the end-to-end agent workflow on representative repositories and behavioral outcome gates                  |
 | `DONE`    | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
 
@@ -553,6 +553,36 @@ item.
 - CLI/API equivalence, dry-run/write behavior, path containment, package
   imports, publication contents, and failure exit codes are tested. The
   package documentation describes only the mechanically supported subset.
+
+#### P0.M3 completion evidence
+
+- Replaced the prototype capability list with a versioned, schema-validated
+  registry of ten fixture-backed mappings and eight argument adapters. The
+  engine refuses incompatible registries, ambiguous lifecycle selection,
+  unsafe bindings, malformed source, unsupported overloads, and non-atomic
+  mixed pipelines without changing refused file bytes.
+- Added structured deterministic diagnostics and a versioned migration
+  contract manifest with a separate readiness assessment. Schema validity can
+  no longer be mistaken for resolved lifecycle intent, approvals, diagnostics,
+  verification, or blockers.
+- Added exact mechanical fixtures and negative controls for output and
+  diagnostic drift, malformed input/output, non-idempotence, false success,
+  compile regression, behavior drift, CLI/API mismatch, and lexical or symlink
+  path escape. All ten source fixtures compile against pinned RxJS `7.8.1`;
+  all ten outputs compile against current Next types; representative behavior
+  comparisons execute the pinned RxJS 7 runtime and current target contracts.
+- Added whole-batch planning before writes, canonical path containment,
+  duplicate and alias rejection, no-overwrite defaults, refusal-safe writes,
+  and versioned JSON CLI results with distinct success, refusal,
+  invalid-argument, and operational-failure exits.
+- Added ESM, CommonJS, declaration-consumer, and pack-inventory gates. Removed
+  the MCP bin, export, implementation, tests, dependency, transitive lockfile
+  entries, and documentation claims. Added the Node-only canonical Skill
+  digest primitive required by P0.M4.
+- Fixed the `switchMap` projection-result declaration exposed by the new target
+  type gate. Passed 91 migration tests, package build/types/imports/pack, lint,
+  RxJS public type checks, and diff checks. Advanced P0.M4 as the sole `NEXT`
+  item.
 
 #### P0.M4 completion bar
 
@@ -2158,3 +2188,18 @@ conformance implementation depends on a runnable harness.
 - Verified formatting, documentation consistency, local links, and exactly one
   active queue row. Marked P0.M2 `DONE` and advanced P0.M3 as the sole `NEXT`
   item. No production code or test baseline changed.
+
+### 2026-07-31 — P0.M3 deterministic migration engine hardening
+
+- Hardened `@rxjs/migrate` around a versioned evidence registry, structured
+  diagnostics, contract-manifest readiness, atomic transforms, contained
+  batch writes, and a machine-readable dry-run-first CLI.
+- Added exact fixture, pinned RxJS 7 behavior/type, current Next type,
+  idempotence, negative-control, import, declaration, and pack gates. The new
+  target type lane found and locked a corrected `switchMap` result generic.
+- Removed every MCP release artifact and dependency under D-046, documented
+  only the ten mechanically supported mappings, and exposed deterministic
+  canonical Skill integrity for the next distribution slice.
+- Passed 91 migration tests, the aggregate migration package release gate,
+  migration lint, RxJS public type checks, and diff checks. Marked P0.M3
+  `DONE` and advanced P0.M4 as the sole `NEXT` item.
