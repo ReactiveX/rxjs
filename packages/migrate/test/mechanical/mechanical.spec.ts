@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { migrateTestSource, type MigrationResult } from '../../src/index.js';
+import {
+  rxjs7TypePaths,
+  rxjsNextTypePaths,
+  sourceTypeEvidence,
+  targetTypeEvidence,
+} from './evidence.js';
 import { mechanicalFixtures, type MechanicalFixture } from './fixtures.js';
 import { MechanicalFixtureError, runMechanicalFixture, verifyRegistryCoverage } from './runner.js';
+import { formatTypecheckDiagnostics, typecheckEvidence } from './typecheck.js';
 
 describe('mechanical migration fixtures', () => {
   it('covers every exposed capability ID and argument adapter', () => {
@@ -13,6 +20,42 @@ describe('mechanical migration fixtures', () => {
       expect(() => runMechanicalFixture(fixture)).not.toThrow();
     });
   }
+});
+
+describe('mechanical fixture type evidence', () => {
+  for (const operatorFixture of mechanicalFixtures.filter(({ category }) => category === 'operator')) {
+    it(`${operatorFixture.id} compiles against pinned RxJS 7 source types`, () => {
+      expectTypecheck(
+        `${operatorFixture.id}.source.ts`,
+        sourceTypeEvidence(operatorFixture),
+        rxjs7TypePaths()
+      );
+    });
+
+    it(`${operatorFixture.id} output compiles against current RxJS Next types`, () => {
+      const result = migrateTestSource(operatorFixture.input, { fileName: operatorFixture.fileName });
+      expect(result.status).toBe('changed');
+      expectTypecheck(
+        `${operatorFixture.id}.target.ts`,
+        targetTypeEvidence(operatorFixture, result.code),
+        rxjsNextTypePaths()
+      );
+    });
+  }
+
+  it('detects a target type regression in the negative control', () => {
+    const diagnostics = typecheckEvidence({
+      fileName: 'negative.target-type-regression.ts',
+      source: [
+        "import { ColdObservable } from 'rxjs/cold-observable';",
+        "import { map } from 'rxjs/map';",
+        'declare const source: ColdObservable<number>;',
+        "const result: Observable<number> = source[map](value => value.toFixed());",
+      ].join('\n'),
+      paths: rxjsNextTypePaths(),
+    });
+    expect(diagnostics.some(({ code }) => code === 2322)).toBe(true);
+  });
 });
 
 describe('mechanical fixture negative controls', () => {
@@ -67,4 +110,9 @@ function expectGate(fixture: MechanicalFixture, gate: MechanicalFixtureError['ga
 
 function result(code: string): MigrationResult {
   return { status: 'changed', code, diagnostics: [], imports: [] };
+}
+
+function expectTypecheck(fileName: string, source: string, paths: Record<string, string[]>): void {
+  const diagnostics = typecheckEvidence({ fileName, source, paths });
+  expect(formatTypecheckDiagnostics(diagnostics)).toBe('');
 }

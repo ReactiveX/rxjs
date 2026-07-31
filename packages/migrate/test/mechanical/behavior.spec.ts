@@ -3,32 +3,43 @@ import { ColdObservable } from '../../../rxjs/src/cold-observable.js';
 import { buffer } from '../../../rxjs/src/buffer.js';
 import { map } from '../../../rxjs/src/map.js';
 import { mergeMap } from '../../../rxjs/src/merge-map.js';
+import { collectRxjs7Sync, loadPinnedRxjs7, rxjs7Version } from './evidence.js';
 import { mechanicalFixtures } from './fixtures.js';
 
 describe('representative mechanical behavior claims', () => {
-  it('keeps the mapped value claim', () => {
+  const rxjs7 = loadPinnedRxjs7();
+
+  it(`keeps the mapped value claim from pinned RxJS ${rxjs7Version}`, () => {
     requireClaim('map-values');
-    const sourceClaim = [1, 2, 3].map((value) => value + 1);
+    const sourceClaim = collectRxjs7Sync(rxjs7.runtime.of(1, 2, 3).pipe(rxjs7.operators.map((value) => value + 1)));
     const targetClaim = collectSync(fromValues(1, 2, 3)[map]((value) => value + 1));
     expect(targetClaim).toEqual(sourceClaim);
   });
 
-  it('keeps the count-buffer value and remainder claim', () => {
+  it(`keeps the count-buffer value and remainder claim from pinned RxJS ${rxjs7Version}`, () => {
     requireClaim('buffer-count-values');
-    const sourceClaim = [[1, 2], [3]];
+    const sourceClaim = collectRxjs7Sync(rxjs7.runtime.of(1, 2, 3).pipe(rxjs7.operators.bufferCount(2)));
     const targetClaim = collectSync(
       fromValues(1, 2, 3)[buffer]({ maxSize: 2, startEvery: 2, emitRemainingOnError: false })
     );
     expect(targetClaim).toEqual(sourceClaim);
   });
 
-  it('keeps concat-map ordering for synchronous inner work', () => {
+  it(`keeps concat-map ordering for synchronous inner work from pinned RxJS ${rxjs7Version}`, () => {
     requireClaim('concat-map-values');
-    const sourceClaim = [1, 10, 2, 20];
+    const sourceClaim = collectRxjs7Sync(
+      rxjs7.runtime.of(1, 2).pipe(rxjs7.operators.concatMap((value) => rxjs7.runtime.of(value, value * 10)))
+    );
     const targetClaim = collectSync(
       fromValues(1, 2)[mergeMap]((value) => fromValues(value, value * 10), { concurrent: 1 })
     );
     expect(targetClaim).toEqual(sourceClaim);
+  });
+
+  it('detects behavior drift in the negative control', () => {
+    const sourceClaim = collectRxjs7Sync(rxjs7.runtime.of(1, 2, 3).pipe(rxjs7.operators.map((value) => value + 1)));
+    const deliberatelyDriftedTarget = collectSync(fromValues(1, 2, 3)[map]((value) => value + 2));
+    expect(deliberatelyDriftedTarget).not.toEqual(sourceClaim);
   });
 });
 
