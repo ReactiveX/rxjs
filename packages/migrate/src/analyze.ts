@@ -3,7 +3,7 @@ import { defaultTestSchedulerCapabilities } from './capabilities.js';
 import type { CapabilityMapping, MigrationMode } from './types.js';
 
 export interface TestSourceAnalysis {
-  readonly mode: MigrationMode;
+  readonly mode: MigrationMode | 'unselected';
   readonly testSchedulerVariables: readonly string[];
   readonly helpers: readonly string[];
   readonly importedOperators: readonly string[];
@@ -54,7 +54,7 @@ export function analyzeTestSource(
   if (/\bsubscribe\s*\(/.test(source)) reviewFlags.push('direct-subscription');
 
   return {
-    mode: options.mode ?? 'cold',
+    mode: options.mode ?? 'unselected',
     testSchedulerVariables,
     helpers,
     importedOperators,

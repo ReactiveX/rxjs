@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import { diagnosticForNode, diagnosticForOffsets, parseDiagnostics, sortDiagnostics } from './diagnostics.js';
 import type { FrameworkAdapter, MigrationDiagnostic, MigrationResult } from './types.js';
 
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
@@ -9,10 +10,47 @@ export const mochaChaiToVitestAdapter: FrameworkAdapter = {
   adapt: migrateMochaChaiToVitest,
 };
 
-export function migrateMochaChaiToVitest(source: string): MigrationResult {
-  const sourceFile = ts.createSourceFile('framework-input.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+export function migrateMochaChaiToVitest(source: string, options: { readonly fileName?: string } = {}): MigrationResult {
+  const sourceFile = ts.createSourceFile(options.fileName ?? 'framework-input.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const syntaxDiagnostics = parseDiagnostics(sourceFile);
+  if (syntaxDiagnostics.length > 0) return { status: 'refused', code: source, diagnostics: syntaxDiagnostics, imports: [] };
+  const frameworkImports = collectFrameworkImports(sourceFile);
+  if (!frameworkImports.hasSourceFramework) return { status: 'unchanged', code: source, diagnostics: [], imports: [] };
+
   const required = collectUsedVitestGlobals(sourceFile);
   const diagnostics: MigrationDiagnostic[] = [];
+  const unsupported = findUnsupportedChaiAssertions(sourceFile, frameworkImports.expectLocal);
+  const unsupportedProperties = findUnsupportedChaiProperties(sourceFile, frameworkImports.expectLocal);
+  const unsupportedSinon = findUnsupportedSinonReferences(sourceFile, frameworkImports.sinonLocal);
+  for (const node of [...unsupported, ...unsupportedProperties, ...unsupportedSinon]) {
+    diagnostics.push(
+      diagnosticForNode(sourceFile, node, {
+        code: 'unsupported-framework-feature',
+        message: `Review unsupported framework syntax: ${node.getText(sourceFile)}`,
+        severity: 'error',
+        disposition: 'refused',
+        refusalScope: 'file',
+        classification: 'harness-rewrite',
+        nextAction: { code: 'migrate-manually', message: 'Convert the assertion explicitly before retrying the framework adapter.' },
+      })
+    );
+  }
+  if (frameworkImports.expectLocal && hasShadowingDeclaration(sourceFile, frameworkImports.expectLocal)) {
+    const start = source.indexOf(frameworkImports.expectLocal);
+    diagnostics.push(
+      diagnosticForOffsets(sourceFile, Math.max(0, start), Math.max(0, start) + frameworkImports.expectLocal.length, {
+        code: 'unsafe-binding',
+        message: `The imported Chai binding ${frameworkImports.expectLocal} is shadowed in this file.`,
+        severity: 'error',
+        disposition: 'refused',
+        refusalScope: 'file',
+        classification: 'harness-rewrite',
+        nextAction: { code: 'review-source', message: 'Rename the shadowing binding or migrate the framework syntax manually.' },
+      })
+    );
+  }
+  if (diagnostics.length > 0) return { status: 'refused', code: source, diagnostics: sortDiagnostics(diagnostics), imports: [] };
+
   let changed = false;
 
   const transformed = ts.transform(sourceFile, [
@@ -40,20 +78,20 @@ export function migrateMochaChaiToVitest(source: string): MigrationResult {
         }
 
         if (ts.isCallExpression(node)) {
-          const callsFake = convertSinonCallsFake(node, factory, visit);
+          const callsFake = convertSinonCallsFake(node, factory, visit, frameworkImports.sinonLocal);
           if (callsFake) {
             required.add('vi');
             changed = true;
             return callsFake;
           }
-          const sinon = convertSinon(node, factory, visit);
+          const sinon = convertSinon(node, factory, visit, frameworkImports.sinonLocal);
           if (sinon) {
             required.add('vi');
             changed = true;
             return sinon;
           }
 
-          const assertion = convertChaiAssertion(node, factory, visit);
+          const assertion = convertChaiAssertion(node, factory, visit, frameworkImports.expectLocal);
           if (assertion) {
             required.add('expect');
             changed = true;
@@ -62,7 +100,7 @@ export function migrateMochaChaiToVitest(source: string): MigrationResult {
         }
 
         if (ts.isPropertyAccessExpression(node)) {
-          const spyAssertion = convertChaiSpyProperty(node, factory, visit);
+          const spyAssertion = convertChaiSpyProperty(node, factory, visit, frameworkImports.expectLocal);
           if (spyAssertion) {
             required.add('expect');
             changed = true;
@@ -75,7 +113,7 @@ export function migrateMochaChaiToVitest(source: string): MigrationResult {
 
       return (root) => {
         const visited = ts.visitNode(root, visit) as ts.SourceFile;
-        const importDeclaration = factory.createImportDeclaration(
+        const importDeclaration = required.size > 0 ? factory.createImportDeclaration(
           undefined,
           factory.createImportClause(
             false,
@@ -85,8 +123,8 @@ export function migrateMochaChaiToVitest(source: string): MigrationResult {
             )
           ),
           factory.createStringLiteral('vitest')
-        );
-        return factory.updateSourceFile(visited, [importDeclaration, ...visited.statements]);
+        ) : undefined;
+        return importDeclaration ? factory.updateSourceFile(visited, [importDeclaration, ...visited.statements]) : visited;
       };
     },
   ]);
@@ -96,17 +134,9 @@ export function migrateMochaChaiToVitest(source: string): MigrationResult {
   const code = printer.printFile(transformedFile);
   transformed.dispose();
 
-  for (const unsupported of findUnsupportedChaiChains(code)) {
-    diagnostics.push({
-      code: 'unsupported-framework-feature',
-      message: `Review unsupported Chai assertion: ${unsupported}`,
-      classification: 'harness-rewrite',
-    });
-  }
-
   return {
+    status: changed || code !== source ? 'changed' : 'unchanged',
     code,
-    changed: changed || code !== source,
     diagnostics,
     imports: [...required].sort().map((imported) => ({ module: 'vitest', imported })),
   };
@@ -137,9 +167,15 @@ function collectUsedVitestGlobals(sourceFile: ts.SourceFile): Set<string> {
   return result;
 }
 
-function convertSinon(node: ts.CallExpression, factory: ts.NodeFactory, visit: ts.Visitor): ts.Expression | undefined {
+function convertSinon(
+  node: ts.CallExpression,
+  factory: ts.NodeFactory,
+  visit: ts.Visitor,
+  sinonLocal: string | undefined
+): ts.Expression | undefined {
+  if (!sinonLocal) return undefined;
   if (!ts.isPropertyAccessExpression(node.expression) || !ts.isIdentifier(node.expression.expression)) return undefined;
-  if (node.expression.expression.text !== 'sinon') return undefined;
+  if (node.expression.expression.text !== sinonLocal) return undefined;
   const method = node.expression.name.text;
   const args = node.arguments.map((argument) => ts.visitNode(argument, visit) as ts.Expression);
   if (method === 'spy' && args.length >= 2)
@@ -151,11 +187,17 @@ function convertSinon(node: ts.CallExpression, factory: ts.NodeFactory, visit: t
   return undefined;
 }
 
-function convertSinonCallsFake(node: ts.CallExpression, factory: ts.NodeFactory, visit: ts.Visitor): ts.Expression | undefined {
+function convertSinonCallsFake(
+  node: ts.CallExpression,
+  factory: ts.NodeFactory,
+  visit: ts.Visitor,
+  sinonLocal: string | undefined
+): ts.Expression | undefined {
+  if (!sinonLocal) return undefined;
   if (!ts.isPropertyAccessExpression(node.expression) || node.expression.name.text !== 'callsFake') return undefined;
   const receiver = node.expression.expression;
   if (!ts.isCallExpression(receiver) || !ts.isPropertyAccessExpression(receiver.expression)) return undefined;
-  if (!ts.isIdentifier(receiver.expression.expression) || receiver.expression.expression.text !== 'sinon') return undefined;
+  if (!ts.isIdentifier(receiver.expression.expression) || receiver.expression.expression.text !== sinonLocal) return undefined;
   if (!['stub', 'spy'].includes(receiver.expression.name.text) || receiver.arguments.length !== 0) return undefined;
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(factory.createIdentifier('vi'), 'fn'),
@@ -164,10 +206,15 @@ function convertSinonCallsFake(node: ts.CallExpression, factory: ts.NodeFactory,
   );
 }
 
-function convertChaiAssertion(node: ts.CallExpression, factory: ts.NodeFactory, visit: ts.Visitor): ts.Expression | undefined {
+function convertChaiAssertion(
+  node: ts.CallExpression,
+  factory: ts.NodeFactory,
+  visit: ts.Visitor,
+  expectLocal: string | undefined
+): ts.Expression | undefined {
   if (!ts.isPropertyAccessExpression(node.expression)) return undefined;
   const matcher = node.expression.name.text;
-  const chain = unwrapExpectChain(node.expression.expression);
+  const chain = unwrapExpectChain(node.expression.expression, expectLocal);
   if (!chain) return undefined;
   const matcherMap: Readonly<Record<string, string>> = {
     equal: chain.deep ? 'toEqual' : 'toBe',
@@ -196,7 +243,12 @@ function convertChaiAssertion(node: ts.CallExpression, factory: ts.NodeFactory, 
   );
 }
 
-function convertChaiSpyProperty(node: ts.PropertyAccessExpression, factory: ts.NodeFactory, visit: ts.Visitor): ts.Expression | undefined {
+function convertChaiSpyProperty(
+  node: ts.PropertyAccessExpression,
+  factory: ts.NodeFactory,
+  visit: ts.Visitor,
+  expectLocal: string | undefined
+): ts.Expression | undefined {
   const matcher = node.name.text;
   const matcherMap: Readonly<Record<string, string>> = {
     called: 'toHaveBeenCalled',
@@ -208,7 +260,7 @@ function convertChaiSpyProperty(node: ts.PropertyAccessExpression, factory: ts.N
   };
   const target = matcherMap[matcher];
   if (!target) return undefined;
-  const chain = unwrapExpectChain(node.expression);
+  const chain = unwrapExpectChain(node.expression, expectLocal);
   if (!chain) return undefined;
   const expectCall = factory.createCallExpression(factory.createIdentifier('expect'), undefined, [ts.visitNode(chain.actual, visit) as ts.Expression]);
   const expectation = chain.negated ? factory.createPropertyAccessExpression(expectCall, 'not') : expectCall;
@@ -225,7 +277,11 @@ function convertChaiSpyProperty(node: ts.PropertyAccessExpression, factory: ts.N
   return factory.createCallExpression(factory.createPropertyAccessExpression(expectation, target), undefined, args);
 }
 
-function unwrapExpectChain(node: ts.Expression): { actual: ts.Expression; deep: boolean; negated: boolean } | undefined {
+function unwrapExpectChain(
+  node: ts.Expression,
+  expectLocal: string | undefined
+): { actual: ts.Expression; deep: boolean; negated: boolean } | undefined {
+  if (!expectLocal) return undefined;
   let current = node;
   let deep = false;
   let negated = false;
@@ -234,13 +290,131 @@ function unwrapExpectChain(node: ts.Expression): { actual: ts.Expression; deep: 
     negated ||= current.name.text === 'not';
     current = current.expression;
   }
-  if (!ts.isCallExpression(current) || !ts.isIdentifier(current.expression) || current.expression.text !== 'expect') return undefined;
+  if (!ts.isCallExpression(current) || !ts.isIdentifier(current.expression) || current.expression.text !== expectLocal) return undefined;
   const actual = current.arguments[0];
   return actual ? { actual, deep, negated } : undefined;
 }
 
-function findUnsupportedChaiChains(source: string): readonly string[] {
-  const matches =
-    source.match(/expect\([^\n;]+\)\.(?:to\.(?:be|have|deep)|not\.(?:be|have)|be|have|deep)\.[^\n;]+/g) ?? [];
-  return [...new Set(matches)];
+function findUnsupportedChaiAssertions(sourceFile: ts.SourceFile, expectLocal: string | undefined): readonly ts.CallExpression[] {
+  if (!expectLocal) return [];
+  const supported = new Set([
+    'equal',
+    'equals',
+    'eq',
+    'eql',
+    'instanceof',
+    'instanceOf',
+    'match',
+    'throw',
+    'throws',
+    'a',
+    'an',
+    'callCount',
+    'calledWithExactly',
+    'property',
+  ]);
+  const result: ts.CallExpression[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
+      const chain = unwrapExpectChain(node.expression.expression, expectLocal);
+      if (chain && !supported.has(node.expression.name.text)) result.push(node);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return result;
+}
+
+function findUnsupportedChaiProperties(
+  sourceFile: ts.SourceFile,
+  expectLocal: string | undefined
+): readonly ts.PropertyAccessExpression[] {
+  if (!expectLocal) return [];
+  const supported = new Set(['called', 'calledOnce', 'calledTwice', 'true', 'false', 'empty']);
+  const result: ts.PropertyAccessExpression[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isPropertyAccessExpression(node) && unwrapExpectChain(node.expression, expectLocal)) {
+      const parentContinuesChain =
+        (ts.isPropertyAccessExpression(node.parent) && node.parent.expression === node) ||
+        (ts.isCallExpression(node.parent) && node.parent.expression === node);
+      if (!parentContinuesChain && !supported.has(node.name.text)) result.push(node);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return result;
+}
+
+function findUnsupportedSinonReferences(sourceFile: ts.SourceFile, sinonLocal: string | undefined): readonly ts.Identifier[] {
+  if (!sinonLocal) return [];
+  const result: ts.Identifier[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isIdentifier(node) && node.text === sinonLocal && !isSinonImportIdentifier(node) && !isSupportedSinonReference(node)) {
+      result.push(node);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return result;
+}
+
+function isSinonImportIdentifier(node: ts.Identifier): boolean {
+  return ts.isImportClause(node.parent) && node.parent.name === node;
+}
+
+function isSupportedSinonReference(node: ts.Identifier): boolean {
+  const access = node.parent;
+  if (!ts.isPropertyAccessExpression(access) || access.expression !== node || !['spy', 'stub'].includes(access.name.text)) return false;
+  const call = access.parent;
+  if (!ts.isCallExpression(call) || call.expression !== access) return false;
+  const callsFake = call.parent;
+  if (!ts.isPropertyAccessExpression(callsFake) || callsFake.expression !== call) return true;
+  return callsFake.name.text === 'callsFake' && ts.isCallExpression(callsFake.parent) && callsFake.parent.expression === callsFake;
+}
+
+function collectFrameworkImports(sourceFile: ts.SourceFile): {
+  readonly hasSourceFramework: boolean;
+  readonly expectLocal?: string;
+  readonly sinonLocal?: string;
+} {
+  let hasSourceFramework = false;
+  let expectLocal: string | undefined;
+  let sinonLocal: string | undefined;
+  for (const statement of sourceFile.statements) {
+    if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) continue;
+    if (!['chai', 'mocha', 'sinon', 'sinon-chai'].includes(statement.moduleSpecifier.text)) continue;
+    hasSourceFramework = true;
+    if (statement.moduleSpecifier.text === 'sinon') {
+      sinonLocal = statement.importClause?.name?.text;
+      continue;
+    }
+    if (statement.moduleSpecifier.text !== 'chai') continue;
+    const bindings = statement.importClause?.namedBindings;
+    if (!bindings || !ts.isNamedImports(bindings)) continue;
+    for (const element of bindings.elements) {
+      if ((element.propertyName?.text ?? element.name.text) === 'expect') expectLocal = element.name.text;
+    }
+  }
+  return { hasSourceFramework, expectLocal, sinonLocal };
+}
+
+function hasShadowingDeclaration(sourceFile: ts.SourceFile, name: string): boolean {
+  let declarations = 0;
+  const visit = (node: ts.Node): void => {
+    if (
+      (ts.isParameter(node) ||
+        ts.isVariableDeclaration(node) ||
+        ts.isFunctionDeclaration(node) ||
+        ts.isClassDeclaration(node) ||
+        ts.isBindingElement(node)) &&
+      node.name &&
+      ts.isIdentifier(node.name) &&
+      node.name.text === name
+    ) {
+      declarations++;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return declarations > 0;
 }

@@ -37,9 +37,51 @@ describe('migrateMochaChaiToVitest', () => {
   });
 
   it('reports unsupported Chai assertions instead of inventing helpers', () => {
-    const result = migrateMochaChaiToVitest(`import { expect, assert } from 'chai'; expect(value).to.have.keys('a'); assert.ok(value);`);
+    const source = `import { expect, assert } from 'chai'; expect(value).to.have.keys('a'); assert.ok(value);`;
+    const result = migrateMochaChaiToVitest(source);
+    expect(result.status).toBe('refused');
+    expect(result.code).toBe(source);
     expect(result.code).toContain("expect(value).to.have.keys('a')");
-    expect(result.code).toContain('import { assert } from \'chai\'');
     expect(result.diagnostics).toContainEqual(expect.objectContaining({ code: 'unsupported-framework-feature' }));
+  });
+
+  it('supports an aliased Chai expect binding', () => {
+    const result = migrateMochaChaiToVitest(`import { expect as chaiExpect } from 'chai'; chaiExpect(1).to.equal(1);`);
+    expect(result.status).toBe('changed');
+    expect(result.code).toContain('expect(1).toBe(1)');
+    expect(result.code).not.toContain('chaiExpect');
+  });
+
+  it('supports an aliased Sinon default import', () => {
+    const result = migrateMochaChaiToVitest(`import s from 'sinon'; const spy = s.spy();`);
+    expect(result.status).toBe('changed');
+    expect(result.code).toContain('vi.fn()');
+    expect(result.code).not.toContain('s.spy()');
+  });
+
+  it('refuses a shadowed Chai expect binding', () => {
+    const source = `import { expect } from 'chai'; function check(expect: unknown) { return expect; } expect(1).to.equal(1);`;
+    const result = migrateMochaChaiToVitest(source);
+    expect(result).toMatchObject({ status: 'refused', code: source });
+    expect(result.diagnostics).toContainEqual(expect.objectContaining({ code: 'unsafe-binding' }));
+  });
+
+  it('leaves an already migrated file byte-identical', () => {
+    const source = `import { expect } from 'vitest';\nexpect(1).toBe(1);\n`;
+    expect(migrateMochaChaiToVitest(source)).toEqual({ status: 'unchanged', code: source, diagnostics: [], imports: [] });
+  });
+
+  it('refuses unsupported terminal property assertions before changing imports', () => {
+    const source = `import { expect } from 'chai'; expect(value).to.be.ok;`;
+    const result = migrateMochaChaiToVitest(source);
+    expect(result).toMatchObject({ status: 'refused', code: source });
+    expect(result.diagnostics).toContainEqual(expect.objectContaining({ code: 'unsupported-framework-feature' }));
+  });
+
+  it('does not rewrite an unrelated local named sinon', () => {
+    const source = `import 'mocha'; const sinon = { spy: () => 1 }; const value = sinon.spy();`;
+    const result = migrateMochaChaiToVitest(source);
+    expect(result.code).toContain('sinon.spy()');
+    expect(result.code).not.toContain('vi.fn()');
   });
 });
