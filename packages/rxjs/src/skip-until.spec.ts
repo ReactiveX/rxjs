@@ -30,7 +30,7 @@ describe('skipUntil', () => {
     const values: number[] = [];
     const notifier = new Observable<void>((subscriber) => {
       order.push('notifier');
-      subscriber.next();
+      subscriber.next(undefined);
     });
     const source = new Observable<number>((subscriber) => {
       order.push('source');
@@ -163,7 +163,7 @@ describe('skipUntil', () => {
     const notifier = new Observable<void>((subscriber) => {
       order.push('notifier start');
       subscriber.addTeardown(() => order.push('notifier teardown'));
-      subscriber.next();
+      subscriber.next(undefined);
       order.push('notifier after next');
     });
     const source = new Observable<number>((subscriber) => {
@@ -256,7 +256,7 @@ describe('skipUntil', () => {
     expect(notifier.subscriptions).toBe(1);
 
     source.subscriber.next(1);
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
     source.subscriber.next(2);
 
     expect(firstValues).toEqual([2]);
@@ -283,7 +283,7 @@ describe('skipUntil', () => {
     source.subscriber.next(4);
     expect(restartedValues).toEqual([]);
 
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
     source.subscriber.next(5);
 
     expect(restartedValues).toEqual([5]);

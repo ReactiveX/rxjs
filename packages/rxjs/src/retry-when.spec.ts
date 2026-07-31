@@ -185,7 +185,7 @@ describe('retryWhen', () => {
 
     source.observable[retryWhen](() => notifier.observable).subscribe(() => {}, { signal: controller.signal });
     source.subscriber.error(new Error('first attempt'));
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
 
     expect(source.subscriber.active).toBe(true);
     expect(notifier.subscriber.active).toBe(true);
@@ -215,7 +215,7 @@ describe('retryWhen', () => {
     retried.subscribe((value) => secondValues.push(value), { signal: secondController.signal });
     source.subscriber.next(1);
     source.subscriber.error(new Error('first activation'));
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
     source.subscriber.next(2);
 
     expect(source.subscriptions).toBe(2);

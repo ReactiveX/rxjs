@@ -6,10 +6,10 @@ The project will establish a reliable platform Observable foundation before
 expanding the operator catalog and migration promises. The user temporarily
 prioritized the attested Observable WPT harness and fallback-conformance work
 ahead of the package and installation decision. Both slices are complete:
-the fallback reached a fully passing pinned suite while exact implementation
-identity was proved in every tested realm. D-042 subsequently accepted
-argument-free `Subscriber<void>.next()` and intentionally reopened three
-argument-presence results in that strict suite. The portable RxJS 7-to-Next
+the fallback passes every pinned Observable WPT while exact implementation
+identity is proved in every tested realm. D-045 supersedes D-042 and requires
+an explicit `Subscriber.next` argument, including `next(undefined)` for a
+platform `Subscriber<void>`. The portable RxJS 7-to-Next
 marble-test migration
 Skill, its independent vetting, and the classified repository port are also
 complete. The user has clarified that preservation in a manifest is not enough:
@@ -27,8 +27,9 @@ has completed the package-import safety fixtures. P0.2 has now accepted
 the three-package map,
 conditional per-realm fallback contract, and migration-over-emulation
 direction. P0.3 has now implemented those package decisions, restored clean
-publication builds, and added the required import/realm evidence. P0.5 will
-formalize the specification/WPT revision policy. A later
+publication builds, and added the required import/realm evidence. P0.5 records
+the written specification reference, executable WPT pin, maintainer-owned
+update policy, and complete all-pass gate. A later
 user-prioritized runner follow-up removed expected-failure quarantine. P0.DX4
 replaced that custom dynamic launcher and shard renderer with real Vitest files
 and stock reporting. The user then clarified that those files must be ordinary
@@ -38,7 +39,7 @@ this repository. The user-prioritized repository package-manager migration to pn
 without deciding the P0.2 publication boundary. The root developer command
 guide is also concise, task-oriented, and explicit about known failing gates.
 The broader Skill portfolio remains deferred beyond that focused migration
-package. P0.5 is now the sole `NEXT` item.
+package. P1.1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -58,8 +59,9 @@ item.
 
 - Native Observable is preserved and the fallback is installed only according
   to the approved contract.
-- Platform behavior is validated against a pinned specification and selected
-  WPT baseline.
+- Platform behavior passes every selected Observable test from the pinned WPT
+  revision, with the related written specification revision recorded for
+  diagnosis and reproducibility.
 - Symbol extension identity, installation, construction, cancellation, typing,
   and packaging conventions are uniform and tested.
 - Supported operators are backed by classified RxJS 7 behavioral evidence.
@@ -94,7 +96,7 @@ item.
 | `DONE` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
 | `DONE` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
 | `DONE` | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                 |
-| `NEXT` | P0.5   | Pin the first Observable specification and WPT revisions used as the conformance baseline                          |
+| `DONE` | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
 
 #### P0.1 completion evidence
 
@@ -596,9 +598,8 @@ diagrams. No implementation is required for this decision step.
 - Added the lifecycle contract to both pinned and latest-Chrome Observable CI
   jobs. At P0.4 completion, the reusable browser-script runner passed the
   pinned strict WPT gate: 52/52 URLs, 525/525 upstream subtests, and 52/52
-  implementation attestations. D-042 subsequently changed the void
-  notification contract; the current strict diagnostic passes 522/525
-  upstream subtests and retains all 52 identity attestations.
+  implementation attestations. D-042 temporarily changed the void notification
+  contract; D-045 supersedes it and restores the complete required result.
 - Reconciled the stale focused suite: 101 files and 733/733 tests pass against
   the rebuilt fallback. A correction audit removed invalid platform-Observable
   wrappers around RxJS 7 arbitrary-subscribable inputs. The complete cold
@@ -610,18 +611,42 @@ diagrams. No implementation is required for this decision step.
 
 #### P0.5 completion bar
 
-- Exact upstream specification and WPT commit identifiers are recorded.
-- The relationship between upstream tests and local test modes is documented.
-- The policy explains how accepted product divergences such as D-042 are
-  recorded while the strict WPT command remains an honest nonzero diagnostic.
-- An update policy and owner are named.
-- This step does not require a complete WPT execution pipeline.
+- WICG/observable commit `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`
+  and its `spec.bs` are recorded as the written reference for understanding
+  behavior and diagnosing failures.
+- web-platform-tests/wpt commit
+  `6a009d73f0d315941b90cac13a9523a2a08c631b` is recorded as the executable
+  success gate.
+- `pnpm run test:wpt` passes 52/52 URLs, 525/525 upstream subtests, and 52/52
+  exact RxJS implementation checks, with no upstream edits, skips, failures,
+  errors, timeouts, not-run results, or accepted-failure metadata.
+- RxJS maintainers own the pins. A new WPT revision requires an explicit exact
+  commit, review of every changed Observable test and realm pattern, verified
+  provenance, and the same complete all-pass result before adoption.
+
+#### P0.5 completion evidence
+
+- Restored the Web IDL required-argument check before the fallback
+  subscriber's active-state check. Missing arguments now throw even after
+  closure, while explicit `undefined` is delivered normally.
+- Required an explicit TypeScript value for every platform `Subscriber`, and
+  mechanically changed affected `Subscriber<void>` producers to
+  `next(undefined)` without changing unrelated `Subject<void>` contracts.
+- Superseded D-042 with D-045 and recorded the roles, exact revisions,
+  ownership, and update policy for the WICG written reference and executable
+  WPT suite.
+- Passed 51 focused polyfill tests, the polyfill declaration-consumer check,
+  733 focused RxJS tests, 75 `@rxjs/test` tests, pinned-import provenance for
+  all 52 URLs, and the five-case shared native/fallback lifecycle contract.
+- Against Chrome `150.0.7871.126`, both `pnpm run test:wpt:baseline` and strict
+  `pnpm run test:wpt` passed with 52/52 `OK` URLs, 525/525 passing upstream
+  subtests, and 52/52 passing exact RxJS implementation attestations.
 
 ### Phase 1 — Platform fallback correctness
 
 | Status    | ID    | Outcome                                                                                                          |
 | --------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
-| `PLANNED` | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
+| `NEXT`    | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
 | `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
 | `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
 | `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
@@ -1902,3 +1927,25 @@ conformance implementation depends on a runnable harness.
   checked-in spec line. Native mode skips explicitly in the current Node realm.
 - Recorded D-044, marked P0.M1 `DONE`, and advanced P0.5 as the sole `NEXT`
   item.
+
+### 2026-07-31 — P0.5 complete pinned Observable conformance
+
+- Restored required-argument behavior for fallback `Subscriber.next` and made
+  `Subscriber<void>.next()` a declaration error while preserving explicit
+  `next(undefined)` delivery. The runtime check is enforced before delivery
+  even when the subscriber is already closed.
+- Updated only platform-Subscriber void notification call sites; unrelated
+  `Subject<void>` APIs retain their own contracts.
+- Recorded WICG/observable
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8` as the written reference and
+  web-platform-tests/wpt
+  `6a009d73f0d315941b90cac13a9523a2a08c631b` as the executable gate. D-045
+  supersedes D-042 and permits no RxJS-specific WPT exceptions.
+- Passed focused runtime and type tests, import/provenance verification for all
+  52 generated URLs, the five-case native/fallback lifecycle contract, and the
+  complete-result baseline.
+- Strict `pnpm run test:wpt` passed in Chrome `150.0.7871.126`: 52/52 URLs were
+  `OK`, 525/525 upstream subtests passed, and 52/52 exact RxJS implementation
+  attestations passed, with zero failures, errors, timeouts, skips, not-run
+  results, or accepted-failure metadata.
+- Marked P0.5 `DONE` and advanced P1.1 as the sole project-level `NEXT` item.

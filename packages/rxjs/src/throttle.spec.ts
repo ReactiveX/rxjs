@@ -21,7 +21,7 @@ describe('throttle', () => {
 
     source.subscriber.next(1);
     source.subscriber.next(2);
-    durations[0]!.subscriber.next();
+    durations[0]!.subscriber.next(undefined);
     source.subscriber.next(3);
 
     expect(results).toEqual([1, 3]);
@@ -52,7 +52,7 @@ describe('throttle', () => {
     expect(results).toEqual([]);
     expect(durations).toHaveLength(1);
 
-    durations[0]!.subscriber.next();
+    durations[0]!.subscriber.next(undefined);
 
     expect(results).toEqual([2]);
     expect(durations).toHaveLength(2);
@@ -73,7 +73,7 @@ describe('throttle', () => {
     source.subscriber.complete();
     expect(results).toEqual([]);
 
-    duration.subscriber.next();
+    duration.subscriber.next(undefined);
     expect(results).toEqual([2, 'complete']);
   });
 

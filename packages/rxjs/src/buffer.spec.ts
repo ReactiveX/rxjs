@@ -17,7 +17,7 @@ describe('buffer', () => {
     source[buffer]({ delay: () => closingNotifier }).subscribe((value) => results.push(value));
     sourceSubscriber?.next('a');
     sourceSubscriber?.next('b');
-    closingSubscriber?.next();
+    closingSubscriber?.next(undefined);
 
     expect(results).toEqual([['a', 'b']]);
   });
@@ -32,9 +32,9 @@ describe('buffer', () => {
       signal: controller.signal,
     });
     source.subscriber.next('a');
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
     source.subscriber.next('b');
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
 
     expect(results).toEqual([['a'], ['b']]);
     expect(notifier.subscriptions).toBe(3);
@@ -60,8 +60,8 @@ describe('buffer', () => {
       complete: () => results.push('complete'),
     });
     source.subscriber.next('a');
-    notifier.subscriber.next();
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
+    notifier.subscriber.next(undefined);
     source.subscriber.next('b');
     source.subscriber.complete();
 
@@ -114,7 +114,7 @@ describe('buffer', () => {
     buffered.subscribe((value) => firstResults.push(value), { signal: firstController.signal });
     buffered.subscribe((value) => secondResults.push(value), { signal: secondController.signal });
     source.subscriber.next('a');
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
 
     expect(source.subscriptions).toBe(1);
     expect(notifier.subscriptions).toBe(1);

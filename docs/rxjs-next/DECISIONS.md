@@ -938,7 +938,7 @@ Status meanings:
 
 ## D-042 — Permit argument-free notification for `Subscriber<void>`
 
-- **Status:** Accepted
+- **Status:** Superseded by D-045
 - **Decision:** `Subscriber<void>.next()` is a valid TypeScript call. The RxJS
   fallback emits `undefined` for that call. Non-void subscribers retain a
   required value through the same ordinary `next(value: T)` signature, so
@@ -1013,3 +1013,33 @@ Status meanings:
   as repository-specific harness behavior. Broader framework adapters and the
   eventual Skill/plugin portfolio can evolve without changing this package's
   runtime-independent boundary.
+
+## D-045 — Require the pinned Observable WPT suite to pass completely
+
+- **Status:** Accepted
+- **Decision:** The written Observable reference is WICG/observable commit
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`, specifically `spec.bs`. The
+  executable conformance gate is the selected Observable closure from
+  web-platform-tests/wpt commit
+  `6a009d73f0d315941b90cac13a9523a2a08c631b`. `pnpm run test:wpt` must pass all
+  52 generated URLs, all 525 upstream subtests, and all 52 exact RxJS
+  implementation attestations, with zero failures, errors, timeouts, skips,
+  not-run results, or accepted-failure metadata. Upstream tests remain
+  byte-for-byte unchanged.
+- **Runtime and types:** `Subscriber.next` requires one argument. Calling it
+  without an argument throws `TypeError` before notification delivery or the
+  closed-state check. `Subscriber<void>.next(undefined)` remains valid and
+  delivers `undefined`; `Subscriber<void>.next()` is a type error. D-042 is
+  superseded.
+- **Rationale:** The WICG repository explains the written behavior, while WPT
+  supplies the executable, realm-aware acceptance tests. Recording both exact
+  revisions makes failures diagnosable and results reproducible without
+  creating two separate success gates. A complete pinned WPT pass is a simpler
+  and stronger contract than maintaining RxJS-specific exceptions.
+- **Ownership and updates:** RxJS maintainers own both pins. Updating WPT
+  requires an explicit reviewed change to one exact commit, review of every
+  changed Observable test, dependency, URL, and realm pattern, import and
+  provenance verification, and the same complete strict result before the new
+  revision becomes the target. The matching written-spec reference must be
+  reviewed and updated when applicable. Scheduled newer-Chrome runs are
+  advisory and never change either pin or weaken the all-pass gate.

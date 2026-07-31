@@ -58,9 +58,9 @@ describe('delayWhen', () => {
 
     expect(events).toEqual([]);
 
-    secondDuration.subscriber.next();
-    secondDuration.subscriber.next();
-    firstDuration.subscriber.next();
+    secondDuration.subscriber.next(undefined);
+    secondDuration.subscriber.next(undefined);
+    firstDuration.subscriber.next(undefined);
 
     expect(events).toEqual(['second', 'first', 'complete']);
     expect(firstDuration.subscriber.active).toBe(false);
@@ -174,12 +174,12 @@ describe('delayWhen', () => {
     nextResult.subscribe((value) => nextValues.push(value));
     expect(nextSource.activations).toBe(0);
 
-    nextGate.subscriber.next();
+    nextGate.subscriber.next(undefined);
     expect(nextSource.activations).toBe(1);
     expect(nextGate.subscriber.active).toBe(false);
 
     nextSource.subscribers[0]!.next(1);
-    nextGate.subscriber.next();
+    nextGate.subscriber.next(undefined);
     expect(nextSource.activations).toBe(1);
     expect(nextValues).toEqual([1]);
 
@@ -242,7 +242,7 @@ describe('delayWhen', () => {
     source.observable[delayWhen]((value) => durations[value].observable, gate.observable).subscribe(() => {}, {
       signal: controller.signal,
     });
-    gate.subscriber.next();
+    gate.subscriber.next(undefined);
     source.subscriber.next(0);
     source.subscriber.next(1);
     controller.abort();
@@ -275,7 +275,7 @@ describe('delayWhen', () => {
     result.subscribe((value) => secondValues.push(value), { signal: secondController.signal });
 
     expect(gate.activations).toBe(1);
-    gate.subscribers[0]!.next();
+    gate.subscribers[0]!.next(undefined);
     source.subscribers[0]!.next(1);
     expect(source.activations).toBe(1);
     expect(durations[0]!.activations).toBe(1);
@@ -284,7 +284,7 @@ describe('delayWhen', () => {
     expect(source.subscribers[0]!.active).toBe(true);
     expect(durations[0]!.subscribers[0]!.active).toBe(true);
 
-    durations[0]!.subscribers[0]!.next();
+    durations[0]!.subscribers[0]!.next(undefined);
     expect(firstValues).toEqual([]);
     expect(secondValues).toEqual([1]);
 
@@ -295,7 +295,7 @@ describe('delayWhen', () => {
     expect(gate.activations).toBe(2);
     gate.subscribers[1]!.complete();
     source.subscribers[1]!.next(2);
-    durations[1]!.subscribers[0]!.next();
+    durations[1]!.subscribers[0]!.next(undefined);
 
     expect(source.activations).toBe(2);
     expect(indices).toEqual([0, 0]);

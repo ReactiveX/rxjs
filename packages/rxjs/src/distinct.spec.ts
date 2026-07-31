@@ -59,7 +59,7 @@ describe('distinct', () => {
     source[distinct](undefined, flushes).subscribe((value) => results.push(value));
     sourceSubscriber?.next(1);
     sourceSubscriber?.next(1);
-    flushSubscriber?.next();
+    flushSubscriber?.next(undefined);
     sourceSubscriber?.next(1);
 
     expect(results).toEqual([1, 1]);
@@ -166,7 +166,7 @@ describe('distinct', () => {
     expect(secondResults).toEqual([1]);
 
     firstController.abort();
-    flushSubscribers[0]?.next();
+    flushSubscribers[0]?.next(undefined);
     sourceSubscribers[0]?.next(1);
 
     expect(firstResults).toEqual([1]);

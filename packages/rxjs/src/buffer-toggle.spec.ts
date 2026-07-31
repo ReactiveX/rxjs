@@ -61,10 +61,10 @@ describe('bufferToggle', () => {
     source.subscriber.next(1);
     openings.subscriber.next('second');
     source.subscriber.next(2);
-    firstClosing.subscriber.next();
-    firstClosing.subscriber.next();
+    firstClosing.subscriber.next(undefined);
+    firstClosing.subscriber.next(undefined);
     source.subscriber.next(3);
-    secondClosing.subscriber.next();
+    secondClosing.subscriber.next(undefined);
 
     expect(emitted).toEqual([
       [1, 2],
@@ -82,7 +82,7 @@ describe('bufferToggle', () => {
 
     source.observable[bufferToggle](openings.observable, () => closing.observable).subscribe((buffer) => emitted.push(buffer));
 
-    openings.subscriber.next();
+    openings.subscriber.next(undefined);
     source.subscriber.next(1);
     closing.subscriber.complete();
     source.subscriber.next(2);
@@ -119,7 +119,7 @@ describe('bufferToggle', () => {
     source.subscriber.next(2);
     openings.subscriber.next('third');
     source.subscriber.next(3);
-    closings.second.subscriber.next();
+    closings.second.subscriber.next(undefined);
     source.subscriber.next(4);
     source.subscriber.complete();
 
@@ -151,7 +151,7 @@ describe('bufferToggle', () => {
       events.push(['selector', opening]);
       return new Observable<void>((subscriber) => {
         events.push('closing active');
-        subscriber.next();
+        subscriber.next(undefined);
       });
     }).subscribe({
       next: (buffer) => events.push(['buffer', buffer]),
@@ -179,8 +179,8 @@ describe('bufferToggle', () => {
       return closing.observable;
     }).subscribe((buffer) => emitted.push(buffer));
 
-    openings.subscriber.next();
-    closing.subscriber.next();
+    openings.subscriber.next(undefined);
+    closing.subscriber.next(undefined);
 
     expect(emitted).toEqual([[1]]);
   });
@@ -220,7 +220,7 @@ describe('bufferToggle', () => {
       next: (buffer) => sourceEvents.push(buffer),
       error: (error) => sourceEvents.push(error),
     });
-    sourceOpenings.subscriber.next();
+    sourceOpenings.subscriber.next(undefined);
     source.subscriber.next(1);
     source.subscriber.error(sourceFailure);
 
@@ -245,7 +245,7 @@ describe('bufferToggle', () => {
       next: (buffer) => closingEvents.push(buffer),
       error: (error) => closingEvents.push(error),
     });
-    closingOpenings.subscriber.next();
+    closingOpenings.subscriber.next(undefined);
     closingSource.subscriber.next(1);
     closing.subscriber.error(closingFailure);
 
@@ -276,7 +276,7 @@ describe('bufferToggle', () => {
     selectorSource.observable[bufferToggle](selectorOpenings.observable, () => {
       throw selectorFailure;
     }).subscribe({ error: (error) => selectorErrors.push(error) });
-    selectorOpenings.subscriber.next();
+    selectorOpenings.subscriber.next(undefined);
 
     const closingConversionFailure = new Error('closing conversion failed');
     const conversionSource = controllable<number>();
@@ -286,7 +286,7 @@ describe('bufferToggle', () => {
     conversionSource.observable[bufferToggle](conversionOpenings.observable, () =>
       throwingIterable(closingConversionFailure)
     ).subscribe({ error: (error) => conversionErrors.push(error) });
-    conversionOpenings.subscriber.next();
+    conversionOpenings.subscriber.next(undefined);
 
     expect(openingErrors).toEqual([openingConversionFailure]);
     expect(selectorErrors).toEqual([selectorFailure]);
@@ -342,12 +342,12 @@ describe('bufferToggle', () => {
     expect(source.activations).toBe(1);
     expect(openings.activations).toBe(1);
 
-    openings.subscribers[0]!.next();
+    openings.subscribers[0]!.next(undefined);
     expect(closing.activations).toBe(1);
     source.subscribers[0]!.next(1);
     firstController.abort();
     source.subscribers[0]!.next(2);
-    closing.subscribers[0]!.next();
+    closing.subscribers[0]!.next(undefined);
 
     expect(firstBuffers).toEqual([]);
     expect(secondBuffers).toEqual([[1, 2]]);
@@ -360,9 +360,9 @@ describe('bufferToggle', () => {
     result.subscribe((buffer) => restartedBuffers.push(buffer), { signal: restartController.signal });
     expect(source.activations).toBe(2);
     expect(openings.activations).toBe(2);
-    openings.subscribers[1]!.next();
+    openings.subscribers[1]!.next(undefined);
     source.subscribers[1]!.next(3);
-    closing.subscribers[1]!.next();
+    closing.subscribers[1]!.next(undefined);
 
     expect(restartedBuffers).toEqual([[3]]);
 

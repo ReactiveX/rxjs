@@ -81,7 +81,7 @@ describe('repeatWhen', () => {
           const observeCompletion = () => {
             completionObservations++;
             if (completionObservations === 2) {
-              subscriber.next();
+              subscriber.next(undefined);
             } else if (completionObservations === 4) {
               subscriber.complete();
             }
@@ -115,7 +115,7 @@ describe('repeatWhen', () => {
     expect(notifier.activations).toBe(1);
     expect(source.activations).toBe(1);
 
-    notifier.subscribers[0]!.next();
+    notifier.subscribers[0]!.next(undefined);
     source.subscribers[1]!.next(2);
 
     expect(source.activations).toBe(2);
@@ -166,7 +166,7 @@ describe('repeatWhen', () => {
       complete: () => events.push('complete'),
     });
     source.subscribers[0]!.complete();
-    notifier.subscribers[0]!.next();
+    notifier.subscribers[0]!.next(undefined);
     notifier.subscribers[0]!.complete();
     source.subscribers[1]!.next(2);
 
@@ -219,7 +219,7 @@ describe('repeatWhen', () => {
       error: (error) => errors.push(error),
     });
     source.subscribers[0]!.complete();
-    notifier.subscribers[0]!.next();
+    notifier.subscribers[0]!.next(undefined);
     notifier.subscribers[0]!.error(failure);
 
     expect(errors).toEqual([failure]);
@@ -265,7 +265,7 @@ describe('repeatWhen', () => {
             {
               next: () => {
                 if (++completionCount < attempts) {
-                  subscriber.next();
+                  subscriber.next(undefined);
                 } else {
                   subscriber.complete();
                 }

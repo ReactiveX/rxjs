@@ -7,7 +7,9 @@ const source = new Observable<number>((subscriber) => {
   subscriber.complete();
 });
 const voidSource = new Observable<void>((subscriber) => {
+  // @ts-expect-error void Subscribers still require an explicit value argument
   subscriber.next();
+  subscriber.next(undefined);
   // @ts-expect-error void Subscribers reject non-void values
   subscriber.next(1);
   subscriber.complete();

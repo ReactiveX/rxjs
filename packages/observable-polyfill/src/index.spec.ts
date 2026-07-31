@@ -55,10 +55,29 @@ describe('Observable', () => {
     expect(results).toEqual(['subscribe', 1, 2, 'abort', 'teardown', 'complete']);
   });
 
-  it('emits undefined when a void Subscriber calls next without an argument', () => {
+  it('requires Subscriber.next to receive an argument', () => {
+    let subscriber: Subscriber<void> | undefined;
+    const source = new Observable<void>((currentSubscriber) => {
+      subscriber = currentSubscriber;
+    });
+
+    source.subscribe();
+
+    expect(() => (subscriber!.next as () => void)()).toThrow(
+      new TypeError('Subscriber.next requires a value')
+    );
+
+    subscriber!.complete();
+
+    expect(() => (subscriber!.next as () => void)()).toThrow(
+      new TypeError('Subscriber.next requires a value')
+    );
+  });
+
+  it('emits undefined when a void Subscriber receives explicit undefined', () => {
     const results: void[] = [];
     const source = new Observable<void>((subscriber) => {
-      subscriber.next();
+      subscriber.next(undefined);
       subscriber.complete();
     });
 

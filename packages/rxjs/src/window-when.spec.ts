@@ -99,7 +99,7 @@ describe('windowWhen', () => {
     });
 
     source.subscriber.next(1);
-    closings[0]!.subscriber.next();
+    closings[0]!.subscriber.next(undefined);
     source.subscriber.next(2);
     closings[1]!.subscriber.complete();
     source.subscriber.next(3);
@@ -162,7 +162,7 @@ describe('windowWhen', () => {
     });
 
     source.subscriber.next(1);
-    closings[0]!.subscriber.next();
+    closings[0]!.subscriber.next(undefined);
 
     expect(events).toEqual(['window 0', 'selector 0', 'window 0: 1', 'window 1', 'window 1: 2', 'selector 1']);
   });
@@ -310,7 +310,7 @@ describe('windowWhen', () => {
     expect(firstWindows).toHaveLength(1);
     expect(secondWindows).toHaveLength(0);
 
-    closing.subscribers[0]!.next();
+    closing.subscribers[0]!.next(undefined);
     expect(firstWindows).toHaveLength(2);
     expect(secondWindows).toHaveLength(1);
     expect(firstWindows[1]).toBe(secondWindows[0]);

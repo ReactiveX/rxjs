@@ -94,13 +94,13 @@ describe('take', () => {
     source[take](5).subscribe({
       next: () => {
         emissions++;
-        sourceSubscriber?.next();
+        sourceSubscriber?.next(undefined);
       },
       complete: () => {
         completed = true;
       },
     });
-    sourceSubscriber?.next();
+    sourceSubscriber?.next(undefined);
 
     expect(emissions).toBe(5);
     expect(completed).toBe(true);

@@ -28,6 +28,9 @@ Python interpreter and every other harness prerequisite.
 
 ## What is pinned
 
+- Written Observable reference: WICG/observable `spec.bs` at
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`. This explains the rules and helps
+  diagnose failures; it is not a second executable gate.
 - WPT commit:
   `6a009d73f0d315941b90cac13a9523a2a08c631b`
 - Chrome for Testing and ChromeDriver: `150.0.7871.126`
@@ -149,26 +152,27 @@ stable-result comparison for deliberate harness diagnostics. In baseline mode,
 both an unexpected failure and an unexpected pass are mismatches. The current
 baseline contains 52 `OK` URLs and 525 passing upstream subtests.
 
-## Updating WPT or expectations
+## Updating WPT
 
-Treat both operations as reviewed changes:
+RxJS maintainers own the written-spec and WPT pins. A newer revision becomes
+the project target only through an explicit reviewed change:
 
 1. Import an exact 40-character WPT commit with `pnpm run wpt:import -- --commit
 <sha>`.
 2. Review every vendored-file, provenance, URL-inventory, dependency-closure,
-   and realm-pattern change.
+   and realm-pattern change, plus the corresponding written Observable rules.
 3. Run `pnpm run wpt:verify-import`.
-4. Run `pnpm run wpt:update-expectations`.
-5. Review the generated granular `.ini` metadata and
-   `expected-results.json`. Attestation must never appear in expectation
-   metadata. Do not replace granular failures with whole-file skips.
-6. Run `pnpm run test:wpt:baseline`, then repeat it with
-   `RXJS_WPT_OFFLINE=1`.
+4. Update the complete-result baseline without adding any failure, skip, or
+   multi-status allowance.
+5. Run `pnpm run test:wpt:baseline` and strict `pnpm run test:wpt`; both must
+   report 52/52 URLs, 525/525 upstream subtests, and 52/52 exact RxJS
+   attestations for the current pin, or the corresponding fully passing totals
+   reviewed for the proposed pin.
 
-Expectation updates deliberately require three complete runs with identical
-statuses. If a result is genuinely nondeterministic, do not broaden the
-baseline silently: document a quarantine and create a follow-up issue before
-accepting a multi-status expectation.
+If a proposed upstream revision or browser is nondeterministic or failing, it
+does not become the pinned target. A scheduled run against newer Chrome is
+advisory and does not silently change the vendored tests, written reference,
+or all-pass requirement.
 
 CI runs the strict pinned conformance command as a path-filtered blocking check
 with fixed process concurrency and a fixed wall-clock timeout. A scheduled

@@ -274,7 +274,7 @@ describe('share', () => {
 
     secondController.abort();
     expect(reset.activations).toBe(2);
-    reset.subscribers[1]!.next();
+    reset.subscribers[1]!.next(undefined);
     expect(source.subscribers[0]!.active).toBe(false);
 
     shared.subscribe(() => {}, { signal: thirdController.signal });
@@ -307,7 +307,7 @@ describe('share', () => {
     expect(firstErrors).toEqual([failure]);
     expect(lateErrors).toEqual([failure]);
 
-    reset.subscribers[0]!.next();
+    reset.subscribers[0]!.next(undefined);
     shared.subscribe(() => {});
 
     expect(source.activations).toBe(2);

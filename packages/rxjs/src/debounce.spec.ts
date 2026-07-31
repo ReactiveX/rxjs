@@ -17,7 +17,7 @@ describe('debounce', () => {
     expect(first.subscriber.active).toBe(false);
     expect(second.subscriber.active).toBe(true);
 
-    second.subscriber.next();
+    second.subscriber.next(undefined);
 
     expect(values).toEqual(['second']);
     expect(second.subscriber.active).toBe(false);

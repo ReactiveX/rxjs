@@ -17,12 +17,12 @@ The target architecture has three conceptual layers:
 
 The branch now has a buildable three-package foundation for the platform and
 extension layers, but it remains a prototype rather than a release. The
-fallback passed the pinned Observable WPT suite before D-042 deliberately made
-an omitted `Subscriber.next()` argument produce `undefined`. The strict suite
-now reports three argument-presence failures while continuing to attest the
-RxJS fallback in all 52 realms. P0.3 implements the package, installation,
-detection, and initial realm boundaries accepted in D-039 through D-041. P0.4
-adds the shared lifecycle safety rail; P0.5 is the active revision-policy step.
+fallback is held to every selected Observable test at the pinned WPT revision;
+there are no RxJS-specific conformance exceptions. P0.3 implements the package,
+installation, detection, and initial realm boundaries accepted in D-039
+through D-041. P0.4 adds the shared lifecycle safety rail. P0.5 pins the written
+Observable rules and executable WPT gate and restores complete conformance by
+superseding D-042 with D-045.
 
 ## Architecture context
 
@@ -136,9 +136,10 @@ platform surface.
 - ref-count closure when the observer set becomes empty;
 - explicit close state that aborts the subscriber signal before running
   teardown callbacks in reverse insertion order;
-- the ordinary `next(value: T)` TypeScript signature, which permits `next()`
-  when `T` is `void` while retaining a required value for non-void
-  subscribers; at runtime an omitted argument is delivered as `undefined`;
+- a required `next(value)` argument for every platform `Subscriber`, including
+  `Subscriber<void>`; explicit `next(undefined)` is valid for a void
+  subscriber, while an omitted runtime argument throws before active-state or
+  notification-delivery checks;
 - immediate execution of teardowns registered after closure;
 - a small `AbortController.prototype.abort` bridge for signals that have
   Observable work registered, because JavaScript exposes abort events but not
@@ -153,13 +154,11 @@ iterators use explicit protocol loops so the fallback can preserve iterator
 method sampling, `return(reason)`, abort timing, and pending-result behavior
 that `for await...of` intentionally hides.
 
-The structure and behavior previously passed the pinned Observable WPT
-revision in window, dedicated-worker, same-origin iframe, and Web IDL coverage.
-D-042 intentionally differs from that revision's required-argument rule:
-strict execution now passes 522/525 upstream subtests and fails the window,
-worker, and Web IDL checks that require omitted `Subscriber.next()` arguments
-to throw. This is a bounded, explicit product-policy divergence, not a broad
-conformance claim or a claim about later specification or WPT revisions.
+The structure and behavior pass the pinned Observable WPT revision in window,
+dedicated-worker, same-origin iframe, and Web IDL coverage. D-045 supersedes
+D-042: the fallback again enforces the pinned revision's required-argument rule
+for `Subscriber.next`, and the strict gate permits no product-policy divergence
+from any selected upstream test.
 The abort-algorithm bridge is installed only with the fallback constructor. It
 still patches that realm's `AbortController.prototype.abort`, because
 JavaScript does not expose the required DOM abort-algorithm hook; controllers
@@ -236,7 +235,10 @@ upstream Observable suite in disposable browser realms while proving that each
 reported result came from the RxJS fallback rather than the browser's native
 implementation.
 
-The harness pins WPT commit
+The written standards reference is WICG/observable commit
+`d74bace7cf80200a01c81cfe20961e29ac7fa3d8`, specifically `spec.bs`. It is used
+to understand the rules and diagnose failures; it is not a second executable
+success gate. The harness pins web-platform-tests/wpt commit
 `6a009d73f0d315941b90cac13a9523a2a08c631b`. It vendors exactly 29 files from
 `dom/observable/tentative/`—including the `EventTarget.prototype.when`
 coverage—and eight derived support files: the license, GC helper, two IDLs,
@@ -296,9 +298,8 @@ At P1.4b completion, all 52 URLs reported `OK`, all 525 upstream subtests
 reported `PASS`, and all 52 implementation attestations passed against Chrome
 for Testing `150.0.7871.126`. Three further complete attested runs produced
 identical results before the obsolete failure metadata was removed. D-042
-later changed the argument-presence contract: the current strict result is
-52/52 URLs reported, 522/525 upstream subtests passing, and 52/52 exact
-implementation attestations passing.
+temporarily changed the argument-presence contract; D-045 supersedes it and
+restores the same complete result as the required current baseline.
 
 For bounded network and execution cost, the official sparse WPT runner is
 cached by WPT revision, operating system, and Python version. Chrome for
@@ -960,7 +961,7 @@ The P0.3 package baseline was verified on 2026-07-30 with Node `24.12.0`:
 | Conditional installation fixtures               | Pass missing-global, marker, foreign/earlier constructor, independent `when`, direct-subpath, core-only root, worker-realm, and frozen-target cases |
 | Published-file dry runs                         | Contain `dist` runtime/declaration artifacts plus package metadata; no source specs or generated self-links                                         |
 | Polyfill and test-package source suites         | 49 polyfill/harness tests and 75 `@rxjs/test` tests pass                                                                                            |
-| Attested Observable WPT harness                 | 52/52 URLs and identity attestations pass; 522/525 upstream subtests pass, with three explicit D-042 argument-presence failures                     |
+| Attested Observable WPT harness                 | 52/52 URLs, 525/525 upstream subtests, and 52/52 exact RxJS identity attestations pass; no failure expectations or skips                            |
 
 Rebuilding the formerly disconnected polyfill entry also exposed that the
 historical focused RxJS source-test baseline had been consuming a stale
@@ -1018,16 +1019,16 @@ These invariants should become automated fitness functions:
 
 ## Initial fitness-function scorecard
 
-| Characteristic         | Check                                                                                                            | Target enforcement                                                                |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                              | Unit and package-import tests                                                     |
-| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL        | Blocking strict `test:wpt` job plus an explicit known-failure baseline diagnostic |
-| Extension safety       | Snapshot string properties; verify only approved Symbol keys are installed and repeat installation is idempotent | Unit tests and CI                                                                 |
-| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                        | Shared platform test suite                                                        |
-| Native/fallback parity | Run the same operator cases against both implementations                                                         | CI matrix                                                                         |
-| Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures                                      | Package CI                                                                        |
-| Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                  | Migration review and generated-ledger checks                                      |
-| Migration              | Representative application fixtures compile and pass behavior tests                                              | Pre-release gate                                                                  |
+| Characteristic         | Check                                                                                                            | Target enforcement                                                        |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                              | Unit and package-import tests                                             |
+| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL        | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
+| Extension safety       | Snapshot string properties; verify only approved Symbol keys are installed and repeat installation is idempotent | Unit tests and CI                                                         |
+| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                        | Shared platform test suite                                                |
+| Native/fallback parity | Run the same operator cases against both implementations                                                         | CI matrix                                                                 |
+| Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures                                      | Package CI                                                                |
+| Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                  | Migration review and generated-ledger checks                              |
+| Migration              | Representative application fixtures compile and pass behavior tests                                              | Pre-release gate                                                          |
 
 ## Known architectural risks
 

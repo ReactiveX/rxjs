@@ -17,9 +17,9 @@ describe('takeUntil', () => {
     let notifierActiveAfterNext = true;
     const notifier = new Observable<void>((subscriber) => {
       events.push('notifier');
-      subscriber.next();
+      subscriber.next(undefined);
       notifierActiveAfterNext = subscriber.active;
-      subscriber.next();
+      subscriber.next(undefined);
     });
     const source = new Observable<number>(() => {
       events.push('source');
@@ -81,7 +81,7 @@ describe('takeUntil', () => {
     });
     source.subscriber.next(1);
     source.subscriber.next(2);
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
     source.subscriber.next(3);
 
     expect(observations).toEqual([1, 2, 'complete']);
@@ -157,7 +157,7 @@ describe('takeUntil', () => {
     source.observable[takeUntil](notifier.observable).subscribe({
       next: (value) => {
         observations.push(value);
-        notifier.subscriber.next();
+        notifier.subscriber.next(undefined);
       },
       complete: () => {
         inputsActiveAtCompletion = [source.subscriber.active, notifier.subscriber.active];
@@ -224,7 +224,7 @@ describe('takeUntil', () => {
     expect(source.activations).toBe(2);
 
     source.subscribers[1]!.next(3);
-    notifier.subscribers[1]!.next();
+    notifier.subscribers[1]!.next(undefined);
 
     expect(restartedValues).toEqual([3, 'complete']);
     expect(source.teardowns).toBe(2);

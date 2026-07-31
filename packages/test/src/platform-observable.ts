@@ -9,6 +9,7 @@ export interface PlatformSubscribeOptions {
 }
 
 export interface PlatformSubscriber<T> extends PlatformObserver<T> {
+  next<Value extends T>(value: Value): void;
   addTeardown(teardown: () => void): void;
   readonly active: boolean;
   readonly signal: AbortSignal;

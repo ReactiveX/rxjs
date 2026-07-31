@@ -19,7 +19,7 @@ describe('retry', () => {
     expect(source.subscriptions).toBe(1);
     expect(notifier.subscriber.active).toBe(true);
 
-    notifier.subscriber.next();
+    notifier.subscriber.next(undefined);
 
     expect(notifier.subscriber.active).toBe(false);
     expect(source.subscriptions).toBe(2);
@@ -43,7 +43,7 @@ describe('retry', () => {
 
     retried.subscribe(() => {});
     source.subscriber.error(new Error('first attempt'));
-    notifiers[0]!.subscriber.next();
+    notifiers[0]!.subscriber.next(undefined);
     source.subscriber.error(new Error('second attempt'));
 
     expect(retryCounts).toEqual([1, 2]);
@@ -65,7 +65,7 @@ describe('retry', () => {
     }).subscribe(() => {});
 
     source.subscriber.error(new Error('first attempt'));
-    firstNotifier.subscriber.next();
+    firstNotifier.subscriber.next(undefined);
     source.subscriber.next(1);
     source.subscriber.error(new Error('second attempt'));
 

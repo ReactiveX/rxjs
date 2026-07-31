@@ -59,7 +59,7 @@ describe('windowToggle', () => {
         return new Observable<void>((subscriber) => {
           events.push(`closing ${opening} active`);
           if (opening === 'close') {
-            subscriber.next();
+            subscriber.next(undefined);
           } else {
             subscriber.complete();
           }
@@ -121,8 +121,8 @@ describe('windowToggle', () => {
     source.subscriber.next(1);
     openings.subscriber.next('second');
     source.subscriber.next(2);
-    firstClosing.subscriber.next();
-    firstClosing.subscriber.next();
+    firstClosing.subscriber.next(undefined);
+    firstClosing.subscriber.next(undefined);
     source.subscriber.next(3);
     secondClosing.subscriber.complete();
     source.subscriber.next(4);
@@ -148,8 +148,8 @@ describe('windowToggle', () => {
       },
       complete: () => completionEvents.push('outer complete'),
     });
-    completingOpenings.subscriber.next();
-    completingOpenings.subscriber.next();
+    completingOpenings.subscriber.next(undefined);
+    completingOpenings.subscriber.next(undefined);
     completingSource.subscriber.complete();
 
     const failure = new Error('source failed');
@@ -164,8 +164,8 @@ describe('windowToggle', () => {
       },
       error: (error) => errorEvents.push(['outer error', error]),
     });
-    failingOpenings.subscriber.next();
-    failingOpenings.subscriber.next();
+    failingOpenings.subscriber.next(undefined);
+    failingOpenings.subscriber.next(undefined);
     failingSource.subscriber.error(failure);
 
     expect(completionEvents).toEqual([
@@ -232,7 +232,7 @@ describe('windowToggle', () => {
         next: (window) => window.subscribe({ error: (error) => conversionEvents.push(['window error', error]) }),
         error: (error) => conversionEvents.push(['outer error', error]),
       });
-    conversionOpenings.subscriber.next();
+    conversionOpenings.subscriber.next(undefined);
 
     const closingFailure = new Error('closing failed');
     const closingSource = controllable<number>();
@@ -246,7 +246,7 @@ describe('windowToggle', () => {
       },
       error: (error) => closingEvents.push(['outer error', error]),
     });
-    closingOpenings.subscriber.next();
+    closingOpenings.subscriber.next(undefined);
     closing.subscriber.error(closingFailure);
 
     expect(openingConversionErrors).toEqual([openingConversionFailure]);
@@ -313,7 +313,7 @@ describe('windowToggle', () => {
         values.push(value);
         if (index === 0 && value === 1) {
           openings.subscriber.next('third');
-          closings.second.subscriber.next();
+          closings.second.subscriber.next(undefined);
         }
       });
     });
@@ -396,7 +396,7 @@ describe('windowToggle', () => {
     expect(source.activations).toBe(1);
     expect(openings.activations).toBe(1);
 
-    openings.subscribers[0]!.next();
+    openings.subscribers[0]!.next(undefined);
     expect(firstWindows).toHaveLength(1);
     expect(secondWindows).toHaveLength(1);
     expect(firstWindows[0]).toBe(secondWindows[0]);
@@ -414,7 +414,7 @@ describe('windowToggle', () => {
     expect(source.activations).toBe(2);
     expect(openings.activations).toBe(2);
 
-    openings.subscribers[1]!.next();
+    openings.subscribers[1]!.next(undefined);
     expect(restartedWindows).toHaveLength(1);
     expect(restartedWindows[0]).not.toBe(firstWindows[0]);
 

@@ -81,18 +81,7 @@ Before the release support matrix stabilizes, define:
 
 ## Platform-layer design questions
 
-### 4. Which specification revision completes the first conformance baseline?
-
-The WPT harness pins commit
-`6a009d73f0d315941b90cac13a9523a2a08c631b`. Choose the matching Observable
-specification commit, the ownership and update policy for both pins, and the
-browser-support policy for later revisions. D-042 deliberately permits
-`Subscriber<void>.next()` and therefore differs from the pinned WPT
-argument-presence rule; the policy must say how such accepted product
-divergences are recorded without weakening the strict WPT diagnostic or
-editing upstream sources.
-
-### 5. How are same-realm subclasses and borrowed methods preserved?
+### 4. How are same-realm subclasses and borrowed methods preserved?
 
 D-037 resolves `ColdObservable`: RxJS Symbol operators return plain
 ColdObservables, while native string methods return fresh platform
@@ -107,7 +96,7 @@ Still decide the required same-realm behavior for:
 - constructors with incompatible signatures;
 - values converted through `Observable.from`.
 
-### 6. How is each RxJS Symbol variant related to its platform counterpart?
+### 5. How is each RxJS Symbol variant related to its platform counterpart?
 
 D-002 and D-003 settle the ownership model. The platform owns string-named
 methods, and RxJS may export a same-familiar-name exact Symbol without changing
@@ -121,7 +110,7 @@ Decide per overlapping operator:
 - documentation that prevents false parity claims;
 - native and fallback evidence that the platform method remains untouched.
 
-### 7. What is the canonical extension implementation pattern?
+### 6. What is the canonical extension implementation pattern?
 
 Define one pattern for:
 
@@ -135,18 +124,18 @@ directly, but their current assignments do not settle the common installer.
 
 ## Delivery and migration questions
 
-### 8. What is the final major version and support relationship with RxJS 7?
+### 7. What is the final major version and support relationship with RxJS 7?
 
 Confirm RxJS 9 or choose another name. Define RxJS 7 maintenance expectations
 and pre-release naming. There is no compatibility package to version.
 
-### 9. How will migration be measured?
+### 8. How will migration be measured?
 
 Choose representative applications, frameworks, bundle configurations, and
 behavioral suites. Define the acceptable level of automated migration and the
 criteria for calling an application migrated.
 
-### 10. How are Skills and possible MCP capabilities shipped?
+### 9. How are Skills and possible MCP capabilities shipped?
 
 D-044 resolves the first distribution slice: `@rxjs/migrate` contains a
 portable Skill, programmatic transform, dry-run-first CLI, framework adapter

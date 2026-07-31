@@ -79,9 +79,9 @@ describe('window', () => {
     expect(events).toEqual(['open 0', 'source active', 'boundaries active']);
 
     sourceSubscriber!.next(1);
-    boundarySubscriber!.next();
+    boundarySubscriber!.next(undefined);
     sourceSubscriber!.next(2);
-    boundarySubscriber!.next();
+    boundarySubscriber!.next(undefined);
     sourceSubscriber!.next(3);
     sourceSubscriber!.complete();
 
@@ -298,7 +298,7 @@ describe('window', () => {
     expect(firstWindows).toHaveLength(1);
     expect(secondWindows).toHaveLength(0);
 
-    boundaries.subscribers[0]!.next();
+    boundaries.subscribers[0]!.next(undefined);
 
     expect(firstWindows).toHaveLength(2);
     expect(secondWindows).toHaveLength(1);
