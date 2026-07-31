@@ -11,14 +11,17 @@
   "main": "./dist/commonjs/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "bin": {
-    "rxjs-migrate": "./dist/esm/cli.js",
-    "rxjs-migrate-mcp": "./dist/esm/mcp.js"
+    "rxjs-migrate": "./dist/esm/cli.js"
   },
   "scripts": {
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
+    "test:types": "tsc -p test/types/tsconfig.json --noEmit",
+    "test:pack": "node test/package/pack.mjs",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports && pnpm run test:pack"
   },
   "repository": {
     "type": "git",
@@ -33,7 +36,6 @@
     "vitest"
   ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
     "typescript": "~5.7.3",
     "zod": "^3.25.76"
   },
@@ -61,8 +63,7 @@
       ".": "./src/index.ts",
       "./adapters/mocha-chai-vitest": "./src/mocha-chai-vitest.ts",
       "./node": "./src/node.ts",
-      "./cli": "./src/cli.ts",
-      "./mcp": "./src/mcp.ts"
+      "./cli": "./src/cli.ts"
     }
   },
   "exports": {
@@ -105,16 +106,6 @@
       "require": {
         "types": "./dist/commonjs/cli.d.ts",
         "default": "./dist/commonjs/cli.js"
-      }
-    },
-    "./mcp": {
-      "import": {
-        "types": "./dist/esm/mcp.d.ts",
-        "default": "./dist/esm/mcp.js"
-      },
-      "require": {
-        "types": "./dist/commonjs/mcp.d.ts",
-        "default": "./dist/commonjs/mcp.js"
       }
     }
   }

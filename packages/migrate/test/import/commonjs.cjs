@@ -1,0 +1,14 @@
+const assert = require('node:assert/strict');
+
+const migrate = require('@rxjs/migrate');
+const frameworkAdapter = require('@rxjs/migrate/adapters/mocha-chai-vitest');
+const cli = require('@rxjs/migrate/cli');
+const nodeAdapter = require('@rxjs/migrate/node');
+const packageJson = require('@rxjs/migrate/package.json');
+
+assert.equal(packageJson.name, '@rxjs/migrate');
+assert.equal(typeof migrate.migrateTestSource, 'function');
+assert.equal(typeof migrate.parseCapabilityRegistry, 'function');
+assert.equal(typeof frameworkAdapter.migrateMochaChaiToVitest, 'function');
+assert.equal(typeof nodeAdapter.planMigrationFiles, 'function');
+assert.equal(typeof cli.runCli, 'function');
