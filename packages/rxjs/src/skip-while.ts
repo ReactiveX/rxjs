@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const skipWhile: unique symbol = Symbol('skipWhile');
 
@@ -16,26 +17,16 @@ Observable.prototype[skipWhile] = function <T>(this: Observable<T>, predicate: (
     let index = 0;
     let skipping = true;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (skipping) {
-            try {
-              skipping = predicate(value, index++);
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-          }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (skipping) {
+          skipping = predicate(value, index++);
+        }
 
-          if (!skipping) {
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+        if (!skipping) {
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
