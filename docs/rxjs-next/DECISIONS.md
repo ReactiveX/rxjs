@@ -1189,3 +1189,37 @@ Status meanings:
   `ColdObservable` or let a custom receiver redefine the platform conversion
   boundary. The explicit split gives operators one reviewable lifecycle and
   error pattern.
+
+## D-050 — Stabilize intentional cold, Subject, and Symbol composition APIs
+
+- **Status:** Accepted
+- **Public surface:** `rxjs` intentionally exports `ColdObservable`,
+  `Subject`, `AsyncSubject`, `behaviorSubject`, `replaySubject`, and the
+  advanced abstract `PerSubscriptionSubjectBase`. The exact `pipe` Symbol is
+  imported from `rxjs/pipe`; the root remains operator-free. These names and
+  subpaths are RxJS Next contracts rather than compatibility aliases.
+- **Lifecycle:** Direct `ColdObservable.subscribe()` creates one producer and
+  compatibility Subscriber per call. `Subject`, `AsyncSubject`, and the
+  behavior/replay factories are hot producers with their documented fanout,
+  current/final-value, replay, terminal, and late-observer behavior.
+  `PerSubscriptionSubjectBase` describes observer-local setup and does not make
+  a Subject producer cold. All cancellation uses `AbortSignal`.
+- **Composition:** Instance `[pipe]` begins with its receiver. Static `[pipe]`
+  normalizes its source through the active platform `Observable.from` boundary.
+  Both forms return the final transformation result and support typed chains of
+  one through seven transformations. They do not install `.pipe`, publish
+  RxJS 7 pipeable functions, or restore `OperatorFunction`.
+- **Types:** Public declarations identify every import and preserve transform
+  inference. Symbol extension declarations intentionally expose
+  Observable-returning results as `Observable<T>` even when the runtime
+  D-037 construction protocol selects `ColdObservable`; the TypeScript surface
+  does not encode producer lifecycle as a higher-kinded result type. Focused
+  runtime evidence remains authoritative for that construction distinction.
+- **Removed names:** There is no `ColdSubject`, `BehaviorSubject`, or
+  `ReplaySubject` compatibility alias. Lowercase behavior/replay factories and
+  the explicit advanced base are the accepted Next surface.
+- **Rationale:** These APIs have useful contracts independent of RxJS 7 and now
+  have stable imports, declarations, lifecycle documentation, focused behavior
+  tests, and package fixtures. Stabilizing their own contracts completes the
+  D-039 boundary without implying a scheduler, Subscription, pipeable-operator,
+  deprecated-alias, or compatibility runtime.

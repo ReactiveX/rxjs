@@ -98,8 +98,18 @@ helpers, and other APIs when they are useful on their own terms. They must:
 They do not provide an RxJS 7 `Subscription` facade, pipeable-operator import
 surface, scheduler system, deprecated aliases, or compatibility package.
 
-`ColdObservable`, `PerSubscriptionSubjectBase`, the Subject family, and the
-Symbol-keyed `pipe` are current candidates for this intentional Next surface.
+D-050 stabilizes `ColdObservable`, `PerSubscriptionSubjectBase`, the Subject
+family, and the Symbol-keyed `pipe` as this intentional Next surface.
+
+| Intentional API              | Public form                                        | Own contract                                                                                   |
+| ---------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `ColdObservable`             | Root and `rxjs/cold-observable` class              | One producer and compatibility Subscriber per direct `subscribe()` call                        |
+| `Subject`                    | Root and `rxjs/subject` class                      | Hot live fanout plus a non-mutating `asObservable()` platform view                             |
+| `AsyncSubject`               | Root and `rxjs/async-subject` class                | Hot final-value-on-completion fanout with retained terminal behavior                           |
+| Behavior subject             | Root and `rxjs/behavior-subject` lowercase factory | Hot current-value delivery for every direct observer                                           |
+| Replay subject               | Root and `rxjs/replay-subject` lowercase factory   | Hot size/host-time-bounded replay followed by live fanout                                      |
+| `PerSubscriptionSubjectBase` | Root and explicit advanced-base subpath            | Protected per-direct-observer setup hook for specialized hot Subject implementations           |
+| Exact Symbol-keyed `pipe`    | `rxjs/pipe` static and instance Symbol             | Typed one-to-seven-step composition; no `.pipe`, pipeable imports, or `OperatorFunction` claim |
 
 `PerSubscriptionSubjectBase` is hot: its Subject producer exists as soon as the
 instance is constructed. Its distinction from `Subject` is that it inherits
@@ -125,6 +135,13 @@ protocol and return plain ColdObservables. String-named native methods delegate
 through a fresh base Observable view and return platform Observables; native
 Promise consumers use the same view. The platform result then owns its normal
 shared, ref-counted activation.
+
+Public Symbol declarations return `Observable<T>` at the type boundary even
+when the runtime creation protocol returns a `ColdObservable`. TypeScript does
+not model the lifecycle-selected result constructor as a higher-kinded type.
+Migration review must therefore use the receiver and D-037 construction
+contract—not the widened `Observable<T>` annotation—to determine producer
+multiplicity.
 
 The construction protocol governs results, not input normalization. Inputs to
 flattening, combination, notifier, and recovery operators cross through the

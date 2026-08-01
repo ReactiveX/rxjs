@@ -898,10 +898,13 @@ concrete subclasses because they need observer-local replay. The former
 `ColdSubject` name was removed rather than retained as an alias; it incorrectly
 implied a cold producer and obscured the base-class intent.
 
-These classes remain in the main `rxjs` package as intentional Next APIs. Their
-typing, cancellation, teardown error behavior, and relationship to a native
-Observable require deliberate design without creating an RxJS 7 compatibility
-claim. See `COMPATIBILITY.md` for the migration-evidence policy.
+D-050 stabilizes these classes and factories in the main `rxjs` package as
+intentional Next APIs. Their public declarations expose Symbol-derived results
+as `Observable<T>` even when D-037 selects a `ColdObservable` at runtime; the
+type surface does not encode producer lifecycle. Cancellation remains
+AbortSignal-based, Subject terminal and replay behavior is covered directly,
+and none of these contracts creates an RxJS 7 compatibility claim. See
+`COMPATIBILITY.md` for the migration-evidence policy.
 
 ## Package and import architecture
 

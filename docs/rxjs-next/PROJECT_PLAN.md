@@ -1313,8 +1313,8 @@ explicit.
 
 | Status    | ID   | Outcome                                                                                      |
 | --------- | ---- | -------------------------------------------------------------------------------------------- |
-| `NEXT`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
-| `PLANNED` | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
+| `DONE`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
+| `NEXT`    | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
 | `PLANNED` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
 | `PLANNED` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 
@@ -1324,6 +1324,24 @@ Phase exit:
 - producer, sharing, and cancellation semantics are documented directly;
 - every migration mapping links behavioral evidence and required source work;
 - unsupported RxJS 7 categories are documented without an emulation promise.
+
+#### P4.1 completion evidence
+
+- Recorded D-050 and stabilized the root/subpath contracts for
+  `ColdObservable`, `Subject`, `AsyncSubject`, the lowercase behavior/replay
+  factories, the advanced abstract `PerSubscriptionSubjectBase`, and exact
+  Symbol-keyed static/instance `pipe`.
+- Kept lifecycle explicit: cold direct subscriptions create independent work;
+  every Subject instance is hot; observer-local replay does not imply a cold
+  producer; native-method results cross to the shared platform lifecycle.
+- Documented the public type boundary: Symbol results are declared as
+  `Observable<T>` even when D-037 selects `ColdObservable` at runtime, so
+  producer lifecycle is not inferred from the widened result type.
+- Added a published-declaration consumer covering every intentional API through
+  both root and explicit subpath imports, factory/config types, advanced-base
+  subclassing, Subject views, and typed static/instance composition. The public
+  type gate passes.
+- Marked P4.1 `DONE` and advanced P4.2 as the sole project-level `NEXT` item.
 
 ### Phase 5 — Migration experience and AI enablement
 
@@ -2674,3 +2692,14 @@ conformance implementation depends on a runnable harness.
 - Regenerated the migration evidence, recorded the reviewed cold pass baseline,
   marked P3.4 `DONE`, completed Phase 3, and advanced P4.1 as the sole
   project-level `NEXT` item.
+
+### 2026-08-01 — P4.1 intentional Next API stabilization
+
+- Recorded D-050 for the accepted cold, Subject-family, advanced subject-base,
+  and exact Symbol composition imports and lifecycle contracts.
+- Made the widened `Observable<T>` declaration boundary explicit when the
+  runtime creation protocol preserves `ColdObservable`.
+- Added and passed a published-declaration consumer for every intentional API,
+  root/subpath identity, Subject view, factory/config type, advanced subclass,
+  and static/instance `[pipe]` composition form.
+- Marked P4.1 `DONE` and advanced P4.2 as the sole project-level `NEXT` item.
