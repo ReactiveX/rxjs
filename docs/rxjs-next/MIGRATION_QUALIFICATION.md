@@ -26,7 +26,8 @@ pass the offline grader.
 
 The four immutable seed trees live under
 `packages/migrate/test/agent/fixtures`. Each pins RxJS `7.8.1`, its dependency
-descriptor, and the complete seed-tree digest.
+descriptor, a complete pnpm lockfile, runnable framework-specific baseline
+commands, and the complete seed-tree digest.
 
 | Scenario                   | Layout      | Framework | Coverage | Target contract               | Expected result |
 | -------------------------- | ----------- | --------- | -------- | ----------------------------- | --------------- |

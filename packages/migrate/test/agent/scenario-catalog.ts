@@ -52,6 +52,8 @@ export interface AgentScenario {
     readonly kind: 'application' | 'library';
     readonly fixtureRoot: string;
     readonly treeSha256: string;
+    readonly descriptorPath: 'fixture-lock.json';
+    readonly descriptorSha256: string;
     readonly lockPath: string;
     readonly lockSha256: string;
     readonly sourceRxjsVersion: '7.8.1';
@@ -93,9 +95,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     repository: {
       kind: 'application',
       fixtureRoot: `${scenarioRoot}/app-cold-strong/seed`,
-      treeSha256: 'f40f3bd968d266d686a8a00cb104e54336f1e4fda26a1d74e676894ce9e4bf95',
-      lockPath: 'fixture-lock.json',
-      lockSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      treeSha256: 'a7564614ff08fbaa76cbc3740224ccf4f145a9f76540fb80ffdd9eaaf62daeb0',
+      descriptorPath: 'fixture-lock.json',
+      descriptorSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      lockPath: 'pnpm-lock.yaml',
+      lockSha256: '69332dbccd6a2cfa97fbe4800f70d40f33682e106cc1d0e2e74276eab1bd51fb',
       sourceRxjsVersion: '7.8.1',
       sourceRevision: 'npm:rxjs@7.8.1',
       frozenInstall: true,
@@ -149,9 +153,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     repository: {
       kind: 'application',
       fixtureRoot: `${scenarioRoot}/app-platform-strong/seed`,
-      treeSha256: '2bd6314a248522eb6783e0f9286785d2b892253d1d23dc51b2fe939c621124b2',
-      lockPath: 'fixture-lock.json',
-      lockSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      treeSha256: '303bb786d24ec3f6498692881b7e36d29ab38658f47471c06d73362743e6597a',
+      descriptorPath: 'fixture-lock.json',
+      descriptorSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      lockPath: 'pnpm-lock.yaml',
+      lockSha256: '9ee6ba4f94a3249d97caec0847081a56223fbd02ebe84a0a2bf8a2ee5a7bb73d',
       sourceRxjsVersion: '7.8.1',
       sourceRevision: 'npm:rxjs@7.8.1',
       frozenInstall: true,
@@ -220,9 +226,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     repository: {
       kind: 'library',
       fixtureRoot: `${scenarioRoot}/library-mixed-strong/seed`,
-      treeSha256: '10ec12082bde83168ee33c563a4141457b28c89622b2ed77e954b5a91c854b9f',
-      lockPath: 'fixture-lock.json',
-      lockSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      treeSha256: '7219f99821988b6861d3aad819a6809b0ae2824caca6757bb9625757844f5b08',
+      descriptorPath: 'fixture-lock.json',
+      descriptorSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      lockPath: 'pnpm-lock.yaml',
+      lockSha256: 'a771ace3c45c01ec73b3db4f06823b09a191fa8f1f8461a77678b7ec683ae149',
       sourceRxjsVersion: '7.8.1',
       sourceRevision: 'npm:rxjs@7.8.1',
       frozenInstall: true,
@@ -283,9 +291,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     repository: {
       kind: 'library',
       fixtureRoot: `${scenarioRoot}/library-weak-unsupported/seed`,
-      treeSha256: 'd991a0587655c318aa0a2bef67150b2d98d3efa63691d61408353b27814cb56c',
-      lockPath: 'fixture-lock.json',
-      lockSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      treeSha256: '0715da65bec0b8d516b289c8cc3af8f028324836d941cd1ebcc84d5bd31902e7',
+      descriptorPath: 'fixture-lock.json',
+      descriptorSha256: '9380adbe1cba40b9db2c9db19c60e6e5c4cc843475823299ae10d86db5d12dcb',
+      lockPath: 'pnpm-lock.yaml',
+      lockSha256: '69332dbccd6a2cfa97fbe4800f70d40f33682e106cc1d0e2e74276eab1bd51fb',
       sourceRxjsVersion: '7.8.1',
       sourceRevision: 'npm:rxjs@7.8.1',
       frozenInstall: true,

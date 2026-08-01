@@ -36,19 +36,23 @@ describe('P0.M5 representative scenario catalog', () => {
       const seedRoot = join(packageRoot, scenario.repository.fixtureRoot);
       expect(await treeDigest(seedRoot)).toBe(scenario.repository.treeSha256);
       expect(await fileDigest(join(seedRoot, scenario.repository.lockPath))).toBe(scenario.repository.lockSha256);
+      expect(await fileDigest(join(seedRoot, scenario.repository.descriptorPath))).toBe(scenario.repository.descriptorSha256);
 
       const packageJson = JSON.parse(await readFile(join(seedRoot, 'package.json'), 'utf8')) as {
         dependencies?: { rxjs?: string };
       };
-      const lock = JSON.parse(await readFile(join(seedRoot, scenario.repository.lockPath), 'utf8')) as {
+      const descriptor = JSON.parse(await readFile(join(seedRoot, scenario.repository.descriptorPath), 'utf8')) as {
         frozen?: boolean;
         dependencies?: { rxjs?: { specifier?: string; resolution?: string } };
       };
+      const lock = await readFile(join(seedRoot, scenario.repository.lockPath), 'utf8');
       expect(packageJson.dependencies?.rxjs).toBe('7.8.1');
-      expect(lock).toMatchObject({
+      expect(descriptor).toMatchObject({
         frozen: true,
         dependencies: { rxjs: { specifier: '7.8.1', resolution: 'npm:rxjs@7.8.1' } },
       });
+      expect(lock).toContain("lockfileVersion: '9.0'");
+      expect(lock).toMatch(/rxjs:\n\s+specifier: 7\.8\.1\n\s+version: 7\.8\.1/);
       expect(scenario.repository).toMatchObject({
         sourceRxjsVersion: '7.8.1',
         sourceRevision: 'npm:rxjs@7.8.1',

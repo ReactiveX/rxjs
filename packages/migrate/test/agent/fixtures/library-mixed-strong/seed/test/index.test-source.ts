@@ -1,3 +1,4 @@
+import { expect, test } from '@jest/globals';
 import { firstValueFrom, of, toArray } from 'rxjs';
 import { doubled, selectorFailure, windowed } from '../src/index.js';
 
