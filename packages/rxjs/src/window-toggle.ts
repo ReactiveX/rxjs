@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const windowToggle: unique symbol = Symbol('windowToggle');
 
@@ -114,20 +115,18 @@ Observable.prototype[windowToggle] = function <T, Opening>(
         return;
       }
 
-      try {
-        closingSource.subscribe(
-          {
-            next: () => closeWindow(context),
-            error: terminateWithError,
-            // Pinned RxJS 7 behavior: completion without a value does not
-            // close the window. The source terminal event still closes it.
-            complete: () => closingControllers.delete(context.closingController),
-          },
-          { signal: context.closingController.signal }
-        );
-      } catch (error) {
-        terminateWithError(error);
-      }
+      subscribeToSource(
+        closingSource,
+        subscriber,
+        {
+          next: () => closeWindow(context),
+          error: terminateWithError,
+          // Pinned RxJS 7 behavior: completion without a value does not
+          // close the window. The source terminal event still closes it.
+          complete: () => closingControllers.delete(context.closingController),
+        },
+        context.closingController.signal
+      );
     };
 
     // Cancellation is not completion. Release live read-only windows without
@@ -144,17 +143,16 @@ Observable.prototype[windowToggle] = function <T, Opening>(
 
     // RxJS 7 activates openings before the source so synchronous openings can
     // establish (and even close) windows before source work begins.
-    try {
-      openingsSource.subscribe(
-        {
-          next: openWindow,
-          error: terminateWithError,
-        },
-        { signal: openingsController.signal }
-      );
-    } catch (error) {
-      terminateWithError(error);
-    }
+    subscribeToSource(
+      openingsSource,
+      subscriber,
+      {
+        next: openWindow,
+        error: terminateWithError,
+        complete: () => void 0,
+      },
+      openingsController.signal
+    );
 
     sourceController = new AbortController();
     if (subscriber.active) {
