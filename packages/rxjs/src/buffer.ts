@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const buffer: unique symbol = Symbol('buffer');
 
@@ -77,13 +78,7 @@ Observable.prototype[buffer] = function <T>(
           subscriber.error(error);
           return;
         }
-        result.subscribe(
-          {
-            next: emitBuffer,
-            error: (error) => subscriber.error(error),
-          },
-          { signal }
-        );
+        subscribeToSource(result, subscriber, { next: emitBuffer, complete: () => void 0 }, notifierController.signal);
       }
     };
 
@@ -135,58 +130,55 @@ Observable.prototype[buffer] = function <T>(
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (countBuffers) {
-            const completedBuffers: T[][] = [];
-            for (const currentBuffer of countBuffers) {
-              currentBuffer.push(value);
-              if (currentBuffer.length >= maxSize) {
-                completedBuffers.push(currentBuffer);
-              }
-            }
-            if (completedBuffers.length) {
-              const completed = new Set(completedBuffers);
-              countBuffers = countBuffers.filter((currentBuffer) => !completed.has(currentBuffer));
-              emitCountBuffers(completedBuffers);
-            }
-            valuesSeen++;
-            if (valuesSeen % countWindowInterval === 0) {
-              countBuffers.push([]);
-            }
-            return;
-          }
-          buffer ??= [];
-          buffer.push(value);
-          if (buffer.length >= maxSize) {
-            emitBuffer();
-          }
-        },
-        error: (error) => {
-          done = true;
-          if (emitRemainingOnError) {
-            if (countBuffers) {
-              emitRemainingCountBuffers();
-            } else {
-              emitFinalBuffer();
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (countBuffers) {
+          const completedBuffers: T[][] = [];
+          for (const currentBuffer of countBuffers) {
+            currentBuffer.push(value);
+            if (currentBuffer.length >= maxSize) {
+              completedBuffers.push(currentBuffer);
             }
           }
-          subscriber.error(error);
-        },
-        complete: () => {
-          done = true;
-          if (emitRemainingOnComplete) {
-            if (countBuffers) {
-              emitRemainingCountBuffers();
-            } else {
-              emitFinalBuffer();
-            }
+          if (completedBuffers.length) {
+            const completed = new Set(completedBuffers);
+            countBuffers = countBuffers.filter((currentBuffer) => !completed.has(currentBuffer));
+            emitCountBuffers(completedBuffers);
           }
-          subscriber.complete();
-        },
+          valuesSeen++;
+          if (valuesSeen % countWindowInterval === 0) {
+            countBuffers.push([]);
+          }
+          return;
+        }
+        buffer ??= [];
+        buffer.push(value);
+        if (buffer.length >= maxSize) {
+          emitBuffer();
+        }
       },
-      { signal: subscriber.signal }
-    );
+      error: (error) => {
+        done = true;
+        if (emitRemainingOnError) {
+          if (countBuffers) {
+            emitRemainingCountBuffers();
+          } else {
+            emitFinalBuffer();
+          }
+        }
+        subscriber.error(error);
+      },
+      complete: () => {
+        done = true;
+        if (emitRemainingOnComplete) {
+          if (countBuffers) {
+            emitRemainingCountBuffers();
+          } else {
+            emitFinalBuffer();
+          }
+        }
+        subscriber.complete();
+      },
+    });
   });
 };
