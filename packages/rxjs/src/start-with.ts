@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const startWith: unique symbol = Symbol('startWith');
 
@@ -21,13 +22,6 @@ Observable.prototype[startWith] = function <T, A extends readonly unknown[]>(thi
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => subscriber.next(value),
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
+    subscribeToSource(this, subscriber);
   });
 };
