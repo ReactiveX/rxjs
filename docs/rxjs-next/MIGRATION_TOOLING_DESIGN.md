@@ -344,10 +344,10 @@ is included in the package and contract manifest. The Skill and engine share
 the package version so instructions cannot silently describe a different
 capability registry or schema.
 
-The existing `.agents/skills/rxjs-next-marble-migration` tree is valuable P0.T2
-evidence, not a second release source. P0.M4 merges its still-valid guidance
-into the canonical Skill, removes independent authorship, and installs only
-validated copies or links.
+The earlier `.agents/skills/rxjs-next-marble-migration` tree remains valuable
+P0.T2 history in Git, but it is no longer a second authored source. P0.M4
+merged its still-valid guidance into the canonical Skill and replaced it with
+the validated `.agents/skills/rxjs-next-migration` generated copy.
 
 ### Installation model
 
@@ -365,8 +365,7 @@ harness and platform support it, but it is not the only path.
 
 ### Harness adapters
 
-The exact commands remain P0.M4 implementation detail, but the required
-behavior is fixed:
+The `rxjs-migrate-skill` command implements the required behavior:
 
 | Harness | Discovery target                              | Invocation                                     | Adapter responsibility                                                                  |
 | ------- | --------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -405,9 +404,10 @@ test must prove:
 4. required local tools are requested rather than assumed; and
 5. a stale or locally modified installed copy is reported clearly.
 
-Current official references used for P0.M2 are recorded at the end of this
-document. P0.M4 must re-check them because harness discovery and permission
-behavior can change independently of RxJS.
+P0.M4 rechecked the official references on 2026-07-31 and records the exact
+commands, permissions, update flow, smoke scenario, and locally inspected host
+versions in `MIGRATION_SKILL_GUIDE.md`. Harness discovery and permission
+behavior can change independently of RxJS and must be rechecked before release.
 
 ## Fixture and evaluation specification
 
@@ -518,18 +518,18 @@ Each category needs at least one passing case and one negative or refusal
 control. P0.M5 expands these units into representative application and library
 repositories.
 
-## Current prototype audit
+## P0.M2 prototype audit
 
 P0.M1 established useful boundaries but not release-grade evidence:
 
 - `packages/migrate/src/index.ts` separates semantic and framework transforms.
 - `packages/migrate/src/cli.ts` is dry-run-first.
 - `packages/migrate/src/types.ts` exposes structured but limited diagnostics.
-- `packages/migrate/skill` contains a thin package Skill.
-- `.agents/skills/rxjs-next-marble-migration` contains the earlier, more
+- `packages/migrate/skill` contained a thin package Skill.
+- `.agents/skills/rxjs-next-marble-migration` contained the earlier, more
   detailed repository Skill.
-- `packages/migrate/src/mcp.ts` mirrors source-content analysis and migration.
-- the package currently has nine test registrations and one source fixture;
+- `packages/migrate/src/mcp.ts` mirrored source-content analysis and migration.
+- the package had nine test registrations and one source fixture;
   the fixture is not a comprehensive executable matrix.
 
 Known gaps assigned to P0.M3 or P0.M4 include:
@@ -568,6 +568,13 @@ P0.M4 merges the reusable P0.T2 guidance into `packages/migrate/skill`, expands
 it to the complete journey, and makes it consume engine data rather than prose
 copies. It implements and tests installation, discovery, invocation,
 permissions, update, drift, and removal for Codex, Claude, and Cursor.
+
+The completed implementation ships the `rxjs-migrate-skill` command and
+`@rxjs/migrate/skill` API, copy-only atomic adapters, embedded provenance, and
+one shared Codex/Cursor placement plus Claude's native placement. The package
+suite proves canonical byte identity and safe lifecycle behavior across all
+three adapters. The repository's generated copy keeps natural Codex and Cursor
+invocation available after the independently authored P0.T2 tree is removed.
 
 ### P0.M5 — representative qualification
 
