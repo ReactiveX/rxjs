@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import type { ObservableArrayToValueArray } from './util/types.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const withLatestFrom: unique symbol = Symbol('withLatestFrom');
 
@@ -37,43 +38,27 @@ function withLatestFromImpl(
     let readyCount = 0;
 
     for (let index = 0; index < sources.length && !subscriber.signal.aborted; index++) {
-      Observable.from(sources[index]!).subscribe(
-        {
-          next: (value) => {
-            latestValues[index] = value;
-            if (!hasValue[index]) {
-              hasValue[index] = true;
-              readyCount++;
-            }
-          },
-          error: (error) => subscriber.error(error),
+      subscribeToSource(Observable.from(sources[index]!), subscriber, {
+        next: (value) => {
+          latestValues[index] = value;
+          if (!hasValue[index]) {
+            hasValue[index] = true;
+            readyCount++;
+          }
         },
-        { signal: subscriber.signal }
-      );
+        complete: () => void 0,
+      });
     }
 
     if (!subscriber.signal.aborted) {
-      this.subscribe(
-        {
-          next: (value) => {
-            if (readyCount === sources.length) {
-              const values = [value, ...latestValues];
-              if (project) {
-                try {
-                  subscriber.next(project(...values));
-                } catch (error) {
-                  subscriber.error(error);
-                }
-              } else {
-                subscriber.next(values);
-              }
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
+      subscribeToSource(this, subscriber, {
+        next: (value) => {
+          if (readyCount === sources.length) {
+            const values = [value, ...latestValues];
+            subscriber.next(project ? project(...values) : values);
+          }
         },
-        { signal: subscriber.signal }
-      );
+      });
     }
   });
 }
