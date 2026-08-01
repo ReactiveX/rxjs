@@ -20,7 +20,7 @@ D-039 through D-041 resolve the P0.2 package and acquisition questions:
 
 ## Release-blocking package and runtime questions
 
-### 1. What Symbol identity and installation details remain?
+### 1. Which Symbol identity and installation policy applies?
 
 D-037 resolves the construction seam. Public operator and factory Symbols stay
 exact and module-owned. Only the internal construction protocol uses
@@ -31,17 +31,14 @@ D-041 separately uses
 metadata. That marker identifies the installed fallback; it does not globalize
 public extension Symbols or attest conformance.
 
-Still decide:
-
-- whether public exact Symbols are stable across major versions;
-- the supported behavior when multiple versions install different
-  implementations under separate exact operator Symbols;
-- whether a stronger marker is needed to distinguish an arbitrary callable in
-  the construction-protocol slot;
-- removal or correction of the unreviewed `Symbol.for('buffer')` exception;
-- the common idempotent installer and conflict policy for public extensions;
-- extension property descriptors and the exact diagnostic for unsupported
-  non-extensible constructors or prototypes.
+D-048 completes the public policy. Exact extension Symbols are stable through
+one loaded module export, not across independently evaluated dialects, package
+copies, or versions. Those copies install separate exact slots and can coexist.
+No public capability uses the global registry; the former
+`Symbol.for('buffer')` exception is removed. The construction ABI continues to
+accept an existing callable without a stronger package marker. The internal
+installer owns idempotence, exact-key conflict rejection, non-enumerable
+descriptors, preflight, rollback, and named unsupported-target diagnostics.
 
 ### 2. How are side-effectful extension modules built and shaken safely?
 
@@ -50,19 +47,19 @@ exports non-operator core values without installing the complete Symbol
 catalog; each Symbol subpath initializes the platform and installs only its own
 capability and required kernel dependencies.
 
-Still decide:
-
-- package `sideEffects` metadata and bundler fixtures;
-- how the common installer reports exact-Symbol conflicts;
-- duplicate-package and mixed ESM/CommonJS behavior for one-time extension
-  side effects.
+D-048 decides that the `rxjs` package is side-effectful: every entry point
+initializes the realm, and extension subpaths additionally install one exact
+capability. Direct subpaths provide granularity. A bundler fixture must retain
+an otherwise unused extension import and keep the root operator-free. Mixed
+ESM/CommonJS and duplicate copies use different public Symbols while sharing
+only the D-037 construction ABI; exact-key conflicts are rejected by the
+common installer rather than overwritten.
 
 P0.3 proves that the root can remain operator-free, that generated declarations
 preserve subpath-scoped augmentation, and that standalone ESM and CommonJS
 imports initialize correctly. P0.4 additionally proves that mixed ESM/CommonJS
 loads of the base fallback preserve one installation in either order. The open
-question above is limited to public extension side effects, exact Symbols, and
-independently bundled or version-skewed copies.
+question is resolved by the P2 package, duplicate-load, and bundler fixtures.
 
 ### 3. Which exact runtime versions and module systems are supported?
 
@@ -86,15 +83,13 @@ Before the release support matrix stabilizes, define:
 D-037 resolves `ColdObservable`: RxJS Symbol operators return plain
 ColdObservables, while native string methods return fresh platform
 Observables. D-041 rejects transparent cross-realm operation; each realm must
-initialize itself.
-
-Still decide the required same-realm behavior for:
-
-- native subclasses;
-- borrowed Symbol methods;
-- static methods invoked on subclasses;
-- constructors with incompatible signatures;
-- values converted through `Observable.from`.
+initialize itself. D-049 completes the kernel policy. Derived construction
+uses the receiver's `[create]` protocol; a compatible same-realm subclass is
+preserved by the inherited implementation, and a custom implementation may
+select another result contract. Static Symbols follow their static receiver.
+Incompatible constructors and generic borrowing onto unrelated objects are
+unsupported. Input conversion is deliberately separate and always uses the
+active realm's platform `Observable.from`.
 
 ### 5. How is each RxJS Symbol variant related to its platform counterpart?
 
@@ -110,17 +105,26 @@ Decide per overlapping operator:
 - documentation that prevents false parity claims;
 - native and fallback evidence that the platform method remains untouched.
 
+P2.4 settles the pilot `map` case. The exact RxJS Symbol form supplies the
+RxJS projection index and optional `thisArg`, constructs through `[create]`,
+and follows the platform layer's shared activation contract. It does not
+delegate to or replace the string-named platform `map`; native and fallback
+kernel evidence verifies that the original method and descriptor remain
+unchanged. Other overlapping operators still require the same per-capability
+record before they are restored.
+
 ### 6. What is the canonical extension implementation pattern?
 
-Define one pattern for:
-
-- patch installation and ambient type augmentation;
-- constructor selection and input conversion;
-- cancellation wiring and error forwarding;
-- tests, exports, and documentation.
-
-The async-iteration Symbols show how non-Observable results can subscribe
-directly, but their current assignments do not settle the common installer.
+D-048 and D-049 define the pattern. A subpath exports one exact Symbol, augments
+only the corresponding ambient interface, and installs through the
+transactional internal installer. Observable-returning implementations create
+through the receiver's `[create]`, normalize inputs through the active
+platform `Observable.from`, own upstream work with the derived subscriber's
+signal plus any joined local controller, and forward synchronous setup or
+callback failures through `subscriber.error`. P2.4 validates that pattern on
+the representative pilot. Async-iteration Symbols remain a
+documented non-Observable-result variant because they return generators rather
+than derived Observables.
 
 ## Delivery and migration questions
 

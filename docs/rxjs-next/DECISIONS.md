@@ -1107,3 +1107,83 @@ Status meanings:
   not “cross-harness-qualified.” Claude Code and Cursor may use the canonical
   Skill naturally, but their live migration outcomes remain unmeasured until a
   later explicit qualification effort.
+
+## D-048 — Isolate public extension Symbols and install them transactionally
+
+- **Status:** Accepted
+- **Public identity:** Every public operator and factory exports an exact,
+  module-owned `Symbol('name')`. Its identity is stable only through that
+  loaded module export. Independently evaluated ESM/CommonJS dialects,
+  duplicate package copies, and different package versions deliberately
+  produce different public Symbols, even when their descriptions match. Each
+  copy installs and invokes its own exact slot, so version-skewed capabilities
+  can coexist without overwriting one another. Public Symbols are not
+  persistent identities and are not stable across major versions or package
+  instances.
+- **Shared protocols:** The versioned construction ABI from D-037 and the
+  read-only fallback metadata from D-041 remain the only accepted RxJS
+  `Symbol.for` uses. An existing callable construction-protocol slot is
+  sufficient evidence of participation in that ABI; a stronger package marker
+  would reject compatible custom implementations without improving the
+  protocol contract. The unreviewed public `Symbol.for('buffer')` exception is
+  removed.
+- **Installation:** Public capabilities use one internal typed installer. It
+  preflights all static and instance targets before mutation, defines
+  non-enumerable, writable, configurable properties, accepts an already
+  installed identical value, rejects a different value at the exact Symbol,
+  and rolls back if a later definition fails. Missing capacity and exact-key
+  conflicts produce named diagnostics rather than silent replacement or a
+  partial install.
+- **Realms:** A capability module installs only into the active Observable of
+  the realm in which that module evaluates. RxJS does not traverse foreign
+  realms. A worker, iframe, window, or isolate obtains its own installation by
+  evaluating the entry point in that realm, consistent with D-041.
+- **Bundling:** Every public `rxjs` entry point has an acquisition side effect,
+  and Symbol subpaths additionally install their exact capability. The package
+  therefore declares itself side-effectful. Direct subpaths, rather than a
+  side-effect-free package claim, provide capability-level granularity.
+  Package fixtures must prove that bundling retains an otherwise unused
+  extension import and that the root remains operator-free.
+- **Rationale:** Exact public Symbols preserve collision isolation. Sharing
+  them through the global registry would allow unrelated code that knows a
+  string key to replace RxJS behavior and would turn version skew into
+  load-order replacement. A transactional installer makes deliberate
+  exact-key conflicts and unsupported targets diagnosable without weakening
+  the identity boundary.
+
+## D-049 — Separate derived construction from platform input conversion
+
+- **Status:** Accepted
+- **Derived construction:** Observable-returning RxJS Symbols create their
+  result through the receiver's D-037 `[create]` protocol. An instance receiver
+  with the inherited protocol preserves a same-realm subclass whose
+  constructor accepts the platform initializer shape. A receiver may override
+  `[create]` to select another intentional result contract, as
+  `ColdObservable` does. Static Symbols follow the callable static receiver's
+  protocol. Constructors with incompatible signatures are unsupported rather
+  than silently replaced with the base constructor.
+- **Input conversion:** Operator inputs cross the active realm's platform
+  boundary through `Observable.from`; conversion does not consult or preserve
+  the derived-result receiver. This keeps the accepted platform input order,
+  categories, identity, and error behavior separate from RxJS result
+  construction. Cross-realm and arbitrary-subscribable conversion remain
+  outside the accepted platform contract.
+- **Borrowing:** A borrowed Symbol implementation is supported only when its
+  receiver supplies the Observable behavior the implementation uses and a
+  callable compatible `[create]` protocol. RxJS does not promise generic
+  borrowing onto unrelated objects or transparent foreign-realm behavior.
+- **Cancellation and errors:** Every upstream subscription is owned by the
+  derived subscriber's `AbortSignal`. Operators that need an earlier local
+  boundary join an operator-owned controller with that signal. Synchronous
+  user callbacks, host setup, and input conversion are caught and forwarded
+  through `subscriber.error`; errors thrown by downstream observers remain the
+  platform's host-reporting responsibility.
+- **Implementation pattern:** Internal helpers expose receiver-driven result
+  creation, active-realm input conversion, signal-owned source subscription,
+  and discriminated synchronous error forwarding. They do not add a scheduler,
+  legacy Subscription facade, compatibility input, or string-named method.
+- **Rationale:** Result identity and input normalization solve different
+  problems. Conflating them would either lose intentional construction such as
+  `ColdObservable` or let a custom receiver redefine the platform conversion
+  boundary. The explicit split gives operators one reviewable lifecycle and
+  error pattern.

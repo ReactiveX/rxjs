@@ -1,5 +1,6 @@
-import { create } from './create.js';
 import { TimeoutError, type TimeoutInfo } from './timeout-error.js';
+import { installObservableExtension } from './util/install-observable-extension.js';
+import { convertObservableValue, createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export { TimeoutError, type TimeoutInfo } from './timeout-error.js';
 
@@ -16,7 +17,7 @@ declare global {
   }
 }
 
-Observable.prototype[timeout] = function <T, W, M>(
+function timeoutOperator<T, W, M>(
   this: Observable<T>,
   config: {
     each?: number;
@@ -25,56 +26,64 @@ Observable.prototype[timeout] = function <T, W, M>(
     meta?: M;
   }
 ): Observable<T | W> {
-  return this[create]((subscriber) => {
-    const { first, each = null, with: _with = timeoutErrorFactory, meta = null! } = config;
-    let seen = 0;
-    let lastValue: T | null = null;
-    let timerController: AbortController | null = null;
-    const sourceController = new AbortController();
-    const sourceSignal = AbortSignal.any([subscriber.signal, sourceController.signal]);
+  return createDerivedObservable({
+    receiver: this,
+    init: (subscriber) => {
+      const { first, each = null, with: _with = timeoutErrorFactory, meta = null! } = config;
+      let seen = 0;
+      let lastValue: T | null = null;
+      let timerController: AbortController | null = null;
+      const sourceController = new AbortController();
+      const sourceSignal = AbortSignal.any([subscriber.signal, sourceController.signal]);
 
-    const startTimer = (delay: number) => {
-      timerController?.abort();
-      const controller = new AbortController();
-      timerController = controller;
+      const startTimer = (delay: number) => {
+        timerController?.abort();
+        const controller = new AbortController();
+        timerController = controller;
 
-      const signal = AbortSignal.any([subscriber.signal, controller.signal]);
+        const signal = AbortSignal.any([subscriber.signal, controller.signal]);
 
-      let id: ReturnType<typeof globalThis.setTimeout>;
-      try {
-        id = globalThis.setTimeout(() => {
-          if (timerController !== controller || !subscriber.active) {
-            return;
-          }
-          timerController = null;
-          sourceController.abort();
-          let nextSource: Observable<any>;
+        let id: ReturnType<typeof globalThis.setTimeout>;
+        try {
+          id = globalThis.setTimeout(() => {
+            if (timerController !== controller || !subscriber.active) {
+              return;
+            }
+            timerController = null;
+            sourceController.abort();
+            const nextSource = runWithErrorForwarding({
+              subscriber,
+              run: () =>
+                convertObservableValue({
+                  value: _with({
+                    meta,
+                    lastValue,
+                    seen,
+                  }),
+                }),
+            });
+            if (!nextSource.ok) {
+              return;
+            }
 
-          try {
-            nextSource = Observable.from(
-              _with({
-                meta,
-                lastValue,
-                seen,
-              })
-            );
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
+            subscribeToSource({
+              source: nextSource.value,
+              subscriber,
+              next: (value) => subscriber.next(value),
+            });
+          }, Math.max(0, delay));
+        } catch (error) {
+          subscriber.error(error);
+          return;
+        }
 
-          nextSource.subscribe(subscriber, { signal: subscriber.signal });
-        }, Math.max(0, delay));
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
+        signal.addEventListener('abort', () => globalThis.clearTimeout(id), { once: true });
+      };
 
-      signal.addEventListener('abort', () => globalThis.clearTimeout(id), { once: true });
-    };
-
-    this.subscribe(
-      {
+      subscribeToSource({
+        source: this,
+        subscriber,
+        signal: sourceSignal,
         next: (value) => {
           timerController?.abort();
           timerController = null;
@@ -95,17 +104,18 @@ Observable.prototype[timeout] = function <T, W, M>(
           timerController = null;
           subscriber.complete();
         },
-      },
-      { signal: sourceSignal }
-    );
+      });
 
-    if (subscriber.active && seen === 0) {
-      const initialDelay = first != null ? (typeof first === 'number' ? first : +first - globalThis.Date.now()) : each ?? 0;
+      if (subscriber.active && seen === 0) {
+        const initialDelay = first != null ? (typeof first === 'number' ? first : +first - globalThis.Date.now()) : each ?? 0;
 
-      startTimer(initialDelay);
-    }
+        startTimer(initialDelay);
+      }
+    },
   });
-};
+}
+
+installObservableExtension({ instance: timeoutOperator, name: 'timeout', symbol: timeout });
 
 function timeoutErrorFactory(info: TimeoutInfo<any, any>): never {
   throw new TimeoutError(info);

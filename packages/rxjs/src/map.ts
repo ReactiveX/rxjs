@@ -1,4 +1,5 @@
-import { create } from './create.js';
+import { installObservableExtension } from './util/install-observable-extension.js';
+import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export const map: unique symbol = Symbol('map');
 
@@ -18,27 +19,26 @@ function mapOperator<T, R, A>(
   project: (this: A | undefined, value: T, index: number) => R,
   thisArg?: A
 ): Observable<R> {
-  return this[create]((subscriber) => {
-    let index = 0;
+  return createDerivedObservable({
+    receiver: this,
+    init: (subscriber) => {
+      let index = 0;
 
-    this.subscribe(
-      {
+      subscribeToSource({
+        source: this,
+        subscriber,
         next: (value) => {
-          let result: R;
-          try {
-            result = project.call(thisArg, value, index++);
-          } catch (error) {
-            subscriber.error(error);
-            return;
+          const result = runWithErrorForwarding({
+            subscriber,
+            run: () => project.call(thisArg, value, index++),
+          });
+          if (result.ok) {
+            subscriber.next(result.value);
           }
-          subscriber.next(result);
         },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
+      });
+    },
   });
 }
 
-Observable.prototype[map] = mapOperator;
+installObservableExtension({ instance: mapOperator, name: 'map', symbol: map });

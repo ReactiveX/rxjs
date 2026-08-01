@@ -1,4 +1,5 @@
-import '@rxjs/observable-polyfill';
+import { installObservableExtension } from './util/install-observable-extension.js';
+import { convertObservableValue } from './util/observable-helpers.js';
 
 export const pipe: unique symbol = Symbol('pipe');
 
@@ -47,11 +48,13 @@ declare global {
   }
 }
 
-Observable.prototype[pipe] = function (this: Observable<any>, ...fns: Fn<any, any>[]): any {
+function instancePipe(this: Observable<any>, ...fns: Fn<any, any>[]): any {
   return fns.reduce((prev, fn) => fn(prev), this);
-};
+}
 
-Observable[pipe] = function (this: ObservableCtor, source: ObservableValue<any>, ...fns: Fn<any, any>[]) {
-  const actualSource = this.from(source);
+function staticPipe(this: ObservableCtor, source: ObservableValue<any>, ...fns: Fn<any, any>[]): any {
+  const actualSource = convertObservableValue({ value: source });
   return fns.reduce((prev, fn) => fn(prev), actualSource);
-};
+}
+
+installObservableExtension({ instance: instancePipe, name: 'pipe', static: staticPipe, symbol: pipe });

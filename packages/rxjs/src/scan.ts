@@ -1,4 +1,5 @@
-import { create } from './create.js';
+import { installObservableExtension } from './util/install-observable-extension.js';
+import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export const scan: unique symbol = Symbol('scan');
 
@@ -22,13 +23,16 @@ function scanOperator<T, A, S>(
   accumulator: (accumulator: T | A | S, value: T, index: number) => A,
   ...seed: [] | [S]
 ): Observable<T | A> {
-  return this[create]((subscriber) => {
-    let state: { initialized: false } | { initialized: true; value: T | A | S } =
-      seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
-    let index = 0;
+  return createDerivedObservable({
+    receiver: this,
+    init: (subscriber) => {
+      let state: { initialized: false } | { initialized: true; value: T | A | S } =
+        seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
+      let index = 0;
 
-    this.subscribe(
-      {
+      subscribeToSource({
+        source: this,
+        subscriber,
         next: (value) => {
           const currentIndex = index++;
           if (!state.initialized) {
@@ -40,25 +44,23 @@ function scanOperator<T, A, S>(
             return;
           }
 
-          let nextState: A;
-          try {
-            nextState = accumulator(state.value, value, currentIndex);
-          } catch (error) {
-            subscriber.error(error);
+          const accumulatedState = state.value;
+          const nextState = runWithErrorForwarding({
+            subscriber,
+            run: () => accumulator(accumulatedState, value, currentIndex),
+          });
+          if (!nextState.ok) {
             return;
           }
           state = {
             initialized: true,
-            value: nextState,
+            value: nextState.value,
           };
-          subscriber.next(nextState);
+          subscriber.next(nextState.value);
         },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
+      });
+    },
   });
 }
 
-Observable.prototype[scan] = scanOperator;
+installObservableExtension({ instance: scanOperator, name: 'scan', symbol: scan });

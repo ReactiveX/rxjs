@@ -10,6 +10,7 @@
     "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release": "node scripts/release.js",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
+    "test:kernel": "pnpm --filter rxjs run test:kernel",
     "test:lifecycle": "pnpm --filter @rxjs/observable-polyfill run test:lifecycle",
     "wpt:doctor": "node packages/observable-polyfill/test/wpt/cli.mjs doctor",
     "wpt:import": "node packages/observable-polyfill/test/wpt/cli.mjs import",

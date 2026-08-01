@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { Worker } from 'node:worker_threads';
 
 const scenario = process.argv[2];
@@ -131,6 +132,67 @@ if (scenario === 'missing-global-subpath') {
   });
   assert.equal(globalThis.Observable, ParentObservable);
   assert.deepEqual(Object.getOwnPropertySymbols(ParentObservable.prototype), parentSymbols);
+} else if (scenario === 'duplicate-extension-dialects') {
+  Reflect.deleteProperty(globalThis, 'Observable');
+  Reflect.deleteProperty(globalThis, 'Subscriber');
+  Reflect.deleteProperty(EventTarget.prototype, 'when');
+
+  await import('@rxjs/observable-polyfill');
+  const platformMap = globalThis.Observable.prototype.map;
+  const esmMap = (await import('rxjs/map')).map;
+  const esmBuffer = (await import('rxjs/buffer')).buffer;
+  const esmBufferImplementation = globalThis.Observable.prototype[esmBuffer];
+  const esmCreate = (await import('rxjs/create')).create;
+  const require = createRequire(import.meta.url);
+  const cjsMap = require('rxjs/map').map;
+  const cjsBuffer = require('rxjs/buffer').buffer;
+  const cjsCreate = require('rxjs/create').create;
+
+  assert.notEqual(esmMap, cjsMap);
+  assert.notEqual(esmBuffer, cjsBuffer);
+  assert.equal(esmCreate, cjsCreate);
+  assert.equal(Symbol.keyFor(esmMap), undefined);
+  assert.equal(Symbol.keyFor(cjsMap), undefined);
+  assert.equal(Symbol.keyFor(esmBuffer), undefined);
+  assert.equal(Symbol.keyFor(cjsBuffer), undefined);
+  assert.equal(typeof globalThis.Observable.prototype[esmMap], 'function');
+  assert.equal(typeof globalThis.Observable.prototype[cjsMap], 'function');
+  assert.equal(globalThis.Observable.prototype[esmBuffer], esmBufferImplementation);
+  assert.equal(typeof globalThis.Observable.prototype[cjsBuffer], 'function');
+  assert.equal(globalThis.Observable.prototype.map, platformMap);
+} else if (scenario === 'frozen-extension-target') {
+  const create = Symbol.for('rxjs.kernel.create.v1');
+  class FrozenObservable {
+    constructor(init) {
+      this.init = init;
+    }
+
+    static from(value) {
+      return value;
+    }
+  }
+  Object.defineProperty(FrozenObservable, create, {
+    configurable: true,
+    value(init) {
+      return new this(init);
+    },
+    writable: true,
+  });
+  Object.defineProperty(FrozenObservable.prototype, create, {
+    configurable: true,
+    value(init) {
+      return new this.constructor(init);
+    },
+    writable: true,
+  });
+  Object.preventExtensions(FrozenObservable.prototype);
+  globalThis.Observable = FrozenObservable;
+
+  await assert.rejects(import('rxjs/pipe'), /Cannot install RxJS pipe extension on Observable\.prototype: target is not extensible/);
+  assert.equal(
+    Object.getOwnPropertySymbols(FrozenObservable).some((symbol) => symbol.description === 'pipe'),
+    false
+  );
 } else {
   throw new Error(`Unknown fixture scenario: ${scenario}`);
 }

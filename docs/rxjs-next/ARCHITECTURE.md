@@ -434,14 +434,25 @@ recoverable as a result.
 
 ### Constructor preservation
 
-`create.ts` and helper functions use either `this.constructor` or a static
-receiver so ordinary derived results can use the receiver's Observable
-constructor. `ColdObservable` deliberately overrides the shared creation
-protocol to construct another plain `ColdObservable`. Its native string-named
-methods instead delegate through a fresh base Observable and return platform
-Observables. Transparent cross-realm operation is not supported: each realm
-initializes its own constructor and extensions. General native-subclass,
-borrowed-method, and incompatible-constructor behavior remains open.
+`create.ts` and the P2.3 helpers use the receiver's versioned `[create]`
+protocol for derived results. The inherited implementation preserves a
+same-realm subclass whose constructor accepts the platform initializer shape;
+an explicit override may select another result contract. `ColdObservable`
+uses that seam to construct another plain `ColdObservable`. Its native
+string-named methods instead delegate through a fresh base Observable and
+return platform Observables. Static Symbols follow their static receiver.
+Incompatible constructors and generic borrowing onto unrelated objects are
+unsupported. Transparent cross-realm operation is not supported: each realm
+initializes its own constructor and extensions.
+
+Input conversion is deliberately independent. Operator inputs use the active
+realm's platform `Observable.from`, preserving its accepted input categories,
+ordering, identity, and errors rather than asking a result subclass to redefine
+normalization. Source subscriptions inherit the derived subscriber's signal;
+operator-local early-cancellation boundaries join their own controller with
+that signal. Synchronous callbacks, host setup, and conversions are forwarded
+as stream errors, while downstream observer exceptions retain platform host
+reporting.
 
 ### Installation side effects
 
@@ -461,6 +472,9 @@ polyfill initializer for its realm. The root then installs only the shared
 construction kernel needed by its non-operator core exports. An operator or
 factory subpath installs only its own exact Symbol capability plus required
 kernel dependencies. The root does not install the complete operator catalog.
+The package declares `sideEffects: true`; direct subpaths supply the intended
+capability granularity while preventing a bundler from erasing acquisition or
+installation merely because an imported Symbol binding is unused.
 
 Browser windows, worker realms, and maintained Node releases are initially
 supported when the required web primitives exist. Hardened globals and
@@ -468,23 +482,25 @@ non-extensible constructors or prototypes are outside the initial claim; an
 attempted installation must fail clearly instead of leaving a partial patch.
 Deno, Bun, and edge runtimes remain unclaimed until tested.
 
-The branch still has no common installer for public extension Symbols. The
-shared creation protocol is narrower: its installer is idempotent for an
-existing callable slot and rejects a non-callable collision.
+P2.1 accepts D-048: public extension Symbols are exact and module-owned. An
+independently evaluated ESM/CommonJS dialect, duplicate package copy, or other
+version receives a different public Symbol and installs a separate slot. Only
+the versioned construction ABI remains shared across compatible copies. P2.2
+adds the common internal installer for those public slots. It preflights every
+requested constructor and prototype property, treats the identical value as an
+idempotent installation, rejects an occupied exact key, and rolls back earlier
+definitions if a later definition fails. Installed properties are
+non-enumerable, writable, and configurable. Missing capacity and mutation
+failures produce capability-named diagnostics.
 
-### Current Symbol inconsistency
+### Public Symbol consistency
 
-Most public extension modules use `Symbol('name')`, producing a key unique to
-that module instance. `buffer.ts` uses `Symbol.for('buffer')`, producing an
-unreviewed global-registry key. `with-latest-from.ts` also lacks the explicit
-`unique symbol` annotation used by most other modules. Separately,
-`create.ts` uses the accepted namespaced global protocol key from D-037.
-
-The unique-symbol form provides the collision-safety described above and is
-the policy for public operators and factories. The construction protocol's
-global key is a narrow interoperability exception, not precedent for copying
-`Symbol.for` into public extension modules. The inconsistent `buffer` key and
-remaining realm/version details still require P2.1 resolution.
+Public extension modules use `Symbol('name')`, producing a key unique to that
+module evaluation. The former unreviewed `Symbol.for('buffer')` exception has
+been removed, and public declarations use explicit `unique symbol` types.
+`create.ts` continues to use the accepted namespaced global protocol key from
+D-037. D-048 records the version, duplicate-copy, realm, and collision
+consequences of that split.
 
 ## Current API inventory
 
@@ -1014,6 +1030,22 @@ all-mode RxJS command remains nonzero until those product gaps are resolved or
 explicitly retired.
 The package-independent lifecycle contract itself passes against both the
 packaged fallback and native Observable.
+
+The P2.4 extension-kernel baseline was verified on 2026-08-01:
+
+| Check                           | Result                                                                                                                                                                                    |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Focused RxJS source suite       | 756/756 tests pass                                                                                                                                                                        |
+| Kernel source and type contract | The common installer/helpers and all six pilot capabilities pass strict source typing and focused descriptor, construction, sharing, cancellation, terminal, and error tests              |
+| Package and bundler contract    | Builds, declaration consumers, ESM/CommonJS imports, duplicate-dialect coexistence, frozen-target failure, root tree-shaking, and retained direct extension imports pass                  |
+| Native/fallback kernel contract | The same eight cases pass against the packaged fallback and native Observable in Chrome `150.0.7871.126`                                                                                  |
+| Targeted migrated evidence      | 97/98 pilot registrations pass in cold mode and 97/98 pass in fallback mode; only the classified compatibility-only `switchMap` arbitrary-subscribable input remains unsupported by D-049 |
+| Complete migrated evidence      | 2,296/2,338 cold and 2,321/2,343 fallback registrations pass; the remaining restoration/compatibility backlog is outside the extension-kernel phase                                       |
+
+This baseline proves the common extension pattern, not RxJS 7 runtime
+compatibility or completion of the operator catalog. The strict all-mode
+ported command therefore remains intentionally nonzero while Phase 3 and
+Phase 4 classify and resolve the remaining API work.
 
 The repository development engine declaration accepts Node 18, Node 20, and
 Node 24. The blocking Observable WPT workflow uses Node 24, and the harness

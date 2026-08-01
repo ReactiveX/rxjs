@@ -9,6 +9,8 @@ const scenarios = [
   'event-target-when',
   'frozen-target',
   'separate-realm',
+  'duplicate-extension-dialects',
+  'frozen-extension-target',
 ];
 
 for (const scenario of scenarios) {

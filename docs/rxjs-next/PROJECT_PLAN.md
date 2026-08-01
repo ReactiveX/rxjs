@@ -53,7 +53,11 @@ gate families, with three completed migrations and one required safe stop.
 Phase 1 is complete. P1.1 through P1.3 required no additional runtime work:
 P0.3 and P0.4 had already completed the conditional-installation and shared
 lifecycle boundaries, while P0.5 and P1.4b had already completed the pinned
-fallback-conformance work. P2.1 is now the sole `NEXT` item.
+fallback-conformance work. Phase 2 is also complete: D-048 and D-049 define
+the extension kernel, and the `map`, `scan`, `switchMap`, `timeout`, `timer`,
+and `pipe` pilot proves it against packaged fallback and browser-native
+Observable. P3.1, an audit of the restoration inventory already accumulated
+during Phase 0, is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1042,12 +1046,84 @@ Phase exit:
 
 ### Phase 2 — Symbol extension kernel
 
-| Status    | ID   | Outcome                                                                                       |
-| --------- | ---- | --------------------------------------------------------------------------------------------- |
-| `NEXT`    | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy            |
-| `PLANNED` | P2.2 | Implement one typed extension installer for static and instance capabilities                  |
-| `PLANNED` | P2.3 | Define constructor preservation, input conversion, cancellation, and error-forwarding helpers |
-| `PLANNED` | P2.4 | Convert a small representative operator set to the kernel and validate native/fallback parity |
+| Status | ID   | Outcome                                                                                       |
+| ------ | ---- | --------------------------------------------------------------------------------------------- |
+| `DONE` | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy            |
+| `DONE` | P2.2 | Implement one typed extension installer for static and instance capabilities                  |
+| `DONE` | P2.3 | Define constructor preservation, input conversion, cancellation, and error-forwarding helpers |
+| `DONE` | P2.4 | Convert a small representative operator set to the kernel and validate native/fallback parity |
+
+#### P2.1 completion bar
+
+- Public Symbol identity across module evaluations, package copies, versions,
+  and realms is explicit.
+- The public/global-registry boundary and construction-protocol exception are
+  complete, including the former `buffer` exception.
+- Duplicate-version coexistence, exact-key collision handling, extension
+  descriptors, unsupported targets, and package side effects have accepted
+  policies that P2.2 and P2.4 can implement and verify.
+
+#### P2.1 completion evidence
+
+- Accepted D-048: public capabilities use exact module-owned Symbols; only the
+  D-037 construction ABI and D-041 fallback metadata use namespaced global
+  registry keys.
+- Defined independently evaluated ESM/CommonJS dialects and version-skewed
+  copies as isolated public capabilities that may coexist without load-order
+  replacement. No cross-realm traversal or public Symbol identity promise is
+  made.
+- Removed `Symbol.for('buffer')`; the 12-case focused buffer suite passes and a
+  source audit finds no public `Symbol.for` capability outside `create`.
+- Chose transactional, non-enumerable installation with exact-key conflict
+  rejection, named unsupported-target diagnostics, explicit side-effectful
+  package metadata, and bundler fixtures as the P2.2/P2.4 implementation bar.
+
+#### P2.2 completion bar
+
+- One internal typed API installs static-only, instance-only, or paired exact
+  Symbol capabilities.
+- Installation is idempotent for the identical value, rejects an occupied
+  exact key, reports non-extensible targets clearly, and cannot leave a
+  partially installed paired capability.
+- Extension descriptors and package side-effect metadata implement D-048.
+
+#### P2.2 completion evidence
+
+- Added `installObservableExtension` with typed static and instance
+  implementations, constructor/prototype preflight, atomic definition and
+  rollback, and capability-named diagnostics.
+- Defined public capability properties as non-enumerable, writable, and
+  configurable. Exact-key conflicts are never overwritten.
+- Added six focused cases covering paired installation, descriptors,
+  idempotence, conflict preflight, frozen targets, rollback, and invalid empty
+  requests; all pass.
+- Added explicit `sideEffects: true` package metadata and passed the strict
+  RxJS source type-check. P2.4 owns the packed bundler proof and pilot adoption.
+
+#### P2.3 completion bar
+
+- Derived construction and platform input conversion have distinct accepted
+  contracts for ordinary receivers, compatible subclasses, intentional
+  overrides, and unsupported incompatible or foreign receivers.
+- One helper pattern owns downstream cancellation, optional operator-local
+  cancellation, terminal forwarding, and synchronous exception forwarding.
+- No helper restores RxJS 7 arbitrary subscribables, Subscription facades,
+  schedulers, string-named methods, or cross-realm promises.
+
+#### P2.3 completion evidence
+
+- Accepted D-049: results use the receiver's versioned `[create]`; inputs use
+  the active realm's platform `Observable.from`; incompatible constructors and
+  generic unrelated-object borrowing are unsupported.
+- Added internal helpers for receiver-driven derived creation, active-realm
+  conversion, signal-owned source subscription, and discriminated synchronous
+  error forwarding.
+- Removed the two unused pre-kernel helpers that constructed through an
+  unchecked `.constructor` or provided an unadopted forwarding wrapper.
+- Six helper-contract tests cover compatible subclass creation, explicit
+  protocol overrides, base-platform conversion, cancellation and teardown,
+  terminal forwarding, and thrown callback errors. All pass with the strict
+  RxJS source type-check.
 
 Representative pilot set:
 
@@ -1058,6 +1134,30 @@ Representative pilot set:
 - one time-based operator such as `timeout`;
 - one static factory such as `timer`;
 - `pipe` or its approved replacement.
+
+#### P2.4 completion evidence
+
+- Migrated the exact `map`, `scan`, `switchMap`, `timeout`, `timer`, and
+  `pipe` capabilities to the common installer and helper pattern. The set
+  covers a native-overlap operator, synchronous state, higher-order
+  cancellation, time-based recovery, a static factory, and both static and
+  instance composition.
+- Added focused behavior and descriptor coverage, including shared activation
+  and restart, compatible subclass construction, exact Symbol identity,
+  string-method non-interference, cancellation-before-recovery, and thrown
+  callback forwarding. All 756 focused RxJS source tests pass.
+- Passed strict source typing, package builds, declaration consumers, ESM and
+  CommonJS imports, mixed-dialect duplicate-capability coexistence, frozen
+  target failure, and bundler retention/tree-shaking fixtures.
+- Passed the same eight-case extension-kernel contract against the packaged
+  fallback and native Observable in Chrome `150.0.7871.126`; the CI workflow
+  now runs that contract with both pinned and current browser evidence.
+- The targeted migrated `map`, `scan`, `switchMap`, `timeout`, and `timer`
+  evidence passes 97/98 registrations in each mode. The sole exception is the
+  already-classified compatibility-only `switchMap` arbitrary-subscribable
+  case, which D-049 intentionally leaves unsupported. The complete strict
+  audits remain nonzero only on the broader Phase 3/4 restoration backlog:
+  2,296/2,338 cold and 2,321/2,343 fallback registrations pass.
 
 Phase exit:
 
@@ -1071,12 +1171,12 @@ Phase exit:
 
 ### Phase 3 — Operator restoration and parity
 
-| Status    | ID   | Outcome                                                                         |
-| --------- | ---- | ------------------------------------------------------------------------------- |
-| `PLANNED` | P3.1 | Inventory the former RxJS 7 public operator and creation API by migration value |
-| `PLANNED` | P3.2 | Create and maintain the migration-evidence ledger                               |
-| `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                  |
-| `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family       |
+| Status    | ID   | Outcome                                                                                           |
+| --------- | ---- | ------------------------------------------------------------------------------------------------- |
+| `NEXT`    | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
+| `PLANNED` | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
+| `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                                    |
+| `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
 every supported API has portable or rewritten evidence and every divergence is
@@ -1155,7 +1255,7 @@ conformance implementation depends on a runnable harness.
 | Native/fallback lifecycle evidence regresses           | Package acquisition can pass while semantics diverge      | Medium     | P0.4's shared contract and the attested strict WPT gate block fallback drift; RxJS extension evidence remains separately classified |
 | Upstream proposal changes                              | Fallback and native behavior drift                        | High       | Pin revisions before conformance claims                                                                                             |
 | Prototype code becomes accidental policy               | Semantics are preserved without review                    | High       | Documents distinguish current fact from accepted direction                                                                          |
-| Symbol identity fails with duplicate installs          | Extensions are present under inaccessible keys            | High       | P2.1 plus package fixtures                                                                                                          |
+| Symbol identity fails with duplicate installs          | Extensions are present under inaccessible keys            | High       | D-048 exact-key isolation plus mixed-dialect and duplicate-capability package fixtures                                              |
 | RxJS 7 suite pressures platform behavior backward      | Native and fallback layers diverge                        | High       | Mandatory classification; evidence never implies a runtime compatibility product                                                    |
 | Migration evidence is mistaken for emulation           | Users depend on unsupported RxJS 7 surfaces               | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                                                  |
 | Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                                                |
@@ -2338,3 +2438,56 @@ conformance implementation depends on a runnable harness.
   platform fallback phase, corrected the stale Phase 1 risk language, marked
   P1.1 through P1.3 `DONE`, and advanced P2.1 as the sole project-level `NEXT`
   item.
+
+### 2026-08-01 — P2.1 public Symbol and installation policy
+
+- Accepted D-048 and resolved the remaining public Symbol identity, version,
+  duplicate-copy, realm, collision, descriptor, and package side-effect
+  questions.
+- Kept public capabilities exact and module-owned, retained only the versioned
+  construction ABI and fallback metadata as global-registry exceptions, and
+  rejected a stronger construction marker as unnecessary.
+- Replaced the unreviewed `Symbol.for('buffer')` key with an exact Symbol. The
+  focused buffer suite passes 12/12, and a source audit finds no other public
+  extension on a global-registry key.
+- Marked P2.1 `DONE` and moved the sole `NEXT` marker to P2.2.
+
+### 2026-08-01 — P2.2 transactional extension installer
+
+- Added one internal typed installer for static-only, instance-only, and paired
+  exact Symbol capabilities.
+- Added preflight, identical-value idempotence, non-enumerable descriptors,
+  exact-key conflict rejection, named frozen-target diagnostics, and rollback
+  after a definition failure.
+- Declared the package side-effectful as required by D-048. Six installer tests
+  and the strict source type-check pass; the packed bundler proof remains in
+  P2.4.
+- Marked P2.2 `DONE` and moved the sole `NEXT` marker to P2.3.
+
+### 2026-08-01 — P2.3 Observable kernel helper contract
+
+- Accepted D-049, separating receiver-driven derived construction from
+  active-realm platform input conversion and bounding subclass, borrowing,
+  cancellation, and error behavior.
+- Added focused internal helpers for `[create]`, `Observable.from`,
+  signal-owned source subscription, and synchronous exception forwarding;
+  removed two unused pre-kernel helper files.
+- Six focused helper cases and the strict source type-check pass.
+- Marked P2.3 `DONE` and moved the sole `NEXT` marker to P2.4.
+
+### 2026-08-01 — P2.4 extension-kernel pilot and Phase 2 closure
+
+- Migrated `map`, `scan`, `switchMap`, `timeout`, `timer`, and `pipe` to the
+  transactional installer and the D-049 construction, conversion,
+  cancellation, and error-forwarding helpers.
+- Passed 756 focused source tests, strict source typing, package and declaration
+  builds, ESM/CommonJS and duplicate-dialect fixtures, frozen-target handling,
+  bundler retention/tree-shaking checks, and the eight-case kernel contract
+  against both the packaged fallback and native Chrome `150.0.7871.126`.
+- Confirmed that the only targeted migrated-test exception is the classified
+  compatibility-only `switchMap` arbitrary-subscribable case. Recorded the
+  broader nonzero strict baselines as Phase 3/4 work rather than expanding
+  Phase 2 into RxJS 7 compatibility repair.
+- Marked P2.4 `DONE`, completed Phase 2, and advanced P3.1 as the sole
+  project-level `NEXT` item. P3.1 begins by reconciling the restoration and
+  evidence inventory already produced during Phase 0 instead of recreating it.

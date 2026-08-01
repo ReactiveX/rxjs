@@ -13,6 +13,7 @@
   "main": "./dist/commonjs/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "type": "module",
+  "sideEffects": true,
   "scripts": {
     "build": "tshy",
     "lint": "eslint ./src",
@@ -27,14 +28,16 @@
     "test:unit:audit:record": "node test/ported/tools/record-mode-audit.mjs",
     "test:unit:report": "node test/ported/report.mjs",
     "test:unit:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
-    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/fixtures.mjs",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/fixtures.mjs && node test/import/bundler.mjs",
+    "test:kernel": "pnpm --filter @rxjs/observable-polyfill build && pnpm run build && node test/kernel/run.mjs",
     "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:unit:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
     "test:unit:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
   },
   "devDependencies": {
-    "chai": "4.4.1"
+    "chai": "4.4.1",
+    "esbuild": "0.19.11"
   },
   "dependencies": {
     "@rxjs/observable-polyfill": "8.0.0-alpha.14"

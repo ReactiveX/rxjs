@@ -3,6 +3,11 @@ import '@rxjs/observable-polyfill';
 import { buffer } from './buffer.js';
 
 describe('buffer', () => {
+  it('uses an exact module-owned Symbol rather than the global registry', () => {
+    expect(buffer.description).toBe('buffer');
+    expect(Symbol.keyFor(buffer)).toBeUndefined();
+  });
+
   it('preserves delay-window buffering when count windows are not configured', () => {
     let sourceSubscriber: Subscriber<string> | undefined;
     let closingSubscriber: Subscriber<void> | undefined;

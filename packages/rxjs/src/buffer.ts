@@ -1,6 +1,6 @@
 import { create } from './create.js';
 
-export const buffer: unique symbol = Symbol.for('buffer');
+export const buffer: unique symbol = Symbol('buffer');
 
 declare global {
   interface Observable<T> {
