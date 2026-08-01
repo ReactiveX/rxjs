@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { createDerivedObservable } from './util/observable-helpers.js';
 
 export const timer: unique symbol = Symbol('timer');
@@ -36,4 +35,4 @@ function timerFactory(this: ObservableCtor, delay: number, interval?: number): O
   });
 }
 
-installObservableExtension({ name: 'timer', static: timerFactory, symbol: timer });
+Observable[timer] = timerFactory;

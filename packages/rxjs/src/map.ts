@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export const map: unique symbol = Symbol('map');
@@ -41,4 +40,4 @@ function mapOperator<T, R, A>(
   });
 }
 
-installObservableExtension({ instance: mapOperator, name: 'map', symbol: map });
+Observable.prototype[map] = mapOperator;

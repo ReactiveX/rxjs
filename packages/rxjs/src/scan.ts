@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export const scan: unique symbol = Symbol('scan');
@@ -63,4 +62,4 @@ function scanOperator<T, A, S>(
   });
 }
 
-installObservableExtension({ instance: scanOperator, name: 'scan', symbol: scan });
+Observable.prototype[scan] = scanOperator;

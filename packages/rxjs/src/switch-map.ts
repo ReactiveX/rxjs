@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { convertObservableValue, createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export const switchMap: unique symbol = Symbol('switchMap');
@@ -70,4 +69,4 @@ function switchMapOperator<T, R>(
   });
 }
 
-installObservableExtension({ instance: switchMapOperator, name: 'switchMap', symbol: switchMap });
+Observable.prototype[switchMap] = switchMapOperator;

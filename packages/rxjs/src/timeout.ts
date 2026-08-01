@@ -1,5 +1,4 @@
 import { TimeoutError, type TimeoutInfo } from './timeout-error.js';
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { convertObservableValue, createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
 
 export { TimeoutError, type TimeoutInfo } from './timeout-error.js';
@@ -115,7 +114,7 @@ function timeoutOperator<T, W, M>(
   });
 }
 
-installObservableExtension({ instance: timeoutOperator, name: 'timeout', symbol: timeout });
+Observable.prototype[timeout] = timeoutOperator;
 
 function timeoutErrorFactory(info: TimeoutInfo<any, any>): never {
   throw new TimeoutError(info);

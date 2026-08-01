@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { convertObservableValue } from './util/observable-helpers.js';
 
 export const pipe: unique symbol = Symbol('pipe');
@@ -57,4 +56,5 @@ function staticPipe(this: ObservableCtor, source: ObservableValue<any>, ...fns: 
   return fns.reduce((prev, fn) => fn(prev), actualSource);
 }
 
-installObservableExtension({ instance: instancePipe, name: 'pipe', static: staticPipe, symbol: pipe });
+Observable[pipe] = staticPipe;
+Observable.prototype[pipe] = instancePipe;
