@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const debounce: unique symbol = Symbol('debounce');
 
@@ -30,51 +31,32 @@ Observable.prototype[debounce] = function <T>(
 
     subscriber.addTeardown(() => innerController?.abort());
 
-    this.subscribe(
-      {
-        next: (value) => {
-          hasValue = true;
-          lastValue = value;
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        hasValue = true;
+        lastValue = value;
 
-          innerController?.abort();
-          innerController = new AbortController();
-          const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
+        innerController?.abort();
+        innerController = new AbortController();
 
-          if (typeof delay === 'number') {
-            const id = globalThis.setTimeout(emitPendingValue, delay);
-            innerController.signal.addEventListener(
-              'abort',
-              () => {
-                globalThis.clearTimeout(id);
-              },
-              { once: true }
-            );
-          } else {
-            let result: Observable<any>;
-
-            try {
-              result = Observable.from(delay(value, index++));
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-
-            result.subscribe(
-              {
-                next: emitPendingValue,
-                error: (error) => subscriber.error(error),
-              },
-              { signal }
-            );
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          emitPendingValue();
-          subscriber.complete();
-        },
+        if (typeof delay === 'number') {
+          const id = globalThis.setTimeout(emitPendingValue, delay);
+          innerController.signal.addEventListener(
+            'abort',
+            () => {
+              globalThis.clearTimeout(id);
+            },
+            { once: true }
+          );
+        } else {
+          const result = Observable.from(delay(value, index++));
+          subscribeToSource(result, subscriber, { next: emitPendingValue, complete: () => void 0 }, innerController.signal);
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        emitPendingValue();
+        subscriber.complete();
+      },
+    });
   });
 };
