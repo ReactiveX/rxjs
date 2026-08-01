@@ -30,13 +30,16 @@
     "test:unit:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
     "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/fixtures.mjs && node test/import/bundler.mjs",
     "test:kernel": "pnpm --filter @rxjs/observable-polyfill build && pnpm run build && node test/kernel/run.mjs",
-    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:installations && pnpm run test:imports",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:migration-contracts && pnpm run test:installations && pnpm run test:imports",
     "test:installations": "node test/import/check-extension-installs.mjs",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:unit:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
     "test:unit:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check",
     "test:unit:ledger:generate": "node test/ported/tools/generate-migration-evidence-ledger.mjs",
-    "test:unit:ledger:check": "node test/ported/tools/generate-migration-evidence-ledger.mjs --check"
+    "test:unit:ledger:check": "node test/ported/tools/generate-migration-evidence-ledger.mjs --check",
+    "test:unit:unsupported:generate": "node test/ported/tools/generate-unsupported-surface-doc.mjs",
+    "test:unit:unsupported:check": "node test/ported/tools/generate-unsupported-surface-doc.mjs --check",
+    "test:migration-contracts": "pnpm run test:unit:ledger:check && pnpm run test:unit:unsupported:check"
   },
   "devDependencies": {
     "chai": "4.4.1",

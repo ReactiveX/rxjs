@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "ref": "7.x",
+    "commit": "e5351d02e225e275ac0e497c7b66eaa5f0c88791"
+  },
+  "categories": {
+    "imports": [
+      {
+        "id": "imports:pipeable-functions",
+        "surfaces": ["rxjs/operators", "root-imported operator functions", "source.pipe(...)"],
+        "disposition": "replace",
+        "replacement": "Import exact Symbols from rxjs/<capability> and invoke source[symbol](...). Use rxjs/pipe only for deliberate Symbol composition.",
+        "rationale": "RxJS Next does not publish the RxJS 7 pipeable-function or string-named .pipe surface.",
+        "decisions": ["D-003", "D-039", "D-050"]
+      },
+      {
+        "id": "imports:platform-constructors",
+        "surfaces": ["rxjs:Observable", "rxjs:Subscriber"],
+        "disposition": "replace",
+        "replacement": "Use the active realm's ambient Observable and Subscriber after @rxjs/observable-polyfill initialization when needed.",
+        "rationale": "The platform owns these constructors; the rxjs root does not re-export compatibility classes for them.",
+        "decisions": ["D-039", "D-040", "D-041"]
+      },
+      {
+        "id": "imports:testing",
+        "surfaces": ["rxjs/testing", "TestScheduler", "VirtualTimeScheduler", "VirtualAction"],
+        "disposition": "replace",
+        "replacement": "Use @rxjs/test rxTest() and its explicit cold(), hot(), observable(), virtual host-time, and assertion helpers.",
+        "rationale": "The public scheduler classes and manual TestScheduler mode are not part of the Next runtime or test contract.",
+        "decisions": ["D-012", "D-033", "D-039"]
+      },
+      {
+        "id": "imports:dom-specialties",
+        "surfaces": ["rxjs/ajax", "rxjs/fetch", "rxjs/webSocket", "ajax", "fromFetch", "webSocket", "WebSocketSubject"],
+        "disposition": "manual-review",
+        "replacement": "Use platform fetch, XMLHttpRequest, WebSocket, EventTarget.when, or an application adapter selected for the required cancellation and sharing contract.",
+        "rationale": "RxJS Next does not currently publish the RxJS 7 DOM specialty packages or their wrapper types.",
+        "decisions": ["D-039", "D-040"]
+      },
+      {
+        "id": "imports:internal",
+        "surfaces": ["rxjs/internal/*", "rxjs/src/*", "unexported package paths"],
+        "disposition": "unsupported",
+        "replacement": "Replace with an accepted public Next subpath or application-owned code after semantic review.",
+        "rationale": "RxJS 7 internals are not preserved as public package contracts and must not be revived to satisfy migration tests.",
+        "decisions": ["D-039", "D-040"]
+      },
+      {
+        "id": "imports:missing-functions",
+        "surfaces": ["bindCallback", "bindNodeCallback", "scheduled", "using", "isObservable"],
+        "disposition": "manual-review",
+        "replacement": "Wrap callback or resource ownership explicitly with Observable and AbortSignal; use platform conversion or capability-specific mappings where applicable.",
+        "rationale": "No accepted public Next function preserves these RxJS 7 imports and complete overload contracts.",
+        "decisions": ["D-039", "D-040", "D-049"]
+      },
+      {
+        "id": "imports:removed-errors",
+        "surfaces": ["ObjectUnsubscribedError", "UnsubscriptionError"],
+        "disposition": "unsupported",
+        "replacement": "Use platform error and AbortSignal reason handling or an application-owned aggregate error contract.",
+        "rationale": "These errors belong to removed RxJS 7 Subscription and closed-Subject internals.",
+        "decisions": ["D-039", "D-040"]
+      }
+    ],
+    "types": [
+      {
+        "id": "types:composition",
+        "surfaces": ["UnaryFunction", "OperatorFunction", "MonoTypeOperatorFunction"],
+        "disposition": "replace",
+        "replacement": "Use ordinary typed functions with exact Symbol invocation or rxjs/pipe composition.",
+        "rationale": "RxJS Next does not publish the pipeable-operator type family.",
+        "decisions": ["D-039", "D-050"]
+      },
+      {
+        "id": "types:subscription",
+        "surfaces": ["Subscription", "SubscriptionLike", "Unsubscribable", "TeardownLogic"],
+        "disposition": "replace",
+        "replacement": "Use AbortController, AbortSignal, SubscribeOptions, and Subscriber.addTeardown inside producers.",
+        "rationale": "subscribe() returns undefined and cancellation is signal-owned; no Subscription facade is published.",
+        "decisions": ["D-039", "D-041", "D-049"]
+      },
+      {
+        "id": "types:conversion",
+        "surfaces": ["ObservableInput", "ObservableLike", "InteropObservable", "Subscribable", "SubscribableOrPromise", "ReadableStreamLike"],
+        "disposition": "replace",
+        "replacement": "Use the ambient ObservableValue/platform Observable.from input contract and review custom inputs manually.",
+        "rationale": "The platform conversion boundary deliberately excludes arbitrary subscribables and legacy observable interop.",
+        "decisions": ["D-039", "D-049"]
+      },
+      {
+        "id": "types:observer",
+        "surfaces": ["NextObserver", "ErrorObserver", "CompletionObserver", "PartialObserver", "SubjectLike", "Connectable"],
+        "disposition": "replace",
+        "replacement": "Use ambient Observer/Subscriber shapes or the concrete intentional Subject/connectable APIs; define application protocols locally when needed.",
+        "rationale": "These RxJS 7 helper interfaces are not a public Next import family.",
+        "decisions": ["D-035", "D-039", "D-040"]
+      },
+      {
+        "id": "types:scheduler",
+        "surfaces": ["SchedulerLike", "SchedulerAction", "TimestampProvider"],
+        "disposition": "replace",
+        "replacement": "Use host timing APIs, Date.now-compatible narrow providers where explicitly documented, and @rxjs/test virtual host time.",
+        "rationale": "There is no general public scheduler abstraction in RxJS Next.",
+        "decisions": ["D-012", "D-033", "D-039"]
+      },
+      {
+        "id": "types:inference-helpers",
+        "surfaces": ["FactoryOrValue", "ObservedValueOf", "ObservedValueUnionFromArray", "ObservedValuesFromArray", "ObservedValueTupleFromArray", "ObservableInputTuple", "Cons", "Head", "Tail", "ValueFromArray", "Falsy", "TruthyTypesOf"],
+        "disposition": "unsupported",
+        "replacement": "Use inference from the accepted Next API or application-owned utility types; do not deep-import RxJS internals.",
+        "rationale": "These RxJS 7 implementation-facing inference helpers are not stable Next public types.",
+        "decisions": ["D-039", "D-040"]
+      },
+      {
+        "id": "types:specialized-values",
+        "surfaces": ["GroupedObservable", "Timestamp", "TimeInterval"],
+        "disposition": "replace",
+        "replacement": "Use the structural keyed group view, structural timestamp result, or TimeInterval exported by the exact rxjs/time-interval capability as applicable.",
+        "rationale": "The RxJS 7 root type imports are not preserved even where a capability exposes an intentional structural or subpath-specific result.",
+        "decisions": ["D-003", "D-039", "D-040"]
+      }
+    ],
+    "schedulers": [
+      {
+        "id": "schedulers:runtime-values",
+        "surfaces": ["asap", "asapScheduler", "async", "asyncScheduler", "queue", "queueScheduler", "animationFrame", "animationFrameScheduler", "Scheduler", "VirtualTimeScheduler", "VirtualAction"],
+        "disposition": "replace",
+        "replacement": "Use virtualizable host timing and task APIs; use @rxjs/test for deterministic tests.",
+        "rationale": "RxJS Next does not publish scheduler instances or scheduler classes.",
+        "decisions": ["D-012", "D-033", "D-039"]
+      },
+      {
+        "id": "schedulers:arguments",
+        "surfaces": ["animationFrames", "auditTime", "bufferTime", "concat", "debounceTime", "delay", "empty", "endWith", "expand", "from", "generate", "groupBy", "interval", "observeOn", "pairs", "publishReplay", "range", "sampleTime", "scheduled", "shareReplay", "startWith", "subscribeOn", "throwError", "throttleTime", "timeInterval", "timeout", "timeoutWith", "timer", "timestamp", "windowTime"],
+        "disposition": "manual-review",
+        "replacement": "Remove only an explicitly classified scheduler overload and verify ordering with host-time behavior; otherwise retain the source and stop automation.",
+        "rationale": "Current capabilities use host scheduling or narrow clock providers, and the port harness adapter is not a production SchedulerLike contract.",
+        "decisions": ["D-012", "D-033", "D-034", "D-039"]
+      }
+    ],
+    "interop": [
+      {
+        "id": "interop:observable-symbol",
+        "surfaces": ["observable", "Symbol.observable", "@@observable", "InteropObservable"],
+        "disposition": "unsupported",
+        "replacement": "Expose a platform-supported ObservableValue category or wrap the source explicitly in the active realm.",
+        "rationale": "Legacy observable interop is outside the accepted platform Observable.from contract.",
+        "decisions": ["D-039", "D-049"]
+      },
+      {
+        "id": "interop:arbitrary-subscribables",
+        "surfaces": ["objects with subscribe()", "lowerCaseO", "asInteropObservable", "custom Subscribable"],
+        "disposition": "manual-review",
+        "replacement": "Write an explicit application adapter that owns cancellation and terminal behavior, or choose a supported platform input category.",
+        "rationale": "The 15 executable compatibility-only failures deliberately preserve this unsupported input boundary.",
+        "decisions": ["D-039", "D-049"]
+      },
+      {
+        "id": "interop:foreign-realms",
+        "surfaces": ["foreign-realm Observable", "cross-window Observable", "cross-worker Observable", "borrowed symbols on unrelated objects"],
+        "disposition": "unsupported",
+        "replacement": "Initialize each realm independently and bridge values through an explicit application protocol.",
+        "rationale": "RxJS does not traverse realms or promise generic Symbol borrowing onto unrelated receivers.",
+        "decisions": ["D-041", "D-048", "D-049"]
+      },
+      {
+        "id": "interop:lift-protocol",
+        "surfaces": ["Observable.lift", "source/operator fields", "custom Operator"],
+        "disposition": "replace",
+        "replacement": "Use exact Symbol composition and the versioned derived-construction protocol through supported public capabilities.",
+        "rationale": "The RxJS 7 lift/source/operator protocol is removed and is not a public Next subclass hook.",
+        "decisions": ["D-037", "D-039", "D-049"]
+      }
+    ],
+    "deprecatedAliases": [
+      {
+        "id": "aliases:renamed-flattening",
+        "surfaces": ["combineAll", "exhaust", "flatMap", "pipeable partition"],
+        "disposition": "replace",
+        "replacement": "Use combineLatestAll, exhaustMap(identity), mergeMap, or Observable[partition] respectively.",
+        "rationale": "The deprecated RxJS 7 names are not public Next Symbol identities; migration uses their canonical accepted mappings.",
+        "decisions": ["D-003", "D-039", "D-049"]
+      },
+      {
+        "id": "aliases:constant-factories",
+        "surfaces": ["empty()", "never()"],
+        "disposition": "replace",
+        "replacement": "Use EMPTY and NEVER.",
+        "rationale": "The deprecated creation functions are not retained as callable Next aliases.",
+        "decisions": ["D-039", "D-040"]
+      },
+      {
+        "id": "aliases:projection-to",
+        "surfaces": ["mapTo", "concatMapTo", "mergeMapTo", "switchMapTo", "pluck"],
+        "disposition": "replace",
+        "replacement": "Use map with a constant or property projection, or the corresponding canonical flattening Symbol with an explicit projection.",
+        "rationale": "Migration may preserve behavior through exact mappings, but the deprecated pipeable function/import shape is not supported.",
+        "decisions": ["D-003", "D-039"]
+      },
+      {
+        "id": "aliases:combination-operators",
+        "surfaces": ["pipeable combineLatest", "pipeable concat", "pipeable merge", "pipeable race", "pipeable zip", "onErrorResumeNextWith"],
+        "disposition": "replace",
+        "replacement": "Use the accepted unified or With-form exact Symbol and its documented source-array/result-selector mapping.",
+        "rationale": "Legacy pipeable aliases are migration inputs, not preserved function exports.",
+        "decisions": ["D-003", "D-039", "D-049"]
+      },
+      {
+        "id": "aliases:multicasting",
+        "surfaces": ["multicast", "publish", "publishBehavior", "publishLast", "publishReplay", "refCount"],
+        "disposition": "manual-review",
+        "replacement": "Prefer share, shareReplay, connect, or connectable with an explicit connector/reset contract; exact legacy-named Symbols remain migration evidence, not a compatibility promise.",
+        "rationale": "Producer sharing, replay, reset, and ref-count semantics require explicit lifecycle review.",
+        "decisions": ["D-035", "D-039", "D-049"]
+      },
+      {
+        "id": "aliases:subject-constructors",
+        "surfaces": ["new BehaviorSubject(value)", "new ReplaySubject(size, windowTime, scheduler)", "ColdSubject"],
+        "disposition": "replace",
+        "replacement": "Use behaviorSubject(value), replaySubject({ size, maxAge }), or the advanced PerSubscriptionSubjectBase only for a justified custom hot Subject.",
+        "rationale": "D-050 stabilizes lowercase factories and removes the misleading ColdSubject name without aliases.",
+        "decisions": ["D-035", "D-036", "D-050"]
+      },
+      {
+        "id": "aliases:async-iteration",
+        "surfaces": ["eachValueFrom", "bufferedValuesFrom"],
+        "disposition": "replace",
+        "replacement": "Use one of iterateEachValue, iterateBufferedValues, iterateLatestValue, or iterateNextValue from its exact Symbol subpath.",
+        "rationale": "The exploratory standalone helpers were removed so buffering and dropping policy stays explicit.",
+        "decisions": ["D-038", "D-039"]
+      }
+    ]
+  }
+}
