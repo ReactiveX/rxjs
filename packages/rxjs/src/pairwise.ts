@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const pairwise: unique symbol = Symbol('pairwise');
 
@@ -13,21 +14,16 @@ Observable.prototype[pairwise] = function <T>(this: Observable<T>): Observable<[
     let previous: T;
     let hasPrevious = false;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          const pair: [T, T] | undefined = hasPrevious ? [previous, value] : undefined;
-          previous = value;
-          hasPrevious = true;
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const pair: [T, T] | undefined = hasPrevious ? [previous, value] : undefined;
+        previous = value;
+        hasPrevious = true;
 
-          if (pair) {
-            subscriber.next(pair);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+        if (pair) {
+          subscriber.next(pair);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
