@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const skipLast: unique symbol = Symbol('skipLast');
 
@@ -20,23 +21,18 @@ Observable.prototype[skipLast] = function <T>(this: Observable<T>, amount = 1): 
       ring = null!;
     });
 
-    this.subscribe(
-      {
-        next: (value) => {
-          const valueIndex = seen++;
-          if (valueIndex < amount) {
-            ring[valueIndex] = value;
-          } else {
-            const index = valueIndex % amount;
-            const oldValue = ring[index]!;
-            ring[index] = value;
-            subscriber.next(oldValue);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const valueIndex = seen++;
+        if (valueIndex < amount) {
+          ring[valueIndex] = value;
+        } else {
+          const index = valueIndex % amount;
+          const oldValue = ring[index]!;
+          ring[index] = value;
+          subscriber.next(oldValue);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
