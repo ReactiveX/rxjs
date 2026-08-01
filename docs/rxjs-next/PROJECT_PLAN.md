@@ -1314,8 +1314,8 @@ explicit.
 | Status    | ID   | Outcome                                                                                      |
 | --------- | ---- | -------------------------------------------------------------------------------------------- |
 | `DONE`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
-| `NEXT`    | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
-| `PLANNED` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
+| `DONE`    | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
+| `NEXT`    | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
 | `PLANNED` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 
 Phase exit:
@@ -1342,6 +1342,25 @@ Phase exit:
   subclassing, Subject views, and typed static/instance composition. The public
   type gate passes.
 - Marked P4.1 `DONE` and advanced P4.2 as the sole project-level `NEXT` item.
+
+#### P4.2 completion evidence
+
+- Completed all 161 prioritized ledger rows: 154 use direct source-pinned
+  executable evidence, four alias/equivalent rows link canonical executable
+  evidence, and three rows name pinned non-marble or focused Next evidence.
+  No row remains uncovered.
+- Added reviewed cold and fallback totals to every linked evidence set. The
+  generator rejects inconsistent totals and any failing linked case not
+  classified `compatibility-only` or `intentional-divergence`.
+- Finalized public type status as 150 changed, seven preserved, and four
+  compatibility-only rows; no status remains deferred. “Changed” records an
+  intentional published mapping, not an assertion of RxJS 7 signature parity.
+- Linked D-050 to the stabilized cold, Subject-family, and exact Symbol
+  composition rows and retained the exact case IDs, source files, local
+  evidence, adapter, migration action, lifecycle, cancellation, and controlling
+  decisions in the machine-readable ledger.
+- Regeneration and freshness checks pass. Marked P4.2 `DONE` and advanced P4.3
+  as the sole project-level `NEXT` item.
 
 ### Phase 5 — Migration experience and AI enablement
 
@@ -2703,3 +2722,14 @@ conformance implementation depends on a runnable harness.
   root/subpath identity, Subject view, factory/config type, advanced subclass,
   and static/instance `[pipe]` composition form.
 - Marked P4.1 `DONE` and advanced P4.2 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P4.2 completed prioritized migration ledger
+
+- Closed every one of the 161 prioritized rows with direct, canonical-alias,
+  or supplemental pinned/focused evidence; zero rows remain uncovered.
+- Added per-row cold and fallback pass/failure accounting and made unexplained
+  failure classifications a generation error.
+- Finalized type status at 150 changed, seven preserved, and four
+  compatibility-only rows with no deferred status.
+- Regenerated and verified the machine-readable and Markdown ledgers, marked
+  P4.2 `DONE`, and advanced P4.3 as the sole project-level `NEXT` item.

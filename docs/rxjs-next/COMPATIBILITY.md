@@ -474,8 +474,12 @@ capability registry to the source-pinned executable manifest. Its complete
 case IDs and source files are retained in
 `packages/rxjs/test/ported/migration-evidence-ledger.generated.json`.
 Regeneration validates that every registry operator, factory, and value appears
-exactly once and rejects incomplete or duplicate rows. An uncovered entry is
-recorded explicitly; it is not treated as an implied pass.
+exactly once and rejects incomplete or duplicate rows. P4.2 closes every
+prioritized row with direct executable evidence, canonical alias evidence, or
+explicit pinned non-marble/focused Next evidence. It also rejects uncovered
+rows, deferred type status, inconsistent mode totals, or a linked failing case
+whose classification is not `compatibility-only` or
+`intentional-divergence`.
 
 | Field               | Required content                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------- |
@@ -485,16 +489,19 @@ recorded explicitly; it is not treated as an implied pass.
 | Sharing model       | Shared active platform producer, producer per direct subscription, or not applicable  |
 | Cancellation model  | Signal, test-local adapter, unsupported, or not applicable                            |
 | Test classification | Portable, harness rewrite, compatibility-only, intentional divergence, or unsupported |
-| Type status         | Preserved, changed, deferred, or unsupported                                          |
+| Type status         | Preserved, changed, or compatibility-only                                             |
 | Migration action    | Mechanical change, semantic review, adapter, or redesign                              |
 | Decision            | Link to accepted decision or open question                                            |
 
-The marble-test manifest populates the behavioral-evidence portion of this
-ledger without making API support promises. The capability registry supplies
+The marble-test manifest populates the executable behavioral-evidence portion
+of this ledger without making API support promises. The reviewed case-ID
+baselines account for cold and fallback passes and failures per row. Alias rows
+link the canonical executable surface; `ColdObservable`, `firstValueFrom`, and
+`lastValueFrom` name their pinned non-marble or focused Next evidence instead
+of pretending to have a marble registration. The capability registry supplies
 the public mapping and adapter, while deterministic policy records the import,
-sharing, cancellation, type, migration-action, and controlling-decision
-fields. P4.2 owns the remaining type-status and prioritized-API stabilization;
-P4.3 owns the complete unsupported-surface catalog.
+sharing, cancellation, final type status, migration action, and controlling
+decision. P4.3 owns the complete unsupported-surface catalog.
 
 The executable capability registry distinguishes an absent API from a unified
 Next surface. RxJS 7 `bufferCount(size, startBufferEvery?)` is exercised
