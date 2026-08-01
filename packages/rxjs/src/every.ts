@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 
@@ -33,7 +34,6 @@ function everyOperator<T>(
   return source[create]((subscriber) => {
     let index = 0;
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
 
     const conclude = (result: boolean): void => {
       sourceController.abort();
@@ -41,26 +41,19 @@ function everyOperator<T>(
       subscriber.complete();
     };
 
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: (value) => {
-          let matches: boolean;
-          try {
-            matches = predicate.call(thisArg, value, index++, source);
-          } catch (error) {
-            sourceController.abort();
-            subscriber.error(error);
-            return;
-          }
-
-          if (!matches) {
+          if (!predicate.call(thisArg, value, index++, source)) {
             conclude(false);
           }
         },
         error: (error) => subscriber.error(error),
         complete: () => conclude(true),
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
