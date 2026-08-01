@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const observeOn: unique symbol = Symbol('observeOn');
 
@@ -32,13 +33,10 @@ Observable.prototype[observeOn] = function <T>(this: Observable<T>, delay = 0): 
       timers.clear();
     });
 
-    this.subscribe(
-      {
-        next: (value) => schedule(() => subscriber.next(value)),
-        error: (error) => schedule(() => subscriber.error(error)),
-        complete: () => schedule(() => subscriber.complete()),
-      },
-      { signal: subscriber.signal }
-    );
+    subscribeToSource(this, subscriber, {
+      next: (value) => schedule(() => subscriber.next(value)),
+      error: (error) => schedule(() => subscriber.error(error)),
+      complete: () => schedule(() => subscriber.complete()),
+    });
   });
 };
