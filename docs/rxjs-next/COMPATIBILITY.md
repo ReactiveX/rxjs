@@ -74,7 +74,8 @@ The main RxJS platform layer:
   for an omitted argument before checking whether the subscriber is closed;
 - preserves shared, ref-counted active producer work;
 - uses signal-based cancellation;
-- installs RxJS-specific capabilities through Symbols;
+- installs RxJS-specific capabilities by direct assignment under exact,
+  module-owned Symbols;
 - preserves native string-named methods as the platform-owned API;
 - provides corresponding RxJS Symbols for operator uniformity even when a
   platform method has the same familiar name;
@@ -82,6 +83,12 @@ The main RxJS platform layer:
   or provide additional documented and tested RxJS functionality;
 - does not expose a legacy `Subscription` as though it were the native return
   value of `subscribe()`.
+
+The exact Symbol identity is the collision boundary. RxJS does not ship a
+transactional public-extension installer or promise custom descriptors,
+repeat-install arbitration, rollback, or support for hardened and
+non-extensible Observable targets. Those mechanics are unrelated to platform
+Observable conformance and are not migration compatibility guarantees.
 
 ### Intentional RxJS Next APIs
 

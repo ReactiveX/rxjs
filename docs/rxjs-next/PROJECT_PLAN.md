@@ -61,7 +61,9 @@ catalog and executable evidence; the remaining Phase 3 work is to move the
 catalog onto the accepted extension kernel. P3.2 has materialized the existing
 parity map as a validated migration-evidence ledger. P3.3 moved the full exact
 Symbol catalog onto the transactional extension kernel, and P3.4 completed the
-source-pinned evidence audit. P4.1 is now the sole `NEXT` item.
+source-pinned evidence audit. D-051 now supersedes that installation mechanism:
+P4.I1 will remove the common installer and use direct exact-Symbol assignment
+without changing operator behavior. P4.I1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1311,19 +1313,22 @@ explicit.
 
 ### Phase 4 — Intentional API and migration contracts
 
-| Status | ID   | Outcome                                                                                      |
-| ------ | ---- | -------------------------------------------------------------------------------------------- |
-| `DONE` | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
-| `DONE` | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
-| `DONE` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
-| `DONE` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
+| Status | ID    | Outcome                                                                                      |
+| ------ | ----- | -------------------------------------------------------------------------------------------- |
+| `DONE` | P4.1  | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
+| `DONE` | P4.2  | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
+| `DONE` | P4.3  | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
+| `DONE` | P4.4  | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
+| `NEXT` | P4.I1 | Remove the common public-extension installer and restore direct exact-Symbol assignment      |
 
 Phase exit:
 
 - intentional Next APIs are explicit in imports and types;
 - producer, sharing, and cancellation semantics are documented directly;
 - every migration mapping links behavioral evidence and required source work;
-- unsupported RxJS 7 categories are documented without an emulation promise.
+- unsupported RxJS 7 categories are documented without an emulation promise;
+- public Symbol capabilities install directly without a shared runtime
+  installer or transactional installation contract.
 
 #### P4.1 completion evidence
 
@@ -1397,11 +1402,37 @@ Phase exit:
 - Marked P4.4 `DONE`. The original Phase 4 contract work is complete; P4.I1 is
   the sole project-level `NEXT` item under the later D-051 simplification.
 
+#### P4.I1 completion bar
+
+- Replace every `installObservableExtension` call with direct assignment to
+  `Observable`, `Observable.prototype`, or the already established constructor
+  target under the module's own exported exact Symbol.
+- Delete the installer implementation and its installer-only tests. Do not
+  replace them with another runtime abstraction for collision checks,
+  idempotence, descriptor customization, extensibility preflight, paired
+  rollback, or named mutation diagnostics.
+- Revise the source audit to require exact module-owned Symbols, direct
+  installation under those Symbols, and no RxJS-specific string-named
+  constructor or prototype additions. Preserve the D-037 shared construction
+  protocol as a separate accepted exception.
+- Update focused kernel, ESM/CommonJS, duplicate-dialect, and bundler fixtures
+  to the D-051 contract. Remove extension-specific frozen-target cases and
+  assertions for non-enumerable public Symbol descriptors, transactional paired
+  installation, or custom unsupported-target errors; retain D-041's separate
+  fallback-acquisition frozen-target coverage.
+- Preserve public Symbols, ambient declarations, operator implementations,
+  construction and cancellation behavior, subpath side effects, root operator
+  isolation, and platform string-method non-interference.
+- Record the minified and compressed bundle delta for a representative direct
+  extension import and run the narrow focused, source-audit, type, package,
+  import, bundler, and native/fallback kernel gates. WPT is not a gate for the
+  RxJS-owned Symbol descriptor or installation mechanism.
+
 ### Phase 5 — Migration experience and AI enablement
 
 | Status     | ID   | Outcome                                                                              |
 | ---------- | ---- | ------------------------------------------------------------------------------------ |
-| `NEXT`     | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
 | `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
 | `DEFERRED` | P5.3 | Evaluate later RxJS usage Skills beyond the canonical migration workflow             |
 | `DEFERRED` | P5.4 | Evaluate optional integrations only under a new evidence-backed product decision     |
@@ -1435,12 +1466,14 @@ flowchart LR
     Boundary --> Kernel["Phase 2 extension kernel"]
     Harness --> Kernel
     Kernel --> Operators["Phase 3 operator restoration"]
+    Operators --> DirectInstall["P4.I1 direct Symbol installation"]
     Boundary --> Evidence["Phase 4 intentional API and migration contracts"]
     Operators --> Evidence
     Evidence --> Migration["Phase 5 migration and AI enablement"]
     Operators --> Migration
     AgentQualification --> Migration
     Fallback --> Release["Phase 6 release"]
+    DirectInstall --> Release
     Migration --> Release
 ```
 
@@ -1454,10 +1487,10 @@ conformance implementation depends on a runnable harness.
 | Native/fallback lifecycle evidence regresses           | Package acquisition can pass while semantics diverge      | Medium     | P0.4's shared contract and the attested strict WPT gate block fallback drift; RxJS extension evidence remains separately classified |
 | Upstream proposal changes                              | Fallback and native behavior drift                        | High       | Pin revisions before conformance claims                                                                                             |
 | Prototype code becomes accidental policy               | Semantics are preserved without review                    | High       | Documents distinguish current fact from accepted direction                                                                          |
-| Symbol identity fails with duplicate installs          | Extensions are present under inaccessible keys            | High       | D-048 exact-key isolation plus mixed-dialect and duplicate-capability package fixtures                                              |
+| Symbol identity fails across package copies            | Extensions are present under inaccessible keys            | High       | D-048 exact-key isolation plus mixed-dialect and duplicate-capability package fixtures; no runtime conflict arbitration is required |
 | RxJS 7 suite pressures platform behavior backward      | Native and fallback layers diverge                        | High       | Mandatory classification; evidence never implies a runtime compatibility product                                                    |
 | Migration evidence is mistaken for emulation           | Users depend on unsupported RxJS 7 surfaces               | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                                                  |
-| Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                                                |
+| Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed; D-051 accepts native assignment errors and no paired-install rollback                            |
 | Tooling is designed before APIs stabilize              | Skills encode obsolete migrations                         | Medium     | D-046 requires versioned capability evidence and portable workflow invariants; P0.M3 expands only for accepted contracts            |
 | Mechanical output is mistaken for a complete migration | Users silently receive the wrong Observable lifecycle     | High       | D-046 makes the agent workflow primary and requires explicit contract classification before codemods                                |
 | Agent output is judged only by source shape            | Nondeterministic rewrites can hide behavioral regressions | High       | D-046/P0.M5 require RxJS 7 baselines, contract manifests, compilation, and behavioral outcome gates                                 |
@@ -2776,4 +2809,18 @@ conformance implementation depends on a runnable harness.
 - Compiled the three accepted targets against public Next declarations and
   executed their lifecycle, cancellation, Subject-state, and negative controls.
 - Verified all 166 migration-package tests, marked P4.4 `DONE`, and advanced
-  P5.1 as the sole project-level `NEXT` item.
+  P4.I1 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — Direct public Symbol installation decision
+
+- Accepted D-051 and partially superseded D-048's transactional installation
+  mechanism while preserving its exact module-owned Symbol identity, realm,
+  duplicate-copy, and bundling policy.
+- Recorded direct assignment as the target public-extension pattern. The
+  accepted contract no longer includes a common installer, custom descriptors,
+  exact-key conflict checks, repeat-install idempotence, extensibility
+  preflight, rollback, or named errors for unsupported hardened targets.
+- Added P4.I1 with explicit code-removal, audit, fixture, bundle-size, and
+  verification gates. This decision-only session changes no production source
+  or test baseline.
+- Advanced P4.I1 as the sole project-level `NEXT` item after P4.4 completed.

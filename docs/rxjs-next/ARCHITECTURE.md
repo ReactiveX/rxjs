@@ -67,14 +67,14 @@ Migration tooling is not a runtime dependency.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                                                                        | Intended responsibility                                                                     | Current gap                                                                                    |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                                                       | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open               |
-| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors                                  | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open     |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                           | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                               |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                         | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                                 |
-| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, package/fixture gates, and committed Codex qualification records | Deterministic migration engine and canonical versioned Skill; never a runtime dependency    | Broader repository, capability, model, and non-Codex outcome qualification remains future work |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                              | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase       |
+| Component                      | Current responsibility                                                                                                                                                                                             | Intended responsibility                                                                                        | Current gap                                                                                    |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                                                            | Independently publishable conditional fallback and owner of the base ambient platform types                    | Runtime-version support and future specification/WPT revision policy remain open               |
+| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters through a common transactional helper; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library with direct exact-Symbol assignment plus intentional non-operator RxJS Next APIs | D-051 direct-installation simplification is accepted but not yet implemented                   |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                                | Retained only as prototype history until removed                                                               | Superseded by the accepted `@rxjs/test` boundary                                               |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                              | Implementation-neutral framework testing that consumes an already active realm Observable                      | Broader runtime-version and module-system support remains open                                 |
+| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, package/fixture gates, and committed Codex qualification records      | Deterministic migration engine and canonical versioned Skill; never a runtime dependency                       | Broader repository, capability, model, and non-Codex outcome qualification remains future work |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                                   | Eventually explain the new platform and migration model                                                        | Still represents the prior generation; redesign is out of scope for the foundation phase       |
 
 ## Platform Observable lifecycle
 
@@ -314,13 +314,17 @@ reports browser drift separately.
 
 Every current exact public extension module:
 
-1. create and export a Symbol;
-2. augment the global `Observable` or `ObservableCtor` TypeScript interface;
-3. installs an implementation transactionally on the constructor or prototype
-   under that Symbol;
-4. create returned observables through the receiver's constructor.
+1. creates and exports a Symbol;
+2. augments the global `Observable` or `ObservableCtor` TypeScript interface;
+3. installs an implementation through the current common transactional helper
+   on the constructor or prototype under that Symbol;
+4. creates returned observables through the receiver's construction protocol.
 
-A simplified instance extension looks like this:
+D-051 accepts direct assignment under the exported exact Symbol as the target
+installation pattern. P4.I1 will remove the current helper without changing
+Symbol identity, public augmentation, construction, or operator behavior.
+
+The accepted target instance-extension pattern looks like this:
 
 ```ts
 export const example: unique symbol = Symbol('example');
@@ -461,11 +465,9 @@ An extension import mutates `Observable` or `Observable.prototype`. That makes
 the following architectural concerns inseparable from the API:
 
 - the active constructor must exist before the module evaluates;
-- duplicate imports should be idempotent;
 - duplicate package copies must agree on Symbol identity or remain isolated in
   a documented way;
 - tree-shaking metadata must not incorrectly erase required installation;
-- property descriptors and collision behavior must be specified;
 - patching may fail for non-extensible constructors or prototypes.
 
 Every public `rxjs` root or subpath import first evaluates the conditional
@@ -479,9 +481,11 @@ installation merely because an imported Symbol binding is unused.
 
 Browser windows, worker realms, and maintained Node releases are initially
 supported when the required web primitives exist. Hardened globals and
-non-extensible constructors or prototypes are outside the initial claim; an
-attempted installation must fail clearly instead of leaving a partial patch.
-Deno, Bun, and edge runtimes remain unclaimed until tested.
+non-extensible constructors or prototypes are outside the initial claim.
+Public extension installation may surface the native assignment error and a
+paired static/instance capability has no transactional guarantee on those
+unsupported targets. Deno, Bun, and edge runtimes remain unclaimed until
+tested.
 
 P2.1 accepts D-048: public extension Symbols are exact and module-owned. An
 independently evaluated ESM/CommonJS dialect, duplicate package copy, or other
@@ -499,6 +503,17 @@ use the common installer, including async-iteration Symbols that return
 generators instead of Observables. A blocking source audit rejects any exact
 public Symbol that omits the installer or returns to direct constructor or
 prototype assignment.
+
+D-051 supersedes that installation mechanism while preserving D-048's identity,
+realm, and bundling policy. Exact module-owned Symbols already isolate unrelated
+libraries, module dialects, package copies, and versions; normal module caching
+handles repeat evaluation of one module instance. The accepted target is direct
+assignment to the constructor or prototype under the module's own exported
+Symbol. It deliberately removes runtime preflight, collision diagnostics,
+descriptor customization, extensibility checks, and rollback. P4.I1 owns the
+code, test, audit, and bundle-evidence migration; until it completes, the common
+installer remains a current implementation fact rather than the target
+architecture.
 
 ### Public Symbol consistency
 
@@ -1083,8 +1098,10 @@ These invariants should become automated fitness functions:
    `Observable` constructor or prototype.
 4. Every platform operator in the supported RxJS catalog has a corresponding
    exported Symbol, without changing the platform's string-named method.
-5. Every Symbol extension uses the approved identity and installation helper.
-6. Installing an extension twice is safe and deterministic.
+5. Every Symbol extension uses an exact module-owned public key and the approved
+   direct-assignment pattern.
+6. Independently evaluated package copies and module dialects coexist under
+   distinct public Symbol keys without replacing one another.
 7. Every returned platform-layer observable preserves the approved constructor
    behavior within its initialized realm; transparent cross-realm operation is
    not implied.
@@ -1111,34 +1128,34 @@ These invariants should become automated fitness functions:
 
 ## Initial fitness-function scorecard
 
-| Characteristic         | Check                                                                                                              | Target enforcement                                                        |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
-| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                | Unit and package-import tests                                             |
-| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL          | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
-| Extension safety       | Snapshot string properties; verify only approved Symbol keys are installed and repeat installation is idempotent   | Unit tests and CI                                                         |
-| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                          | Shared platform test suite                                                |
-| Native/fallback parity | Run the same operator cases against both implementations                                                           | CI matrix                                                                 |
-| Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures                                        | Package CI                                                                |
-| Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                    | Migration review and generated-ledger checks                              |
-| Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior | Package CI and pre-release gate                                           |
-| Agent migration        | Codex/ChatGPT produces approved completion or safe-stop outcomes for the four representative repositories          | Offline verification of committed qualification records and artifacts     |
+| Characteristic         | Check                                                                                                                               | Target enforcement                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                                 | Unit and package-import tests                                             |
+| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL                           | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
+| Extension safety       | Snapshot string properties; verify each module installs only its exported exact Symbol and leaves platform string methods untouched | Unit tests and CI                                                         |
+| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                                           | Shared platform test suite                                                |
+| Native/fallback parity | Run the same operator cases against both implementations                                                                            | CI matrix                                                                 |
+| Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-copy fixtures                                                            | Package CI                                                                |
+| Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                                     | Migration review and generated-ledger checks                              |
+| Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior                  | Package CI and pre-release gate                                           |
+| Agent migration        | Codex/ChatGPT produces approved completion or safe-stop outcomes for the four representative repositories                           | Offline verification of committed qualification records and artifacts     |
 
 ## Known architectural risks
 
-| Risk                                                             | Impact                                                            | Mitigation direction                                                                                                        |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Living platform proposal changes                                 | Polyfill and operators drift from browsers                        | Pin revisions, track upstream, and advance deliberately                                                                     |
-| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically  | D-041's conditional transaction, package fixtures, and P0.4's shared lifecycle contract cover the selected base constructor |
-| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them          | Mixed ESM/CommonJS fallback installation is idempotent; P2.1 still owns extension-Symbol registry/version strategy          |
-| Prototype patching is restricted                                 | Extensions cannot install in hardened or unusual realms           | Keep those realms unclaimed and fail clearly without partial installation                                                   |
-| RxJS 7 tests encode different producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics    | Classify tests and keep cold evidence distinct from platform claims                                                         |
-| Migration evidence is mistaken for runtime compatibility         | Users depend on unsupported RxJS 7 imports or lifecycle behavior  | State migration actions and unsupported surfaces without publishing an emulation package                                    |
-| Mechanical output is mistaken for a complete migration           | Lifecycle-sensitive changes pass syntax checks but alter behavior | Require a reviewed contract manifest, characterization evidence, and agent-outcome gates                                    |
-| Harness adapters or copied Skills drift                          | Different agents give materially different migration advice       | Ship one versioned canonical Skill and verify adapter digest plus smoke scenarios                                           |
-| Package metadata or exports regress                              | Builds pass locally but published artifacts are unusable          | Keep package build, pack, import, and type fixtures as release gates                                                        |
-| Minimal tests allow semantic regressions                         | Prototype behavior becomes accidental policy                      | Add lifecycle and extension-kernel safety rails before expanding operators                                                  |
-| Browser-native Observable leaks into a fallback WPT realm        | Results falsely appear to prove the RxJS implementation           | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns |
-| WPT/browser downloads make conformance impractical               | Contributors skip or inconsistently run the gate                  | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver            |
+| Risk                                                             | Impact                                                            | Mitigation direction                                                                                                         |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Living platform proposal changes                                 | Polyfill and operators drift from browsers                        | Pin revisions, track upstream, and advance deliberately                                                                      |
+| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically  | D-041's conditional transaction, package fixtures, and P0.4's shared lifecycle contract cover the selected base constructor  |
+| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them          | D-048 documents distinct public keys; package fixtures prove coexistence and consumers use the Symbol from their module copy |
+| Prototype patching is restricted                                 | Extensions cannot install in hardened or unusual realms           | Keep those realms unclaimed; direct assignment may surface native errors or partial paired installation                      |
+| RxJS 7 tests encode different producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics    | Classify tests and keep cold evidence distinct from platform claims                                                          |
+| Migration evidence is mistaken for runtime compatibility         | Users depend on unsupported RxJS 7 imports or lifecycle behavior  | State migration actions and unsupported surfaces without publishing an emulation package                                     |
+| Mechanical output is mistaken for a complete migration           | Lifecycle-sensitive changes pass syntax checks but alter behavior | Require a reviewed contract manifest, characterization evidence, and agent-outcome gates                                     |
+| Harness adapters or copied Skills drift                          | Different agents give materially different migration advice       | Ship one versioned canonical Skill and verify adapter digest plus smoke scenarios                                            |
+| Package metadata or exports regress                              | Builds pass locally but published artifacts are unusable          | Keep package build, pack, import, and type fixtures as release gates                                                         |
+| Minimal tests allow semantic regressions                         | Prototype behavior becomes accidental policy                      | Add lifecycle and extension-kernel safety rails before expanding operators                                                   |
+| Browser-native Observable leaks into a fallback WPT realm        | Results falsely appear to prove the RxJS implementation           | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns  |
+| WPT/browser downloads make conformance impractical               | Contributors skip or inconsistently run the gate                  | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver             |
 
 ## Evidence and references
 

@@ -31,14 +31,15 @@ D-041 separately uses
 metadata. That marker identifies the installed fallback; it does not globalize
 public extension Symbols or attest conformance.
 
-D-048 completes the public policy. Exact extension Symbols are stable through
-one loaded module export, not across independently evaluated dialects, package
-copies, or versions. Those copies install separate exact slots and can coexist.
-No public capability uses the global registry; the former
+D-048 completes the public identity policy. Exact extension Symbols are stable
+through one loaded module export, not across independently evaluated dialects,
+package copies, or versions. Those copies install separate exact slots and can
+coexist. No public capability uses the global registry; the former
 `Symbol.for('buffer')` exception is removed. The construction ABI continues to
-accept an existing callable without a stronger package marker. The internal
-installer owns idempotence, exact-key conflict rejection, non-enumerable
-descriptors, preflight, rollback, and named unsupported-target diagnostics.
+accept an existing callable without a stronger package marker. D-051
+supersedes D-048's transactional installation mechanism: public capabilities
+use direct assignment under their module-owned Symbols, with no common
+installer, collision preflight, descriptor customization, or rollback.
 
 ### 2. How are side-effectful extension modules built and shaken safely?
 
@@ -52,8 +53,9 @@ initializes the realm, and extension subpaths additionally install one exact
 capability. Direct subpaths provide granularity. A bundler fixture must retain
 an otherwise unused extension import and keep the root operator-free. Mixed
 ESM/CommonJS and duplicate copies use different public Symbols while sharing
-only the D-037 construction ABI; exact-key conflicts are rejected by the
-common installer rather than overwritten.
+only the D-037 construction ABI. Their public capabilities coexist because
+their exact Symbols differ, not because a runtime installer arbitrates
+conflicts.
 
 P0.3 proves that the root can remain operator-free, that generated declarations
 preserve subpath-scoped augmentation, and that standalone ESM and CommonJS
@@ -115,14 +117,15 @@ record before they are restored.
 
 ### 6. What is the canonical extension implementation pattern?
 
-D-048 and D-049 define the pattern. A subpath exports one exact Symbol, augments
-only the corresponding ambient interface, and installs through the
-transactional internal installer. Observable-returning implementations create
-through the receiver's `[create]`, normalize inputs through the active
-platform `Observable.from`, own upstream work with the derived subscriber's
-signal plus any joined local controller, and forward synchronous setup or
-callback failures through `subscriber.error`. P2.4 validates that pattern on
-the representative pilot. Async-iteration Symbols remain a
+D-048, D-049, and D-051 define the pattern. A subpath exports one exact Symbol,
+augments only the corresponding ambient interface, and assigns its
+implementation directly to the active constructor or prototype under that
+Symbol. Observable-returning implementations create through the receiver's
+`[create]`, normalize inputs through the active platform `Observable.from`,
+own upstream work with the derived subscriber's signal plus any joined local
+controller, and forward synchronous setup or callback failures through
+`subscriber.error`. P2.4 validates the operator-kernel behavior; P4.I1 owns
+the installation simplification. Async-iteration Symbols remain a
 documented non-Observable-result variant because they return generators rather
 than derived Observables.
 

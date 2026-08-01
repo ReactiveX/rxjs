@@ -841,7 +841,8 @@ Status meanings:
   Observables, they do not invoke the shared `[create]` construction protocol.
   Their direct installation does not resolve the still-open common installer
   or duplicate-package policy. D-040 and D-041 separately settle the package
-  map and native-versus-polyfill acquisition contract.
+  map and native-versus-polyfill acquisition contract. D-048 later selected a
+  common installer, and D-051 supersedes that mechanism with direct assignment.
 
 ## D-039 — Prefer migration assistance over an RxJS 7 runtime compatibility product
 
@@ -1112,7 +1113,9 @@ Status meanings:
 
 ## D-048 — Isolate public extension Symbols and install them transactionally
 
-- **Status:** Accepted
+- **Status:** Accepted in part; the installation mechanism is superseded by
+  D-051. The public identity, shared-protocol, realm, and bundling decisions
+  remain accepted.
 - **Public identity:** Every public operator and factory exports an exact,
   module-owned `Symbol('name')`. Its identity is stable only through that
   loaded module export. Independently evaluated ESM/CommonJS dialects,
@@ -1129,8 +1132,8 @@ Status meanings:
   would reject compatible custom implementations without improving the
   protocol contract. The unreviewed public `Symbol.for('buffer')` exception is
   removed.
-- **Installation:** Public capabilities use one internal typed installer. It
-  preflights all static and instance targets before mutation, defines
+- **Installation (superseded):** Public capabilities use one internal typed
+  installer. It preflights all static and instance targets before mutation, defines
   non-enumerable, writable, configurable properties, accepts an already
   installed identical value, rejects a different value at the exact Symbol,
   and rolls back if a later definition fails. Missing capacity and exact-key
@@ -1152,6 +1155,10 @@ Status meanings:
   load-order replacement. A transactional installer makes deliberate
   exact-key conflicts and unsupported targets diagnosable without weakening
   the identity boundary.
+- **Supersession:** D-051 replaces only the transactional installer and custom
+  descriptor policy. Exact module-owned public Symbols, realm-local
+  installation, side-effectful subpaths, and the two approved shared protocol
+  keys remain unchanged.
 
 ## D-049 — Separate derived construction from platform input conversion
 
@@ -1223,3 +1230,42 @@ Status meanings:
   tests, and package fixtures. Stabilizing their own contracts completes the
   D-039 boundary without implying a scheduler, Subscription, pipeable-operator,
   deprecated-alias, or compatibility runtime.
+
+## D-051 — Install exact public Symbol capabilities directly
+
+- **Status:** Accepted
+- **Decision:** Each public operator or factory module assigns its
+  implementation directly to `Observable` or `Observable.prototype` under the
+  exact Symbol exported by that same module. Public capability installation
+  does not use a common runtime installer, preflight targets, check exact-key
+  occupancy, provide repeat-install idempotence, customize property
+  descriptors, or roll back paired static/instance assignments.
+- **Identity:** D-048's exact module-owned Symbol policy remains controlling.
+  Another library, independently evaluated module dialect, duplicate package
+  copy, or package version receives a different property key even when it uses
+  the same Symbol description. Ordinary module caching prevents repeated
+  evaluation of one module instance. These properties remove the accidental
+  conflict and duplicate-install scenarios that motivated the superseded
+  installer checks.
+- **Descriptors:** Direct assignment uses JavaScript's ordinary new-property
+  descriptor: writable, enumerable, and configurable. Symbol keys remain
+  absent from string-key enumeration such as `Object.keys`, `for...in`, and
+  JSON serialization. RxJS makes no contract about copying an Observable
+  constructor or prototype with `Object.assign` or object spread.
+- **Unsupported targets:** Hardened globals, proxies with mutating traps, and
+  non-extensible Observable constructors or prototypes remain outside the
+  supported runtime claim under D-041. Installation may throw the native
+  JavaScript error, and a paired static/instance capability is not promised to
+  install transactionally on such a target.
+- **Rationale:** The common installer adds shipped bytes, module-initialization
+  branches, temporary allocations, descriptor reads, extensibility checks,
+  rollback bookkeeping, and diagnostics for conflicts that exact module-owned
+  Symbols prevent in supported execution. None of that behavior is required by
+  the Observable specification or WPT because RxJS extension Symbols are a
+  library surface. Direct assignment keeps the acquisition side effect visible
+  and makes its cost proportional to the capability being installed.
+- **Consequence:** P4.I1 removes `installObservableExtension`, migrates every
+  exact public capability back to direct assignment, deletes installer-only
+  tests, and revises package audits to enforce exact Symbol ownership and
+  string-method non-interference rather than transactional installation.
+  Package side-effect metadata and bundler-retention fixtures remain required.
