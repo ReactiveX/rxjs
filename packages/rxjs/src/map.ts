@@ -1,4 +1,4 @@
-import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
+import { createDerivedObservable, subscribeToSource } from './util/observable-helpers.js';
 
 export const map: unique symbol = Symbol('map');
 
@@ -23,17 +23,9 @@ function mapOperator<T, R, A>(
     init: (subscriber) => {
       let index = 0;
 
-      subscribeToSource({
-        source: this,
-        subscriber,
+      subscribeToSource(this, subscriber, {
         next: (value) => {
-          const result = runWithErrorForwarding({
-            subscriber,
-            run: () => project.call(thisArg, value, index++),
-          });
-          if (result.ok) {
-            subscriber.next(result.value);
-          }
+          subscriber.next(project.call(thisArg, value, index++));
         },
       });
     },
