@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const mergeMap: unique symbol = Symbol('mergeMap');
 
@@ -22,55 +23,38 @@ Observable.prototype[mergeMap] = function <T, R>(
     let outerComplete = false;
 
     const innerSub = (value: T) => {
-      let result: Observable<R>;
-      try {
-        result = Observable.from(mapper(value, index++));
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
+      const result = Observable.from(mapper(value, index++));
 
       active++;
 
-      result.subscribe(
-        {
-          next: (innerValue) => subscriber.next(innerValue),
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            active--;
-            if (buffer.length > 0) {
-              innerSub(buffer.shift()!);
-              return;
-            }
-            if (outerComplete && active === 0) {
-              subscriber.complete();
-            }
-          },
-        },
-        {
-          signal: subscriber.signal,
-        }
-      );
-    };
-
-    this.subscribe(
-      {
-        next: (value) => {
-          if (active < concurrent) {
-            innerSub(value);
-          } else {
-            buffer.push(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
+      subscribeToSource(result, subscriber, {
         complete: () => {
-          outerComplete = true;
-          if (active === 0 && buffer.length === 0) {
+          active--;
+          if (buffer.length > 0) {
+            innerSub(buffer.shift()!);
+            return;
+          }
+          if (outerComplete && active === 0) {
             subscriber.complete();
           }
         },
+      });
+    };
+
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (active < concurrent) {
+          innerSub(value);
+        } else {
+          buffer.push(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        outerComplete = true;
+        if (active === 0 && buffer.length === 0) {
+          subscriber.complete();
+        }
+      },
+    });
   });
 };
