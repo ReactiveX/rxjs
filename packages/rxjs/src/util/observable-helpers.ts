@@ -71,6 +71,15 @@ export function subscribeToSource<T>(
 
   const source = sourceOrOptions as Observable<T>;
   const destination = subscriber!;
+  const handleError = overrides?.error
+    ? (error: unknown) => {
+        try {
+          overrides.error!(error);
+        } catch (callbackError) {
+          destination.error(callbackError);
+        }
+      }
+    : (error: unknown) => destination.error(error);
 
   try {
     source.subscribe(
@@ -84,15 +93,7 @@ export function subscribeToSource<T>(
               }
             }
           : (value) => destination.next(value),
-        error: overrides?.error
-          ? (error) => {
-              try {
-                overrides.error!(error);
-              } catch (callbackError) {
-                destination.error(callbackError);
-              }
-            }
-          : (error) => destination.error(error),
+        error: handleError,
         complete: overrides?.complete
           ? () => {
               try {
@@ -106,7 +107,9 @@ export function subscribeToSource<T>(
       { signal: signal ? AbortSignal.any([destination.signal, signal]) : destination.signal }
     );
   } catch (error) {
-    destination.error(error);
+    // Subscription setup failures are source failures and therefore follow an
+    // overridden source-error path when one is present.
+    handleError(error);
   }
 }
 

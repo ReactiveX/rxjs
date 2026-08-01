@@ -90,9 +90,21 @@ describe('Observable kernel helpers', () => {
       new Observable<number>((sourceSubscriber) => sourceSubscriber.complete()),
     ];
     const overrides: Array<Partial<Observer<number>>> = [
-      { next: () => { throw failures[0]; } },
-      { error: () => { throw failures[1]; } },
-      { complete: () => { throw failures[2]; } },
+      {
+        next: () => {
+          throw failures[0];
+        },
+      },
+      {
+        error: () => {
+          throw failures[1];
+        },
+      },
+      {
+        complete: () => {
+          throw failures[2];
+        },
+      },
     ];
 
     for (let index = 0; index < sources.length; index++) {
@@ -116,6 +128,20 @@ describe('Observable kernel helpers', () => {
     new Observable<number>((subscriber) => subscribeToSource(source, subscriber)).subscribe({
       error: (error) => errors.push(error),
     });
+
+    expect(errors).toEqual([failure]);
+  });
+
+  it('routes synchronous subscription setup exceptions through an error override', () => {
+    const failure = new Error('setup failure');
+    const errors: unknown[] = [];
+    const source = {
+      subscribe: () => {
+        throw failure;
+      },
+    } as unknown as Observable<number>;
+
+    new Observable<number>((subscriber) => subscribeToSource(source, subscriber, { error: (error) => errors.push(error) })).subscribe();
 
     expect(errors).toEqual([failure]);
   });
