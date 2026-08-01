@@ -50,7 +50,10 @@ canonical portable Skill, copy-only Codex/Claude/Cursor adapters,
 digest-tracked updates, and a generated repository discovery copy. P0.M5 is
 also complete: four Codex/ChatGPT representative runs passed the 14 semantic
 gate families, with three completed migrations and one required safe stop.
-P1.1 is now the sole `NEXT` item.
+Phase 1 is complete. P1.1 through P1.3 required no additional runtime work:
+P0.3 and P0.4 had already completed the conditional-installation and shared
+lifecycle boundaries, while P0.5 and P1.4b had already completed the pinned
+fallback-conformance work. P2.1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -894,13 +897,36 @@ diagrams. No implementation is required for this decision step.
 
 ### Phase 1 — Platform fallback correctness
 
-| Status    | ID    | Outcome                                                                                                          |
-| --------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
-| `NEXT`    | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
-| `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
-| `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
-| `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
-| `DONE`    | P1.4b | Make the fallback pass the pinned Observable WPT suite                                                           |
+| Status | ID    | Outcome                                                                                                          |
+| ------ | ----- | ---------------------------------------------------------------------------------------------------------------- |
+| `DONE` | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
+| `DONE` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
+| `DONE` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
+| `DONE` | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
+| `DONE` | P1.4b | Make the fallback pass the pinned Observable WPT suite                                                           |
+
+#### P1.1–P1.3 closure evidence
+
+- P1.1 was already satisfied by P0.3's transactional conditional initializer
+  and package/realm fixtures, plus P0.4's mixed ESM/CommonJS duplicate-install
+  and native/fallback lifecycle coverage. No remaining installation gap was
+  identified that belonged to the fallback layer.
+- P1.2 and P1.3 were already satisfied by P1.4b and P0.5. The attested strict
+  WPT gate covers the selected subscription, abort, teardown, error-reporting,
+  `Observable.from`, native-method, and `EventTarget.when` behavior and permits
+  no accepted failure metadata.
+- A 2026-08-01 closure audit passed all 51 focused polyfill/harness tests, the
+  package build, declaration consumer, ESM/CommonJS import and duplicate-load
+  fixtures, and the five-case lifecycle contract against both the packaged
+  fallback and native Observable in Chrome `150.0.7871.126`.
+- The same audit passed strict offline WPT conformance with 52/52 `OK` URLs,
+  525/525 passing upstream subtests, and 52/52 passing exact-RxJS-identity
+  attestations. The implementation bundle was
+  `697e4a814b79aa9d443f93cad87144c7a2984df75c26901f1e4600e18c0f1745`.
+- Older fallback-only failures in the RxJS 7 ported corpus concern RxJS
+  extension and migration-evidence behavior. They do not contradict the
+  platform fallback's pinned conformance and remain outside Phase 1 rather
+  than motivating duplicate fallback implementation.
 
 #### P1.4a completion bar
 
@@ -1011,14 +1037,14 @@ Phase exit:
 
 - the fallback passes the agreed local lifecycle/conversion suite;
 - native preservation is enforced;
-- known differences from the pinned specification are listed;
+- no selected WPT difference or accepted failure remains;
 - no main-library work depends on undocumented fallback behavior.
 
 ### Phase 2 — Symbol extension kernel
 
 | Status    | ID   | Outcome                                                                                       |
 | --------- | ---- | --------------------------------------------------------------------------------------------- |
-| `PLANNED` | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy            |
+| `NEXT`    | P2.1 | Decide Symbol identity, versioning, duplicate-install, realm, and collision policy            |
 | `PLANNED` | P2.2 | Implement one typed extension installer for static and instance capabilities                  |
 | `PLANNED` | P2.3 | Define constructor preservation, input conversion, cancellation, and error-forwarding helpers |
 | `PLANNED` | P2.4 | Convert a small representative operator set to the kernel and validate native/fallback parity |
@@ -1124,22 +1150,22 @@ conformance implementation depends on a runnable harness.
 
 ## Risk register
 
-| Risk                                                   | Impact                                                    | Likelihood | Current response                                                                                                         |
-| ------------------------------------------------------ | --------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Native/fallback lifecycle evidence regresses           | Package acquisition can pass while semantics diverge      | Medium     | P0.4's shared contract blocks drift; seven fallback-only lifecycle failures are retained for Phase 1                     |
-| Upstream proposal changes                              | Fallback and native behavior drift                        | High       | Pin revisions before conformance claims                                                                                  |
-| Prototype code becomes accidental policy               | Semantics are preserved without review                    | High       | Documents distinguish current fact from accepted direction                                                               |
-| Symbol identity fails with duplicate installs          | Extensions are present under inaccessible keys            | High       | P2.1 plus package fixtures                                                                                               |
-| RxJS 7 suite pressures platform behavior backward      | Native and fallback layers diverge                        | High       | Mandatory classification; evidence never implies a runtime compatibility product                                         |
-| Migration evidence is mistaken for emulation           | Users depend on unsupported RxJS 7 surfaces               | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                                       |
-| Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                                     |
-| Tooling is designed before APIs stabilize              | Skills encode obsolete migrations                         | Medium     | D-046 requires versioned capability evidence and portable workflow invariants; P0.M3 expands only for accepted contracts |
-| Mechanical output is mistaken for a complete migration | Users silently receive the wrong Observable lifecycle     | High       | D-046 makes the agent workflow primary and requires explicit contract classification before codemods                     |
-| Agent output is judged only by source shape            | Nondeterministic rewrites can hide behavioral regressions | High       | D-046/P0.M5 require RxJS 7 baselines, contract manifests, compilation, and behavioral outcome gates                      |
-| Harness-specific instructions drift                    | Codex, Claude, and Cursor provide inconsistent safety     | Medium     | D-046 selects one canonical portable Skill; P0.M4 tests only thin harness installation adapters                          |
-| Current CI/release infrastructure assumes RxJS 7       | Published artifacts fail despite source tests             | High       | Package-import fixtures and release gates precede expansion                                                              |
-| WPT runs accidentally exercise native Observable       | False confidence in fallback behavior                     | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                                         |
-| WPT/browser setup is too large or network-dependent    | Slow or skipped local and CI validation                   | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts                        |
+| Risk                                                   | Impact                                                    | Likelihood | Current response                                                                                                                    |
+| ------------------------------------------------------ | --------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Native/fallback lifecycle evidence regresses           | Package acquisition can pass while semantics diverge      | Medium     | P0.4's shared contract and the attested strict WPT gate block fallback drift; RxJS extension evidence remains separately classified |
+| Upstream proposal changes                              | Fallback and native behavior drift                        | High       | Pin revisions before conformance claims                                                                                             |
+| Prototype code becomes accidental policy               | Semantics are preserved without review                    | High       | Documents distinguish current fact from accepted direction                                                                          |
+| Symbol identity fails with duplicate installs          | Extensions are present under inaccessible keys            | High       | P2.1 plus package fixtures                                                                                                          |
+| RxJS 7 suite pressures platform behavior backward      | Native and fallback layers diverge                        | High       | Mandatory classification; evidence never implies a runtime compatibility product                                                    |
+| Migration evidence is mistaken for emulation           | Users depend on unsupported RxJS 7 surfaces               | Medium     | Publish explicit source actions, semantic-review flags, and unsupported categories                                                  |
+| Global patching fails in hardened realms               | Library cannot initialize                                 | Medium     | Leave hardened surfaces unclaimed and require clear non-partial installation failure                                                |
+| Tooling is designed before APIs stabilize              | Skills encode obsolete migrations                         | Medium     | D-046 requires versioned capability evidence and portable workflow invariants; P0.M3 expands only for accepted contracts            |
+| Mechanical output is mistaken for a complete migration | Users silently receive the wrong Observable lifecycle     | High       | D-046 makes the agent workflow primary and requires explicit contract classification before codemods                                |
+| Agent output is judged only by source shape            | Nondeterministic rewrites can hide behavioral regressions | High       | D-046/P0.M5 require RxJS 7 baselines, contract manifests, compilation, and behavioral outcome gates                                 |
+| Harness-specific instructions drift                    | Codex, Claude, and Cursor provide inconsistent safety     | Medium     | D-046 selects one canonical portable Skill; P0.M4 tests only thin harness installation adapters                                     |
+| Current CI/release infrastructure assumes RxJS 7       | Published artifacts fail despite source tests             | High       | Package-import fixtures and release gates precede expansion                                                                         |
+| WPT runs accidentally exercise native Observable       | False confidence in fallback behavior                     | High       | P1.4a exact-identity attestation and an independent, unsuppressible report audit                                                    |
+| WPT/browser setup is too large or network-dependent    | Slow or skipped local and CI validation                   | Medium     | Vendor only the approved closure and checksum-cache the sparse runner and exact browser artifacts                                   |
 
 ## Out of scope until activated
 
@@ -2296,3 +2322,19 @@ conformance implementation depends on a runnable harness.
   unmeasured.
 - Marked P0.M5 `DONE`, completing Phase 0, and advanced P1.1 as the sole
   project-level `NEXT` item.
+
+### 2026-08-01 — Phase 1 closure audit
+
+- Reviewed P1.1 through P1.3 against the completed P0.3, P0.4, P0.5, P1.4a,
+  and P1.4b evidence. Confirmed that their installation and conformance
+  outcomes were already met and that additional fallback implementation would
+  duplicate completed work.
+- Passed 51 focused polyfill/harness tests, package build/type/import fixtures,
+  mixed-format duplicate installation, and the five-case lifecycle contract
+  against the packaged fallback and native Chrome `150.0.7871.126`.
+- Passed strict offline WPT conformance with 52/52 `OK` URLs, 525/525 upstream
+  subtests, and 52/52 exact RxJS identity attestations.
+- Kept older RxJS extension and migration-evidence failures outside the
+  platform fallback phase, corrected the stale Phase 1 risk language, marked
+  P1.1 through P1.3 `DONE`, and advanced P2.1 as the sole project-level `NEXT`
+  item.
