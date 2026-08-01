@@ -48,7 +48,9 @@ canonical Skill with thin Codex/Claude/Cursor adapters, and no MCP release
 surface. P0.M3 and P0.M4 are complete: the bounded engine now supports one
 canonical portable Skill, copy-only Codex/Claude/Cursor adapters,
 digest-tracked updates, and a generated repository discovery copy. P0.M5 is
-now the sole `NEXT` item; P1.1 remains `PLANNED`.
+also complete: four Codex/ChatGPT representative runs passed the 14 semantic
+gate families, with three completed migrations and one required safe stop.
+P1.1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -118,7 +120,7 @@ item.
 | `DONE` | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
 | `DONE` | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
 | `DONE` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
-| `NEXT` | P0.M5  | Qualify the end-to-end Codex/ChatGPT workflow on representative repositories and behavioral outcome gates          |
+| `DONE` | P0.M5  | Qualify the end-to-end Codex/ChatGPT workflow on representative repositories and behavioral outcome gates          |
 | `DONE` | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
 
 #### P0.1 completion evidence
@@ -650,6 +652,29 @@ item.
   does not claim general automatic migration beyond the passing fixture and
   representative-repository evidence.
 
+#### P0.M5 completion evidence
+
+- Added four immutable RxJS `7.8.1` seed repositories spanning application and
+  library layouts, Vitest, Mocha, Jest, strong and weak coverage, cold,
+  platform, mixed, and unsupported contracts. Their lockfiles, tree identities,
+  baseline builds, and tests are executable offline.
+- Ran the closed four-scenario matrix through Codex `0.146.0-alpha.3.1` with
+  `gpt-5.6-sol` at medium reasoning and canonical Skill/engine version
+  `8.0.0-alpha.14`. All four records pass all 14 semantic gate families.
+- `app-cold-strong`, `app-platform-strong`, and `library-mixed-strong`
+  completed their approved migrations with green target build and held-out
+  behavior. `library-weak-unsupported` retained the unsupported behavior and
+  made the expected safe stop before target installation or migration writes.
+- Committed four qualification records and 20 SHA-256-bound artifacts: prompt
+  plus final response, contract manifest, patch, command results, and final
+  report for each run. Command/tool evidence is retained in the command
+  results, patch, and observed-authority record. Full event streams were not
+  retained for the first three runs and are not claimed by the conversation
+  artifacts.
+- Kept the measured result explicitly Codex/ChatGPT-only under D-047. P0.M4's
+  Claude Code and Cursor installation/discovery evidence remains valid, but
+  their live migration outcomes remain unmeasured.
+
 #### P0.I1 completion bar
 
 - Four exact instance Symbols expose lossless FIFO, lossless buffered, lossy
@@ -871,7 +896,7 @@ diagrams. No implementation is required for this decision step.
 
 | Status    | ID    | Outcome                                                                                                          |
 | --------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
-| `PLANNED` | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
+| `NEXT`    | P1.1  | Close conditional-installation conformance gaps exposed after the P0.3 package implementation                    |
 | `PLANNED` | P1.2  | Bring core subscription, abort, teardown, error-reporting, and `Observable.from` behavior to the pinned baseline |
 | `PLANNED` | P1.3  | Bring native platform methods and `EventTarget.when` to the pinned baseline                                      |
 | `DONE`    | P1.4a | Build the attested Observable WPT test harness and record its stable current-behavior baseline                   |
@@ -2252,3 +2277,22 @@ conformance implementation depends on a runnable harness.
   generated-copy checks, and diff checks.
 - Marked P0.M4 `DONE` and advanced P0.M5 as the sole `NEXT` item. Live
   model-backed repository outcome runs remain deliberately assigned to P0.M5.
+
+### 2026-08-01 — P0.M5 Codex/ChatGPT migration qualification
+
+- Added four pinned, offline-executable RxJS `7.8.1` application/library seeds
+  covering Vitest, Mocha, Jest, strong and weak coverage, cold, platform,
+  mixed, and unsupported migration contracts.
+- Ran the representative matrix with Codex `0.146.0-alpha.3.1`,
+  `gpt-5.6-sol` at medium reasoning, and canonical Skill/engine
+  `8.0.0-alpha.14`. Three runs completed approved migrations and the fourth
+  made its required weak-coverage/unsupported safe stop.
+- Passed 4/4 records and 14/14 semantic gate families. Committed four records
+  and 20 hashed artifacts covering the prompt/final response, contract
+  manifest, patch, command results, and final report. Recorded explicitly that
+  full event streams were not retained for the first three runs.
+- Preserved D-047's claim boundary: Claude Code and Cursor retain P0.M4
+  installation/discovery support, but their migration outcomes remain
+  unmeasured.
+- Marked P0.M5 `DONE`, completing Phase 0, and advanced P1.1 as the sole
+  project-level `NEXT` item.

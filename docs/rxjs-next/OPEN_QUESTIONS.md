@@ -133,9 +133,13 @@ and pre-release naming. There is no compatibility package to version.
 
 D-046 resolves how migration is measured: deterministic transforms must pass
 the mechanical fixture lane, and the complete workflow must pass the agent
-outcome lane defined in `MIGRATION_TOOLING_DESIGN.md`. P0.M5 must still select
-the representative applications, frameworks, bundle configurations, behavior
-suites, and minimum pass thresholds required for a release claim.
+outcome lane defined in `MIGRATION_TOOLING_DESIGN.md`. D-047 and P0.M5 select
+the initial bounded qualification: four pinned application/library repositories
+cover Vitest, Mocha, Jest, strong and weak coverage, cold, platform, mixed, and
+unsupported contracts. All four Codex/ChatGPT runs passed the 14 semantic gate
+families, including the required safe stop. This settles the P0 threshold only;
+broader repository categories, capabilities, models, and reliability sampling
+remain future release-planning questions.
 
 ### 9. Which final distribution channels and harness versions are supported?
 
@@ -145,7 +149,9 @@ installed or synchronized adapters that preserve its digest. The deterministic
 API and dry-run-first CLI remain subordinate engine surfaces. P0.M3 removed
 the P0.M1 MCP prototype; it is not an accepted release surface.
 
-P0.M5 must still choose the final plugin or marketplace distribution channels,
-supported harness versions, adapter support window, and release-grade
-qualification policy. Adding MCP later would require a new accepted decision
-and product contract.
+P0.M4 records a tested installation/discovery snapshot for Codex, Claude Code,
+and Cursor. P0.M5 records a Codex `0.146.0-alpha.3.1` outcome snapshot with
+`gpt-5.6-sol`; it does not qualify Claude Code or Cursor outcomes. Final plugin
+or marketplace distribution channels, harness support windows, and the
+pre-release requalification policy remain open. Adding MCP later would require
+a new accepted decision and product contract.

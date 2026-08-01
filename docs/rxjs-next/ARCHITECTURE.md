@@ -67,14 +67,14 @@ Migration tooling is not a runtime dependency.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                                       | Intended responsibility                                                                     | Current gap                                                                                |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                      | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open           |
-| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                          | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                           |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                        | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                             |
-| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, and package/fixture gates       | Deterministic migration engine and canonical versioned Skill; never a runtime dependency    | P0.M5 representative Codex/ChatGPT outcome qualification remains incomplete                |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                             | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase   |
+| Component                      | Current responsibility                                                                                                                                                                                        | Intended responsibility                                                                     | Current gap                                                                                    |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                                                       | Independently publishable conditional fallback and owner of the base ambient platform types | Runtime-version support and future specification/WPT revision policy remain open               |
+| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters; exports intentional subjects, producer-per-subscription primitives, notifications, and errors                                  | Main Symbol-extension library plus intentional non-operator RxJS Next APIs                  | Common extension installation/conflict policy and bundler side-effect metadata remain open     |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                           | Retained only as prototype history until removed                                            | Superseded by the accepted `@rxjs/test` boundary                                               |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                         | Implementation-neutral framework testing that consumes an already active realm Observable   | Broader runtime-version and module-system support remains open                                 |
+| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, package/fixture gates, and committed Codex qualification records | Deterministic migration engine and canonical versioned Skill; never a runtime dependency    | Broader repository, capability, model, and non-Codex outcome qualification remains future work |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                              | Eventually explain the new platform and migration model                                     | Still represents the prior generation; redesign is out of scope for the foundation phase       |
 
 ## Platform Observable lifecycle
 
@@ -741,9 +741,21 @@ semantics, manufacture missing evidence, or declare a project migrated. A
 mechanical fixture lane now proves transform, diagnostics, source and target
 type checks, pinned RxJS 7 and Next behavior, path containment, dry-run/write,
 idempotence, imports, and packed publication properties. A separate agent
-evaluation lane proves that each supported harness reaches the same reviewed
-outcome from the same canonical Skill digest. `MIGRATION_TOOLING_DESIGN.md` is
-the controlling product and validation contract.
+evaluation lane proves reviewed outcomes from the same canonical Skill digest.
+P0.M5 qualifies that lane only for Codex/ChatGPT; Claude Code and Cursor retain
+P0.M4 installation and discovery evidence but no measured migration-outcome
+claim. `MIGRATION_TOOLING_DESIGN.md` is the controlling product and validation
+contract.
+
+The 2026-08-01 qualification snapshot ran four pinned RxJS 7 repositories
+through Codex `0.146.0-alpha.3.1` with `gpt-5.6-sol` at medium reasoning. All
+four passed the 14 semantic gate families: three completed their approved
+migrations and the weak-coverage/unsupported scenario made its required safe
+stop before target installation or migration writes. The records bind
+`@rxjs/migrate` and the canonical Skill to `8.0.0-alpha.14`, retain five
+SHA-256-addressed artifacts per run, and are verified offline. This is bounded
+evidence for those scenarios and settings, not a general automatic-migration
+or cross-harness reliability claim.
 
 `docs/rxjs-next/RxJS-7-parity.md` is the generated public-surface map. Its
 machine-readable capability registry distinguishes instance operator Symbols,
@@ -1043,8 +1055,9 @@ These invariants should become automated fitness functions:
 14. Architecture changes update the decision log and project documents in the
     same change.
 15. Migration tooling never infers lifecycle intent: a migration begins from a
-    reviewed contract manifest, uses one canonical Skill digest across
-    supported harnesses, and passes both mechanical and agent-outcome gates.
+    reviewed contract manifest, uses one canonical Skill digest across the
+    installed harness adapters, and passes the applicable mechanical and
+    explicitly qualified agent-outcome gates.
 
 ## Initial fitness-function scorecard
 
@@ -1058,7 +1071,7 @@ These invariants should become automated fitness functions:
 | Package integrity      | Build, type, ESM/CJS import, browser bundle, and duplicate-install fixtures                                        | Package CI                                                                |
 | Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                    | Migration review and generated-ledger checks                              |
 | Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior | Package CI and pre-release gate                                           |
-| Agent migration        | Supported harnesses produce the same reviewed contract and passing representative-application outcomes             | Harness qualification and pre-release gate                                |
+| Agent migration        | Codex/ChatGPT produces approved completion or safe-stop outcomes for the four representative repositories          | Offline verification of committed qualification records and artifacts     |
 
 ## Known architectural risks
 

@@ -416,8 +416,12 @@ items stop automation and remain visible for maintainer review.
 
 The deterministic `@rxjs/migrate` engine performs only bounded, reviewable
 rewrites selected by that workflow. Completion requires both mechanical
-fixture evidence and agent-outcome evidence across each supported harness.
-There is no accepted migration MCP surface. See D-046 and
+fixture evidence and an explicitly qualified agent-outcome lane. P0.M5
+qualifies Codex/ChatGPT only: four representative runs passed, with three
+approved migrations completed and one required unsupported/weak-coverage safe
+stop. Claude Code and Cursor have P0.M4 Skill installation and discovery
+evidence, not measured migration-outcome parity. There is no accepted
+migration MCP surface. See D-046, D-047, and
 `MIGRATION_TOOLING_DESIGN.md`.
 
 Its default versioned registry currently claims only the ten mappings backed
@@ -593,6 +597,7 @@ A release-ready migration story requires:
 - passing behavioral tests tied back to RxJS 7 evidence;
 - migration guidance for every intentional divergence;
 - representative mechanical fixtures and agent evaluations that pass build,
-  behavior, idempotence, containment, and cross-harness outcome gates;
+  behavior, idempotence, containment, and the outcome gates claimed for their
+  recorded harness and model configuration;
 - no language that implies an RxJS 7 runtime package, facade, or blanket
   compatibility guarantee.

@@ -39,10 +39,11 @@ and release reviewers are secondary audiences.
 The design distinguishes:
 
 - **Accepted product direction:** the contracts in this document and D-046.
-- **Current prototype:** the P0.M1 `@rxjs/migrate` package and two existing
-  Skill trees.
-- **Later evidence:** implementation fixtures in P0.M3, distribution checks in
-  P0.M4, and representative repository evaluations in P0.M5.
+- **Historical prototype:** the P0.M1 `@rxjs/migrate` package and its former
+  independently authored Skill/MCP experiments.
+- **Completed P0 evidence:** implementation fixtures in P0.M3, three-harness
+  installation/discovery checks in P0.M4, and Codex/ChatGPT representative
+  repository evaluations in P0.M5.
 
 No statement here turns the current prototype's nine tests into general
 migration evidence or promises that every RxJS 7 application can be migrated
@@ -584,21 +585,33 @@ publishes measured outcomes and limitations rather than a blanket automatic
 migration claim.
 
 The live matrix, offline outcome gates, current measured evidence, and claim
-limits are tracked in `MIGRATION_QUALIFICATION.md`. P0.M5 remains incomplete
-until every declared live record and captured artifact passes that verifier.
+limits are tracked in `MIGRATION_QUALIFICATION.md`. The completed Codex-only
+matrix passes 4/4: three approved migrations completed and the
+weak-coverage/unsupported scenario made its required safe stop. Codex
+`0.146.0-alpha.3.1`, `gpt-5.6-sol` at medium reasoning, and Skill/engine
+`8.0.0-alpha.14` are part of the claim boundary. The verifier binds four
+records to 20 hashed artifacts and 14 semantic gate families.
+
+The retained conversation artifact is the exact user prompt plus final
+response, not necessarily the complete host event stream. Exact commands and
+results, file changes, and observed authority are retained separately in the
+command-results artifact, patch, and qualification record. Full event streams
+were not retained for the first three runs. This evidence boundary is explicit
+so a future requalification can strengthen capture without overstating the P0
+records.
 
 ## Risks and controls
 
-| Risk                                      | Control                                                                                    |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Green output hides a lifecycle change     | Baseline, characterization tests, explicit target manifest, and shared/cold fixtures       |
-| Capability prose drifts from the engine   | Skill consumes versioned machine-readable data and shares the package version              |
-| Harness instructions diverge              | One canonical Skill digest; generated placements; per-harness smoke tests                  |
-| Agent weakens tests to finish             | Outcome grader rejects unapproved skips, deletions, and weaker expectations                |
-| Codemod writes outside scope              | Resolve-and-contain checks plus path-escape negative controls                              |
-| Nondeterminism masks regressions          | Judge contracts and outcomes; retain complete run artifacts                                |
-| MCP becomes an unsupported second product | Remove the prototype surface; require a new evidence-backed decision to reintroduce it     |
-| Harness behavior changes after release    | Re-verify official discovery/permission paths during P0.M4 and before each supported claim |
+| Risk                                      | Control                                                                                      |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Green output hides a lifecycle change     | Baseline, characterization tests, explicit target manifest, and shared/cold fixtures         |
+| Capability prose drifts from the engine   | Skill consumes versioned machine-readable data and shares the package version                |
+| Harness instructions diverge              | One canonical Skill digest; generated placements; per-harness smoke tests                    |
+| Agent weakens tests to finish             | Outcome grader rejects unapproved skips, deletions, and weaker expectations                  |
+| Codemod writes outside scope              | Resolve-and-contain checks plus path-escape negative controls                                |
+| Nondeterminism masks regressions          | Judge contracts and outcomes; retain the five declared hashed artifacts and authority record |
+| MCP becomes an unsupported second product | Remove the prototype surface; require a new evidence-backed decision to reintroduce it       |
+| Harness behavior changes after release    | Re-verify official discovery/permission paths during P0.M4 and before each supported claim   |
 
 ## Completion criteria for the migration product
 
@@ -608,6 +621,7 @@ The migration experience is release-ready only when:
 - P0.M4 uses one canonical Skill and passes all harness discovery and
   permission smoke tests;
 - P0.M5 representative repositories pass their declared outcome gates;
+- any outcome claim names its harness/model boundary and retained evidence;
 - measured limitations and unsupported surfaces are published;
 - no migration is called complete based only on transformed source shape; and
 - no MCP or other secondary orchestration surface is claimed without its own
@@ -624,7 +638,7 @@ Repository sources:
 - `COMPATIBILITY.md`
 - `TESTING_DESIGN.md`
 - `packages/migrate`
-- `.agents/skills/rxjs-next-marble-migration`
+- `.agents/skills/rxjs-next-migration`
 
 Current harness references reviewed for P0.M2:
 

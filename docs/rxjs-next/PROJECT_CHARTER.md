@@ -173,7 +173,9 @@ The project is ready for a major release when:
 - migration documentation explains sharing, cancellation, pipeable operators,
   subjects, and other accepted breaking changes;
 - the canonical migration Skill and deterministic engine pass their mechanical
-  fixture, agent-outcome, installation, and cross-harness validation gates;
+  fixture gates; the Skill passes Codex, Claude Code, and Cursor installation
+  and discovery gates; and the representative Codex/ChatGPT outcome lane
+  passes its declared safety gates;
 - no unresolved release-blocking decision remains in `OPEN_QUESTIONS.md`.
 
 ## Stakeholders and audience
