@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
 
@@ -13,25 +14,15 @@ declare global {
       (predicate: BooleanConstructor): Observable<TruthyTypesOf<T>>;
       <D>(predicate: BooleanConstructor, defaultValue: D): Observable<TruthyTypesOf<T> | D>;
       <S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): Observable<S>;
-      <S extends T, D>(
-        predicate: (value: T, index: number, source: Observable<T>) => value is S,
-        defaultValue: D
-      ): Observable<S | D>;
-      <D = T>(
-        predicate: (value: T, index: number, source: Observable<T>) => boolean,
-        defaultValue?: D
-      ): Observable<T | D>;
+      <S extends T, D>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue: D): Observable<S | D>;
+      <D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): Observable<T | D>;
     };
   }
 }
 
 function firstOperator<T, D = T>(this: Observable<T>, predicate?: null, defaultValue?: D): Observable<T | D>;
 function firstOperator<T>(this: Observable<T>, predicate: BooleanConstructor): Observable<TruthyTypesOf<T>>;
-function firstOperator<T, D>(
-  this: Observable<T>,
-  predicate: BooleanConstructor,
-  defaultValue: D
-): Observable<TruthyTypesOf<T> | D>;
+function firstOperator<T, D>(this: Observable<T>, predicate: BooleanConstructor, defaultValue: D): Observable<TruthyTypesOf<T> | D>;
 function firstOperator<T, S extends T>(
   this: Observable<T>,
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
@@ -100,4 +91,4 @@ function firstOperator<T, D>(
   });
 }
 
-Observable.prototype[first] = firstOperator;
+installObservableExtension({ instance: firstOperator, name: 'first', symbol: first });

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { ArgumentOutOfRangeError } from './argument-out-of-range-error.js';
 import '@rxjs/observable-polyfill';
@@ -11,37 +12,41 @@ declare global {
   }
 }
 
-Observable.prototype[elementAt] = function <T, D>(this: Observable<T>, index: number, ...defaultValue: [] | [D]): Observable<T | D> {
-  if (index < 0) {
-    throw new ArgumentOutOfRangeError();
-  }
+installObservableExtension({
+  instance: function <T, D>(this: Observable<T>, index: number, ...defaultValue: [] | [D]): Observable<T | D> {
+    if (index < 0) {
+      throw new ArgumentOutOfRangeError();
+    }
 
-  const hasDefault = defaultValue.length === 1;
-  return this[create]((subscriber) => {
-    let count = 0;
-    return this.subscribe(
-      {
-        next: (value) => {
-          if (count === index) {
-            subscriber.next(value);
-            subscriber.complete();
-            return;
-          }
-          count++;
+    const hasDefault = defaultValue.length === 1;
+    return this[create]((subscriber) => {
+      let count = 0;
+      return this.subscribe(
+        {
+          next: (value) => {
+            if (count === index) {
+              subscriber.next(value);
+              subscriber.complete();
+              return;
+            }
+            count++;
+          },
+          error: (error) => {
+            subscriber.error(error);
+          },
+          complete: () => {
+            if (hasDefault) {
+              subscriber.next(defaultValue[0]);
+              subscriber.complete();
+            } else {
+              subscriber.error(new ArgumentOutOfRangeError());
+            }
+          },
         },
-        error: (error) => {
-          subscriber.error(error);
-        },
-        complete: () => {
-          if (hasDefault) {
-            subscriber.next(defaultValue[0]);
-            subscriber.complete();
-          } else {
-            subscriber.error(new ArgumentOutOfRangeError());
-          }
-        },
-      },
-      { signal: subscriber.signal }
-    );
-  });
-};
+        { signal: subscriber.signal }
+      );
+    });
+  },
+  name: 'elementAt',
+  symbol: elementAt,
+});

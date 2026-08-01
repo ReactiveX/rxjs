@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const isEmpty: unique symbol = Symbol('isEmpty');
@@ -35,4 +36,4 @@ function isEmptyOperator<T>(this: Observable<T>): Observable<boolean> {
   });
 }
 
-Observable.prototype[isEmpty] = isEmptyOperator;
+installObservableExtension({ instance: isEmptyOperator, name: 'isEmpty', symbol: isEmpty });

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const findIndex: unique symbol = Symbol('findIndex');
@@ -5,10 +6,7 @@ export const findIndex: unique symbol = Symbol('findIndex');
 declare global {
   interface Observable<T> {
     [findIndex]: {
-      <A>(
-        predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-        thisArg: A
-      ): Observable<number>;
+      <A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): Observable<number>;
       (predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<number>;
     };
   }
@@ -69,4 +67,4 @@ function findIndexOperator<T>(
   });
 }
 
-Observable.prototype[findIndex] = findIndexOperator;
+installObservableExtension({ instance: findIndexOperator, name: 'findIndex', symbol: findIndex });

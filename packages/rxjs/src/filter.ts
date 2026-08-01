@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
@@ -57,4 +58,4 @@ function filterOperator<T>(
   });
 }
 
-Observable.prototype[filter] = filterOperator;
+installObservableExtension({ instance: filterOperator, name: 'filter', symbol: filter });

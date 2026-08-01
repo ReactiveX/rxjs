@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
@@ -22,10 +23,7 @@ function everyOperator<T, A>(
   predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
   thisArg: A
 ): Observable<boolean>;
-function everyOperator<T>(
-  this: Observable<T>,
-  predicate: (value: T, index: number, source: Observable<T>) => boolean
-): Observable<boolean>;
+function everyOperator<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<boolean>;
 function everyOperator<T>(
   this: Observable<T>,
   predicate: (this: unknown, value: T, index: number, source: Observable<T>) => boolean,
@@ -68,4 +66,4 @@ function everyOperator<T>(
   });
 }
 
-Observable.prototype[every] = everyOperator;
+installObservableExtension({ instance: everyOperator, name: 'every', symbol: every });

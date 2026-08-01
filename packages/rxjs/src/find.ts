@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const find: unique symbol = Symbol('find');
@@ -5,17 +6,11 @@ export const find: unique symbol = Symbol('find');
 declare global {
   interface Observable<T> {
     [find]: {
-      <S extends T, A>(
-        predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S,
-        thisArg: A
-      ): Observable<S | undefined>;
-      <S extends T>(
-        predicate: (value: T, index: number, source: Observable<T>) => value is S
-      ): Observable<S | undefined>;
-      <A>(
-        predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-        thisArg: A
-      ): Observable<T | undefined>;
+      <S extends T, A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => value is S, thisArg: A): Observable<
+        S | undefined
+      >;
+      <S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): Observable<S | undefined>;
+      <A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): Observable<T | undefined>;
       (predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<T | undefined>;
     };
   }
@@ -84,4 +79,4 @@ function findOperator<T>(
   });
 }
 
-Observable.prototype[find] = findOperator;
+installObservableExtension({ instance: findOperator, name: 'find', symbol: find });

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
 import { NotFoundError } from './not-found-error.js';
@@ -18,14 +19,8 @@ declare global {
 }
 
 function singleOperator<T>(this: Observable<T>, predicate: BooleanConstructor): Observable<TruthyTypesOf<T>>;
-function singleOperator<T>(
-  this: Observable<T>,
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean
-): Observable<T>;
-function singleOperator<T>(
-  this: Observable<T>,
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean
-): Observable<T> {
+function singleOperator<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+function singleOperator<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T> {
   const source = this;
 
   return source[create]((subscriber) => {
@@ -84,4 +79,4 @@ function singleOperator<T>(
   });
 }
 
-Observable.prototype[single] = singleOperator;
+installObservableExtension({ instance: singleOperator, name: 'single', symbol: single });
