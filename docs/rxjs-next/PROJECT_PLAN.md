@@ -73,8 +73,9 @@ application validation. P6.1 then accepted the exact RxJS 9 support and
 distribution policy, synchronized `9.0.0-beta.0`, and collapsed four duplicate
 dialects into one ESM implementation. P6.2 through P6.4 completed the release
 matrix, package-local documentation, packed-consumer adoption, and beta
-approval. P6.5 closed the terminal audit; the execution queue is complete and
-has no remaining `NEXT` item.
+approval. P6.5 closed the terminal audit. The user has since prioritized P6.6
+to centralize eligible RxJS source subscriptions through the D-049 helper and
+measure the resulting bundle-size change.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1556,6 +1557,7 @@ names.
 | `DONE` | P6.3 | Publish package-local API, migration, and contributor documentation                   |
 | `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
+| `NEXT` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
 
 #### P6.1 completion bar
 
@@ -1739,6 +1741,22 @@ names.
 - Marked P6.5 `DONE`. All planned implementation work is complete, P5.3 and
   P5.4 remain explicitly accepted `DEFERRED` ideas rather than unfinished
   execution items, and the terminal queue intentionally has no `NEXT` marker.
+
+#### P6.6 completion bar
+
+- One internal positional `subscribeToSource` helper owns default forwarding,
+  synchronous callback/setup error forwarding, and optional local-signal
+  joining for every semantically eligible production source subscription.
+- The obsolete `subscribeToSource2`, legacy options form,
+  `runWithErrorForwarding`, and their dead types are removed.
+- Remaining raw production subscriptions are limited to reviewed root-core,
+  async-generator, and intentional host-reporting/terminal-order boundaries.
+- Focused behavior, cold/fallback evidence, type, package, kernel, Webpack,
+  and performance gates retain their accepted outcomes.
+- Identical pre/post esbuild scenarios record minified, gzip, and Brotli
+  changes for the root control, `map`, a representative operator set, and the
+  complete runtime catalog; representative and catalog bundles shrink without
+  growing the root control or `map` bundle.
 
 ## Dependencies
 
