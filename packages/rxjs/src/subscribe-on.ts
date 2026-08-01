@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const subscribeOn: unique symbol = Symbol('subscribeOn');
 
@@ -16,7 +17,7 @@ Observable.prototype[subscribeOn] = function <T>(this: Observable<T>, delay = 0)
 
     const id = globalThis.setTimeout(() => {
       if (subscriber.active) {
-        this.subscribe(subscriber, { signal: subscriber.signal });
+        subscribeToSource(this, subscriber);
       }
     }, delay);
     subscriber.addTeardown(() => globalThis.clearTimeout(id));
