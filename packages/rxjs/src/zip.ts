@@ -1,4 +1,5 @@
 import { map } from './map.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type ObservedValuesOfWithFill<Sources extends readonly ObservableValue<any>[], Fill> = {
   [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T | Fill : never;
@@ -70,20 +71,16 @@ export function zip<Sources extends readonly ObservableValue<any>[], Fill = neve
       }
 
       const sourceState = state[i]!;
-      Observable.from(sources[i]!).subscribe(
-        {
-          next: (value) => {
-            sourceState.buffer.push(value);
-            drainBuffers();
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            sourceState.complete = true;
-            drainBuffers();
-          },
+      subscribeToSource(Observable.from(sources[i]!), subscriber, {
+        next: (value) => {
+          sourceState.buffer.push(value);
+          drainBuffers();
         },
-        { signal: subscriber.signal }
-      );
+        complete: () => {
+          sourceState.complete = true;
+          drainBuffers();
+        },
+      });
     }
   });
 
