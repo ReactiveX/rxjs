@@ -1,6 +1,7 @@
 import { combineLatest } from './combine-latest.js';
 import { create } from './create.js';
 import { map } from './map.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type ObservedValueOf<Input> = Input extends ObservableValue<infer Value> ? Value : never;
 type IsUnion<Input, Whole = Input> = Input extends Whole ? ([Whole] extends [Input] ? false : true) : never;
@@ -29,31 +30,21 @@ function combineLatestAllOperator<V, R>(this: Observable<ObservableValue<V>>, pr
   return outer[create]((subscriber) => {
     const sources: Array<ObservableValue<V>> = [];
 
-    outer.subscribe(
-      {
-        next: (source) => sources.push(source),
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          if (sources.length === 0) {
-            subscriber.complete();
-            return;
-          }
+    subscribeToSource(outer, subscriber, {
+      next: (source) => sources.push(source),
+      error: (error) => subscriber.error(error),
+      complete: () => {
+        if (sources.length === 0) {
+          subscriber.complete();
+          return;
+        }
 
-          const combined = Observable[combineLatest](sources);
-          const result = project ? combined[map]((values) => project(...values)) : combined;
+        const combined = Observable[combineLatest](sources);
+        const result = project ? combined[map]((values) => project(...values)) : combined;
 
-          result.subscribe(
-            {
-              next: (value: V[] | R) => subscriber.next(value),
-              error: (error) => subscriber.error(error),
-              complete: () => subscriber.complete(),
-            },
-            { signal: subscriber.signal }
-          );
-        },
+          subscribeToSource(result as Observable<V[] | R>, subscriber);
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 }
 
