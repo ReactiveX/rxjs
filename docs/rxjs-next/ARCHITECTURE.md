@@ -1028,13 +1028,15 @@ Rebuilding the formerly disconnected polyfill entry also exposed that the
 historical focused RxJS source-test baseline had been consuming a stale
 fallback artifact. P0.4 reconciled the focused suite to 733/733 passing tests
 against the rebuilt fallback. After removing invalid wrappers that had replaced
-RxJS 7 arbitrary-subscribable inputs, the complete cold migration audit now
-passes 2,296/2,338 and the fallback audit passes 2,316/2,338. The cold total
-reflects D-043: operator results derived from absolute-time hot fixtures use
-the platform lifecycle instead of inheriting cold behavior. Because the
-default ported command intentionally has no expected-failure quarantine, the
-all-mode RxJS command remains nonzero until those product gaps are resolved or
-explicitly retired.
+RxJS 7 arbitrary-subscribable inputs, the Phase 3 complete cold migration audit
+now passes 2,299/2,338 and the fallback audit passes 2,316/2,338. The 39 cold
+failures are 24 explicit D-013/D-043 lifecycle divergences and 15
+compatibility-only arbitrary-subscribable inputs. The 22 fallback failures are
+seven of those lifecycle divergences and the same 15 compatibility-only
+inputs. No portable or harness-rewrite failure remains unexplained, and neither
+audit has a skipped or pending registration. Because the default ported command
+intentionally has no expected-failure quarantine, the all-mode RxJS command
+remains nonzero while this evidence stays executable.
 The package-independent lifecycle contract itself passes against both the
 packaged fallback and native Observable.
 
@@ -1053,6 +1055,12 @@ This baseline proves the common extension pattern, not RxJS 7 runtime
 compatibility or completion of the operator catalog. The strict all-mode
 ported command therefore remains intentionally nonzero while Phase 3 and
 Phase 4 classify and resolve the remaining API work.
+
+The P3.4 restoration audit supersedes the complete-migrated-evidence row for
+the current 2,338-case corpus: 2,299 cold and 2,316 fallback cases pass. Every
+remaining failure is explicitly `intentional-divergence` or
+`compatibility-only`; the reviewed case-ID baselines and generated migration
+ledger are the authoritative current evidence.
 
 The repository development engine declaration accepts Node 18, Node 20, and
 Node 24. The blocking Observable WPT workflow uses Node 24, and the harness

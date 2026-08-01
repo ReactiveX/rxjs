@@ -987,8 +987,10 @@ Status meanings:
   preserving a native constructor. Cold migrated tests name
   `ColdObservable` explicitly for cold construction and static factories.
   Hot-derived operator results cross into the platform lifecycle, so the
-  reviewed cold audit records 2,296/2,338 passes; the fallback-platform audit
-  remains 2,316/2,338. The removed dynamic launcher, shard renderer, fake
+  Phase 3 reviewed cold audit records 2,299/2,338 passes; the fallback-platform
+  audit records 2,316/2,338. All remaining failures are explicit intentional
+  lifecycle divergences or compatibility-only arbitrary-subscribable inputs.
+  The removed dynamic launcher, shard renderer, fake
   source locations, and case-ID test-title prefixes are not compatibility
   surfaces.
 

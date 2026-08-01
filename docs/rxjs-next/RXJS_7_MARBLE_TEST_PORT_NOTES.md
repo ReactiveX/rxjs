@@ -59,7 +59,7 @@ The complete reviewed pass sets are stored in `verified-cold-passes.json` and
 `verified-polyfill-passes.json`. Baseline schema v2 identifies tests by unique
 case ID, not an ambiguous source line.
 
-- Cold audit: 2,296 passes and 42 failures.
+- Cold audit: 2,299 passes and 39 failures.
 - Polyfill audit: 2,316 passes and 22 failures.
 - Native: deliberately raw and unverified until a realm with a native global
   `Observable` is available for review.
@@ -69,6 +69,13 @@ compatibility or platform-conformance claim. They do not control the default
 runner. Cold, polyfill, and native-if-present modes register every applicable
 case as an ordinary test, including the four exact duplicates and all known
 gaps, so each registration receives an unmodified pass or failure result.
+
+The Phase 3 audit accounts for every remaining failure. Cold mode retains 24
+`intentional-divergence` lifecycle claims and 15 `compatibility-only`
+arbitrary-subscribable claims. Polyfill mode retains seven of those lifecycle
+divergences and the same 15 compatibility-only claims. Neither mode has a
+failing `portable` or `harness-rewrite` claim, a skipped registration, or a
+pending registration.
 
 ## Deduplicated claims
 

@@ -59,9 +59,9 @@ and `pipe` pilot proves it against packaged fallback and browser-native
 Observable. P3.1 confirmed that Phase 0 already restored the broad operator
 catalog and executable evidence; the remaining Phase 3 work is to move the
 catalog onto the accepted extension kernel. P3.2 has materialized the existing
-parity map as a validated migration-evidence ledger. P3.3 has moved the full
-exact Symbol catalog onto the transactional extension kernel, and P3.4 is now
-the sole `NEXT` item.
+parity map as a validated migration-evidence ledger. P3.3 moved the full exact
+Symbol catalog onto the transactional extension kernel, and P3.4 completed the
+source-pinned evidence audit. P4.1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1180,7 +1180,7 @@ Phase exit:
 | `DONE` | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
 | `DONE` | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
 | `DONE` | P3.3 | Restore operators in small families using the extension kernel                                    |
-| `NEXT` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
+| `DONE` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
 every supported API has portable or rewritten evidence and every divergence is
@@ -1288,11 +1288,32 @@ explicit.
 - Phase 3 documentation records exact results and advances the sole `NEXT`
   marker to P4.1.
 
+#### P3.4 completion evidence
+
+- Re-ran all 2,338 source-pinned registrations in both complete audit modes
+  with ordinary Vitest semantics and no skipped or pending cases. Cold mode
+  records 2,299 passes and 39 failures; fallback mode records 2,316 passes and
+  22 failures.
+- Corrected three cold evidence claims that had accidentally carried
+  producer-per-observer or `ColdObservable` subclass expectations past a
+  hot-derived platform boundary. Focused partition, groupBy, and buffering
+  suites now pass all 63 registrations.
+- Audited every remaining failure by exact case ID. Cold mode retains 24
+  intentional D-013/D-043 lifecycle divergences and 15 compatibility-only
+  arbitrary-subscribable inputs; fallback mode retains seven of those
+  lifecycle divergences and the same 15 compatibility-only inputs. No failing
+  portable or harness-rewrite claim remains.
+- Regenerated and validated the classification ledger and recorded the reviewed
+  case-ID pass baseline. Focused source, native/fallback kernel, public type,
+  package build, installation, and import gates cover the restored public
+  families and installation contract.
+- Phase 3 is complete. P4.1 is the sole project-level `NEXT` item.
+
 ### Phase 4 — Intentional API and migration contracts
 
 | Status    | ID   | Outcome                                                                                      |
 | --------- | ---- | -------------------------------------------------------------------------------------------- |
-| `PLANNED` | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
+| `NEXT`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
 | `PLANNED` | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
 | `PLANNED` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
 | `PLANNED` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
@@ -2639,3 +2660,17 @@ conformance implementation depends on a runnable harness.
   the public type consumer, the installation audit, and the multi-dialect
   package build.
 - Marked P3.3 `DONE` and advanced P3.4 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P3.4 classified restoration evidence
+
+- Corrected three cold claims at the accepted hot-to-platform lifecycle
+  boundary and passed their 63 focused registrations.
+- Re-ran complete 2,338-case audits with zero pending registrations: cold
+  records 2,299 passes and fallback records 2,316 passes.
+- Classified every remaining ordinary failure by exact case ID. Cold retains
+  24 intentional lifecycle divergences plus 15 compatibility-only legacy-input
+  claims; fallback retains seven intentional divergences plus the same 15
+  compatibility-only claims. No portable or harness-rewrite failure remains.
+- Regenerated the migration evidence, recorded the reviewed cold pass baseline,
+  marked P3.4 `DONE`, completed Phase 3, and advanced P4.1 as the sole
+  project-level `NEXT` item.
