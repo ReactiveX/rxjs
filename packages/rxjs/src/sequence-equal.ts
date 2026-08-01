@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import '@rxjs/observable-polyfill';
 
 export const sequenceEqual: unique symbol = Symbol('sequenceEqual');
@@ -31,13 +32,7 @@ Observable.prototype[sequenceEqual] = function <T>(
       while (headA < bufferA.length && headB < bufferB.length) {
         const left = bufferA[headA++]!;
         const right = bufferB[headB++]!;
-        let equal: boolean;
-        try {
-          equal = comparator ? comparator(left, right) : left === right;
-        } catch (error) {
-          subscriber.error(error);
-          return;
-        }
+        const equal = comparator ? comparator(left, right) : left === right;
         if (!equal) {
           conclude(false);
           return;
@@ -62,42 +57,30 @@ Observable.prototype[sequenceEqual] = function <T>(
       }
     };
 
-    this.subscribe(
-      {
-        next: (value) => {
-          bufferA.push(value);
-          checkState();
-        },
-        error: (error) => {
-          subscriber.error(error);
-        },
-        complete: () => {
-          completeA = true;
-          checkState();
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        bufferA.push(value);
+        checkState();
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        completeA = true;
+        checkState();
+      },
+    });
 
     if (!subscriber.active) {
       return;
     }
 
-    other.subscribe(
-      {
-        next: (value) => {
-          bufferB.push(value);
-          checkState();
-        },
-        error: (error) => {
-          subscriber.error(error);
-        },
-        complete: () => {
-          completeB = true;
-          checkState();
-        },
+    subscribeToSource(other, subscriber, {
+      next: (value) => {
+        bufferB.push(value);
+        checkState();
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        completeB = true;
+        checkState();
+      },
+    });
   });
 };
