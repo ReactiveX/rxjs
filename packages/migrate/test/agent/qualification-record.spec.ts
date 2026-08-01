@@ -308,6 +308,17 @@ function passingAgentEvaluation(scenario: AgentScenario): AgentEvaluation {
     contractDecisions: Object.entries(scenario.expectedDecisionStatuses)
       .filter(([, status]) => status === 'approved')
       .map(([unitId]) => ({ unitId, lifecycle, evidence: 'ambiguous', selectedBy: 'developer', approval: approved })),
+    observedAuthority: {
+      workspaceRoot: '/workspace/project',
+      policy: {
+        readScopes: ['.'],
+        writeScopes: ['src', 'test'],
+        commands: ['pnpm test', 'pnpm build'],
+        network: { mode: 'disabled', destinations: [] },
+        installs: { mode: 'disabled', packages: [] },
+      },
+      actions: [],
+    },
     safeStop:
       scenario.expectedOutcome === 'safe-stop'
         ? { occurred: true, beforeUnsafeAction: true, blockerIds: ['blocker:unsupported'], writesAfterStop: [] }
