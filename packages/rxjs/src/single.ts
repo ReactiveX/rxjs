@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
 import { NotFoundError } from './not-found-error.js';
@@ -79,4 +78,4 @@ function singleOperator<T>(this: Observable<T>, predicate?: (value: T, index: nu
   });
 }
 
-installObservableExtension({ instance: singleOperator, name: 'single', symbol: single });
+Observable.prototype[single] = singleOperator;

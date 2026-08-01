@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const find: unique symbol = Symbol('find');
@@ -79,4 +78,4 @@ function findOperator<T>(
   });
 }
 
-installObservableExtension({ instance: findOperator, name: 'find', symbol: find });
+Observable.prototype[find] = findOperator;

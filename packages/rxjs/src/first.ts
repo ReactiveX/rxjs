@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
 
@@ -91,4 +90,4 @@ function firstOperator<T, D>(
   });
 }
 
-installObservableExtension({ instance: firstOperator, name: 'first', symbol: first });
+Observable.prototype[first] = firstOperator;

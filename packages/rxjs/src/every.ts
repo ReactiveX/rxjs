@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
@@ -66,4 +65,4 @@ function everyOperator<T>(
   });
 }
 
-installObservableExtension({ instance: everyOperator, name: 'every', symbol: every });
+Observable.prototype[every] = everyOperator;
