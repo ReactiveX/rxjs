@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const window: unique symbol = Symbol('window');
 
@@ -55,17 +56,14 @@ Observable.prototype[window] = function <T>(this: Observable<T>, boundaries: Obs
 
     // RxJS 7 activates the source before the boundary input. This ordering is
     // observable for synchronous inputs.
-    this.subscribe(
-      {
-        next: (value) => currentWindow?.next(value),
-        error: errorWindowAndOuter,
-        complete: () => {
-          closeWindow();
-          subscriber.complete();
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => currentWindow?.next(value),
+      error: errorWindowAndOuter,
+      complete: () => {
+        closeWindow();
+        subscriber.complete();
       },
-      { signal: subscriber.signal }
-    );
+    });
 
     let boundarySource: Observable<any>;
     try {
