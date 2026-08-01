@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   agentHarnesses,
-  crossHarnessSafetyScenario,
+  codexSafetyScenario,
   representativeAgentScenarios,
   requiredArtifactKinds,
   requiredBehaviorCategories,
@@ -142,22 +142,19 @@ describe('P0.M5 representative scenario catalog', () => {
     expect(weak?.requiredGateIds).toContain('characterizations-before-migration');
   });
 
-  it('runs the strong cold and weak unsupported controls in every harness', () => {
-    for (const scenarioId of ['app-cold-strong', 'library-weak-unsupported']) {
-      const scenario = representativeAgentScenarios.find(({ id }) => id === scenarioId);
-      expect(scenario?.qualificationHarnesses).toEqual(agentHarnesses);
-    }
-    expect(representativeAgentScenarios.find(({ id }) => id === 'app-platform-strong')?.qualificationHarnesses).toHaveLength(1);
-    expect(representativeAgentScenarios.find(({ id }) => id === 'library-mixed-strong')?.qualificationHarnesses).toHaveLength(1);
+  it('runs every representative scenario through the approved Codex-only qualification lane', () => {
+    expect(agentHarnesses).toEqual(['codex', 'claude', 'cursor']);
+    expect(representativeAgentScenarios.every(({ qualificationHarnesses }) => qualificationHarnesses.length === 1)).toBe(true);
+    expect(representativeAgentScenarios.every(({ qualificationHarnesses }) => qualificationHarnesses[0] === 'codex')).toBe(true);
   });
 
-  it('holds the same safety gates and developer decisions across Codex, Claude, and Cursor', () => {
-    const scenario = representativeAgentScenarios.find(({ id }) => id === crossHarnessSafetyScenario.scenarioId);
-    expect(crossHarnessSafetyScenario.harnesses).toEqual(agentHarnesses);
-    expect(crossHarnessSafetyScenario.expectedOutcome).toBe('safe-stop');
-    expect(crossHarnessSafetyScenario.invariantGateIds.every((id) => scenario?.requiredGateIds.includes(id))).toBe(true);
-    expect(crossHarnessSafetyScenario.invariantDecisionPointIds.every((id) => scenario?.decisionPointIds.includes(id))).toBe(true);
-    expect(crossHarnessSafetyScenario.forbiddenOutcomes).toEqual(
+  it('holds the required Codex safety gates and developer decisions for the weak scenario', () => {
+    const scenario = representativeAgentScenarios.find(({ id }) => id === codexSafetyScenario.scenarioId);
+    expect(codexSafetyScenario.harness).toBe('codex');
+    expect(codexSafetyScenario.expectedOutcome).toBe('safe-stop');
+    expect(codexSafetyScenario.invariantGateIds.every((id) => scenario?.requiredGateIds.includes(id))).toBe(true);
+    expect(codexSafetyScenario.invariantDecisionPointIds.every((id) => scenario?.decisionPointIds.includes(id))).toBe(true);
+    expect(codexSafetyScenario.forbiddenOutcomes).toEqual(
       expect.arrayContaining(['automatic lifecycle selection', 'suppressed required diagnostic', 'weakened or deleted protected test'])
     );
   });

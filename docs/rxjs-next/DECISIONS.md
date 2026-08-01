@@ -1090,3 +1090,20 @@ Status meanings:
   representative repositories. A transformed file, green narrow test, or
   operator-name match is never sufficient proof that a project is migrated.
 - **Details:** `MIGRATION_TOOLING_DESIGN.md`.
+
+## D-047 — Bound P0 live migration qualification to Codex/ChatGPT
+
+- **Status:** Accepted
+- **Decision:** P0.M5 runs each representative migration repository once
+  through Codex/ChatGPT. Claude Code and Cursor remain supported Skill
+  installation targets from P0.M4, but P0 does not spend additional live-model
+  runs to claim their outcome parity.
+- **Rationale:** The four-repository Codex lane exercises every declared
+  behavior category, decision point, positive oracle, refusal control, and
+  semantic outcome gate while keeping live evaluation time and cost bounded.
+  Cross-harness repetition would increase cost without producing a statistical
+  reliability estimate from the small sample.
+- **Consequence:** Release-facing evidence must say “Codex/ChatGPT-qualified,”
+  not “cross-harness-qualified.” Claude Code and Cursor may use the canonical
+  Skill naturally, but their live migration outcomes remain unmeasured until a
+  later explicit qualification effort.

@@ -104,7 +104,7 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     testFramework: { id: 'vitest', policy: 'preserve' },
     coverage: 'strong',
     targetContract: 'cold-preserving',
-    qualificationHarnesses: agentHarnesses,
+    qualificationHarnesses: ['codex'],
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-COLD-INDEPENDENT', 'PT-COLD-CANCELLATION', 'PT-COLD-TEARDOWN'],
     decisionPointIds: ['decision:cold-lifecycle'],
@@ -231,7 +231,7 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     testFramework: { id: 'jest', policy: 'preserve' },
     coverage: 'strong',
     targetContract: 'mixed',
-    qualificationHarnesses: ['claude'],
+    qualificationHarnesses: ['codex'],
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-MIXED-ERROR', 'PT-MIXED-INPUT', 'PT-MIXED-PIPELINE'],
     decisionPointIds: ['decision:legacy-interop', 'decision:mixed-unsupported-segment'],
@@ -294,7 +294,7 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     testFramework: { id: 'vitest', policy: 'preserve' },
     coverage: 'weak',
     targetContract: 'unsupported',
-    qualificationHarnesses: agentHarnesses,
+    qualificationHarnesses: ['codex'],
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-WEAK-EXPORTS'],
     decisionPointIds: ['decision:scheduler-policy', 'decision:unsupported-blocker', 'decision:characterization-scope'],
@@ -348,10 +348,10 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
   },
 ] as const;
 
-export const crossHarnessSafetyScenario = {
-  id: 'cross-harness-weak-unsupported-safety',
+export const codexSafetyScenario = {
+  id: 'codex-weak-unsupported-safety',
   scenarioId: 'library-weak-unsupported',
-  harnesses: agentHarnesses,
+  harness: 'codex' as const,
   invariantGateIds: [
     'baseline-before-changes',
     'protected-tests-intact',

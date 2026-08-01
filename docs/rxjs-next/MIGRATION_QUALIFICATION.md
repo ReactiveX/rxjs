@@ -4,9 +4,9 @@
 
 P0.M5 qualification is in progress. The checked-in scenario catalog, pinned
 RxJS 7 baseline oracles, outcome grader, and captured-artifact verifier are
-green. Live model-backed runs have not yet been executed, so this document does
-not claim cross-harness outcome qualification or general automatic migration
-safety.
+green. Per D-047, the live P0 qualification lane is intentionally limited to
+Codex/ChatGPT. It does not claim Claude Code or Cursor outcome qualification,
+cross-harness parity, or general automatic migration safety.
 
 ## Evidence boundary
 
@@ -75,21 +75,21 @@ The versioned agent grader fails a run for any of these conditions:
 
 The captured-record verifier independently recomputes artifact hashes, rejects
 path escape and symlinks, checks harness/model/authority and seed identities,
-requires the closed eight-run matrix, and compares cross-harness safety and
+and requires the closed four-run Codex matrix. It compares semantic safety and
 decision vectors rather than exact patches.
 
 ## Live qualification matrix
 
-The matrix deliberately repeats the cold-preserving and weak/unsupported
-controls across all three harnesses. It runs the platform and mixed-library
-scenarios once each, for eight total runs:
+The matrix runs each representative repository once through Codex/ChatGPT, for
+four total live runs. Claude Code and Cursor retain tested Skill installation
+adapters from P0.M4 but are not live outcome-qualified in P0:
 
-| Scenario                   | Codex | Claude Code | Cursor |
-| -------------------------- | :---: | :---------: | :----: |
-| `app-cold-strong`          |   ✓   |      ✓      |   ✓    |
-| `app-platform-strong`      |   ✓   |      —      |   —    |
-| `library-mixed-strong`     |   —   |      ✓      |   —    |
-| `library-weak-unsupported` |   ✓   |      ✓      |   ✓    |
+| Scenario                   | Codex/ChatGPT |
+| -------------------------- | :-----------: |
+| `app-cold-strong`          |       ✓       |
+| `app-platform-strong`      |       ✓       |
+| `library-mixed-strong`     |       ✓       |
+| `library-weak-unsupported` |       ✓       |
 
 Each run must capture the user-visible conversation, patch, contract manifest,
 command results, and final report. The live command is intentionally not part
@@ -108,15 +108,16 @@ Local evidence currently passes:
 - captured-record mutation controls for digest drift, missing artifacts,
   unexpected matrix membership, and cross-harness parity drift.
 
-Live result: **0/8 executed**. P0.M5 remains incomplete until all eight records
+Live result: **0/4 executed**. P0.M5 remains incomplete until all four records
 and their five required artifacts pass the offline verifier.
 
 ## Claim limits
 
-Even an 8/8 result will be a bounded qualification snapshot, not a statistical
+Even a 4/4 result will be a bounded qualification snapshot, not a statistical
 reliability estimate and not proof that arbitrary RxJS 7 repositories migrate
 automatically. It will support claims only for the checked-in scenarios,
-versions, capabilities, safety gates, and harness configurations. Unsupported
-syntax, uncharacterized behavior, unresolved lifecycle intent, framework
-features outside the adapters, and product gaps must remain visible and may
-require a safe stop.
+versions, capabilities, safety gates, and the recorded Codex/ChatGPT
+configuration. Claude Code and Cursor outcome parity remains unmeasured.
+Unsupported syntax, uncharacterized behavior, unresolved lifecycle intent,
+framework features outside the adapters, and product gaps must remain visible
+and may require a safe stop.

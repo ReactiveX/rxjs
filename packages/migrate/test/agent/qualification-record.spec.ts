@@ -55,7 +55,7 @@ describe('captured P0.M5 qualification records', () => {
   it('validates the complete catalog matrix and recomputes every artifact digest', async () => {
     const report = await gradeQualificationRecords(records, options());
 
-    expect(records).toHaveLength(8);
+    expect(records).toHaveLength(4);
     expect(report).toEqual({ schemaVersion: 1, status: 'passed', findings: [] });
   });
 
@@ -141,23 +141,6 @@ describe('captured P0.M5 qualification records', () => {
     expect(report.findings).toContainEqual(
       expect.objectContaining({ code: 'unexpected-matrix-run', runId: 'app-platform-strong--claude-unexpected' })
     );
-  });
-
-  it('detects cross-harness safety-gate and developer-decision parity drift', async () => {
-    const cursor = records.find(({ scenarioId, host }) => scenarioId === 'library-weak-unsupported' && host.harness === 'cursor')!;
-    const mutated = replaceRecord(records, cursor.runId, {
-      ...cursor,
-      gateVector: cursor.gateVector.map((gate) => (gate.id === 'baseline-before-changes' ? { ...gate, status: 'failed' as const } : gate)),
-      decisionVector: cursor.decisionVector.map((decision) =>
-        decision.id === 'decision:scheduler-policy' ? { ...decision, status: 'approved' as const } : decision
-      ),
-    });
-
-    const report = await gradeQualificationRecords(mutated, options());
-    const codes = report.findings.map(({ code }) => code);
-
-    expect(codes).toContain('cross-harness-gate-drift');
-    expect(codes).toContain('cross-harness-decision-drift');
   });
 
   it('rejects a decision status that differs from the scenario expectation', async () => {

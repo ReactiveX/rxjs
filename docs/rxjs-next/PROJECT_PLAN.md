@@ -118,7 +118,7 @@ item.
 | `DONE` | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
 | `DONE` | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
 | `DONE` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
-| `NEXT` | P0.M5  | Qualify the end-to-end agent workflow on representative repositories and behavioral outcome gates                  |
+| `NEXT` | P0.M5  | Qualify the end-to-end Codex/ChatGPT workflow on representative repositories and behavioral outcome gates          |
 | `DONE` | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
 
 #### P0.1 completion evidence
@@ -498,7 +498,8 @@ item.
   Codex/Claude/Cursor distribution boundaries; set explicit MCP decision
   criteria; and correct controlling documentation.
 - **Scope out:** production codemod changes, package restructuring, publishing,
-  and live cross-harness qualification. Those belong to P0.M3 through P0.M5.
+  and live outcome qualification. Those belong to P0.M3 through P0.M5; D-047
+  later bounded the live P0.M5 lane to Codex/ChatGPT.
 - **Dependencies:** current RxJS Next architecture and migration evidence plus
   the user-approved workflow recorded here. Full operator stabilization is not
   required for the design, because capability claims must be versioned and
@@ -638,10 +639,13 @@ item.
   tests, run the agent workflow, and judge generated changes by compilation,
   build/test outcomes, contract manifests, diagnostics, and intentional
   divergences rather than exact text.
-- Codex, Claude, and Cursor runs demonstrate equivalent safety gates and
-  developer decision points. Nondeterministic source variation is permitted;
-  undisclosed behavioral variation, skipped required warnings, weakened tests,
-  or unsafe automatic contract choices fail the evaluation.
+- Codex/ChatGPT runs demonstrate the required safety gates and developer
+  decision points across all representative repositories. P0 does not claim
+  live Claude Code or Cursor outcome parity; those harnesses retain only the
+  P0.M4 Skill installation and discovery evidence. Nondeterministic source
+  variation is permitted; undisclosed behavioral variation, skipped required
+  warnings, weakened tests, or unsafe automatic contract choices fail the
+  evaluation.
 - Release-facing documentation states measured coverage and limitations and
   does not claim general automatic migration beyond the passing fixture and
   representative-repository evidence.
@@ -1072,7 +1076,7 @@ flowchart LR
     MigratePrototype["P0.M1 migration prototype"] --> MigrationDesign["P0.M2 agent-first product design"]
     MigrationDesign --> Mechanical["P0.M3 mechanical engine hardening"]
     Mechanical --> PortableSkill["P0.M4 portable Skill and harness guidance"]
-    PortableSkill --> AgentQualification["P0.M5 cross-harness outcome qualification"]
+    PortableSkill --> AgentQualification["P0.M5 Codex/ChatGPT outcome qualification"]
     WptHarness["P1.4a attested WPT harness"] --> Boundary["P0.2 package and install decisions"]
     Boundary --> Build["P0.3 buildable packages"]
     Build --> Harness["P0.4 lifecycle and import harness"]

@@ -4,7 +4,6 @@ import { relative, resolve } from 'node:path';
 import { z } from 'zod';
 import {
   agentHarnesses,
-  crossHarnessSafetyScenario,
   representativeAgentScenarios,
   requiredArtifactKinds,
   requiredOutcomeGateIds,
@@ -105,8 +104,6 @@ export const qualificationFindingCodes = [
   'decision-vector-mismatch',
   'decision-status-mismatch',
   'conclusion-mismatch',
-  'cross-harness-gate-drift',
-  'cross-harness-decision-drift',
 ] as const;
 export type QualificationFindingCode = (typeof qualificationFindingCodes)[number];
 
@@ -208,7 +205,6 @@ export async function gradeQualificationRecords(
     }
   }
 
-  compareCrossHarnessParity(records, findings);
   return { schemaVersion: qualificationReportSchemaVersion, status: findings.length === 0 ? 'passed' : 'failed', findings };
 }
 
@@ -392,29 +388,6 @@ function compareVectors(record: QualificationRecord, scenario: AgentScenario, fi
   }
   if (record.conclusion !== scenario.expectedOutcome) {
     addFinding(findings, record, 'conclusion-mismatch', `Run conclusion does not match the catalog expectation.`);
-  }
-}
-
-function compareCrossHarnessParity(records: readonly QualificationRecord[], findings: QualificationFinding[]): void {
-  const parityRecords = records.filter(({ scenarioId }) => scenarioId === crossHarnessSafetyScenario.scenarioId);
-  if (parityRecords.length === 0) return;
-  const reference = parityRecords.find(({ host }) => host.harness === crossHarnessSafetyScenario.harnesses[0]);
-  if (!reference) return;
-
-  const referenceGates = new Map(reference.gateVector.map(({ id, status }) => [id, status]));
-  const referenceDecisions = new Map(reference.decisionVector.map(({ id, status }) => [id, status]));
-  for (const record of parityRecords) {
-    if (record === reference) continue;
-    for (const id of crossHarnessSafetyScenario.invariantGateIds) {
-      if (record.gateVector.find((gate) => gate.id === id)?.status !== referenceGates.get(id)) {
-        addFinding(findings, record, 'cross-harness-gate-drift', `Invariant gate ${id} differs across harnesses.`);
-      }
-    }
-    for (const id of crossHarnessSafetyScenario.invariantDecisionPointIds) {
-      if (record.decisionVector.find((decision) => decision.id === id)?.status !== referenceDecisions.get(id)) {
-        addFinding(findings, record, 'cross-harness-decision-drift', `Invariant decision ${id} differs across harnesses.`);
-      }
-    }
   }
 }
 
