@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import type { ObservedValueOf, SubjectLike } from './util/types.js';
 
 export const connect: unique symbol = Symbol('connect');
@@ -69,19 +70,7 @@ Observable.prototype[connect] = function <T, Selected extends ObservableValue<un
     // RxJS 7 installs the selector result before connecting the source. This
     // is what makes multiple synchronous subscriptions to `shared` observe one
     // source connection.
-    try {
-      selected.subscribe(
-        {
-          next: (value) => subscriber.next(value),
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
-        },
-        { signal: selectorController.signal }
-      );
-    } catch (error) {
-      subscriber.error(error);
-      return;
-    }
+    subscribeToSource(selected, subscriber, undefined, selectorController.signal);
 
     if (!subscriber.active) {
       return;
@@ -92,35 +81,33 @@ Observable.prototype[connect] = function <T, Selected extends ObservableValue<un
       subscriber.error(error);
     };
 
-    try {
-      source.subscribe(
-        {
-          next: (value) => {
-            try {
-              destination.next(value);
-            } catch (error) {
-              failConnector(error);
-            }
-          },
-          error: (error) => {
-            try {
-              destination.error(error);
-            } catch (connectorError) {
-              failConnector(connectorError);
-            }
-          },
-          complete: () => {
-            try {
-              destination.complete();
-            } catch (error) {
-              failConnector(error);
-            }
-          },
+    subscribeToSource(
+      source,
+      subscriber,
+      {
+        next: (value) => {
+          try {
+            destination.next(value);
+          } catch (error) {
+            failConnector(error);
+          }
         },
-        { signal: sourceController.signal }
-      );
-    } catch (error) {
-      failConnector(error);
-    }
+        error: (error) => {
+          try {
+            destination.error(error);
+          } catch (connectorError) {
+            failConnector(connectorError);
+          }
+        },
+        complete: () => {
+          try {
+            destination.complete();
+          } catch (error) {
+            failConnector(error);
+          }
+        },
+      },
+      sourceController.signal
+    );
   });
 };
