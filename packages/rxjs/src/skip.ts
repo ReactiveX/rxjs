@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const skip: unique symbol = Symbol('skip');
@@ -9,25 +8,21 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>, count: number): Observable<T> {
-    return this[create]((subscriber) => {
-      let index = 0;
+Observable.prototype[skip] = function <T>(this: Observable<T>, count: number): Observable<T> {
+  return this[create]((subscriber) => {
+    let index = 0;
 
-      this.subscribe(
-        {
-          next: (value) => {
-            if (count <= index++) {
-              subscriber.next(value);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
+    this.subscribe(
+      {
+        next: (value) => {
+          if (count <= index++) {
+            subscriber.next(value);
+          }
         },
-        { signal: subscriber.signal }
-      );
-    });
-  },
-  name: 'skip',
-  symbol: skip,
-});
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};

@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const skipLast: unique symbol = Symbol('skipLast');
@@ -9,39 +8,35 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>, amount = 1): Observable<T> {
-    if (amount <= 0) {
-      return this;
-    }
+Observable.prototype[skipLast] = function <T>(this: Observable<T>, amount = 1): Observable<T> {
+  if (amount <= 0) {
+    return this;
+  }
 
-    return this[create]((subscriber) => {
-      let ring = new Array<T>(amount);
-      let seen = 0;
-      subscriber.addTeardown(() => {
-        ring = null!;
-      });
-
-      this.subscribe(
-        {
-          next: (value) => {
-            const valueIndex = seen++;
-            if (valueIndex < amount) {
-              ring[valueIndex] = value;
-            } else {
-              const index = valueIndex % amount;
-              const oldValue = ring[index]!;
-              ring[index] = value;
-              subscriber.next(oldValue);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
-        },
-        { signal: subscriber.signal }
-      );
+  return this[create]((subscriber) => {
+    let ring = new Array<T>(amount);
+    let seen = 0;
+    subscriber.addTeardown(() => {
+      ring = null!;
     });
-  },
-  name: 'skipLast',
-  symbol: skipLast,
-});
+
+    this.subscribe(
+      {
+        next: (value) => {
+          const valueIndex = seen++;
+          if (valueIndex < amount) {
+            ring[valueIndex] = value;
+          } else {
+            const index = valueIndex % amount;
+            const oldValue = ring[index]!;
+            ring[index] = value;
+            subscriber.next(oldValue);
+          }
+        },
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};
