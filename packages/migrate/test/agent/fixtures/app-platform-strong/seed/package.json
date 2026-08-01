@@ -1,0 +1,16 @@
+{
+  "name": "fixture-app-platform-strong",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "mocha --extension ts test"
+  },
+  "dependencies": {
+    "rxjs": "7.8.1"
+  },
+  "devDependencies": {
+    "mocha": "10.8.2",
+    "typescript": "5.7.3"
+  }
+}

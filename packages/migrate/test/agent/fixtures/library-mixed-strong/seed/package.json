@@ -1,0 +1,17 @@
+{
+  "name": "fixture-library-mixed-strong",
+  "private": true,
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest"
+  },
+  "dependencies": {
+    "rxjs": "7.8.1"
+  },
+  "devDependencies": {
+    "jest": "29.7.0",
+    "typescript": "5.7.3"
+  }
+}
