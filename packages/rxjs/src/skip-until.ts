@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const skipUntil: unique symbol = Symbol('skipUntil');
 
@@ -22,36 +23,29 @@ Observable.prototype[skipUntil] = function <T>(this: Observable<T>, notifier: Ob
       return;
     }
 
-    try {
-      notifierSource.subscribe(
-        {
-          next: () => {
-            notifierController.abort();
-            taking = true;
-          },
-          error: (error) => subscriber.error(error),
+    subscribeToSource(
+      notifierSource,
+      subscriber,
+      {
+        next: () => {
+          notifierController.abort();
+          taking = true;
         },
-        { signal: notifierController.signal }
-      );
-    } catch (error) {
-      subscriber.error(error);
-    }
+        complete: () => void 0,
+      },
+      notifierController.signal
+    );
 
     if (!subscriber.active) {
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (taking) {
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (taking) {
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
