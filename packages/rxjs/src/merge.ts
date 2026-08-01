@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const merge: unique symbol = Symbol('merge');
@@ -33,8 +34,6 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
   return this[create]((subscriber) => {
     const { concurrency = Infinity } = config ?? {};
     let active = 0;
-    const next = (value: any) => subscriber.next(value);
-    const error = (error: any) => subscriber.error(error);
     let sourceIndex = 0;
 
     const subscribeNext = () => {
@@ -53,21 +52,16 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
       }
 
       active++;
-      source.subscribe(
-        {
-          next,
-          error,
-          complete: () => {
-            active--;
-            if (sourceIndex < actualSources.length) {
-              subscribeNext();
-            } else if (active === 0) {
-              subscriber.complete();
-            }
-          },
+      subscribeToSource(source, subscriber, {
+        complete: () => {
+          active--;
+          if (sourceIndex < actualSources.length) {
+            subscribeNext();
+          } else if (active === 0) {
+            subscriber.complete();
+          }
         },
-        { signal: subscriber.signal }
-      );
+      });
 
       if (active < concurrency) {
         subscribeNext();
