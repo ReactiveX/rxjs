@@ -1,6 +1,7 @@
 import { create } from './create.js';
 import { ArgumentOutOfRangeError } from './argument-out-of-range-error.js';
 import '@rxjs/observable-polyfill';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const elementAt: unique symbol = Symbol('elementAt');
 
@@ -19,29 +20,23 @@ Observable.prototype[elementAt] = function <T, D>(this: Observable<T>, index: nu
   const hasDefault = defaultValue.length === 1;
   return this[create]((subscriber) => {
     let count = 0;
-    return this.subscribe(
-      {
-        next: (value) => {
-          if (count === index) {
-            subscriber.next(value);
-            subscriber.complete();
-            return;
-          }
-          count++;
-        },
-        error: (error) => {
-          subscriber.error(error);
-        },
-        complete: () => {
-          if (hasDefault) {
-            subscriber.next(defaultValue[0]);
-            subscriber.complete();
-          } else {
-            subscriber.error(new ArgumentOutOfRangeError());
-          }
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (count === index) {
+          subscriber.next(value);
+          subscriber.complete();
+          return;
+        }
+        count++;
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        if (hasDefault) {
+          subscriber.next(defaultValue[0]);
+          subscriber.complete();
+        } else {
+          subscriber.error(new ArgumentOutOfRangeError());
+        }
+      },
+    });
   });
 };
