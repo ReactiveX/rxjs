@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const throttle: unique symbol = Symbol('throttle');
 
@@ -26,8 +27,6 @@ Observable.prototype[throttle] = function <T>(
     let sourceComplete = false;
     let hasValue = false;
     let sendValue: T | undefined;
-
-    const sendError = (error: unknown) => subscriber.error(error);
 
     const endThrottling = (controller: AbortController) => {
       if (innerController !== controller) {
@@ -66,23 +65,15 @@ Observable.prototype[throttle] = function <T>(
           once: true,
         });
       } else {
-        let result: Observable<unknown>;
-        try {
-          result = Observable.from(delay(value, index++));
-        } catch (error) {
-          if (innerController === controller) {
-            innerController = null;
-          }
-          subscriber.error(error);
-          return;
-        }
-        result.subscribe(
+        const result = Observable.from(delay(value, index++));
+        subscribeToSource(
+          result,
+          subscriber,
           {
             next: () => endThrottling(controller),
             complete: () => cleanupThrottling(controller),
-            error: sendError,
           },
-          { signal }
+          controller.signal
         );
       }
     };
@@ -99,28 +90,24 @@ Observable.prototype[throttle] = function <T>(
       }
     };
 
-    this.subscribe(
-      {
-        next: (value) => {
-          hasValue = true;
-          sendValue = value;
-          if (!innerController) {
-            if (leading) {
-              send();
-            } else {
-              startThrottle(value);
-            }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        hasValue = true;
+        sendValue = value;
+        if (!innerController) {
+          if (leading) {
+            send();
+          } else {
+            startThrottle(value);
           }
-        },
-        error: sendError,
-        complete: () => {
-          sourceComplete = true;
-          if (!(trailing && hasValue && innerController)) {
-            subscriber.complete();
-          }
-        },
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        sourceComplete = true;
+        if (!(trailing && hasValue && innerController)) {
+          subscriber.complete();
+        }
+      },
+    });
   });
 };
