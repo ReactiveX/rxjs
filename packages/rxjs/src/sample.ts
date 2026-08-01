@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const sample: unique symbol = Symbol('sample');
 
@@ -13,17 +14,12 @@ Observable.prototype[sample] = function <T>(this: Observable<T>, notifier: Obser
     let hasValue = false;
     let latestValue: T | undefined;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          hasValue = true;
-          latestValue = value;
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        hasValue = true;
+        latestValue = value;
       },
-      { signal: subscriber.signal }
-    );
+    });
 
     if (subscriber.signal.aborted) {
       return;
@@ -37,19 +33,16 @@ Observable.prototype[sample] = function <T>(this: Observable<T>, notifier: Obser
       return;
     }
 
-    notifications.subscribe(
-      {
-        next: () => {
-          if (hasValue) {
-            hasValue = false;
-            const value = latestValue as T;
-            latestValue = undefined;
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
+    subscribeToSource(notifications, subscriber, {
+      next: () => {
+        if (hasValue) {
+          hasValue = false;
+          const value = latestValue as T;
+          latestValue = undefined;
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => void 0,
+    });
   });
 };
