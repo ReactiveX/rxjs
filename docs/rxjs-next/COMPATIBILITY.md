@@ -501,7 +501,19 @@ link the canonical executable surface; `ColdObservable`, `firstValueFrom`, and
 of pretending to have a marble registration. The capability registry supplies
 the public mapping and adapter, while deterministic policy records the import,
 sharing, cancellation, final type status, migration action, and controlling
-decision. P4.3 owns the complete unsupported-surface catalog.
+decision.
+
+The generated [unsupported RxJS 7 surface catalog](UNSUPPORTED_RXJS_7_SURFACES.md)
+closes P4.3 with a machine-readable source at
+`packages/rxjs/test/ported/unsupported-surface-catalog.json`. It classifies
+imports, public types, scheduler values and overloads, interop protocols, and
+deprecated aliases as replace, manual-review, or unsupported groups. Its gate
+is pinned to the same RxJS 7 revision as the executable manifest, requires the
+five accepted categories and their critical surfaces, and derives the set of
+scheduler-bearing capabilities from the registry so new scheduler exposure
+cannot silently escape review. The catalog is migration guidance only: it does
+not add an emulation package, compatibility alias, scheduler system, or legacy
+interop protocol.
 
 The executable capability registry distinguishes an absent API from a unified
 Next surface. RxJS 7 `bufferCount(size, startBufferEvery?)` is exercised

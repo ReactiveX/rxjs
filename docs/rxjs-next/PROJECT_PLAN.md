@@ -1315,8 +1315,8 @@ explicit.
 | --------- | ---- | -------------------------------------------------------------------------------------------- |
 | `DONE`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
 | `DONE`    | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
-| `NEXT`    | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
-| `PLANNED` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
+| `DONE`    | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
+| `NEXT`    | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 
 Phase exit:
 
@@ -1361,6 +1361,24 @@ Phase exit:
   decisions in the machine-readable ledger.
 - Regeneration and freshness checks pass. Marked P4.2 `DONE` and advanced P4.3
   as the sole project-level `NEXT` item.
+
+#### P4.3 completion evidence
+
+- Added a pinned machine-readable catalog with 27 reviewed groups covering 147
+  named RxJS 7 import, public-type, scheduler, interop, and deprecated-alias
+  surfaces. Every group records a disposition, migration direction, rationale,
+  and controlling decisions without promising a compatibility runtime.
+- Generated the readable unsupported-surface guide from that authority and
+  defined explicit replace, manual-review, unsupported, test-only, and removed
+  dispositions. Automation may proceed only for an evidence-ledger-backed
+  replace mapping and must stop for every other disposition.
+- Added a validation and freshness gate tied to the pinned executable manifest.
+  It rejects category or critical-surface omissions, duplicate entries, stale
+  generated guidance, source-pin drift, and any scheduler-bearing capability
+  that is missing from the scheduler review inventory.
+- Added the unsupported-surface check beside the completed migration ledger in
+  the ordinary package gate. Marked P4.3 `DONE` and advanced P4.4 as the sole
+  project-level `NEXT` item.
 
 ### Phase 5 — Migration experience and AI enablement
 
