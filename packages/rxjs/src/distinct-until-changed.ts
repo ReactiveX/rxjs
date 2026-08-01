@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type Comparator<T> = (previous: T, current: T) => boolean;
 type KeySelector<T, K> = (value: T) => K;
@@ -31,38 +32,17 @@ function distinctUntilChangedOperator<T, K>(
     let first = true;
     let previousKey: K;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          let currentKey: K;
-          try {
-            currentKey = keySelector(value);
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-
-          let distinct = first;
-          if (!first) {
-            try {
-              distinct = !compare(previousKey, currentKey);
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-          }
-
-          if (distinct) {
-            first = false;
-            previousKey = currentKey;
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const currentKey = keySelector(value);
+        const distinct = first || !compare(previousKey, currentKey);
+        if (distinct) {
+          first = false;
+          previousKey = currentKey;
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 }
 
