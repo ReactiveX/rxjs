@@ -452,8 +452,13 @@ surface; it does not name a package or promised facade.
 
 ## Migration-evidence ledger
 
-Maintain a ledger as operator and API work begins. It can start as a Markdown
-table and move to structured data when automation needs it.
+The generated ledger at `MIGRATION_EVIDENCE_LEDGER.md` joins the versioned
+capability registry to the source-pinned executable manifest. Its complete
+case IDs and source files are retained in
+`packages/rxjs/test/ported/migration-evidence-ledger.generated.json`.
+Regeneration validates that every registry operator, factory, and value appears
+exactly once and rejects incomplete or duplicate rows. An uncovered entry is
+recorded explicitly; it is not treated as an implied pass.
 
 | Field               | Required content                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------- |
@@ -468,9 +473,11 @@ table and move to structured data when automation needs it.
 | Decision            | Link to accepted decision or open question                                            |
 
 The marble-test manifest populates the behavioral-evidence portion of this
-ledger without making API support promises. Migration documentation must add
-the public import/type status, source transformation, semantic-review flags,
-and explicit unsupported outcomes.
+ledger without making API support promises. The capability registry supplies
+the public mapping and adapter, while deterministic policy records the import,
+sharing, cancellation, type, migration-action, and controlling-decision
+fields. P4.2 owns the remaining type-status and prioritized-API stabilization;
+P4.3 owns the complete unsupported-surface catalog.
 
 The executable capability registry distinguishes an absent API from a unified
 Next surface. RxJS 7 `bufferCount(size, startBufferEvery?)` is exercised

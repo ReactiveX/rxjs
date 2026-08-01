@@ -221,7 +221,8 @@ pnpm --filter rxjs run test:unit:parity:check
 
 The machine-readable capability mapping is
 `packages/rxjs/test/ported/capability-registry.json`. The checked-in migration
-evidence and reusable `@rxjs/migrate` tooling use the import's role:
+evidence, generated migration-evidence ledger, and reusable `@rxjs/migrate`
+tooling use the import's role:
 
 - an operator import becomes a descriptor that invokes
   `source[targetSymbol](...adaptedArgs)`;
@@ -233,4 +234,6 @@ evidence and reusable `@rxjs/migrate` tooling use the import's role:
 The complete per-case evidence remains in
 `packages/rxjs/test/ported/manifest.generated.json`. Executable specs are
 ordinary repository-owned files; `migration-report.json` retains their static
-case-ID mapping for audits.
+case-ID mapping for audits. The joined ledger is generated at
+`packages/rxjs/test/ported/migration-evidence-ledger.generated.json` with its
+readable view in `docs/rxjs-next/MIGRATION_EVIDENCE_LEDGER.md`.

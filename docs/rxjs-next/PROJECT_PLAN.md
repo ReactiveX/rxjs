@@ -58,8 +58,9 @@ the extension kernel, and the `map`, `scan`, `switchMap`, `timeout`, `timer`,
 and `pipe` pilot proves it against packaged fallback and browser-native
 Observable. P3.1 confirmed that Phase 0 already restored the broad operator
 catalog and executable evidence; the remaining Phase 3 work is to move the
-catalog onto the accepted extension kernel and turn the existing parity map
-into a complete migration-evidence ledger. P3.2 is now the sole `NEXT` item.
+catalog onto the accepted extension kernel. P3.2 has materialized the existing
+parity map as a validated migration-evidence ledger, and P3.3 is now the sole
+`NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1176,8 +1177,8 @@ Phase exit:
 | Status    | ID   | Outcome                                                                                           |
 | --------- | ---- | ------------------------------------------------------------------------------------------------- |
 | `DONE`    | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
-| `NEXT`    | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
-| `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                                    |
+| `DONE`    | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
+| `NEXT`    | P3.3 | Restore operators in small families using the extension kernel                                    |
 | `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
@@ -1227,6 +1228,24 @@ explicit.
   controlling decision or open question.
 - Generation is deterministic, rejects incomplete or duplicate rows, and
   produces a readable checked-in summary.
+
+#### P3.2 completion evidence
+
+- Added one generated 161-entry ledger covering all 111 registry operators,
+  21 creation/static functions, and 29 values, types, and standalone
+  functions exactly once.
+- Joined each entry to the source-pinned manifest. The ledger retains 2,271
+  distinct evidence cases and records the seven entries with no direct case as
+  `uncovered` rather than implying support.
+- Recorded former import path, exact case IDs and source files, Next mapping
+  and status, sharing and cancellation models, test classifications, type
+  status, migration action, adapter, rationale, and controlling decisions.
+- Added deterministic generation and check commands. Validation rejects
+  incomplete entries, duplicate IDs, total drift, and evidence-count drift;
+  both the machine-readable JSON and readable Markdown views must be current.
+- Updated the compatibility policy to make the generated ledger authoritative
+  for Phase 3. P4.2 retains responsibility for final prioritized type status,
+  and P4.3 retains responsibility for the unsupported-surface catalog.
 
 #### P3.3 completion bar
 
@@ -2572,3 +2591,16 @@ conformance implementation depends on a runnable harness.
 - Preserved every compatibility-only input and lifecycle claim; no missing or
   unsupported registration is hidden from collection.
 - Marked P3.1 `DONE` and advanced P3.2 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P3.2 generated migration-evidence ledger
+
+- Added a deterministic 161-entry ledger spanning every registry operator,
+  creation/static function, value, type, and standalone function.
+- Joined the registry to 2,271 distinct source-pinned evidence cases and kept
+  seven uncovered entries visible with no implied pass.
+- Recorded the required import, evidence, Next surface, lifecycle,
+  cancellation, classification, type, migration, adapter, and decision fields
+  in machine-readable JSON plus a readable generated Markdown view.
+- Added generation and freshness commands and updated the compatibility policy
+  to name the ledger as the Phase 3 evidence authority.
+- Marked P3.2 `DONE` and advanced P3.3 as the sole project-level `NEXT` item.

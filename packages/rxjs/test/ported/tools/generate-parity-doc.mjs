@@ -236,8 +236,9 @@ ${markdownTable(['RxJS 7 surface', 'RxJS Next status', 'Current mapping', 'Notes
 ## Test-harness relationship
 
 The machine-readable capability mapping is
-\`packages/rxjs/test/ported/capability-registry.json\`. The migration generator
-uses the import's role:
+\`packages/rxjs/test/ported/capability-registry.json\`. The checked-in migration
+evidence, generated migration-evidence ledger, and reusable \`@rxjs/migrate\`
+tooling use the import's role:
 
 - an operator import becomes a descriptor that invokes
   \`source[targetSymbol](...adaptedArgs)\`;
@@ -247,7 +248,11 @@ uses the import's role:
   \`missing-api\` diagnostic.
 
 The complete per-case evidence remains in
-\`packages/rxjs/test/ported/manifest.generated.json\`.
+\`packages/rxjs/test/ported/manifest.generated.json\`. Executable specs are
+ordinary repository-owned files; \`migration-report.json\` retains their static
+case-ID mapping for audits. The joined ledger is generated at
+\`packages/rxjs/test/ported/migration-evidence-ledger.generated.json\` with its
+readable view in \`docs/rxjs-next/MIGRATION_EVIDENCE_LEDGER.md\`.
 `;
 const content = prettier.format(rawContent, { parser: 'markdown' });
 

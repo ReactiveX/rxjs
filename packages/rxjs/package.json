@@ -33,7 +33,9 @@
     "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:unit:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
-    "test:unit:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check"
+    "test:unit:parity:check": "node test/ported/tools/generate-parity-doc.mjs --check",
+    "test:unit:ledger:generate": "node test/ported/tools/generate-migration-evidence-ledger.mjs",
+    "test:unit:ledger:check": "node test/ported/tools/generate-migration-evidence-ledger.mjs --check"
   },
   "devDependencies": {
     "chai": "4.4.1",
