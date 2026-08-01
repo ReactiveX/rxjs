@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import type { ObservedValueOf } from './util/types.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const catchError: unique symbol = Symbol('catchError');
 
@@ -44,13 +45,7 @@ Observable.prototype[catchError] = function <T, Replacement extends ObservableVa
           sourceTerminated = true;
           sourceController.abort();
 
-          let replacementInput: Replacement;
-          try {
-            replacementInput = selector(error, caught);
-          } catch (selectorError) {
-            subscriber.error(selectorError);
-            return;
-          }
+          const replacementInput = selector(error, caught);
 
           if (!subscriber.active) {
             return;
@@ -60,43 +55,22 @@ Observable.prototype[catchError] = function <T, Replacement extends ObservableVa
             return;
           }
 
-          let replacement: Observable<ObservedValueOf<Replacement>>;
-          try {
-            replacement = Observable.from(replacementInput);
-          } catch (replacementError) {
-            subscriber.error(replacementError);
-            return;
-          }
-
-          try {
-            replacement.subscribe(
-              {
-                next: (value) => subscriber.next(value),
-                error: (replacementError) => subscriber.error(replacementError),
-                complete: () => subscriber.complete(),
-              },
-              { signal: subscriber.signal }
-            );
-          } catch (replacementError) {
-            subscriber.error(replacementError);
-          }
+          const replacement = Observable.from(replacementInput);
+          subscribeToSource(replacement, subscriber);
         };
 
-        try {
-          source.subscribe(
-            {
-              next: (value) => subscriber.next(value),
-              error: handleSourceError,
-              complete: () => {
-                sourceTerminated = true;
-                subscriber.complete();
-              },
+        subscribeToSource(
+          source,
+          subscriber,
+          {
+            error: handleSourceError,
+            complete: () => {
+              sourceTerminated = true;
+              subscriber.complete();
             },
-            { signal: AbortSignal.any([subscriber.signal, sourceController.signal]) }
-          );
-        } catch (error) {
-          handleSourceError(error);
-        }
+          },
+          sourceController.signal
+        );
 
         sourceSubscribeInProgress = false;
       } while (restartRequested && subscriber.active);
