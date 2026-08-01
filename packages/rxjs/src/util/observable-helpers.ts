@@ -31,44 +31,26 @@ export function subscribeToSource<T>(
   overrides?: Partial<Observer<T>>,
   signal?: AbortSignal
 ): void {
-  const destination = subscriber;
-  const nextOverride = overrides?.next;
-  const errorOverride = overrides?.error;
-  const completeOverride = overrides?.complete;
-  const handleError = errorOverride
-    ? (error: unknown) => {
-        try {
-          errorOverride(error);
-        } catch (callbackError) {
-          destination.error(callbackError);
+  const guard = <Args extends unknown[]>(override: ((...args: Args) => void) | undefined, forward: (...args: Args) => void) =>
+    override
+      ? (...args: Args) => {
+          try {
+            override(...args);
+          } catch (error) {
+            subscriber.error(error);
+          }
         }
-      }
-    : (error: unknown) => destination.error(error);
+      : forward;
+  const handleError = guard<[unknown]>(overrides?.error, (error) => subscriber.error(error));
 
   try {
     source.subscribe(
       {
-        next: nextOverride
-          ? (value) => {
-              try {
-                nextOverride(value);
-              } catch (error) {
-                destination.error(error);
-              }
-            }
-          : (value) => destination.next(value),
+        next: guard<[T]>(overrides?.next, (value) => subscriber.next(value)),
         error: handleError,
-        complete: completeOverride
-          ? () => {
-              try {
-                completeOverride();
-              } catch (error) {
-                destination.error(error);
-              }
-            }
-          : () => destination.complete(),
+        complete: guard<[]>(overrides?.complete, () => subscriber.complete()),
       },
-      { signal: signal ? AbortSignal.any([destination.signal, signal]) : destination.signal }
+      { signal: signal ? AbortSignal.any([subscriber.signal, signal]) : subscriber.signal }
     );
   } catch (error) {
     // Subscription setup failures are source failures and therefore follow an
