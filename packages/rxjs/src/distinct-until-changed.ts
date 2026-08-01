@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 type Comparator<T> = (previous: T, current: T) => boolean;
@@ -66,7 +67,7 @@ function distinctUntilChangedOperator<T, K>(
   });
 }
 
-Observable.prototype[distinctUntilChanged] = distinctUntilChangedOperator;
+installObservableExtension({ instance: distinctUntilChangedOperator, name: 'distinctUntilChanged', symbol: distinctUntilChanged });
 
 function identity<T>(value: T): T {
   return value;

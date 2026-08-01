@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { distinctUntilChanged } from './distinct-until-changed.js';
 
 type Comparator<T> = (previous: T, current: T) => boolean;
@@ -10,10 +11,10 @@ declare global {
   }
 }
 
-Observable.prototype[distinctUntilKeyChanged] = function <T, K extends keyof T>(
-  this: Observable<T>,
-  key: K,
-  comparator?: Comparator<T[K]>
-): Observable<T> {
-  return this[distinctUntilChanged](comparator, (value) => value[key]);
-};
+installObservableExtension({
+  instance: function <T, K extends keyof T>(this: Observable<T>, key: K, comparator?: Comparator<T[K]>): Observable<T> {
+    return this[distinctUntilChanged](comparator, (value) => value[key]);
+  },
+  name: 'distinctUntilKeyChanged',
+  symbol: distinctUntilKeyChanged,
+});
