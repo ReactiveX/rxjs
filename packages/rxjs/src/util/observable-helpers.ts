@@ -32,10 +32,13 @@ export function subscribeToSource<T>(
   signal?: AbortSignal
 ): void {
   const destination = subscriber;
-  const handleError = overrides?.error
+  const nextOverride = overrides?.next;
+  const errorOverride = overrides?.error;
+  const completeOverride = overrides?.complete;
+  const handleError = errorOverride
     ? (error: unknown) => {
         try {
-          overrides.error!(error);
+          errorOverride(error);
         } catch (callbackError) {
           destination.error(callbackError);
         }
@@ -45,20 +48,20 @@ export function subscribeToSource<T>(
   try {
     source.subscribe(
       {
-        next: overrides?.next
+        next: nextOverride
           ? (value) => {
               try {
-                overrides.next!(value);
+                nextOverride(value);
               } catch (error) {
                 destination.error(error);
               }
             }
           : (value) => destination.next(value),
         error: handleError,
-        complete: overrides?.complete
+        complete: completeOverride
           ? () => {
               try {
-                overrides.complete!();
+                completeOverride();
               } catch (error) {
                 destination.error(error);
               }
