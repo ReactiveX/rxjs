@@ -31,7 +31,7 @@ try {
         throw new Error('The bundler erased the unused map extension import');
       }
       const descriptor = Object.getOwnPropertyDescriptor(globalThis.Observable.prototype, mapSymbol);
-      if (descriptor.enumerable || !descriptor.configurable || !descriptor.writable) {
+      if (!descriptor.enumerable || !descriptor.configurable || !descriptor.writable) {
         throw new Error('The bundled map extension has the wrong descriptor');
       }
     `,

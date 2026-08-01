@@ -18,9 +18,9 @@ for (const symbol of [pipe, scan, switchMap, timeout, timer]) {
 }
 for (const symbol of [map, pipe, scan, switchMap, timeout]) {
   assert.equal(typeof globalThis.Observable.prototype[symbol], 'function');
-  assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable.prototype, symbol).enumerable, false);
+  assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable.prototype, symbol).enumerable, true);
 }
 for (const symbol of [pipe, timer]) {
   assert.equal(typeof globalThis.Observable[symbol], 'function');
-  assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable, symbol).enumerable, false);
+  assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable, symbol).enumerable, true);
 }

@@ -13,15 +13,24 @@ for (const file of files) {
   const symbols = [...source.matchAll(/export const (\w+): unique symbol = Symbol\('[^']+'\)/g)].map((match) => match[1]);
   for (const symbol of symbols) {
     capabilityCount += 1;
-    if (!source.includes("from './util/install-observable-extension.js'")) {
-      failures.push(`${file}: ${symbol} does not import the common extension installer`);
+    const staticAssignment = new RegExp(`Observable\\[${symbol}\\]\\s*=`).test(source);
+    const instanceAssignment = new RegExp(`Observable\\.prototype\\[${symbol}\\]\\s*=`).test(source);
+    if (!staticAssignment && !instanceAssignment) {
+      failures.push(`${file}: ${symbol} is not assigned directly under its exported exact Symbol`);
     }
-    if (!source.includes(`symbol: ${symbol}`)) {
-      failures.push(`${file}: ${symbol} is not passed to the common extension installer`);
+    if (new RegExp(`interface\\s+ObservableCtor\\s*{[\\s\\S]*?\\[${symbol}\\]`).test(source) && !staticAssignment) {
+      failures.push(`${file}: ${symbol} declares a static capability without a matching Observable assignment`);
     }
-    if (new RegExp(`Observable(?:\\.prototype)?\\[${symbol}\\]\\s*=`).test(source)) {
-      failures.push(`${file}: ${symbol} still uses direct public installation`);
+    if (new RegExp(`interface\\s+Observable(?:<[^>]+>)?\\s*{[\\s\\S]*?\\[${symbol}\\]`).test(source) && !instanceAssignment) {
+      failures.push(`${file}: ${symbol} declares an instance capability without a matching Observable.prototype assignment`);
     }
+  }
+
+  if (source.includes('installObservableExtension') || source.includes('install-observable-extension.js')) {
+    failures.push(`${file}: still references the superseded common extension installer`);
+  }
+  for (const match of source.matchAll(/Observable(?:\.prototype)?(?:\.(\w+)|\[['"]([^'"]+)['"]\])\s*=/g)) {
+    failures.push(`${file}: installs the RxJS string-named property ${match[1] ?? match[2]}`);
   }
 }
 
@@ -29,4 +38,4 @@ if (failures.length > 0) {
   throw new Error(`Extension installation audit failed:\n${failures.map((failure) => `- ${failure}`).join('\n')}`);
 }
 
-process.stdout.write(`Extension installation audit passed for ${capabilityCount} exact public Symbols.\n`);
+process.stdout.write(`Direct extension installation audit passed for ${capabilityCount} exact public Symbols.\n`);

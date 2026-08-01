@@ -160,39 +160,6 @@ if (scenario === 'missing-global-subpath') {
   assert.equal(globalThis.Observable.prototype[esmBuffer], esmBufferImplementation);
   assert.equal(typeof globalThis.Observable.prototype[cjsBuffer], 'function');
   assert.equal(globalThis.Observable.prototype.map, platformMap);
-} else if (scenario === 'frozen-extension-target') {
-  const create = Symbol.for('rxjs.kernel.create.v1');
-  class FrozenObservable {
-    constructor(init) {
-      this.init = init;
-    }
-
-    static from(value) {
-      return value;
-    }
-  }
-  Object.defineProperty(FrozenObservable, create, {
-    configurable: true,
-    value(init) {
-      return new this(init);
-    },
-    writable: true,
-  });
-  Object.defineProperty(FrozenObservable.prototype, create, {
-    configurable: true,
-    value(init) {
-      return new this.constructor(init);
-    },
-    writable: true,
-  });
-  Object.preventExtensions(FrozenObservable.prototype);
-  globalThis.Observable = FrozenObservable;
-
-  await assert.rejects(import('rxjs/pipe'), /Cannot install RxJS pipe extension on Observable\.prototype: target is not extensible/);
-  assert.equal(
-    Object.getOwnPropertySymbols(FrozenObservable).some((symbol) => symbol.description === 'pipe'),
-    false
-  );
 } else {
   throw new Error(`Unknown fixture scenario: ${scenario}`);
 }

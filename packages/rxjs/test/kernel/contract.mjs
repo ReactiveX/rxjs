@@ -79,7 +79,7 @@ export async function runExtensionKernelContract({ ObservableCtor, platformMap, 
     assert(descriptor, `Missing instance ${symbol.description} descriptor`);
     assertDeepEqual(
       { configurable: descriptor.configurable, enumerable: descriptor.enumerable, writable: descriptor.writable },
-      { configurable: true, enumerable: false, writable: true },
+      { configurable: true, enumerable: true, writable: true },
       `Wrong instance ${symbol.description} descriptor`
     );
   }
@@ -88,7 +88,7 @@ export async function runExtensionKernelContract({ ObservableCtor, platformMap, 
     assert(descriptor, `Missing static ${symbol.description} descriptor`);
     assertDeepEqual(
       { configurable: descriptor.configurable, enumerable: descriptor.enumerable, writable: descriptor.writable },
-      { configurable: true, enumerable: false, writable: true },
+      { configurable: true, enumerable: true, writable: true },
       `Wrong static ${symbol.description} descriptor`
     );
   }

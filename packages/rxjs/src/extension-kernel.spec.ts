@@ -36,18 +36,18 @@ beforeAll(async () => {
 });
 
 describe('Symbol extension kernel pilot', () => {
-  it('installs every pilot capability with the common descriptor', () => {
+  it('installs every pilot capability with ordinary assignment descriptors', () => {
     for (const symbol of [pilot.map, pilot.pipe, pilot.scan, pilot.switchMap, pilot.timeout]) {
       expect(Object.getOwnPropertyDescriptor(Observable.prototype, symbol)).toMatchObject({
         configurable: true,
-        enumerable: false,
+        enumerable: true,
         writable: true,
       });
     }
     for (const symbol of [pilot.pipe, pilot.timer]) {
       expect(Object.getOwnPropertyDescriptor(Observable, symbol)).toMatchObject({
         configurable: true,
-        enumerable: false,
+        enumerable: true,
         writable: true,
       });
     }
