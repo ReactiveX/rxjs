@@ -1,4 +1,5 @@
-import { createDerivedObservable, subscribeToSource } from './util/observable-helpers.js';
+import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const map: unique symbol = Symbol('map');
 
@@ -18,17 +19,14 @@ function mapOperator<T, R, A>(
   project: (this: A | undefined, value: T, index: number) => R,
   thisArg?: A
 ): Observable<R> {
-  return createDerivedObservable({
-    receiver: this,
-    init: (subscriber) => {
-      let index = 0;
+  return this[create]((subscriber) => {
+    let index = 0;
 
-      subscribeToSource(this, subscriber, {
-        next(value) {
-          subscriber.next(project.call(thisArg, value, index++));
-        },
-      });
-    },
+    subscribeToSource(this, subscriber, {
+      next(value) {
+        subscriber.next(project.call(thisArg, value, index++));
+      },
+    });
   });
 }
 
