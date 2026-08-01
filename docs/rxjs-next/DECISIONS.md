@@ -1189,16 +1189,21 @@ Status meanings:
   receiver supplies the Observable behavior the implementation uses and a
   callable compatible `[create]` protocol. RxJS does not promise generic
   borrowing onto unrelated objects or transparent foreign-realm behavior.
-- **Cancellation and errors:** Every upstream subscription is owned by the
-  derived subscriber's `AbortSignal`. Operators that need an earlier local
-  boundary join an operator-owned controller with that signal. Synchronous
-  user callbacks, host setup, and input conversion are caught and forwarded
-  through `subscriber.error`; errors thrown by downstream observers remain the
-  platform's host-reporting responsibility.
+- **Cancellation and errors:** Semantically ordinary upstream subscriptions
+  are owned by the derived subscriber's `AbortSignal`. Operators that need an
+  earlier local boundary join an operator-owned controller with that signal.
+  Synchronous user callbacks, host setup, and input conversion are caught and
+  forwarded through `subscriber.error`; errors thrown by downstream observers
+  remain the platform's host-reporting responsibility. Root-core and
+  Subject-like connections, async-generator adapters, lifecycles intentionally
+  retained beyond the outer result, and terminal/finalization paths keep raw
+  subscriptions when destination-signal ownership would change behavior.
 - **Implementation pattern:** Internal helpers expose receiver-driven result
-  creation, active-realm input conversion, signal-owned source subscription,
-  and discriminated synchronous error forwarding. They do not add a scheduler,
-  legacy Subscription facade, compatibility input, or string-named method.
+  creation and active-realm input conversion. One positional source-subscription
+  helper owns bound default forwarding, guarded notification overrides,
+  setup-error routing, and optional local-signal joining. It does not add a
+  scheduler, legacy Subscription facade, compatibility input, or string-named
+  method.
 - **Rationale:** Result identity and input normalization solve different
   problems. Conflating them would either lose intentional construction such as
   `ColdObservable` or let a custom receiver redefine the platform conversion

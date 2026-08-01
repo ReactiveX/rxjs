@@ -1747,8 +1747,8 @@ names.
 - One internal positional `subscribeToSource` helper owns default forwarding,
   synchronous callback/setup error forwarding, and optional local-signal
   joining for every semantically eligible production source subscription.
-- The obsolete `subscribeToSource2`, legacy options form,
-  `runWithErrorForwarding`, and their dead types are removed.
+- The obsolete helper alias, legacy options form, separate synchronous-error
+  wrapper, and their dead types are removed.
 - Remaining raw production subscriptions are limited to reviewed root-core,
   async-generator, and intentional host-reporting/terminal-order boundaries.
 - Focused behavior, cold/fallback evidence, type, package, kernel, Webpack,

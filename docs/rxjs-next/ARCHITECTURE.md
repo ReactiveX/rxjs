@@ -455,9 +455,15 @@ realm's platform `Observable.from`, preserving its accepted input categories,
 ordering, identity, and errors rather than asking a result subclass to redefine
 normalization. Source subscriptions inherit the derived subscriber's signal;
 operator-local early-cancellation boundaries join their own controller with
-that signal. Synchronous callbacks, host setup, and conversions are forwarded
-as stream errors, while downstream observer exceptions retain platform host
-reporting.
+that signal. One positional internal source-subscription helper binds default
+forwarding callbacks, wraps operator overrides, routes synchronous setup
+failures through the source-error path, and joins an optional local signal.
+Synchronous callbacks, host setup, and conversions are forwarded as stream
+errors, while downstream observer exceptions retain platform host reporting.
+Raw subscriptions remain at root-core and Subject-like connection boundaries,
+async-generator adapters without a destination Subscriber, lifecycles retained
+beyond the outer result, and terminal/finalization paths whose ordering or
+host-reporting behavior would be changed by destination-signal ownership.
 
 ### Installation side effects
 
