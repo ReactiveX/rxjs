@@ -2,16 +2,25 @@
   "private": true,
   "license": "Apache-2.0",
   "engines": {
-    "node": "^18.13.0 || ^20.9.0 || ^24.0.0"
+    "node": ">=22.13.0"
   },
   "packageManager": "pnpm@10.34.5",
   "scripts": {
     "analyze:bundles": "node scripts/analyze-bundles.mjs",
     "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release": "node scripts/release.js",
+    "release:check": "node --test scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
     "test:kernel": "pnpm --filter rxjs run test:kernel",
     "test:lifecycle": "pnpm --filter @rxjs/observable-polyfill run test:lifecycle",
+    "test:release:runtime": "pnpm --filter rxjs run test:release:runtime",
+    "test:release:browsers": "pnpm --filter rxjs run test:release:browsers",
+    "test:release:safari": "pnpm --filter rxjs run test:release:safari",
+    "test:release:safari:desktop": "pnpm --filter rxjs run test:release:safari:desktop",
+    "test:release:safari:ios": "pnpm --filter rxjs run test:release:safari:ios",
+    "test:release:webpack": "pnpm --filter rxjs run test:release:webpack",
+    "test:release:performance": "pnpm --filter rxjs run test:release:performance",
+    "test:release:adoption": "node scripts/qualify-prerelease.mjs",
     "wpt:doctor": "node packages/observable-polyfill/test/wpt/cli.mjs doctor",
     "wpt:import": "node packages/observable-polyfill/test/wpt/cli.mjs import",
     "wpt:verify-import": "node packages/observable-polyfill/test/wpt/cli.mjs verify-import",
@@ -22,6 +31,7 @@
   "devDependencies": {
     "@nx/eslint-plugin": "17.3.2",
     "@nx/js": "17.3.2",
+    "@playwright/test": "1.62.1",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "cz-conventional-changelog": "1.2.0",
@@ -36,6 +46,7 @@
     "typescript": "~5.7.3",
     "validate-commit-msg": "2.14.0",
     "vitest": "^1.2.1",
+    "webpack": "5.106.2",
     "yargs": "17.7.2"
   },
   "husky": {

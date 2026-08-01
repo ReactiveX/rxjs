@@ -585,7 +585,9 @@ publishes measured outcomes and limitations rather than a blanket automatic
 migration claim.
 
 The live matrix, offline outcome gates, current measured evidence, and claim
-limits are tracked in `MIGRATION_QUALIFICATION.md`. The completed Codex-only
+limits are tracked in
+[`MIGRATION_QUALIFICATION.md`](MIGRATION_QUALIFICATION.md).
+The completed Codex-only
 matrix passes 4/4: three approved migrations completed and the
 weak-coverage/unsupported scenario made its required safe stop. Codex
 `0.146.0-alpha.3.1`, `gpt-5.6-sol` at medium reasoning, and Skill/engine

@@ -16,10 +16,17 @@ an agent-first workflow: one canonical portable Skill directs reviewed project
 work while deterministic one-time transforms handle only bounded source
 rewrites.
 
-The working project name is **RxJS Next**. The likely public version is RxJS 9
-because a cancelled RxJS 8 line already exists and reusing that version would
-create avoidable confusion. The final version number remains a release
-decision.
+The working project name is **RxJS Next**. The public version is RxJS 9 because
+a cancelled RxJS 8 line already exists and reusing that version would create
+avoidable confusion. The first planned prerelease is `9.0.0-beta.0`; the
+release must explain prominently that RxJS 8 was paused while the web-platform
+Observable was finalized and that RxJS 9 is the new platform-based generation.
+
+D-053 fixes the initial release matrix: one ESM implementation serves Node
+`22.13+`/24, latest stable Chrome and Firefox, current desktop and Mobile
+Safari, Webpack 5, Deno, and Bun. Node 26 is advisory during beta. Browser,
+Webpack, `import`, and the Node `require(esm)` bridge resolve the same files;
+no CommonJS or runtime-specific code copy is published.
 
 ## Why this work exists
 
@@ -78,8 +85,10 @@ Restarting the library on top of the platform primitive has three benefits:
   implementation technique.
 - Treating the exploratory branch's package names, `8.0.0-alpha` versions, or
   exports as final.
-- Redesigning the documentation website or release process before the runtime
-  and package boundaries are stable.
+- Changing, building, publishing, or redesigning the `rxjs.dev` documentation
+  site during this plan. Package-relative documentation belongs inside the
+  corresponding package container; repository-wide governance remains under
+  `docs/rxjs-next`.
 - Freezing the upstream Observable proposal. The project must expect the
   specification and tentative WPT suite to evolve.
 

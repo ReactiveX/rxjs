@@ -7,7 +7,9 @@
       "parserOptions": {
         "project": ["./packages/test/tsconfig.json"]
       },
-      "rules": {}
+      "rules": {
+        "@nx/enforce-module-boundaries": "off"
+      }
     },
     {
       "files": ["*.ts", "*.tsx"],

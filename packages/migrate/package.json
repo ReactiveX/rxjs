@@ -1,21 +1,25 @@
 {
   "name": "@rxjs/migrate",
-  "version": "8.0.0-alpha.14",
-  "description": "One-time source migrations from RxJS 7 to RxJS Next",
+  "version": "9.0.0-beta.0",
+  "description": "One-time source migrations from RxJS 7 to RxJS 9",
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/migrate#readme",
   "license": "Apache-2.0",
   "type": "module",
   "files": [
     "dist",
-    "skill"
+    "skill",
+    "README.md",
+    "docs"
   ],
-  "main": "./dist/commonjs/index.js",
-  "types": "./dist/commonjs/index.d.ts",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "bin": {
     "rxjs-migrate": "./dist/esm/cli.js",
     "rxjs-migrate-skill": "./dist/esm/skill-cli.js"
   },
   "scripts": {
-    "build": "tshy",
+    "build": "tshy && node ../../scripts/finalize-esm-package.mjs",
     "lint": "eslint ./src",
     "test": "vitest --run",
     "test:agent": "vitest --run test/agent",
@@ -49,7 +53,6 @@
       "build": {
         "dependsOn": [],
         "outputs": [
-          "{projectRoot}/dist/commonjs",
           "{projectRoot}/dist/esm"
         ]
       }
@@ -57,6 +60,9 @@
   },
   "tshy": {
     "selfLink": false,
+    "dialects": [
+      "esm"
+    ],
     "exclude": [
       "src/**/*.spec.ts"
     ],
@@ -78,8 +84,8 @@
         "default": "./dist/esm/index.js"
       },
       "require": {
-        "types": "./dist/commonjs/index.d.ts",
-        "default": "./dist/commonjs/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       }
     },
     "./adapters/mocha-chai-vitest": {
@@ -88,8 +94,8 @@
         "default": "./dist/esm/mocha-chai-vitest.js"
       },
       "require": {
-        "types": "./dist/commonjs/mocha-chai-vitest.d.ts",
-        "default": "./dist/commonjs/mocha-chai-vitest.js"
+        "types": "./dist/esm/mocha-chai-vitest.d.ts",
+        "default": "./dist/esm/mocha-chai-vitest.js"
       }
     },
     "./node": {
@@ -98,8 +104,8 @@
         "default": "./dist/esm/node.js"
       },
       "require": {
-        "types": "./dist/commonjs/node.d.ts",
-        "default": "./dist/commonjs/node.js"
+        "types": "./dist/esm/node.d.ts",
+        "default": "./dist/esm/node.js"
       }
     },
     "./cli": {
@@ -108,8 +114,8 @@
         "default": "./dist/esm/cli.js"
       },
       "require": {
-        "types": "./dist/commonjs/cli.d.ts",
-        "default": "./dist/commonjs/cli.js"
+        "types": "./dist/esm/cli.d.ts",
+        "default": "./dist/esm/cli.js"
       }
     },
     "./skill": {
@@ -118,8 +124,8 @@
         "default": "./dist/esm/skill.js"
       },
       "require": {
-        "types": "./dist/commonjs/skill.d.ts",
-        "default": "./dist/commonjs/skill.js"
+        "types": "./dist/esm/skill.d.ts",
+        "default": "./dist/esm/skill.js"
       }
     },
     "./skill-cli": {
@@ -128,8 +134,8 @@
         "default": "./dist/esm/skill-cli.js"
       },
       "require": {
-        "types": "./dist/commonjs/skill-cli.d.ts",
-        "default": "./dist/commonjs/skill-cli.js"
+        "types": "./dist/esm/skill-cli.d.ts",
+        "default": "./dist/esm/skill-cli.js"
       }
     }
   }

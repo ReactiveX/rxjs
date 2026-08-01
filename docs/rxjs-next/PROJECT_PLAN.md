@@ -42,7 +42,8 @@ The user has now made the complete agent-first migration experience the top
 project priority. The focused P0.M1 package is useful mechanical groundwork,
 but its nine package tests and unreferenced single source fixture do not prove
 general RxJS 7 migration safety. P0.M2 is complete: D-046 and
-`MIGRATION_TOOLING_DESIGN.md` define the agent-first product contract, explicit
+`packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md` defines the agent-first
+product contract, explicit
 lifecycle classification, separate mechanical and agent evidence lanes, one
 canonical Skill with thin Codex/Claude/Cursor adapters, and no MCP release
 surface. P0.M3 and P0.M4 are complete: the bounded engine now supports one
@@ -64,9 +65,20 @@ Symbol catalog onto the transactional extension kernel, and P3.4 completed the
 source-pinned evidence audit. D-051 now supersedes that installation mechanism:
 P4.I1 removed the common installer and moved all 97 public capabilities to
 direct exact-Symbol assignment without changing operator behavior. Phase 4 is
-complete, and P5.1 is now the sole `NEXT` item.
+complete. P5.1 produced package-local migration guidance and moved the
+generated evidence references beside the `rxjs` package. A P5.2 closure audit
+then confirmed that the existing deterministic, contract-fixture, and
+four-repository qualification evidence already satisfies representative
+application validation. P6.1 then accepted the exact RxJS 9 support and
+distribution policy, synchronized `9.0.0-beta.0`, and collapsed four duplicate
+dialects into one ESM implementation. P6.2 through P6.4 completed the release
+matrix, package-local documentation, packed-consumer adoption, and beta
+approval. P6.5 closed the terminal audit; the execution queue is complete and
+has no remaining `NEXT` item.
 
-No dates, staffing commitments, or final release version are assigned.
+RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
+browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
+commitments remain unassigned.
 
 ## Status protocol
 
@@ -76,9 +88,9 @@ No dates, staffing commitments, or final release version are assigned.
 - `BLOCKED`: cannot proceed without a named decision or external change.
 - `DEFERRED`: accepted work intentionally not designed or scheduled yet.
 
-Keep exactly one `NEXT` item. When it completes, mark it `DONE`, record
-verification in the session log, and move `NEXT` to the earliest unblocked
-item.
+Keep exactly one `NEXT` item while the execution queue is open. When it
+completes, mark it `DONE`, record verification in the session log, and move
+`NEXT` to the earliest unblocked item. A completed queue has no `NEXT` item.
 
 ## Success criteria
 
@@ -502,7 +514,8 @@ item.
 
 #### P0.M2 execution handoff
 
-- **Objective:** create `docs/rxjs-next/MIGRATION_TOOLING_DESIGN.md` as the
+- **Objective:** create the package-owned migration tooling design (now at
+  `packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`) as the
   controlling product and technical design for the complete agent-first
   migration experience.
 - **Why now:** migration safety is a release-defining user experience, while
@@ -1457,8 +1470,8 @@ Phase exit:
 
 | Status     | ID   | Outcome                                                                              |
 | ---------- | ---- | ------------------------------------------------------------------------------------ |
-| `NEXT`     | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
-| `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
+| `DONE`     | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `DONE`     | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
 | `DEFERRED` | P5.3 | Evaluate later RxJS usage Skills beyond the canonical migration workflow             |
 | `DEFERRED` | P5.4 | Evaluate optional integrations only under a new evidence-backed product decision     |
 
@@ -1466,14 +1479,266 @@ AI tools must consume versioned project knowledge and produce reviewable
 changes. They must not infer migration safety solely from matching operator
 names.
 
+#### P5.1 completion bar
+
+- One package-local guide gives an RxJS 7 user a task-oriented path from a
+  green baseline through lifecycle classification, bounded transformation,
+  semantic review, and verified closeout.
+- The guide covers Symbol imports and composition, platform versus
+  producer-per-direct-subscription behavior, signal cancellation, teardown,
+  platform input conversion, Subjects, schedulers, testing, and safe-stop
+  conditions without implying a compatibility runtime.
+- The generated migration-evidence ledger and unsupported-surface catalog live
+  inside the `rxjs` package container and retain deterministic freshness gates.
+- Public examples type-check, package-local and repository-governance links
+  resolve, and no `apps/rxjs.dev` path or documentation-site command changes.
+
+#### P5.1 completion evidence
+
+- Added `packages/rxjs/MIGRATION.md` as the concise golden path, including the
+  explicit four-way lifecycle choice, direct Symbol composition examples,
+  AbortSignal cancellation and teardown examples, conversion/realm limits,
+  Subject and scheduler guidance, automation boundaries, and a completion
+  checklist.
+- Moved the generated migration-evidence ledger and unsupported-surface guide
+  to `packages/rxjs/docs`, changed their generators and freshness gates to the
+  package-local paths, and updated repository-wide compatibility references.
+- Added a strict declaration consumer for the guide's Symbol chaining,
+  Symbol-keyed pipe, subscription signal, teardown, and ColdObservable examples.
+- Accepted D-007 with RxJS 9 and `9.0.0-beta.0`, and recorded D-052 for
+  package-local documentation plus the explicit rxjs.dev exclusion.
+- Passed the public type consumer, migration ledger/catalog freshness gates,
+  parity-document freshness, relative-link validation, formatting/diff checks,
+  and a path audit confirming no `apps/rxjs.dev` change. Advanced P5.2 as the
+  sole `NEXT` item.
+
+#### P5.2 completion bar
+
+- Representative application and library repositories exercise strong and weak
+  coverage, multiple test frameworks, cold-preserving, platform-shared, mixed,
+  Subject, and unsupported migration outcomes.
+- Mechanical steps are covered by exact transforms, compilation, idempotence,
+  diagnostics, refusal safety, and behavior; semantic steps are covered by
+  explicit contract decisions, held-out behavior, protected tests, and
+  intentional-divergence review.
+- At least one unsupported or insufficiently covered repository proves a timely
+  safe stop before target installation or migration writes.
+- Offline grading verifies the retained qualification records and artifacts.
+  Any live-model claim remains bounded to the recorded harness, model, versions,
+  repositories, and outcome gates.
+
+#### P5.2 completion evidence
+
+- Audited P0.M3, P4.4, and P0.M5 against the package-local migration guide and
+  recorded the guide-to-evidence map in
+  `packages/migrate/docs/MIGRATION_QUALIFICATION.md`.
+- Confirmed four immutable RxJS 7 application/library seeds spanning Vitest,
+  Mocha, Jest, strong and weak coverage, cold, shared platform, mixed, and
+  unsupported target contracts. Three complete and one makes the required safe
+  stop before target installation or migration writes.
+- Re-ran all 17 `@rxjs/migrate` suites and 166 tests, including deterministic
+  mechanical behavior, the four P4.4 lifecycle outcomes, seed oracles, the
+  14-family semantic grader, the closed four-record matrix, and artifact
+  mutation controls. All pass.
+- Passed the migration package build, declaration consumer, ESM/CommonJS
+  imports, and publication dry run. The audit adds no new cross-harness or
+  automatic-migration claim and does not rewrite the immutable
+  `8.0.0-alpha.14` qualification snapshot.
+- Marked P5.2 `DONE`, completed the planned Phase 5 work, left P5.3 and P5.4
+  intentionally deferred, and advanced P6.1 as the sole `NEXT` item.
+
 ### Phase 6 — Release readiness
 
-| Status    | ID   | Outcome                                                                               |
-| --------- | ---- | ------------------------------------------------------------------------------------- |
-| `PLANNED` | P6.1 | Finalize version naming, supported environments, support policy, and release channels |
-| `PLANNED` | P6.2 | Complete package, type, bundle, performance, and conformance gates                    |
-| `PLANNED` | P6.3 | Publish API, migration, and contributor documentation                                 |
-| `PLANNED` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
+| Status | ID   | Outcome                                                                               |
+| ------ | ---- | ------------------------------------------------------------------------------------- |
+| `DONE` | P6.1 | Finalize version naming, supported environments, support policy, and release channels |
+| `DONE` | P6.2 | Complete package, type, bundle, performance, and conformance gates                    |
+| `DONE` | P6.3 | Publish package-local API, migration, and contributor documentation                   |
+| `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
+| `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
+
+#### P6.1 completion bar
+
+- All release packages share the accepted RxJS 9 prerelease identity and exact
+  internal dependency versions; runtime metadata, fixtures, lockfile, and the
+  checked-in migration Skill adapter agree.
+- One accepted decision defines blocking and advisory Node lanes, desktop and
+  Mobile Safari plus evergreen browser coverage, Webpack, Deno, Bun, npm
+  channels, RxJS 7 maintenance, and explicitly unclaimed environments.
+- Published JavaScript is ESM-only. Browser, Webpack, `import`, and Node
+  `require(esm)` resolution share the same files, with no CommonJS or
+  runtime-specific code copy.
+- A release-coherence gate rejects version, dependency, runtime identity,
+  migration Skill, Node range, distribution, npm-channel, or rxjs.dev-exclusion
+  drift.
+
+#### P6.1 completion evidence
+
+- Accepted D-053 with Node `22.13+`/24 blocking, Node 26 advisory, current
+  Chrome/Firefox/desktop Safari/Mobile Safari, Webpack 5, Deno, and Bun; RxJS 9
+  beta uses npm `next`, RxJS 7 remains `latest` and maintained.
+- Synchronized all four manifests, exact internal dependencies, runtime
+  identities, import fixtures, lockfile entries, and the checked-in canonical
+  migration Skill adapter to `9.0.0-beta.0` while preserving the immutable
+  `8.0.0-alpha.14` qualification records.
+- Configured all four packages to build only `dist/esm`; removed legacy
+  `main`/CommonJS and target-specific outputs. Browser, Webpack, `import`, and
+  Node `require(esm)` conditions now resolve the same ESM files. The mixed-load
+  fixture proves shared Symbol and fallback identity.
+- Added tested distribution finalization and release-coherence gates. All four
+  packages build, all declaration consumers pass, ESM and Node `require(esm)`
+  imports pass on Node `24.12.0`, and no `apps/rxjs.dev` path changed or ran.
+- Marked P6.1 `DONE` and advanced P6.2 as the sole `NEXT` item.
+
+#### P6.2 completion bar
+
+- Blocking Node 22.13+/24, current Chrome/Firefox/desktop Safari/Mobile Safari,
+  Deno, Bun, and Webpack lanes plus advisory Node 26 are executable and guarded
+  against release-policy drift.
+- All four packages pass build, type, import/`require(esm)`, package, and
+  publication checks from one ESM output; alternate runtimes add no shipped
+  code or bundle bytes.
+- Browser lifecycle/Symbol behavior, branded Safari, Webpack resolution and
+  size, performance floors, and pinned Observable WPT conformance have explicit
+  blocking gates and checked-in budgets or revisions.
+- Evidence distinguishes current engine integration, branded Safari, pinned
+  standards conformance, focused product behavior, and intentional RxJS 7
+  migration divergences without changing their classifications.
+
+#### P6.2 completion evidence
+
+- Added guarded release workflows for blocking Node `22.13.0`/24, advisory Node
+  26, Chrome 151, Firefox 153, WebKit 26.5, Webpack 5.106.2, Deno 2.8.0, Bun
+  1.3.14, desktop Safari, and Mobile Safari in an actual iOS simulator. The
+  release-coherence test rejects removal of any lane or any rxjs.dev reference.
+- Passed the package-built runtime and ESM resolution contract locally on Node
+  22.13.0, 24.12.0, advisory 26.5.0, Deno 2.8.0, and Bun 1.3.14. Node 22 and 26
+  also pass ESM and `require(esm)` package imports; no runtime-specific source,
+  dependency, condition, or artifact was added.
+- Passed the same eight-case browser contract in Chromium 151 with native
+  Observable and Firefox 153/WebKit 26.5 with the fallback. Added separate
+  SafariDriver gates for branded desktop Safari and `platformName: iOS` plus
+  `safari:useSimulator: true`; local Safari was not enabled persistently merely
+  to manufacture evidence.
+- Webpack consumed 19 `dist/esm` modules and emitted 17,502 minified bytes under
+  a 22,000-byte ceiling. Node 24 medians reached approximately 50.4 million map
+  values/second and 140,500 cancellations/second over floors of 5 million and
+  30,000 respectively.
+- Passed all four package builds, declaration consumers, imports, package
+  fixtures and dry runs; focused suites pass 51 polyfill, 750 RxJS, 75 test,
+  and 166 migration tests. The pinned Chrome 150 gate passes all 52 URLs, 525
+  upstream subtests, and 52 exact-identity attestations.
+- Recorded the executable matrix and budget rationale under
+  `packages/rxjs/docs/RELEASE_GATES.md`, marked P6.2 `DONE`, and advanced P6.3
+  as the sole `NEXT` item without changing or running `apps/rxjs.dev`.
+
+#### P6.3 completion bar
+
+- The root README clearly identifies the beta, explains why the release is
+  RxJS 9 rather than RxJS 8, distinguishes RxJS 7 `latest` from RxJS 9 `next`,
+  and puts the platform/Symbol/lifecycle model and first install example up
+  front.
+- Every release package has package-owned entry documentation; RxJS API,
+  migration, release-gate, and contributor guidance and migration-engine
+  product/qualification guidance stay inside their owning package containers.
+- Package manifests publish the applicable README and documentation paths, all
+  local documentation links resolve within the owning container, and
+  publication dry runs contain the intended documents.
+- A blocking freshness check rejects missing publication paths, broken or
+  cross-container links, and documentation-site coupling without reading,
+  building, testing, publishing, or deploying the site.
+
+#### P6.3 completion evidence
+
+- Replaced the repository README with an RxJS 9 beta entry point that answers
+  “What happened to RxJS 8?”, explains native-first exact-Symbol composition,
+  shows an install/use example, names the four package products, and states the
+  release/support channels and current environment boundary.
+- Added package READMEs for `rxjs`, `@rxjs/observable-polyfill`, and
+  `@rxjs/test`; refreshed `@rxjs/migrate`; added package-local RxJS API and
+  contributor guides; and retained the migration, unsupported-surface,
+  evidence-ledger, and release-gate references beside `rxjs`.
+- Moved the 650-line migration tooling design into `packages/migrate/docs`
+  beside its qualification record and updated controlling repository links.
+  Package metadata now points npm users at the package READMEs rather than the
+  separate site workstream.
+- Added tested package-documentation validation and made it part of
+  `release:check`. All local links and package boundaries pass, and four npm
+  publication dry runs include the expected README/docs/Skill content from one
+  ESM artifact set.
+- Marked P6.3 `DONE` and advanced P6.4 as the sole `NEXT` item. No
+  `apps/rxjs.dev` path was changed, built, tested, published, or deployed.
+
+#### P6.4 completion bar
+
+- Exact `9.0.0-beta.0` tarballs install into an isolated representative
+  consumer and pass ESM, Node `require(esm)`, public types, test-harness use,
+  and browser bundling on blocking Node 22.13/24 and advisory Node 26.
+- Packed artifacts contain only intended ESM output, package-local
+  documentation, metadata, and the canonical migration Skill where applicable;
+  source specs, duplicate dialects, and size-budget regressions are rejected.
+- Representative application/library migration outcomes, package, runtime,
+  browser, conformance, performance gates, and the release-version dry run
+  leave no unexplained local beta blocker.
+- A durable decision approves the synchronized RxJS 9 beta.0 train for npm
+  `next` after blocking CI is green while explicitly withholding npm
+  publication, stable `9.0.0`, and `latest` promotion.
+
+#### P6.4 completion evidence
+
+- Added a tested packed-artifact auditor and offline adoption gate. The exact
+  tarballs pass ESM, `require(esm)`, strict TypeScript, `@rxjs/test`, and a
+  20,222-byte browser bundle on Node 22.13.0, 24.12.0, and advisory 26.5.0.
+- Audited 183,920-byte `rxjs`, 23,375-byte polyfill, 47,270-byte test, and
+  112,638-byte migration tarballs under checked-in 250K/30K/60K/140K ceilings.
+  No source spec, duplicate dialect, or required package-document omission was
+  present.
+- The Nx first-release dry run resolves all four packages from the prior alpha
+  tag to `9.0.0-beta.0`. Release coherence protects the `next`/`latest`
+  channels, supported matrix, documentation boundary, and version identities.
+- Reused the closed P5.2 adoption matrix: three representative RxJS 7
+  applications/libraries complete and one unsupported case stops safely across
+  Vitest, Mocha, Jest, cold, platform-shared, mixed, Subject, and unsupported
+  contracts.
+- Accepted D-054 and recorded package-local approval for the RxJS 9 beta line
+  under npm `next` after blocking CI is green. Stable `9.0.0`, `latest`
+  promotion, npm publication, and website work remain outside this approval.
+- Marked P6.4 `DONE` and advanced the terminal P6.5 closure audit as the sole
+  `NEXT` item.
+
+#### P6.5 completion bar
+
+- A frozen-lockfile installation and all four release-package lint, build,
+  declaration, import, package, and publication gates pass from the resulting
+  workspace state.
+- Release coherence, package-documentation, packed-consumer adoption, Webpack
+  size, and performance budgets pass with the approved beta artifacts.
+- Workflow syntax, diff hygiene, and the active-plan state pass a final audit;
+  the release workflow neither references nor operates on the documentation
+  application.
+- `apps/rxjs.dev` has no worktree change and was not built, tested, published,
+  or deployed during this project-plan execution.
+
+#### P6.5 completion evidence
+
+- Completed a frozen-lockfile install on Node 24.12.0 and then verified the
+  lockfile offline. A legacy optional `re2` native build reported a non-blocking
+  Node 24 compilation warning outside the four release packages; pnpm completed
+  successfully and no release-package dependency relies on it.
+- Passed lint with zero errors for all four release packages, then passed every
+  package build, declaration consumer, ESM and Node `require(esm)` import,
+  package fixture, and publication check. The audit fixed one previously masked
+  test-only manifest dependency and scoped Nx's repository test-graph cycle out
+  of the `@rxjs/test` package lint boundary.
+- Re-passed all ten release/documentation unit and coherence checks, the exact
+  packed-tarball consumer adoption gate, the 17,502-byte Webpack gate, and the
+  performance floors at approximately 47.1 million map values/second and
+  131,300 cancellations/second.
+- Parsed every workflow, passed whitespace/diff checks, and confirmed an empty
+  `apps/rxjs.dev` diff and status. No documentation-site command was run.
+- Marked P6.5 `DONE`. All planned implementation work is complete, P5.3 and
+  P5.4 remain explicitly accepted `DEFERRED` ideas rather than unfinished
+  execution items, and the terminal queue intentionally has no `NEXT` marker.
 
 ## Dependencies
 
@@ -1526,7 +1791,7 @@ conformance implementation depends on a runnable harness.
 
 ## Out of scope until activated
 
-- final documentation-site architecture;
+- every change, build, test, publication, or deployment of `apps/rxjs.dev`;
 - a complete operator priority list;
 - release dates.
 
@@ -2865,3 +3130,122 @@ conformance implementation depends on a runnable harness.
   fallback/native Chrome kernel cases.
 - Marked P4.I1 `DONE`, completed Phase 4, and advanced P5.1 as the sole
   project-level `NEXT` item.
+
+### 2026-08-01 — P5.1 package-local migration guidance
+
+- Added the task-oriented RxJS 7-to-9 guide under `packages/rxjs`, covering
+  lifecycle selection, Symbol imports, cancellation, teardown, input
+  conversion, Subjects, schedulers, testing, automation limits, and closeout.
+- Moved the generated migration-evidence and unsupported-surface references
+  into `packages/rxjs/docs`; their existing generation and freshness gates now
+  own those package-local paths.
+- Added a declaration consumer for the guide's public examples and updated the
+  repository compatibility links without changing production behavior.
+- Accepted RxJS 9 with `9.0.0-beta.0` under D-007 and recorded D-052 for
+  package-local documentation and the explicit `apps/rxjs.dev` exclusion.
+- Passed the public type, generated-doc freshness, parity freshness, link,
+  format, diff, and no-rxjs.dev-change checks. Marked P5.1 `DONE` and advanced
+  P5.2 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P5.2 representative migration closure audit
+
+- Mapped the P5.1 migration journey to the existing P0.M3 deterministic,
+  P4.4 contract-fixture, and P0.M5 four-repository evidence and recorded that
+  package-local map beside `@rxjs/migrate`.
+- Confirmed the matrix covers applications and libraries, Vitest/Mocha/Jest,
+  strong and weak coverage, cold, shared platform, mixed, Subject, and
+  unsupported contracts, with three completed migrations and one timely safe
+  stop.
+- Re-ran all 17 migration suites and 166 tests. Exact transforms,
+  compilation/idempotence, behavior, lifecycle negative controls, seed oracles,
+  14 semantic gate families, all four captured records, all 20 artifact hashes,
+  and mutation controls pass.
+- Passed the migration package build, public types, ESM/CommonJS imports, and
+  publication dry run. No new live-model or cross-harness claim was added.
+- Marked P5.2 `DONE`, left the two explicitly deferred Phase 5 ideas deferred,
+  and advanced P6.1 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P6.1 release identity and support policy
+
+- Accepted D-053: Node `22.13+` and 24 are blocking, Node 26 is advisory, and
+  latest Chrome/Firefox, desktop and Mobile Safari, Webpack 5, Deno, and Bun
+  form the blocking non-Node matrix.
+- Kept RxJS 9 prereleases on npm `next`, RxJS 7 on `latest` during beta, and
+  RxJS 7 maintained without assigning a sunset date.
+- Synchronized the four-package train, internal dependency edges, runtime
+  identities, fixtures, lockfile, and installed migration Skill adapter to
+  `9.0.0-beta.0`; historical qualification evidence remains immutable.
+- Replaced ESM/CommonJS/browser/webpack copies with one `dist/esm` build.
+  Browser, Webpack, `import`, and Node `require(esm)` conditions share that
+  implementation; the Node bridge and shared exact-Symbol identity pass.
+- Added tested ESM-distribution and release-coherence checks, passed all four
+  builds, declaration consumers, and import fixtures on Node `24.12.0`, and
+  confirmed that `apps/rxjs.dev` was neither changed nor executed.
+- Marked P6.1 `DONE` and advanced P6.2 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P6.2 release gates and environment evidence
+
+- Added blocking package lanes for Node 22.13+/24 and advisory Node 26, plus
+  package-built Deno 2.8.0 and Bun 1.3.14 runtime contracts.
+- Added one cross-browser contract for current Chrome, Firefox, and WebKit and
+  separate SafariDriver lanes for branded desktop and Mobile Safari; the
+  Mobile Safari request requires an actual iOS simulator.
+- Added Webpack ESM-resolution and 22,000-byte bundle checks plus measured map
+  and cancellation budgets. Local Node 24 evidence was 17,502 bytes, about
+  50.4M map values/second, and about 140.5K cancellations/second.
+- Passed the four-package train, focused product suites, supported-runtime
+  imports, browser-engine contract, and pinned 52-URL/525-subtest WPT closure.
+  Retained the reviewed 39 cold and 22 fallback migration divergences as
+  non-blocking classified evidence.
+- Extended release coherence to reject environment-lane or documentation-site
+  drift. Marked P6.2 `DONE` and advanced P6.3 as the sole project-level `NEXT`
+  item.
+
+### 2026-08-01 — P6.3 package-local documentation and README refresh
+
+- Replaced the repository README with a current RxJS 9 beta introduction,
+  prominent “What happened to RxJS 8?” explanation, first-use example,
+  package map, support boundary, and contribution path.
+- Added package-owned READMEs for the runtime, polyfill, and test packages;
+  refreshed the migration package; and added RxJS API, release-gate, and
+  package-contributor guides.
+- Moved the migration tooling design beside `@rxjs/migrate`, kept all public
+  package guidance inside its owning container, and published the applicable
+  README/docs paths from each manifest.
+- Added a tested documentation gate that rejects missing published paths,
+  broken or cross-package local links, and documentation-site references. Four
+  npm dry runs include the intended local documentation and Skill content.
+- Marked P6.3 `DONE` and advanced P6.4 as the sole project-level `NEXT` item;
+  the separate documentation application remained untouched and unused.
+
+### 2026-08-01 — P6.4 packed prerelease adoption and beta approval
+
+- Added a tarball-content and size auditor plus an isolated offline consumer
+  that exercises ESM, Node `require(esm)`, strict types, `@rxjs/test`, and a
+  browser bundle from the actual package artifacts.
+- Passed adoption on Node 22.13.0, 24.12.0, and advisory 26.5.0. The bundle was
+  20,222 bytes; all four tarballs stayed below their checked-in ceilings with
+  package-local documentation and no duplicate dialect or source spec.
+- Passed the Nx first-release version dry run and retained the three-completion,
+  one-safe-stop migration adoption evidence from P5.2.
+- Accepted D-054: the synchronized `9.0.0-beta.0` train is approved for npm
+  `next` after blocking CI is green; this does not publish, promote to `latest`,
+  or approve stable `9.0.0`.
+- Marked P6.4 `DONE` and advanced P6.5 as the sole project-level `NEXT` item for
+  the terminal plan and no-documentation-site closure audit.
+
+### 2026-08-01 — P6.5 terminal closure audit
+
+- Completed the frozen-lockfile audit and verified the resulting lockfile
+  offline. The only native-build warning came from a legacy optional dependency
+  outside the four release packages and did not fail installation.
+- Closed the `@rxjs/test` lint false positive caused by the intentional
+  repository test-graph cycle, and declared its previously masked polyfill
+  import as an exact test-only dependency.
+- Passed all four package lint and package gates, release/documentation checks,
+  packed-consumer adoption, Webpack size, performance floors, workflow parsing,
+  and diff hygiene from the cleanly installed workspace.
+- Confirmed that `apps/rxjs.dev` has no worktree change and that no site build,
+  test, publication, or deployment command ran.
+- Marked P6.5 `DONE`. The execution queue is complete with no remaining `NEXT`
+  item; P5.3 and P5.4 retain their accepted `DEFERRED` status.

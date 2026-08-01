@@ -9,6 +9,29 @@ in its required safe stop. Per D-047, this P0 qualification is intentionally
 limited to Codex/ChatGPT. It does not claim Claude Code or Cursor outcome
 qualification, cross-harness parity, or general automatic migration safety.
 
+P5.2 is also complete by closure audit. Its planned mechanical and semantic
+application-validation outcome was already satisfied by the P0.M3 deterministic
+fixtures, P4.4 accepted contract fixtures, and P0.M5 four-repository outcome
+matrix. The closure audit reruns those offline gates and maps them to the
+package-local migration guide; it does not spend another live-model cycle or
+expand the original qualification claim.
+
+## P5.2 guide-to-evidence map
+
+| Migration-guide step                          | Representative evidence                                                                                                                                        |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Establish a green RxJS 7 baseline             | Four pinned seed repositories, framework-specific baseline commands, immutable dependency descriptors, and executable seed oracles                             |
+| Inventory affected surfaces and coverage gaps | Application/library scenarios spanning Vitest, Mocha, Jest, strong and weak coverage, scheduler, interop, Subject, sharing, and repeated-subscription behavior |
+| Select an explicit lifecycle contract         | Cold-preserving, platform-shared, mixed, and unsupported contract manifests with developer-owned decision vectors                                              |
+| Apply only proven mechanical changes          | Versioned capability registry, exact transform fixtures, compilation, idempotence, structured diagnostics, and refusal-safe batch writes                       |
+| Review semantic boundaries                    | Held-out producer multiplicity, sharing/ref counting, cancellation, teardown, timing, errors, input conversion, Subject state, and restart assertions          |
+| Finish green or stop safely                   | Three completed migrations pass target build and protected behavior; the weak unsupported repository stops before target installation or migration writes      |
+
+The checked-in P4.4 contract fixtures provide a smaller executable cross-check
+for all four guide outcomes: `cold-preserving`, `platform-shared`,
+`subject-hot`, and `safe-stop`. A lifecycle-swap negative control prevents a
+syntactically valid rewrite from being counted as a semantic success.
+
 ## Evidence boundary
 
 The qualification has two distinct lanes:

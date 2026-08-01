@@ -27,16 +27,19 @@ jobs:
       - name: Install Dependencies
         uses: ./.github/actions/install-dependencies
         with:
-          node-version: 20
-
-      - name: Prepare packages for publishing
-        run: pnpm run prepare-packages
+          node-version: 24
 
       - name: Apply updated version to packages
         run: |
           # Use the version from the workflow input if it's set, otherwise use the tag name from the release
           VERSION=${{ github.event.inputs.version || github.ref_name }}
           pnpm nx release version "$VERSION"
+
+      - name: Verify release identity and distribution
+        run: pnpm run release:check
+
+      - name: Prepare packages for publishing
+        run: pnpm run prepare-packages
 
       - name: Publish packages to npm
         run: node ./scripts/publish.js

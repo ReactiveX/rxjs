@@ -1,9 +1,10 @@
-import { map } from '../../src/map.js';
-import { pipe } from '../../src/pipe.js';
-import { scan } from '../../src/scan.js';
-import { switchMap } from '../../src/switch-map.js';
-import { timeout } from '../../src/timeout.js';
-import { timer } from '../../src/timer.js';
+import 'rxjs';
+import { map } from 'rxjs/map';
+import { pipe } from 'rxjs/pipe';
+import { scan } from 'rxjs/scan';
+import { switchMap } from 'rxjs/switch-map';
+import { timeout } from 'rxjs/timeout';
+import { timer } from 'rxjs/timer';
 
 const target = globalThis as typeof globalThis & {
   __rxjsExtensionKernelPilot?: { map: symbol; pipe: symbol; scan: symbol; switchMap: symbol; timeout: symbol; timer: symbol };

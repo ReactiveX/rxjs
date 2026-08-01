@@ -1,126 +1,103 @@
-# <img src="apps/rxjs.dev/src/assets/images/logos/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
+# RxJS
 
-![CI](https://github.com/reactivex/rxjs/workflows/CI/badge.svg)
-[![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
-[![Join the chat at https://gitter.im/Reactive-Extensions/RxJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+RxJS is a library for composing asynchronous and event-based programs with
+Observable values. This repository contains the platform-based next generation
+of RxJS, planned for release as **RxJS 9**.
 
-# RxJS 8 Monorepo
+> RxJS 9 is currently prerelease software. The first beta is
+> `9.0.0-beta.0`, published under npm's `next` tag. RxJS 7 remains the
+> production `latest` line and continues to be maintained.
 
-Look for RxJS and related packages under the [/packages](/packages/) directory. Applications like the [rxjs.dev](https://rxjs.dev) documentation site are under the [/apps](/apps/) directory.
+## Why RxJS 9? What happened to RxJS 8?
 
-[Apache 2.0 License](LICENSE.txt)
+RxJS 8 was real work, not a skipped release. Development began years ago and
+was paused while the Web Platform Observable proposal was finalized. The new
+implementation is a platform-based generation rather than a continuation of
+that paused RxJS 8 branch, so it starts at version 9 to make the architectural
+break unmistakable and avoid presenting the old RxJS 8 work as the released
+product.
 
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contribution Guidelines](CONTRIBUTING.md)
-- [Maintainer Guidelines](apps/rxjs.dev/content/maintainer-guidelines.md)
-- [API Documentation](https://rxjs.dev/)
+## What is different in RxJS 9?
 
-Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
+- RxJS uses the native web-platform `Observable` when one exists and installs
+  a conforming fallback only when needed.
+- RxJS operators and factories are exact, module-owned Symbols. They do not add
+  string-named RxJS methods to the platform API.
+- Platform Observable behavior and producer-per-subscription behavior are
+  explicit, separate contracts. Use `ColdObservable` when each direct
+  subscription must create its own producer.
+- Cancellation is built on `AbortSignal` and the platform Subscriber lifecycle.
+- Published JavaScript is ESM-only. Current Node can bridge `require()` to the
+  same ESM files; there is no duplicate CommonJS build.
 
-## Versions In This Repository
-
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - This is all of the current work, which is against v8 of RxJS right now
-- [7.x](https://github.com/ReactiveX/rxjs/tree/7.x) - This is the branch for version 7.X
-- [6.x](https://github.com/ReactiveX/rxjs/tree/6.x) - This is the branch for version 6.X
-
-Most PRs should be made to **master**.
-
-## Important
-
-By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
-
-## Development
-
-Requires Node `18.13–18.x`, `20.9–20.x`, or `24.x` and pnpm `10.34.5`. Run
-commands from the repository root.
-
-### Start here
-
-| Command                               | Use it for                         |
-| ------------------------------------- | ---------------------------------- |
-| `pnpm install`                        | Install all workspace dependencies |
-| `pnpm exec nx show projects`          | List workspace project names       |
-| `pnpm --filter <project> run`         | List a project's available scripts |
-| `pnpm --filter rxjs.dev run start` ⭐ | Start the documentation site       |
-
-Projects: `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/migrate`, `rxjs`,
-and `rxjs.dev`.
-
-### Fast feedback
-
-| Command                                               | When to use it                           |
-| ----------------------------------------------------- | ---------------------------------------- |
-| `pnpm --filter rxjs run test:watch` ⭐                | Re-run focused RxJS source tests         |
-| `pnpm --filter rxjs exec vitest --run <test-file>` ⭐ | Run one focused RxJS test once           |
-| `pnpm --filter @rxjs/observable-polyfill run test`    | Test the platform Observable fallback    |
-| `pnpm --filter @rxjs/test run test:package`           | Test, build, type-check, and import-test |
-| `pnpm --filter @rxjs/migrate run test`                | Test the one-time migration tooling      |
-| `pnpm --filter <project> run test`                    | Run a package's relevant tests           |
-| `pnpm --filter <project> run lint`                    | Lint one package                         |
-| `pnpm --filter <project> run build`                   | Build one package                        |
-
-The `rxjs` `test` command delegates to `test:unit`: it runs focused source
-specs, then the strict cold and polyfill RxJS 7 parity cases. Package builds,
-lints, declaration consumers, and ESM/CommonJS import fixtures are green.
-The rebuilt polyfill exposed focused source tests that had consumed a stale
-artifact; P0.4 will establish the shared native/fallback lifecycle contract
-before the complete `rxjs` command is restored as a blocking gate.
-Use focused checks for normal development; see the
-[active project plan](docs/rxjs-next/PROJECT_PLAN.md) for current baselines.
-
-### Bundle-size spot checks
-
-`pnpm run analyze:bundles` builds the current RxJS Next source with and without
-the Observable fallback, compares both bundles with published RxJS `7.8.2`,
-and opens one static webpack-bundle-analyzer report. The command installs its
-pinned analyzer toolchain in a disposable directory rather than changing this
-workspace's dependencies or lockfile.
-
-Published-version bundle maps are cached under
-`.cache/rxjs-bundle-analysis/`; current workspace bundles are always rebuilt.
-Exact cached versions can be reused without registry access; npm tags are
-resolved to an exact version on every run. Pass `--rxjs-version` more than once
-to select other releases or npm tags, `--refresh` to rebuild the selected
-published caches, or `--no-open` to write the report without opening it:
+## Try the beta
 
 ```sh
-pnpm run analyze:bundles -- --rxjs-version 7.8.1 --rxjs-version next
-pnpm run analyze:bundles -- --refresh --no-open
+npm install rxjs@next
 ```
 
-The generated report, combined Webpack stats, and standalone bundles are under
-`dist/bundle-analysis/`.
+```ts
+import { ColdObservable } from 'rxjs';
+import { map } from 'rxjs/map';
 
-### Documentation site
+const source = new ColdObservable<number>((subscriber) => {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.complete();
+});
 
-| Command                                         | Use it for                |
-| ----------------------------------------------- | ------------------------- |
-| `pnpm --filter rxjs.dev run start` ⭐           | Start the local site      |
-| `pnpm --filter rxjs.dev run docs`               | Regenerate API content    |
-| `pnpm --filter rxjs.dev run build`              | Build the production site |
-| `pnpm --filter rxjs.dev run test --watch=false` | Run site tests once       |
+source[map]((value) => value * 2).subscribe(console.log);
+```
 
-See the [documentation app guide](apps/rxjs.dev/README.md) for Docker,
-end-to-end, and deployment workflows.
+Import the Symbol and call it with bracket syntax. A platform method such as
+`observable.map(project)` remains the platform contract;
+`observable[map](project)` is the separately versioned RxJS contract.
 
-### Web Platform Tests
+## Packages and documentation
 
-| Command                         | Use it for                                   |
-| ------------------------------- | -------------------------------------------- |
-| `pnpm run wpt:verify-import` ⭐ | Verify the pinned upstream test import       |
-| `pnpm run wpt:doctor`           | Check or prepare browser prerequisites       |
-| `pnpm run test:wpt`             | Run the attested Observable conformance gate |
+| Package                     | Purpose                                                  | Documentation                                                                                                                |
+| --------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `rxjs`                      | Symbol extensions and intentional RxJS primitives        | [Package guide](packages/rxjs/README.md) · [API](packages/rxjs/docs/API.md) · [RxJS 7 migration](packages/rxjs/MIGRATION.md) |
+| `@rxjs/observable-polyfill` | Conditional platform Observable fallback                 | [Package guide](packages/observable-polyfill/README.md)                                                                      |
+| `@rxjs/test`                | Implementation-neutral virtual-time and marble testing   | [Package guide](packages/test/README.md)                                                                                     |
+| `@rxjs/migrate`             | Deterministic migration engine and canonical agent Skill | [Package guide](packages/migrate/README.md)                                                                                  |
 
-See the [WPT guide](packages/observable-polyfill/test/wpt/README.md) before
-importing upstream changes or updating expectations.
+Release support, budgets, and exact environment gates are documented in the
+[`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). Repository-wide design
+records live in [`docs/rxjs-next`](docs/rxjs-next/PROJECT_CHARTER.md).
 
-### Maintainers
+## Supported environments
 
-| Command                                  | Use it for                                |
-| ---------------------------------------- | ----------------------------------------- |
-| `pnpm run prepare-packages`              | Exercise publication preparation          |
-| `pnpm run release -- --gitRemote origin` | Preview a release; dry-run is the default |
+The beta supports Node 22.13+ and Node 24 as blocking lanes, with Node 26 in an
+advisory lane. Current Chrome, Firefox, desktop Safari, Mobile Safari, Deno, Bun,
+and Webpack 5 are blocking. Every supported consumer receives the same ESM
+implementation, so Deno and Bun support adds no runtime-specific package or
+application-bundle code.
 
-Release preparation builds and lints the three accepted runtime packages.
-See the [maintainer guidelines](apps/rxjs.dev/content/maintainer-guidelines.md)
-before publishing.
+## Contributing
+
+Requires Node 22.13+ and pnpm 10.34.5. Run commands from the repository root.
+
+```sh
+pnpm install
+pnpm --filter rxjs exec vitest --run src
+pnpm --filter rxjs run test:package
+pnpm run release:check
+```
+
+Start with the [repository contribution guide](CONTRIBUTING.md) and the
+[`rxjs` package contribution guide](packages/rxjs/CONTRIBUTING.md). The active
+execution queue is [`PROJECT_PLAN.md`](docs/rxjs-next/PROJECT_PLAN.md).
+
+The complete source-pinned RxJS 7 corpus intentionally retains reviewed
+lifecycle and compatibility divergences, so it is migration evidence rather
+than a blanket RxJS 9 compatibility gate. Focused source, package, runtime,
+browser, performance, and WPT commands are the release gates.
+
+## Community and governance
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contribution guidelines](CONTRIBUTING.md)
+- [Apache 2.0 License](LICENSE.txt)
+- [Issues](https://github.com/ReactiveX/rxjs/issues)
+- [Discussions](https://github.com/ReactiveX/rxjs/discussions)

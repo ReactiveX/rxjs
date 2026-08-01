@@ -461,7 +461,7 @@ approved migrations completed and one required unsupported/weak-coverage safe
 stop. Claude Code and Cursor have P0.M4 Skill installation and discovery
 evidence, not measured migration-outcome parity. There is no accepted
 migration MCP surface. See D-046, D-047, and
-`MIGRATION_TOOLING_DESIGN.md`.
+`packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
 
 Its default versioned registry currently claims only the ten mappings backed
 by checked-in source/target type evidence and exact mechanical fixtures:
@@ -476,8 +476,10 @@ surface; it does not name a package or promised facade.
 
 ## Migration-evidence ledger
 
-The generated ledger at `MIGRATION_EVIDENCE_LEDGER.md` joins the versioned
-capability registry to the source-pinned executable manifest. Its complete
+The generated ledger at
+[`packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md`](../../packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md)
+joins the versioned capability registry to the source-pinned executable
+manifest. Its complete
 case IDs and source files are retained in
 `packages/rxjs/test/ported/migration-evidence-ledger.generated.json`.
 Regeneration validates that every registry operator, factory, and value appears
@@ -510,7 +512,8 @@ the public mapping and adapter, while deterministic policy records the import,
 sharing, cancellation, final type status, migration action, and controlling
 decision.
 
-The generated [unsupported RxJS 7 surface catalog](UNSUPPORTED_RXJS_7_SURFACES.md)
+The generated
+[unsupported RxJS 7 surface catalog](../../packages/rxjs/docs/UNSUPPORTED_RXJS_7_SURFACES.md)
 closes P4.3 with a machine-readable source at
 `packages/rxjs/test/ported/unsupported-surface-catalog.json`. It classifies
 imports, public types, scheduler values and overloads, interop protocols, and
@@ -618,8 +621,9 @@ For each supported operator or creation API:
 The P0.4 lifecycle gate implements steps 2 through 4 for the base constructor
 with one self-contained contract executed unchanged against the packaged
 fallback and a browser-native Observable. Package fixtures additionally cover
-missing initialization, preservation of existing side effects, mixed
-ESM/CommonJS duplicate installation, and ambient declaration visibility.
+missing initialization, preservation of existing side effects, shared identity
+through ESM import and Node `require(esm)`, duplicate-package isolation, and
+ambient declaration visibility.
 
 ## Accepted migration fixtures
 

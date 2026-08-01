@@ -10,7 +10,7 @@ const repositoryRoot = resolve(toolDirectory, '../../../../..');
 const catalogPath = resolve(toolDirectory, '../unsupported-surface-catalog.json');
 const manifestPath = resolve(toolDirectory, '../manifest.generated.json');
 const capabilityRegistryPath = resolve(toolDirectory, '../capability-registry.json');
-const markdownPath = resolve(repositoryRoot, 'docs/rxjs-next/UNSUPPORTED_RXJS_7_SURFACES.md');
+const markdownPath = resolve(repositoryRoot, 'packages/rxjs/docs/UNSUPPORTED_RXJS_7_SURFACES.md');
 const checkOnly = process.argv.includes('--check');
 
 const [catalog, manifest, capabilityRegistry] = await Promise.all(
@@ -80,50 +80,41 @@ function validateCatalog(value, sourceManifest, registry) {
       for (const field of ['replacement', 'rationale']) {
         if (typeof entry[field] !== 'string' || entry[field].trim() === '') errors.push(`${entry.id} requires ${field}`);
       }
-      if (!Array.isArray(entry.decisions) || entry.decisions.length === 0 || entry.decisions.some((decision) => !/^D-\d{3}$/.test(decision))) {
+      if (
+        !Array.isArray(entry.decisions) ||
+        entry.decisions.length === 0 ||
+        entry.decisions.some((decision) => !/^D-\d{3}$/.test(decision))
+      ) {
         errors.push(`${entry.id} requires one or more decision ids`);
       }
     }
   }
 
-  requireSurfaces(categorySurfaces, 'imports', [
-    'rxjs/operators',
-    'rxjs/testing',
-    'rxjs/internal/*',
-    'bindCallback',
-    'bindNodeCallback',
-    'scheduled',
-    'using',
-    'isObservable',
-  ], errors);
-  requireSurfaces(categorySurfaces, 'types', [
-    'Subscription',
-    'ObservableInput',
-    'OperatorFunction',
-    'SchedulerLike',
-  ], errors);
-  requireSurfaces(categorySurfaces, 'interop', [
-    'Symbol.observable',
-    'objects with subscribe()',
-    'foreign-realm Observable',
-    'Observable.lift',
-  ], errors);
-  requireSurfaces(categorySurfaces, 'deprecatedAliases', [
-    'combineAll',
-    'flatMap',
-    'pipeable partition',
-    'empty()',
-    'never()',
-    'mapTo',
-    'new BehaviorSubject(value)',
-  ], errors);
+  requireSurfaces(
+    categorySurfaces,
+    'imports',
+    ['rxjs/operators', 'rxjs/testing', 'rxjs/internal/*', 'bindCallback', 'bindNodeCallback', 'scheduled', 'using', 'isObservable'],
+    errors
+  );
+  requireSurfaces(categorySurfaces, 'types', ['Subscription', 'ObservableInput', 'OperatorFunction', 'SchedulerLike'], errors);
+  requireSurfaces(
+    categorySurfaces,
+    'interop',
+    ['Symbol.observable', 'objects with subscribe()', 'foreign-realm Observable', 'Observable.lift'],
+    errors
+  );
+  requireSurfaces(
+    categorySurfaces,
+    'deprecatedAliases',
+    ['combineAll', 'flatMap', 'pipeable partition', 'empty()', 'never()', 'mapTo', 'new BehaviorSubject(value)'],
+    errors
+  );
 
   const schedulerSurfaces = categorySurfaces.get('schedulers') ?? new Set();
-  const schedulerCapabilities = [
-    ...Object.entries(registry.operators),
-    ...Object.entries(registry.staticFactories),
-  ]
-    .filter(([, capability]) => /schedul|host tim|timestamp provider|clock provider/i.test(`${capability.status ?? ''} ${capability.note ?? ''}`))
+  const schedulerCapabilities = [...Object.entries(registry.operators), ...Object.entries(registry.staticFactories)]
+    .filter(([, capability]) =>
+      /schedul|host tim|timestamp provider|clock provider/i.test(`${capability.status ?? ''} ${capability.note ?? ''}`)
+    )
     .map(([name]) => name);
   for (const name of [...schedulerCapabilities, 'scheduled']) {
     if (!schedulerSurfaces.has(name)) errors.push(`schedulers must classify legacy scheduler surface: ${name}`);
@@ -178,7 +169,9 @@ function renderMarkdown(value) {
     output += `| RxJS 7 surface | Disposition | Migration direction | Why | Decisions |\n`;
     output += `| --- | --- | --- | --- | --- |\n`;
     for (const entry of categoryEntries) {
-      output += `| ${entry.surfaces.map(code).join('<br>')} | ${label(entry.disposition)} | ${escapeCell(entry.replacement)} | ${escapeCell(entry.rationale)} | ${entry.decisions.join(', ')} |\n`;
+      output += `| ${entry.surfaces.map(code).join('<br>')} | ${label(entry.disposition)} | ${escapeCell(entry.replacement)} | ${escapeCell(
+        entry.rationale
+      )} | ${entry.decisions.join(', ')} |\n`;
     }
     output += `\n`;
   }

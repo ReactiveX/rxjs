@@ -22,7 +22,7 @@ if (scenario === 'missing-global-subpath') {
   const info = getObservablePolyfillInfo();
   assert.deepEqual(info, {
     packageName: '@rxjs/observable-polyfill',
-    version: '8.0.0-alpha.14',
+    version: '9.0.0-beta.0',
   });
   assert.equal(Object.isFrozen(info), true);
   const markerDescriptor = Object.getOwnPropertyDescriptor(globalThis.Observable, Symbol.for('rxjs.observable.polyfill.info.v1'));
@@ -127,12 +127,12 @@ if (scenario === 'missing-global-subpath') {
     hasMap: true,
     info: {
       packageName: '@rxjs/observable-polyfill',
-      version: '8.0.0-alpha.14',
+      version: '9.0.0-beta.0',
     },
   });
   assert.equal(globalThis.Observable, ParentObservable);
   assert.deepEqual(Object.getOwnPropertySymbols(ParentObservable.prototype), parentSymbols);
-} else if (scenario === 'duplicate-extension-dialects') {
+} else if (scenario === 'shared-esm-require-bridge') {
   Reflect.deleteProperty(globalThis, 'Observable');
   Reflect.deleteProperty(globalThis, 'Subscriber');
   Reflect.deleteProperty(EventTarget.prototype, 'when');
@@ -144,21 +144,17 @@ if (scenario === 'missing-global-subpath') {
   const esmBufferImplementation = globalThis.Observable.prototype[esmBuffer];
   const esmCreate = (await import('rxjs/create')).create;
   const require = createRequire(import.meta.url);
-  const cjsMap = require('rxjs/map').map;
-  const cjsBuffer = require('rxjs/buffer').buffer;
-  const cjsCreate = require('rxjs/create').create;
+  const requiredMap = require('rxjs/map').map;
+  const requiredBuffer = require('rxjs/buffer').buffer;
+  const requiredCreate = require('rxjs/create').create;
 
-  assert.notEqual(esmMap, cjsMap);
-  assert.notEqual(esmBuffer, cjsBuffer);
-  assert.equal(esmCreate, cjsCreate);
+  assert.equal(esmMap, requiredMap);
+  assert.equal(esmBuffer, requiredBuffer);
+  assert.equal(esmCreate, requiredCreate);
   assert.equal(Symbol.keyFor(esmMap), undefined);
-  assert.equal(Symbol.keyFor(cjsMap), undefined);
   assert.equal(Symbol.keyFor(esmBuffer), undefined);
-  assert.equal(Symbol.keyFor(cjsBuffer), undefined);
   assert.equal(typeof globalThis.Observable.prototype[esmMap], 'function');
-  assert.equal(typeof globalThis.Observable.prototype[cjsMap], 'function');
   assert.equal(globalThis.Observable.prototype[esmBuffer], esmBufferImplementation);
-  assert.equal(typeof globalThis.Observable.prototype[cjsBuffer], 'function');
   assert.equal(globalThis.Observable.prototype.map, platformMap);
 } else {
   throw new Error(`Unknown fixture scenario: ${scenario}`);

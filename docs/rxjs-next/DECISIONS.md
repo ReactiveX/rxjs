@@ -107,14 +107,19 @@ Status meanings:
   accepted-divergence category are required. Passing former tests does not
   create a runtime-compatibility promise.
 
-## D-007 — Use RxJS 9 as the probable release name
+## D-007 — Release the platform-based generation as RxJS 9
 
-- **Status:** Proposed
-- **Decision:** Prefer RxJS 9 over reviving the cancelled RxJS 8 name.
-- **Rationale:** Reusing RxJS 8 would blur the distinction between the cancelled
-  effort and this platform-based architecture.
-- **Consequence:** Current `8.0.0-alpha` package versions are not authoritative.
-  Final versioning and pre-release naming remain release decisions.
+- **Status:** Accepted
+- **Decision:** Release this platform-based generation as RxJS 9. The first
+  planned prerelease is `9.0.0-beta.0`.
+- **Rationale:** RxJS 8 identifies an earlier line of work that was paused while
+  the web-platform Observable was finalized. Reusing 8 would blur that history
+  and imply that RxJS 9 is merely an incremental continuation rather than the
+  new platform-based foundation.
+- **Consequence:** The former `8.0.0-alpha` package versions are prototype
+  history and were replaced by `9.0.0-beta.0` during P6.1. The root README, `rxjs` package
+  documentation, and release notes must prominently answer “Where did RxJS 8
+  go?” before the beta is published.
 
 ## D-008 — Provide migration Skills and defer MCP capabilities
 
@@ -926,16 +931,17 @@ Status meanings:
   foreign constructors, and transparent cross-realm Observable operation is
   not supported. Server installation is isolate-global and idempotent, not
   per-request.
-- **Support boundary:** The initial claim is capability-based for browser
+- **Support boundary:** The initial claim was capability-based for browser
   windows, worker realms, and maintained Node releases with the required web
-  primitives. Deno, Bun, edge runtimes, hardened globals, and non-extensible
-  constructors or prototypes remain unclaimed until explicitly tested.
+  primitives. D-053 now accepts an exact release matrix including Deno and Bun.
+  Edge runtimes, hardened globals, and non-extensible constructors or
+  prototypes remain unclaimed until explicitly tested.
 - **Consequence:** The first existing constructor wins, including an earlier
   RxJS fallback version; the helper reports its marker when present. P0.3
   implements a preflighted transactional installation and fixtures clear,
   non-partial failure on unsupported frozen targets. P0.4 completes the shared
-  native/fallback lifecycle contract and proves that mixed ESM/CommonJS loads
-  preserve the first fallback installation's constructor, subscriber,
+  native/fallback lifecycle contract and historically proved that mixed
+  ESM/CommonJS builds preserved the first fallback installation's constructor, subscriber,
   side-effect, abort-bridge, and marker identities. This does not settle P2.1's
   broader extension-Symbol policy across versions and independently bundled
   copies.
@@ -1092,7 +1098,7 @@ Status meanings:
   canonical Skill and harness adapters, and P0.M5 qualifies the workflow on
   representative repositories. A transformed file, green narrow test, or
   operator-name match is never sufficient proof that a project is migrated.
-- **Details:** `MIGRATION_TOOLING_DESIGN.md`.
+- **Details:** `packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
 
 ## D-047 — Bound P0 live migration qualification to Codex/ChatGPT
 
@@ -1118,10 +1124,12 @@ Status meanings:
   remain accepted.
 - **Public identity:** Every public operator and factory exports an exact,
   module-owned `Symbol('name')`. Its identity is stable only through that
-  loaded module export. Independently evaluated ESM/CommonJS dialects,
-  duplicate package copies, and different package versions deliberately
-  produce different public Symbols, even when their descriptions match. Each
-  copy installs and invokes its own exact slot, so version-skewed capabilities
+  loaded module export. Independently evaluated duplicate package copies and
+  different package versions deliberately produce different public Symbols,
+  even when their descriptions match. RxJS 9's ESM-only distribution makes
+  `import` and the Node `require(esm)` bridge resolve the same module instance
+  and therefore the same Symbols. Each independently evaluated copy installs
+  and invokes its own exact slot, so version-skewed capabilities
   can coexist without overwriting one another. Public Symbols are not
   persistent identities and are not stable across major versions or package
   instances.
@@ -1241,10 +1249,10 @@ Status meanings:
   occupancy, provide repeat-install idempotence, customize property
   descriptors, or roll back paired static/instance assignments.
 - **Identity:** D-048's exact module-owned Symbol policy remains controlling.
-  Another library, independently evaluated module dialect, duplicate package
-  copy, or package version receives a different property key even when it uses
-  the same Symbol description. Ordinary module caching prevents repeated
-  evaluation of one module instance. These properties remove the accidental
+  Another library, duplicate package copy, or package version receives a
+  different property key even when it uses the same Symbol description. RxJS
+  9 `import` and Node `require(esm)` share one module instance and exact key.
+  Ordinary module caching prevents repeated evaluation of one module instance. These properties remove the accidental
   conflict and duplicate-install scenarios that motivated the superseded
   installer checks.
 - **Descriptors:** Direct assignment uses JavaScript's ordinary new-property
@@ -1272,3 +1280,101 @@ Status meanings:
   The representative `rxjs/map` bundle decreased by 1,279 minified bytes
   (8.1%), 340 gzip bytes (7.4%), and 307 Brotli bytes (7.4%); the root-only
   control remained byte-identical.
+
+## D-052 — Keep package documentation with its package and exclude rxjs.dev
+
+- **Status:** Accepted
+- **Decision:** User-facing documentation for a package lives inside that
+  package container. Repository-wide charter, architecture, decisions,
+  compatibility policy, open questions, and active-plan records remain under
+  `docs/rxjs-next`. The root README is the repository entry point and may be
+  completely refreshed. `apps/rxjs.dev` is outside this project plan's edit,
+  build, test, publication, and deployment scope.
+- **Rationale:** Package-local documentation keeps public contracts beside the
+  code and publication boundary they describe. Excluding rxjs.dev preserves a
+  separate colleague-owned documentation workstream and prevents this release
+  effort from creating merge conflicts or publishing an incomplete site.
+- **Consequence:** P5 and P6 write RxJS guidance under `packages/rxjs`,
+  migration-tooling guidance under `packages/migrate`, and testing guidance
+  under `packages/test`. Generated migration references move with their owning
+  package and retain freshness gates. Package manifests publish those local
+  documents, and the documentation checker rejects missing links, links that
+  escape a package container, or coupling to the separate site workstream.
+  Website integration is a later explicit coordination step, not a
+  release-readiness shortcut or implicit task.
+
+## D-053 — Ship one ESM implementation across the supported release matrix
+
+- **Status:** Accepted
+- **Release identity and channels:** All four release packages version together,
+  beginning at `9.0.0-beta.0`. RxJS 9 prereleases publish under npm's `next`
+  tag while RxJS 7 remains `latest`. RxJS 9 becomes `latest` only when the
+  stable major is approved; RxJS 7 remains maintained after that transition.
+- **Node:** Node `22.13.0` and later releases on the Node 22 line and maintained
+  Node 24 releases are blocking. Node 26 is exercised as an advisory,
+  non-blocking forward-compatibility lane during beta.
+- **Distribution:** Published JavaScript is ESM-only. Browser, Webpack,
+  `import`, and Node `require(esm)` resolution select the same `dist/esm`
+  implementation and declarations. RxJS does not publish CommonJS, browser,
+  Webpack, Deno, or Bun code copies. The Node bridge is supported only on the
+  declared Node range and does not promise legacy CommonJS resolution or a
+  CommonJS artifact.
+- **Browsers:** The latest stable Chrome and Firefox, current desktop Safari,
+  and current Mobile Safari on an iOS simulator are blocking package/lifecycle
+  targets. A current WebKit build supplies an additional cross-engine signal;
+  it is not mislabeled as branded Safari. The pinned Chrome WPT lane remains
+  the reproducible platform-conformance authority, with latest-browser lanes
+  detecting drift.
+- **Other runtimes and bundlers:** Current stable Deno and Bun releases are
+  blocking consumers of the unchanged npm ESM package. Webpack 5 is a blocking
+  ESM bundler consumer. Support adds tests only: it must not add runtime
+  branches, shims, dependencies, export conditions, or target-specific output.
+  Any discovered need for shipped compatibility code reopens this decision.
+- **Unclaimed environments:** Other edge runtimes, hardened globals,
+  non-extensible constructors/prototypes, and transparent cross-realm use
+  remain outside the initial claim.
+- **RxJS 7 maintenance:** During RxJS 9 beta, RxJS 7 continues to receive
+  security fixes and high-severity correctness or ecosystem-compatibility
+  fixes. It remains a maintained line after RxJS 9 stable; no sunset date is
+  implied by this release.
+- **Rationale:** A platform-based major should advance the standardized ESM
+  ecosystem without multiplying equivalent artifacts. Node's supported
+  `require(esm)` bridge provides a bounded transition for current Node users.
+  Deno, Bun, browsers, and Webpack already consume ESM, so their support should
+  cost verification time rather than shipped bytes or application-bundle size.
+- **Consequence:** P6.1 removes duplicate dialect builds and the legacy
+  `main`/CommonJS surface, makes Node `>=22.13.0` explicit, updates the mixed
+  dialect contract to shared ESM identity, and requires P6.2 to prove every
+  blocking environment plus the advisory Node 26 lane. Package-local support
+  and migration guidance must describe the boundary before prerelease approval.
+
+## D-054 — Approve the synchronized RxJS 9 beta.0 train for the `next` channel
+
+- **Status:** Accepted
+- **Approval:** `rxjs@9.0.0-beta.0`, `@rxjs/observable-polyfill`, `@rxjs/test`,
+  and `@rxjs/migrate` at the same version are approved to begin public beta
+  under npm's `next` tag after the configured blocking CI matrix is green.
+  This repository decision does not itself publish npm packages or create a
+  GitHub release.
+- **Adoption evidence:** The exact packed artifacts install into an isolated
+  offline consumer and pass ESM, Node `require(esm)`, public TypeScript,
+  `@rxjs/test`, and browser-bundle contracts on Node 22.13, 24.12, and advisory
+  26.5. Tarball contents and sizes pass checked-in budgets, all four package
+  trains and focused suites pass, pinned WPT is fully conforming, and the
+  representative migration program retains three completions plus one correct
+  safe stop.
+- **Known evidence boundary:** The reviewed 39 cold and 22 fallback RxJS 7
+  divergences remain explicit migration evidence rather than release blockers.
+  Branded desktop and Mobile Safari remain blocking clean-runner jobs and are
+  not replaced by Playwright WebKit or waived through a local security-setting
+  change.
+- **Stable release:** This decision approves the first major prerelease, not
+  stable `9.0.0` or promotion to npm `latest`. Stable promotion requires public
+  beta feedback and a later explicit decision. RxJS 7 remains `latest` and
+  maintained throughout the beta.
+- **Rationale:** The project now has executable package, environment,
+  conformance, performance, documentation, migration, and isolated-consumer
+  evidence with no unresolved local release blocker. Beginning beta is the
+  correct way to gather ecosystem evidence that cannot be manufactured inside
+  the repository while keeping the stable channel protected.
+- **Details:** `packages/rxjs/docs/PRERELEASE_APPROVAL.md`.

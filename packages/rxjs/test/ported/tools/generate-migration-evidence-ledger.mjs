@@ -8,15 +8,12 @@ import prettier from 'prettier';
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(toolDirectory, '../../../../..');
 const [capabilityRegistry, manifest, verifiedColdPasses, verifiedPolyfillPasses] = await Promise.all(
-  [
-    '../capability-registry.json',
-    '../manifest.generated.json',
-    '../verified-cold-passes.json',
-    '../verified-polyfill-passes.json',
-  ].map((path) => readFile(resolve(toolDirectory, path), 'utf8').then(JSON.parse))
+  ['../capability-registry.json', '../manifest.generated.json', '../verified-cold-passes.json', '../verified-polyfill-passes.json'].map(
+    (path) => readFile(resolve(toolDirectory, path), 'utf8').then(JSON.parse)
+  )
 );
 const jsonPath = resolve(toolDirectory, '../migration-evidence-ledger.generated.json');
-const markdownPath = resolve(repositoryRoot, 'docs/rxjs-next/MIGRATION_EVIDENCE_LEDGER.md');
+const markdownPath = resolve(repositoryRoot, 'packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md');
 const checkOnly = process.argv.includes('--check');
 const verifiedPasses = {
   cold: new Set(verifiedColdPasses.caseIds),
@@ -34,10 +31,7 @@ const supplementalEvidence = new Map([
     'value:ColdObservable',
     {
       sourceFiles: [],
-      localEvidence: [
-        'packages/rxjs/src/cold-observable.spec.ts',
-        'packages/rxjs/test/types/intentional-apis.ts',
-      ],
+      localEvidence: ['packages/rxjs/src/cold-observable.spec.ts', 'packages/rxjs/test/types/intentional-apis.ts'],
       note: 'Intentional Next API evidence is local because RxJS 7 did not publish this class as a public migration source.',
     },
   ],
@@ -45,10 +39,7 @@ const supplementalEvidence = new Map([
     'value:firstValueFrom',
     {
       sourceFiles: ['spec/firstValueFrom-spec.ts'],
-      localEvidence: [
-        'packages/observable-polyfill/src/index.spec.ts',
-        'packages/rxjs/src/cold-observable.spec.ts',
-      ],
+      localEvidence: ['packages/observable-polyfill/src/index.spec.ts', 'packages/rxjs/src/cold-observable.spec.ts'],
       note: 'The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform first() mapping.',
     },
   ],
@@ -56,10 +47,7 @@ const supplementalEvidence = new Map([
     'value:lastValueFrom',
     {
       sourceFiles: ['spec/lastValueFrom-spec.ts'],
-      localEvidence: [
-        'packages/observable-polyfill/src/index.spec.ts',
-        'packages/rxjs/src/cold-observable.spec.ts',
-      ],
+      localEvidence: ['packages/observable-polyfill/src/index.spec.ts', 'packages/rxjs/src/cold-observable.spec.ts'],
       note: 'The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform last() mapping.',
     },
   ],
@@ -123,8 +111,8 @@ function createEntry(category, name, capability) {
         ? 'source-pinned-alias'
         : 'source-pinned'
       : supplemental
-        ? 'supplemental'
-        : 'uncovered';
+      ? 'supplemental'
+      : 'uncovered';
 
   return {
     id,
@@ -321,7 +309,9 @@ function validate(generatedEntries) {
       if (result.passed + result.failed !== result.total || result.total !== entry.evidence.caseCount) {
         throw new Error(`Mode-result mismatch: ${entry.id}`);
       }
-      if (result.failureClassifications.some((classification) => !['compatibility-only', 'intentional-divergence'].includes(classification))) {
+      if (
+        result.failureClassifications.some((classification) => !['compatibility-only', 'intentional-divergence'].includes(classification))
+      ) {
         throw new Error(`Unclassified failing migration evidence: ${entry.id}`);
       }
     }

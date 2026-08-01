@@ -3,43 +3,53 @@ name: CI
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ['18', '20']
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-    name: Node ${{ matrix.node }} build
+jobs:
+  packages:
+    name: Node ${{ matrix.node }} package gates${{ matrix.advisory && ' (advisory)' || '' }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.advisory }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - node: '22.13.0'
+            advisory: false
+          - node: '24'
+            advisory: false
+          - node: '26'
+            advisory: true
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Dependencies
+      - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Build, test and lint all projects (except website)
-        run: pnpm nx run-many -t build lint test --exclude=rxjs.dev
+      - name: Check release coherence
+        run: pnpm run release:check
 
-      - name: rxjs lint
-        run: pnpm --filter rxjs run lint
-      - name: rxjs build
-        run: pnpm --filter rxjs run build
-      - name: rxjs test
-        run: pnpm --filter rxjs run test
-      - name: rxjs dtslint
-        run: pnpm --filter rxjs run dtslint
-      - name: rxjs test:import
-        run: pnpm --filter rxjs run test:import
-      - name: rxjs test:esm
-        run: pnpm --filter rxjs run test:esm
-      - name: rxjs.dev build
-        run: pnpm --filter rxjs.dev run build -- --prod
-      - name: rxjs.dev test
-        run: pnpm --filter rxjs.dev run test -- --watch=false --browsers=ChromeHeadless
+      - name: Lint release packages
+        run: pnpm --filter rxjs --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run lint
+
+      - name: Test release packages
+        run: |
+          pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test
+          pnpm --filter rxjs exec vitest --run src
+
+      - name: Build, type-check, and exercise package imports
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run test:package
+
+      - name: Run runtime contract
+        run: pnpm run test:release:runtime

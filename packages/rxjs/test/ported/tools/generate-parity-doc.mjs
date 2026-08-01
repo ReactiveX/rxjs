@@ -252,7 +252,7 @@ The complete per-case evidence remains in
 ordinary repository-owned files; \`migration-report.json\` retains their static
 case-ID mapping for audits. The joined ledger is generated at
 \`packages/rxjs/test/ported/migration-evidence-ledger.generated.json\` with its
-readable view in \`docs/rxjs-next/MIGRATION_EVIDENCE_LEDGER.md\`.
+readable view in \`packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md\`.
 `;
 const content = prettier.format(rawContent, { parser: 'markdown' });
 

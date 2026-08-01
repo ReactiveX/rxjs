@@ -9,7 +9,7 @@ const scenarios = [
   'event-target-when',
   'frozen-target',
   'separate-realm',
-  'duplicate-extension-dialects',
+  'shared-esm-require-bridge',
 ];
 
 for (const scenario of scenarios) {

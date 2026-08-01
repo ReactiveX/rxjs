@@ -63,20 +63,21 @@ imports initialize correctly. P0.4 additionally proves that mixed ESM/CommonJS
 loads of the base fallback preserve one installation in either order. The open
 question is resolved by the P2 package, duplicate-load, and bundler fixtures.
 
-### 3. Which exact runtime versions and module systems are supported?
+### 3. Which exact runtime versions and module systems are supported? — Resolved
 
-D-041 establishes the initial capability boundary: browser windows, worker
-realms, and maintained Node releases are candidates when the required web
-primitives exist. Deno, Bun, edge runtimes, hardened globals, and
-non-extensible prototypes are unclaimed until tested.
+D-053 accepts Node `>=22.13.0` on the Node 22 line and maintained Node 24 as
+blocking, with Node 26 advisory during beta. The published distribution is one
+ESM implementation; browser, Webpack, `import`, and Node `require(esm)`
+conditions resolve that same output. Latest stable Chrome and Firefox, current
+desktop and Mobile Safari, current stable Deno and Bun, and Webpack 5 are
+blocking. The pinned Chrome WPT run remains the reproducible conformance gate.
 
-Before the release support matrix stabilizes, define:
-
-- minimum browser and maintained Node versions;
-- the required or supplied behavior for `WeakRef`, `AbortSignal.any`,
-  `reportError`, `Symbol.dispose`, `EventTarget`, and DOM types;
-- ESM, CommonJS, and supported bundler guarantees;
-- which browser and Node fixtures make those claims blocking.
+The supported environments must supply `WeakRef`, `AbortSignal.any`,
+`Symbol.dispose`, `EventTarget`, and the applicable DOM types. RxJS retains its
+accepted `reportError` fallback where the host does not expose the global.
+Support adds no environment-specific shipped code. Edge runtimes, hardened
+globals, non-extensible targets, and transparent cross-realm behavior remain
+unclaimed.
 
 ## Platform-layer design questions
 
@@ -132,16 +133,23 @@ than derived Observables.
 
 ## Delivery and migration questions
 
-### 7. What is the final major version and support relationship with RxJS 7?
+### 7. What is the support relationship with RxJS 7? — Resolved
 
-Confirm RxJS 9 or choose another name. Define RxJS 7 maintenance expectations
-and pre-release naming. There is no compatibility package to version.
+D-007 resolves the release identity as RxJS 9 and selects `9.0.0-beta.0` as the
+first planned prerelease. Release documentation must explain that the earlier
+RxJS 8 effort was paused while web-platform Observable work was finalized and
+that RxJS 9 is the new platform-based generation. D-053 keeps RxJS 7 on
+`latest` during the RxJS 9 beta and continues security plus high-severity
+correctness or ecosystem-compatibility fixes. RxJS 7 remains maintained after
+RxJS 9 becomes stable; no sunset date is part of this release. There is no
+compatibility package to version.
 
 ### 8. Which representative repositories and thresholds qualify migration?
 
 D-046 resolves how migration is measured: deterministic transforms must pass
 the mechanical fixture lane, and the complete workflow must pass the agent
-outcome lane defined in `MIGRATION_TOOLING_DESIGN.md`. D-047 and P0.M5 select
+outcome lane defined in `packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
+D-047 and P0.M5 select
 the initial bounded qualification: four pinned application/library repositories
 cover Vitest, Mocha, Jest, strong and weak coverage, cold, platform, mixed, and
 unsupported contracts. All four Codex/ChatGPT runs passed the 14 semantic gate
@@ -149,7 +157,7 @@ families, including the required safe stop. This settles the P0 threshold only;
 broader repository categories, capabilities, models, and reliability sampling
 remain future release-planning questions.
 
-### 9. Which final distribution channels and harness versions are supported?
+### 9. Which migration-harness versions and marketplaces are supported?
 
 D-046 resolves the product boundary: `packages/migrate/skill` is the single
 canonical, package-versioned Skill; Codex, Claude Code, and Cursor receive thin
@@ -157,9 +165,11 @@ installed or synchronized adapters that preserve its digest. The deterministic
 API and dry-run-first CLI remain subordinate engine surfaces. P0.M3 removed
 the P0.M1 MCP prototype; it is not an accepted release surface.
 
-P0.M4 records a tested installation/discovery snapshot for Codex, Claude Code,
+Distribution channels are resolved by D-053: RxJS 9 prereleases use npm
+`next`, RxJS 7 remains npm `latest` during beta, and the four packages version
+together. P0.M4 records a tested installation/discovery snapshot for Codex, Claude Code,
 and Cursor. P0.M5 records a Codex `0.146.0-alpha.3.1` outcome snapshot with
-`gpt-5.6-sol`; it does not qualify Claude Code or Cursor outcomes. Final plugin
-or marketplace distribution channels, harness support windows, and the
-pre-release requalification policy remain open. Adding MCP later would require
-a new accepted decision and product contract.
+`gpt-5.6-sol`; it does not qualify Claude Code or Cursor outcomes. Plugin or
+marketplace distribution, harness support windows, and requalification beyond
+the committed beta evidence remain open. Adding MCP later would require a new
+accepted decision and product contract.

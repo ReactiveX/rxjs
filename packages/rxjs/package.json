@@ -1,21 +1,27 @@
 {
   "name": "rxjs",
-  "version": "8.0.0-alpha.14",
+  "version": "9.0.0-beta.0",
+  "description": "Symbol-based reactive extensions for the Web Platform Observable",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/reactivex/rxjs/issues"
   },
-  "homepage": "https://rxjs.dev",
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/rxjs#readme",
   "author": "Ben Lesh <ben@benlesh.com>",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "MIGRATION.md",
+    "CONTRIBUTING.md",
+    "docs"
   ],
-  "main": "./dist/commonjs/index.js",
-  "types": "./dist/commonjs/index.d.ts",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "type": "module",
   "sideEffects": true,
   "scripts": {
-    "build": "tshy",
+    "build": "tshy && node ../../scripts/finalize-esm-package.mjs --browser",
     "lint": "eslint ./src",
     "test": "pnpm run test:unit",
     "test:unit": "pnpm run test:installations && vitest --run src && pnpm run test:unit:cold && pnpm run test:unit:polyfill",
@@ -39,14 +45,21 @@
     "test:unit:ledger:check": "node test/ported/tools/generate-migration-evidence-ledger.mjs --check",
     "test:unit:unsupported:generate": "node test/ported/tools/generate-unsupported-surface-doc.mjs",
     "test:unit:unsupported:check": "node test/ported/tools/generate-unsupported-surface-doc.mjs --check",
-    "test:migration-contracts": "pnpm run test:unit:ledger:check && pnpm run test:unit:unsupported:check"
+    "test:migration-contracts": "pnpm run test:unit:ledger:check && pnpm run test:unit:unsupported:check",
+    "test:release:runtime": "node test/release/runtime-contract.mjs",
+    "test:release:browsers": "node test/release/browser-matrix.mjs",
+    "test:release:safari": "node --test test/release/safari-driver.test.mjs",
+    "test:release:safari:desktop": "node test/release/safari.mjs desktop",
+    "test:release:safari:ios": "node test/release/safari.mjs ios",
+    "test:release:webpack": "node test/release/webpack.mjs",
+    "test:release:performance": "node test/release/performance.mjs"
   },
   "devDependencies": {
     "chai": "4.4.1",
     "esbuild": "0.19.11"
   },
   "dependencies": {
-    "@rxjs/observable-polyfill": "8.0.0-alpha.14"
+    "@rxjs/observable-polyfill": "9.0.0-beta.0"
   },
   "repository": {
     "type": "git",
@@ -65,6 +78,9 @@
   ],
   "tshy": {
     "selfLink": false,
+    "dialects": [
+      "esm"
+    ],
     "exclude": [
       "src/**/*.spec.ts"
     ],
@@ -188,2138 +204,2132 @@
       "./zip": "./src/zip.ts",
       "./zip-all": "./src/zip-all.ts",
       "./zip-with": "./src/zip-with.ts"
-    },
-    "esmDialects": [
-      "browser"
-    ],
-    "commonjsDialects": [
-      "webpack"
-    ]
+    }
   },
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "browser": {
-        "types": "./dist/browser/index.d.ts",
-        "default": "./dist/browser/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       },
       "webpack": {
-        "types": "./dist/webpack/index.d.ts",
-        "default": "./dist/webpack/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
       "require": {
-        "types": "./dist/commonjs/index.d.ts",
-        "default": "./dist/commonjs/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       }
     },
     "./animation-frames": {
       "browser": {
-        "types": "./dist/browser/animation-frames.d.ts",
-        "default": "./dist/browser/animation-frames.js"
+        "types": "./dist/esm/animation-frames.d.ts",
+        "default": "./dist/esm/animation-frames.js"
       },
       "webpack": {
-        "types": "./dist/webpack/animation-frames.d.ts",
-        "default": "./dist/webpack/animation-frames.js"
+        "types": "./dist/esm/animation-frames.d.ts",
+        "default": "./dist/esm/animation-frames.js"
       },
       "import": {
         "types": "./dist/esm/animation-frames.d.ts",
         "default": "./dist/esm/animation-frames.js"
       },
       "require": {
-        "types": "./dist/commonjs/animation-frames.d.ts",
-        "default": "./dist/commonjs/animation-frames.js"
+        "types": "./dist/esm/animation-frames.d.ts",
+        "default": "./dist/esm/animation-frames.js"
       }
     },
     "./argument-out-of-range-error": {
       "browser": {
-        "types": "./dist/browser/argument-out-of-range-error.d.ts",
-        "default": "./dist/browser/argument-out-of-range-error.js"
+        "types": "./dist/esm/argument-out-of-range-error.d.ts",
+        "default": "./dist/esm/argument-out-of-range-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/argument-out-of-range-error.d.ts",
-        "default": "./dist/webpack/argument-out-of-range-error.js"
+        "types": "./dist/esm/argument-out-of-range-error.d.ts",
+        "default": "./dist/esm/argument-out-of-range-error.js"
       },
       "import": {
         "types": "./dist/esm/argument-out-of-range-error.d.ts",
         "default": "./dist/esm/argument-out-of-range-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/argument-out-of-range-error.d.ts",
-        "default": "./dist/commonjs/argument-out-of-range-error.js"
+        "types": "./dist/esm/argument-out-of-range-error.d.ts",
+        "default": "./dist/esm/argument-out-of-range-error.js"
       }
     },
     "./async-subject": {
       "browser": {
-        "types": "./dist/browser/async-subject.d.ts",
-        "default": "./dist/browser/async-subject.js"
+        "types": "./dist/esm/async-subject.d.ts",
+        "default": "./dist/esm/async-subject.js"
       },
       "webpack": {
-        "types": "./dist/webpack/async-subject.d.ts",
-        "default": "./dist/webpack/async-subject.js"
+        "types": "./dist/esm/async-subject.d.ts",
+        "default": "./dist/esm/async-subject.js"
       },
       "import": {
         "types": "./dist/esm/async-subject.d.ts",
         "default": "./dist/esm/async-subject.js"
       },
       "require": {
-        "types": "./dist/commonjs/async-subject.d.ts",
-        "default": "./dist/commonjs/async-subject.js"
+        "types": "./dist/esm/async-subject.d.ts",
+        "default": "./dist/esm/async-subject.js"
       }
     },
     "./behavior-subject": {
       "browser": {
-        "types": "./dist/browser/behavior-subject.d.ts",
-        "default": "./dist/browser/behavior-subject.js"
+        "types": "./dist/esm/behavior-subject.d.ts",
+        "default": "./dist/esm/behavior-subject.js"
       },
       "webpack": {
-        "types": "./dist/webpack/behavior-subject.d.ts",
-        "default": "./dist/webpack/behavior-subject.js"
+        "types": "./dist/esm/behavior-subject.d.ts",
+        "default": "./dist/esm/behavior-subject.js"
       },
       "import": {
         "types": "./dist/esm/behavior-subject.d.ts",
         "default": "./dist/esm/behavior-subject.js"
       },
       "require": {
-        "types": "./dist/commonjs/behavior-subject.d.ts",
-        "default": "./dist/commonjs/behavior-subject.js"
+        "types": "./dist/esm/behavior-subject.d.ts",
+        "default": "./dist/esm/behavior-subject.js"
       }
     },
     "./buffer": {
       "browser": {
-        "types": "./dist/browser/buffer.d.ts",
-        "default": "./dist/browser/buffer.js"
+        "types": "./dist/esm/buffer.d.ts",
+        "default": "./dist/esm/buffer.js"
       },
       "webpack": {
-        "types": "./dist/webpack/buffer.d.ts",
-        "default": "./dist/webpack/buffer.js"
+        "types": "./dist/esm/buffer.d.ts",
+        "default": "./dist/esm/buffer.js"
       },
       "import": {
         "types": "./dist/esm/buffer.d.ts",
         "default": "./dist/esm/buffer.js"
       },
       "require": {
-        "types": "./dist/commonjs/buffer.d.ts",
-        "default": "./dist/commonjs/buffer.js"
+        "types": "./dist/esm/buffer.d.ts",
+        "default": "./dist/esm/buffer.js"
       }
     },
     "./buffer-time": {
       "browser": {
-        "types": "./dist/browser/buffer-time.d.ts",
-        "default": "./dist/browser/buffer-time.js"
+        "types": "./dist/esm/buffer-time.d.ts",
+        "default": "./dist/esm/buffer-time.js"
       },
       "webpack": {
-        "types": "./dist/webpack/buffer-time.d.ts",
-        "default": "./dist/webpack/buffer-time.js"
+        "types": "./dist/esm/buffer-time.d.ts",
+        "default": "./dist/esm/buffer-time.js"
       },
       "import": {
         "types": "./dist/esm/buffer-time.d.ts",
         "default": "./dist/esm/buffer-time.js"
       },
       "require": {
-        "types": "./dist/commonjs/buffer-time.d.ts",
-        "default": "./dist/commonjs/buffer-time.js"
+        "types": "./dist/esm/buffer-time.d.ts",
+        "default": "./dist/esm/buffer-time.js"
       }
     },
     "./buffer-toggle": {
       "browser": {
-        "types": "./dist/browser/buffer-toggle.d.ts",
-        "default": "./dist/browser/buffer-toggle.js"
+        "types": "./dist/esm/buffer-toggle.d.ts",
+        "default": "./dist/esm/buffer-toggle.js"
       },
       "webpack": {
-        "types": "./dist/webpack/buffer-toggle.d.ts",
-        "default": "./dist/webpack/buffer-toggle.js"
+        "types": "./dist/esm/buffer-toggle.d.ts",
+        "default": "./dist/esm/buffer-toggle.js"
       },
       "import": {
         "types": "./dist/esm/buffer-toggle.d.ts",
         "default": "./dist/esm/buffer-toggle.js"
       },
       "require": {
-        "types": "./dist/commonjs/buffer-toggle.d.ts",
-        "default": "./dist/commonjs/buffer-toggle.js"
+        "types": "./dist/esm/buffer-toggle.d.ts",
+        "default": "./dist/esm/buffer-toggle.js"
       }
     },
     "./catch-error": {
       "browser": {
-        "types": "./dist/browser/catch-error.d.ts",
-        "default": "./dist/browser/catch-error.js"
+        "types": "./dist/esm/catch-error.d.ts",
+        "default": "./dist/esm/catch-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/catch-error.d.ts",
-        "default": "./dist/webpack/catch-error.js"
+        "types": "./dist/esm/catch-error.d.ts",
+        "default": "./dist/esm/catch-error.js"
       },
       "import": {
         "types": "./dist/esm/catch-error.d.ts",
         "default": "./dist/esm/catch-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/catch-error.d.ts",
-        "default": "./dist/commonjs/catch-error.js"
+        "types": "./dist/esm/catch-error.d.ts",
+        "default": "./dist/esm/catch-error.js"
       }
     },
     "./cold-observable": {
       "browser": {
-        "types": "./dist/browser/cold-observable.d.ts",
-        "default": "./dist/browser/cold-observable.js"
+        "types": "./dist/esm/cold-observable.d.ts",
+        "default": "./dist/esm/cold-observable.js"
       },
       "webpack": {
-        "types": "./dist/webpack/cold-observable.d.ts",
-        "default": "./dist/webpack/cold-observable.js"
+        "types": "./dist/esm/cold-observable.d.ts",
+        "default": "./dist/esm/cold-observable.js"
       },
       "import": {
         "types": "./dist/esm/cold-observable.d.ts",
         "default": "./dist/esm/cold-observable.js"
       },
       "require": {
-        "types": "./dist/commonjs/cold-observable.d.ts",
-        "default": "./dist/commonjs/cold-observable.js"
+        "types": "./dist/esm/cold-observable.d.ts",
+        "default": "./dist/esm/cold-observable.js"
       }
     },
     "./combine": {
       "browser": {
-        "types": "./dist/browser/combine.d.ts",
-        "default": "./dist/browser/combine.js"
+        "types": "./dist/esm/combine.d.ts",
+        "default": "./dist/esm/combine.js"
       },
       "webpack": {
-        "types": "./dist/webpack/combine.d.ts",
-        "default": "./dist/webpack/combine.js"
+        "types": "./dist/esm/combine.d.ts",
+        "default": "./dist/esm/combine.js"
       },
       "import": {
         "types": "./dist/esm/combine.d.ts",
         "default": "./dist/esm/combine.js"
       },
       "require": {
-        "types": "./dist/commonjs/combine.d.ts",
-        "default": "./dist/commonjs/combine.js"
+        "types": "./dist/esm/combine.d.ts",
+        "default": "./dist/esm/combine.js"
       }
     },
     "./combine-latest": {
       "browser": {
-        "types": "./dist/browser/combine-latest.d.ts",
-        "default": "./dist/browser/combine-latest.js"
+        "types": "./dist/esm/combine-latest.d.ts",
+        "default": "./dist/esm/combine-latest.js"
       },
       "webpack": {
-        "types": "./dist/webpack/combine-latest.d.ts",
-        "default": "./dist/webpack/combine-latest.js"
+        "types": "./dist/esm/combine-latest.d.ts",
+        "default": "./dist/esm/combine-latest.js"
       },
       "import": {
         "types": "./dist/esm/combine-latest.d.ts",
         "default": "./dist/esm/combine-latest.js"
       },
       "require": {
-        "types": "./dist/commonjs/combine-latest.d.ts",
-        "default": "./dist/commonjs/combine-latest.js"
+        "types": "./dist/esm/combine-latest.d.ts",
+        "default": "./dist/esm/combine-latest.js"
       }
     },
     "./combine-latest-all": {
       "browser": {
-        "types": "./dist/browser/combine-latest-all.d.ts",
-        "default": "./dist/browser/combine-latest-all.js"
+        "types": "./dist/esm/combine-latest-all.d.ts",
+        "default": "./dist/esm/combine-latest-all.js"
       },
       "webpack": {
-        "types": "./dist/webpack/combine-latest-all.d.ts",
-        "default": "./dist/webpack/combine-latest-all.js"
+        "types": "./dist/esm/combine-latest-all.d.ts",
+        "default": "./dist/esm/combine-latest-all.js"
       },
       "import": {
         "types": "./dist/esm/combine-latest-all.d.ts",
         "default": "./dist/esm/combine-latest-all.js"
       },
       "require": {
-        "types": "./dist/commonjs/combine-latest-all.d.ts",
-        "default": "./dist/commonjs/combine-latest-all.js"
+        "types": "./dist/esm/combine-latest-all.d.ts",
+        "default": "./dist/esm/combine-latest-all.js"
       }
     },
     "./concat": {
       "browser": {
-        "types": "./dist/browser/concat.d.ts",
-        "default": "./dist/browser/concat.js"
+        "types": "./dist/esm/concat.d.ts",
+        "default": "./dist/esm/concat.js"
       },
       "webpack": {
-        "types": "./dist/webpack/concat.d.ts",
-        "default": "./dist/webpack/concat.js"
+        "types": "./dist/esm/concat.d.ts",
+        "default": "./dist/esm/concat.js"
       },
       "import": {
         "types": "./dist/esm/concat.d.ts",
         "default": "./dist/esm/concat.js"
       },
       "require": {
-        "types": "./dist/commonjs/concat.d.ts",
-        "default": "./dist/commonjs/concat.js"
+        "types": "./dist/esm/concat.d.ts",
+        "default": "./dist/esm/concat.js"
       }
     },
     "./connect": {
       "browser": {
-        "types": "./dist/browser/connect.d.ts",
-        "default": "./dist/browser/connect.js"
+        "types": "./dist/esm/connect.d.ts",
+        "default": "./dist/esm/connect.js"
       },
       "webpack": {
-        "types": "./dist/webpack/connect.d.ts",
-        "default": "./dist/webpack/connect.js"
+        "types": "./dist/esm/connect.d.ts",
+        "default": "./dist/esm/connect.js"
       },
       "import": {
         "types": "./dist/esm/connect.d.ts",
         "default": "./dist/esm/connect.js"
       },
       "require": {
-        "types": "./dist/commonjs/connect.d.ts",
-        "default": "./dist/commonjs/connect.js"
+        "types": "./dist/esm/connect.d.ts",
+        "default": "./dist/esm/connect.js"
       }
     },
     "./connectable": {
       "browser": {
-        "types": "./dist/browser/connectable.d.ts",
-        "default": "./dist/browser/connectable.js"
+        "types": "./dist/esm/connectable.d.ts",
+        "default": "./dist/esm/connectable.js"
       },
       "webpack": {
-        "types": "./dist/webpack/connectable.d.ts",
-        "default": "./dist/webpack/connectable.js"
+        "types": "./dist/esm/connectable.d.ts",
+        "default": "./dist/esm/connectable.js"
       },
       "import": {
         "types": "./dist/esm/connectable.d.ts",
         "default": "./dist/esm/connectable.js"
       },
       "require": {
-        "types": "./dist/commonjs/connectable.d.ts",
-        "default": "./dist/commonjs/connectable.js"
+        "types": "./dist/esm/connectable.d.ts",
+        "default": "./dist/esm/connectable.js"
       }
     },
     "./count": {
       "browser": {
-        "types": "./dist/browser/count.d.ts",
-        "default": "./dist/browser/count.js"
+        "types": "./dist/esm/count.d.ts",
+        "default": "./dist/esm/count.js"
       },
       "webpack": {
-        "types": "./dist/webpack/count.d.ts",
-        "default": "./dist/webpack/count.js"
+        "types": "./dist/esm/count.d.ts",
+        "default": "./dist/esm/count.js"
       },
       "import": {
         "types": "./dist/esm/count.d.ts",
         "default": "./dist/esm/count.js"
       },
       "require": {
-        "types": "./dist/commonjs/count.d.ts",
-        "default": "./dist/commonjs/count.js"
+        "types": "./dist/esm/count.d.ts",
+        "default": "./dist/esm/count.js"
       }
     },
     "./create": {
       "browser": {
-        "types": "./dist/browser/create.d.ts",
-        "default": "./dist/browser/create.js"
+        "types": "./dist/esm/create.d.ts",
+        "default": "./dist/esm/create.js"
       },
       "webpack": {
-        "types": "./dist/webpack/create.d.ts",
-        "default": "./dist/webpack/create.js"
+        "types": "./dist/esm/create.d.ts",
+        "default": "./dist/esm/create.js"
       },
       "import": {
         "types": "./dist/esm/create.d.ts",
         "default": "./dist/esm/create.js"
       },
       "require": {
-        "types": "./dist/commonjs/create.d.ts",
-        "default": "./dist/commonjs/create.js"
+        "types": "./dist/esm/create.d.ts",
+        "default": "./dist/esm/create.js"
       }
     },
     "./debounce": {
       "browser": {
-        "types": "./dist/browser/debounce.d.ts",
-        "default": "./dist/browser/debounce.js"
+        "types": "./dist/esm/debounce.d.ts",
+        "default": "./dist/esm/debounce.js"
       },
       "webpack": {
-        "types": "./dist/webpack/debounce.d.ts",
-        "default": "./dist/webpack/debounce.js"
+        "types": "./dist/esm/debounce.d.ts",
+        "default": "./dist/esm/debounce.js"
       },
       "import": {
         "types": "./dist/esm/debounce.d.ts",
         "default": "./dist/esm/debounce.js"
       },
       "require": {
-        "types": "./dist/commonjs/debounce.d.ts",
-        "default": "./dist/commonjs/debounce.js"
+        "types": "./dist/esm/debounce.d.ts",
+        "default": "./dist/esm/debounce.js"
       }
     },
     "./default-if-empty": {
       "browser": {
-        "types": "./dist/browser/default-if-empty.d.ts",
-        "default": "./dist/browser/default-if-empty.js"
+        "types": "./dist/esm/default-if-empty.d.ts",
+        "default": "./dist/esm/default-if-empty.js"
       },
       "webpack": {
-        "types": "./dist/webpack/default-if-empty.d.ts",
-        "default": "./dist/webpack/default-if-empty.js"
+        "types": "./dist/esm/default-if-empty.d.ts",
+        "default": "./dist/esm/default-if-empty.js"
       },
       "import": {
         "types": "./dist/esm/default-if-empty.d.ts",
         "default": "./dist/esm/default-if-empty.js"
       },
       "require": {
-        "types": "./dist/commonjs/default-if-empty.d.ts",
-        "default": "./dist/commonjs/default-if-empty.js"
+        "types": "./dist/esm/default-if-empty.d.ts",
+        "default": "./dist/esm/default-if-empty.js"
       }
     },
     "./delay": {
       "browser": {
-        "types": "./dist/browser/delay.d.ts",
-        "default": "./dist/browser/delay.js"
+        "types": "./dist/esm/delay.d.ts",
+        "default": "./dist/esm/delay.js"
       },
       "webpack": {
-        "types": "./dist/webpack/delay.d.ts",
-        "default": "./dist/webpack/delay.js"
+        "types": "./dist/esm/delay.d.ts",
+        "default": "./dist/esm/delay.js"
       },
       "import": {
         "types": "./dist/esm/delay.d.ts",
         "default": "./dist/esm/delay.js"
       },
       "require": {
-        "types": "./dist/commonjs/delay.d.ts",
-        "default": "./dist/commonjs/delay.js"
+        "types": "./dist/esm/delay.d.ts",
+        "default": "./dist/esm/delay.js"
       }
     },
     "./delay-when": {
       "browser": {
-        "types": "./dist/browser/delay-when.d.ts",
-        "default": "./dist/browser/delay-when.js"
+        "types": "./dist/esm/delay-when.d.ts",
+        "default": "./dist/esm/delay-when.js"
       },
       "webpack": {
-        "types": "./dist/webpack/delay-when.d.ts",
-        "default": "./dist/webpack/delay-when.js"
+        "types": "./dist/esm/delay-when.d.ts",
+        "default": "./dist/esm/delay-when.js"
       },
       "import": {
         "types": "./dist/esm/delay-when.d.ts",
         "default": "./dist/esm/delay-when.js"
       },
       "require": {
-        "types": "./dist/commonjs/delay-when.d.ts",
-        "default": "./dist/commonjs/delay-when.js"
+        "types": "./dist/esm/delay-when.d.ts",
+        "default": "./dist/esm/delay-when.js"
       }
     },
     "./dematerialize": {
       "browser": {
-        "types": "./dist/browser/dematerialize.d.ts",
-        "default": "./dist/browser/dematerialize.js"
+        "types": "./dist/esm/dematerialize.d.ts",
+        "default": "./dist/esm/dematerialize.js"
       },
       "webpack": {
-        "types": "./dist/webpack/dematerialize.d.ts",
-        "default": "./dist/webpack/dematerialize.js"
+        "types": "./dist/esm/dematerialize.d.ts",
+        "default": "./dist/esm/dematerialize.js"
       },
       "import": {
         "types": "./dist/esm/dematerialize.d.ts",
         "default": "./dist/esm/dematerialize.js"
       },
       "require": {
-        "types": "./dist/commonjs/dematerialize.d.ts",
-        "default": "./dist/commonjs/dematerialize.js"
+        "types": "./dist/esm/dematerialize.d.ts",
+        "default": "./dist/esm/dematerialize.js"
       }
     },
     "./distinct": {
       "browser": {
-        "types": "./dist/browser/distinct.d.ts",
-        "default": "./dist/browser/distinct.js"
+        "types": "./dist/esm/distinct.d.ts",
+        "default": "./dist/esm/distinct.js"
       },
       "webpack": {
-        "types": "./dist/webpack/distinct.d.ts",
-        "default": "./dist/webpack/distinct.js"
+        "types": "./dist/esm/distinct.d.ts",
+        "default": "./dist/esm/distinct.js"
       },
       "import": {
         "types": "./dist/esm/distinct.d.ts",
         "default": "./dist/esm/distinct.js"
       },
       "require": {
-        "types": "./dist/commonjs/distinct.d.ts",
-        "default": "./dist/commonjs/distinct.js"
+        "types": "./dist/esm/distinct.d.ts",
+        "default": "./dist/esm/distinct.js"
       }
     },
     "./distinct-until-changed": {
       "browser": {
-        "types": "./dist/browser/distinct-until-changed.d.ts",
-        "default": "./dist/browser/distinct-until-changed.js"
+        "types": "./dist/esm/distinct-until-changed.d.ts",
+        "default": "./dist/esm/distinct-until-changed.js"
       },
       "webpack": {
-        "types": "./dist/webpack/distinct-until-changed.d.ts",
-        "default": "./dist/webpack/distinct-until-changed.js"
+        "types": "./dist/esm/distinct-until-changed.d.ts",
+        "default": "./dist/esm/distinct-until-changed.js"
       },
       "import": {
         "types": "./dist/esm/distinct-until-changed.d.ts",
         "default": "./dist/esm/distinct-until-changed.js"
       },
       "require": {
-        "types": "./dist/commonjs/distinct-until-changed.d.ts",
-        "default": "./dist/commonjs/distinct-until-changed.js"
+        "types": "./dist/esm/distinct-until-changed.d.ts",
+        "default": "./dist/esm/distinct-until-changed.js"
       }
     },
     "./distinct-until-key-changed": {
       "browser": {
-        "types": "./dist/browser/distinct-until-key-changed.d.ts",
-        "default": "./dist/browser/distinct-until-key-changed.js"
+        "types": "./dist/esm/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/distinct-until-key-changed.js"
       },
       "webpack": {
-        "types": "./dist/webpack/distinct-until-key-changed.d.ts",
-        "default": "./dist/webpack/distinct-until-key-changed.js"
+        "types": "./dist/esm/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/distinct-until-key-changed.js"
       },
       "import": {
         "types": "./dist/esm/distinct-until-key-changed.d.ts",
         "default": "./dist/esm/distinct-until-key-changed.js"
       },
       "require": {
-        "types": "./dist/commonjs/distinct-until-key-changed.d.ts",
-        "default": "./dist/commonjs/distinct-until-key-changed.js"
+        "types": "./dist/esm/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/distinct-until-key-changed.js"
       }
     },
     "./element-at": {
       "browser": {
-        "types": "./dist/browser/element-at.d.ts",
-        "default": "./dist/browser/element-at.js"
+        "types": "./dist/esm/element-at.d.ts",
+        "default": "./dist/esm/element-at.js"
       },
       "webpack": {
-        "types": "./dist/webpack/element-at.d.ts",
-        "default": "./dist/webpack/element-at.js"
+        "types": "./dist/esm/element-at.d.ts",
+        "default": "./dist/esm/element-at.js"
       },
       "import": {
         "types": "./dist/esm/element-at.d.ts",
         "default": "./dist/esm/element-at.js"
       },
       "require": {
-        "types": "./dist/commonjs/element-at.d.ts",
-        "default": "./dist/commonjs/element-at.js"
+        "types": "./dist/esm/element-at.d.ts",
+        "default": "./dist/esm/element-at.js"
       }
     },
     "./empty": {
       "browser": {
-        "types": "./dist/browser/empty.d.ts",
-        "default": "./dist/browser/empty.js"
+        "types": "./dist/esm/empty.d.ts",
+        "default": "./dist/esm/empty.js"
       },
       "webpack": {
-        "types": "./dist/webpack/empty.d.ts",
-        "default": "./dist/webpack/empty.js"
+        "types": "./dist/esm/empty.d.ts",
+        "default": "./dist/esm/empty.js"
       },
       "import": {
         "types": "./dist/esm/empty.d.ts",
         "default": "./dist/esm/empty.js"
       },
       "require": {
-        "types": "./dist/commonjs/empty.d.ts",
-        "default": "./dist/commonjs/empty.js"
+        "types": "./dist/esm/empty.d.ts",
+        "default": "./dist/esm/empty.js"
       }
     },
     "./empty-error": {
       "browser": {
-        "types": "./dist/browser/empty-error.d.ts",
-        "default": "./dist/browser/empty-error.js"
+        "types": "./dist/esm/empty-error.d.ts",
+        "default": "./dist/esm/empty-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/empty-error.d.ts",
-        "default": "./dist/webpack/empty-error.js"
+        "types": "./dist/esm/empty-error.d.ts",
+        "default": "./dist/esm/empty-error.js"
       },
       "import": {
         "types": "./dist/esm/empty-error.d.ts",
         "default": "./dist/esm/empty-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/empty-error.d.ts",
-        "default": "./dist/commonjs/empty-error.js"
+        "types": "./dist/esm/empty-error.d.ts",
+        "default": "./dist/esm/empty-error.js"
       }
     },
     "./every": {
       "browser": {
-        "types": "./dist/browser/every.d.ts",
-        "default": "./dist/browser/every.js"
+        "types": "./dist/esm/every.d.ts",
+        "default": "./dist/esm/every.js"
       },
       "webpack": {
-        "types": "./dist/webpack/every.d.ts",
-        "default": "./dist/webpack/every.js"
+        "types": "./dist/esm/every.d.ts",
+        "default": "./dist/esm/every.js"
       },
       "import": {
         "types": "./dist/esm/every.d.ts",
         "default": "./dist/esm/every.js"
       },
       "require": {
-        "types": "./dist/commonjs/every.d.ts",
-        "default": "./dist/commonjs/every.js"
+        "types": "./dist/esm/every.d.ts",
+        "default": "./dist/esm/every.js"
       }
     },
     "./exhaust-map": {
       "browser": {
-        "types": "./dist/browser/exhaust-map.d.ts",
-        "default": "./dist/browser/exhaust-map.js"
+        "types": "./dist/esm/exhaust-map.d.ts",
+        "default": "./dist/esm/exhaust-map.js"
       },
       "webpack": {
-        "types": "./dist/webpack/exhaust-map.d.ts",
-        "default": "./dist/webpack/exhaust-map.js"
+        "types": "./dist/esm/exhaust-map.d.ts",
+        "default": "./dist/esm/exhaust-map.js"
       },
       "import": {
         "types": "./dist/esm/exhaust-map.d.ts",
         "default": "./dist/esm/exhaust-map.js"
       },
       "require": {
-        "types": "./dist/commonjs/exhaust-map.d.ts",
-        "default": "./dist/commonjs/exhaust-map.js"
+        "types": "./dist/esm/exhaust-map.d.ts",
+        "default": "./dist/esm/exhaust-map.js"
       }
     },
     "./expand": {
       "browser": {
-        "types": "./dist/browser/expand.d.ts",
-        "default": "./dist/browser/expand.js"
+        "types": "./dist/esm/expand.d.ts",
+        "default": "./dist/esm/expand.js"
       },
       "webpack": {
-        "types": "./dist/webpack/expand.d.ts",
-        "default": "./dist/webpack/expand.js"
+        "types": "./dist/esm/expand.d.ts",
+        "default": "./dist/esm/expand.js"
       },
       "import": {
         "types": "./dist/esm/expand.d.ts",
         "default": "./dist/esm/expand.js"
       },
       "require": {
-        "types": "./dist/commonjs/expand.d.ts",
-        "default": "./dist/commonjs/expand.js"
+        "types": "./dist/esm/expand.d.ts",
+        "default": "./dist/esm/expand.js"
       }
     },
     "./filter": {
       "browser": {
-        "types": "./dist/browser/filter.d.ts",
-        "default": "./dist/browser/filter.js"
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
       },
       "webpack": {
-        "types": "./dist/webpack/filter.d.ts",
-        "default": "./dist/webpack/filter.js"
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
       },
       "import": {
         "types": "./dist/esm/filter.d.ts",
         "default": "./dist/esm/filter.js"
       },
       "require": {
-        "types": "./dist/commonjs/filter.d.ts",
-        "default": "./dist/commonjs/filter.js"
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
       }
     },
     "./finalize": {
       "browser": {
-        "types": "./dist/browser/finalize.d.ts",
-        "default": "./dist/browser/finalize.js"
+        "types": "./dist/esm/finalize.d.ts",
+        "default": "./dist/esm/finalize.js"
       },
       "webpack": {
-        "types": "./dist/webpack/finalize.d.ts",
-        "default": "./dist/webpack/finalize.js"
+        "types": "./dist/esm/finalize.d.ts",
+        "default": "./dist/esm/finalize.js"
       },
       "import": {
         "types": "./dist/esm/finalize.d.ts",
         "default": "./dist/esm/finalize.js"
       },
       "require": {
-        "types": "./dist/commonjs/finalize.d.ts",
-        "default": "./dist/commonjs/finalize.js"
+        "types": "./dist/esm/finalize.d.ts",
+        "default": "./dist/esm/finalize.js"
       }
     },
     "./find": {
       "browser": {
-        "types": "./dist/browser/find.d.ts",
-        "default": "./dist/browser/find.js"
+        "types": "./dist/esm/find.d.ts",
+        "default": "./dist/esm/find.js"
       },
       "webpack": {
-        "types": "./dist/webpack/find.d.ts",
-        "default": "./dist/webpack/find.js"
+        "types": "./dist/esm/find.d.ts",
+        "default": "./dist/esm/find.js"
       },
       "import": {
         "types": "./dist/esm/find.d.ts",
         "default": "./dist/esm/find.js"
       },
       "require": {
-        "types": "./dist/commonjs/find.d.ts",
-        "default": "./dist/commonjs/find.js"
+        "types": "./dist/esm/find.d.ts",
+        "default": "./dist/esm/find.js"
       }
     },
     "./find-index": {
       "browser": {
-        "types": "./dist/browser/find-index.d.ts",
-        "default": "./dist/browser/find-index.js"
+        "types": "./dist/esm/find-index.d.ts",
+        "default": "./dist/esm/find-index.js"
       },
       "webpack": {
-        "types": "./dist/webpack/find-index.d.ts",
-        "default": "./dist/webpack/find-index.js"
+        "types": "./dist/esm/find-index.d.ts",
+        "default": "./dist/esm/find-index.js"
       },
       "import": {
         "types": "./dist/esm/find-index.d.ts",
         "default": "./dist/esm/find-index.js"
       },
       "require": {
-        "types": "./dist/commonjs/find-index.d.ts",
-        "default": "./dist/commonjs/find-index.js"
+        "types": "./dist/esm/find-index.d.ts",
+        "default": "./dist/esm/find-index.js"
       }
     },
     "./first": {
       "browser": {
-        "types": "./dist/browser/first.d.ts",
-        "default": "./dist/browser/first.js"
+        "types": "./dist/esm/first.d.ts",
+        "default": "./dist/esm/first.js"
       },
       "webpack": {
-        "types": "./dist/webpack/first.d.ts",
-        "default": "./dist/webpack/first.js"
+        "types": "./dist/esm/first.d.ts",
+        "default": "./dist/esm/first.js"
       },
       "import": {
         "types": "./dist/esm/first.d.ts",
         "default": "./dist/esm/first.js"
       },
       "require": {
-        "types": "./dist/commonjs/first.d.ts",
-        "default": "./dist/commonjs/first.js"
+        "types": "./dist/esm/first.d.ts",
+        "default": "./dist/esm/first.js"
       }
     },
     "./fork-join": {
       "browser": {
-        "types": "./dist/browser/fork-join.d.ts",
-        "default": "./dist/browser/fork-join.js"
+        "types": "./dist/esm/fork-join.d.ts",
+        "default": "./dist/esm/fork-join.js"
       },
       "webpack": {
-        "types": "./dist/webpack/fork-join.d.ts",
-        "default": "./dist/webpack/fork-join.js"
+        "types": "./dist/esm/fork-join.d.ts",
+        "default": "./dist/esm/fork-join.js"
       },
       "import": {
         "types": "./dist/esm/fork-join.d.ts",
         "default": "./dist/esm/fork-join.js"
       },
       "require": {
-        "types": "./dist/commonjs/fork-join.d.ts",
-        "default": "./dist/commonjs/fork-join.js"
+        "types": "./dist/esm/fork-join.d.ts",
+        "default": "./dist/esm/fork-join.js"
       }
     },
     "./from-event-pattern": {
       "browser": {
-        "types": "./dist/browser/from-event-pattern.d.ts",
-        "default": "./dist/browser/from-event-pattern.js"
+        "types": "./dist/esm/from-event-pattern.d.ts",
+        "default": "./dist/esm/from-event-pattern.js"
       },
       "webpack": {
-        "types": "./dist/webpack/from-event-pattern.d.ts",
-        "default": "./dist/webpack/from-event-pattern.js"
+        "types": "./dist/esm/from-event-pattern.d.ts",
+        "default": "./dist/esm/from-event-pattern.js"
       },
       "import": {
         "types": "./dist/esm/from-event-pattern.d.ts",
         "default": "./dist/esm/from-event-pattern.js"
       },
       "require": {
-        "types": "./dist/commonjs/from-event-pattern.d.ts",
-        "default": "./dist/commonjs/from-event-pattern.js"
+        "types": "./dist/esm/from-event-pattern.d.ts",
+        "default": "./dist/esm/from-event-pattern.js"
       }
     },
     "./generate": {
       "browser": {
-        "types": "./dist/browser/generate.d.ts",
-        "default": "./dist/browser/generate.js"
+        "types": "./dist/esm/generate.d.ts",
+        "default": "./dist/esm/generate.js"
       },
       "webpack": {
-        "types": "./dist/webpack/generate.d.ts",
-        "default": "./dist/webpack/generate.js"
+        "types": "./dist/esm/generate.d.ts",
+        "default": "./dist/esm/generate.js"
       },
       "import": {
         "types": "./dist/esm/generate.d.ts",
         "default": "./dist/esm/generate.js"
       },
       "require": {
-        "types": "./dist/commonjs/generate.d.ts",
-        "default": "./dist/commonjs/generate.js"
+        "types": "./dist/esm/generate.d.ts",
+        "default": "./dist/esm/generate.js"
       }
     },
     "./group-by": {
       "browser": {
-        "types": "./dist/browser/group-by.d.ts",
-        "default": "./dist/browser/group-by.js"
+        "types": "./dist/esm/group-by.d.ts",
+        "default": "./dist/esm/group-by.js"
       },
       "webpack": {
-        "types": "./dist/webpack/group-by.d.ts",
-        "default": "./dist/webpack/group-by.js"
+        "types": "./dist/esm/group-by.d.ts",
+        "default": "./dist/esm/group-by.js"
       },
       "import": {
         "types": "./dist/esm/group-by.d.ts",
         "default": "./dist/esm/group-by.js"
       },
       "require": {
-        "types": "./dist/commonjs/group-by.d.ts",
-        "default": "./dist/commonjs/group-by.js"
+        "types": "./dist/esm/group-by.d.ts",
+        "default": "./dist/esm/group-by.js"
       }
     },
     "./identity": {
       "browser": {
-        "types": "./dist/browser/identity.d.ts",
-        "default": "./dist/browser/identity.js"
+        "types": "./dist/esm/identity.d.ts",
+        "default": "./dist/esm/identity.js"
       },
       "webpack": {
-        "types": "./dist/webpack/identity.d.ts",
-        "default": "./dist/webpack/identity.js"
+        "types": "./dist/esm/identity.d.ts",
+        "default": "./dist/esm/identity.js"
       },
       "import": {
         "types": "./dist/esm/identity.d.ts",
         "default": "./dist/esm/identity.js"
       },
       "require": {
-        "types": "./dist/commonjs/identity.d.ts",
-        "default": "./dist/commonjs/identity.js"
+        "types": "./dist/esm/identity.d.ts",
+        "default": "./dist/esm/identity.js"
       }
     },
     "./interval": {
       "browser": {
-        "types": "./dist/browser/interval.d.ts",
-        "default": "./dist/browser/interval.js"
+        "types": "./dist/esm/interval.d.ts",
+        "default": "./dist/esm/interval.js"
       },
       "webpack": {
-        "types": "./dist/webpack/interval.d.ts",
-        "default": "./dist/webpack/interval.js"
+        "types": "./dist/esm/interval.d.ts",
+        "default": "./dist/esm/interval.js"
       },
       "import": {
         "types": "./dist/esm/interval.d.ts",
         "default": "./dist/esm/interval.js"
       },
       "require": {
-        "types": "./dist/commonjs/interval.d.ts",
-        "default": "./dist/commonjs/interval.js"
+        "types": "./dist/esm/interval.d.ts",
+        "default": "./dist/esm/interval.js"
       }
     },
     "./is-empty": {
       "browser": {
-        "types": "./dist/browser/is-empty.d.ts",
-        "default": "./dist/browser/is-empty.js"
+        "types": "./dist/esm/is-empty.d.ts",
+        "default": "./dist/esm/is-empty.js"
       },
       "webpack": {
-        "types": "./dist/webpack/is-empty.d.ts",
-        "default": "./dist/webpack/is-empty.js"
+        "types": "./dist/esm/is-empty.d.ts",
+        "default": "./dist/esm/is-empty.js"
       },
       "import": {
         "types": "./dist/esm/is-empty.d.ts",
         "default": "./dist/esm/is-empty.js"
       },
       "require": {
-        "types": "./dist/commonjs/is-empty.d.ts",
-        "default": "./dist/commonjs/is-empty.js"
+        "types": "./dist/esm/is-empty.d.ts",
+        "default": "./dist/esm/is-empty.js"
       }
     },
     "./iterate-buffered-values": {
       "browser": {
-        "types": "./dist/browser/iterate-buffered-values.d.ts",
-        "default": "./dist/browser/iterate-buffered-values.js"
+        "types": "./dist/esm/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/iterate-buffered-values.js"
       },
       "webpack": {
-        "types": "./dist/webpack/iterate-buffered-values.d.ts",
-        "default": "./dist/webpack/iterate-buffered-values.js"
+        "types": "./dist/esm/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/iterate-buffered-values.js"
       },
       "import": {
         "types": "./dist/esm/iterate-buffered-values.d.ts",
         "default": "./dist/esm/iterate-buffered-values.js"
       },
       "require": {
-        "types": "./dist/commonjs/iterate-buffered-values.d.ts",
-        "default": "./dist/commonjs/iterate-buffered-values.js"
+        "types": "./dist/esm/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/iterate-buffered-values.js"
       }
     },
     "./iterate-each-value": {
       "browser": {
-        "types": "./dist/browser/iterate-each-value.d.ts",
-        "default": "./dist/browser/iterate-each-value.js"
+        "types": "./dist/esm/iterate-each-value.d.ts",
+        "default": "./dist/esm/iterate-each-value.js"
       },
       "webpack": {
-        "types": "./dist/webpack/iterate-each-value.d.ts",
-        "default": "./dist/webpack/iterate-each-value.js"
+        "types": "./dist/esm/iterate-each-value.d.ts",
+        "default": "./dist/esm/iterate-each-value.js"
       },
       "import": {
         "types": "./dist/esm/iterate-each-value.d.ts",
         "default": "./dist/esm/iterate-each-value.js"
       },
       "require": {
-        "types": "./dist/commonjs/iterate-each-value.d.ts",
-        "default": "./dist/commonjs/iterate-each-value.js"
+        "types": "./dist/esm/iterate-each-value.d.ts",
+        "default": "./dist/esm/iterate-each-value.js"
       }
     },
     "./iterate-latest-value": {
       "browser": {
-        "types": "./dist/browser/iterate-latest-value.d.ts",
-        "default": "./dist/browser/iterate-latest-value.js"
+        "types": "./dist/esm/iterate-latest-value.d.ts",
+        "default": "./dist/esm/iterate-latest-value.js"
       },
       "webpack": {
-        "types": "./dist/webpack/iterate-latest-value.d.ts",
-        "default": "./dist/webpack/iterate-latest-value.js"
+        "types": "./dist/esm/iterate-latest-value.d.ts",
+        "default": "./dist/esm/iterate-latest-value.js"
       },
       "import": {
         "types": "./dist/esm/iterate-latest-value.d.ts",
         "default": "./dist/esm/iterate-latest-value.js"
       },
       "require": {
-        "types": "./dist/commonjs/iterate-latest-value.d.ts",
-        "default": "./dist/commonjs/iterate-latest-value.js"
+        "types": "./dist/esm/iterate-latest-value.d.ts",
+        "default": "./dist/esm/iterate-latest-value.js"
       }
     },
     "./iterate-next-value": {
       "browser": {
-        "types": "./dist/browser/iterate-next-value.d.ts",
-        "default": "./dist/browser/iterate-next-value.js"
+        "types": "./dist/esm/iterate-next-value.d.ts",
+        "default": "./dist/esm/iterate-next-value.js"
       },
       "webpack": {
-        "types": "./dist/webpack/iterate-next-value.d.ts",
-        "default": "./dist/webpack/iterate-next-value.js"
+        "types": "./dist/esm/iterate-next-value.d.ts",
+        "default": "./dist/esm/iterate-next-value.js"
       },
       "import": {
         "types": "./dist/esm/iterate-next-value.d.ts",
         "default": "./dist/esm/iterate-next-value.js"
       },
       "require": {
-        "types": "./dist/commonjs/iterate-next-value.d.ts",
-        "default": "./dist/commonjs/iterate-next-value.js"
+        "types": "./dist/esm/iterate-next-value.d.ts",
+        "default": "./dist/esm/iterate-next-value.js"
       }
     },
     "./last": {
       "browser": {
-        "types": "./dist/browser/last.d.ts",
-        "default": "./dist/browser/last.js"
+        "types": "./dist/esm/last.d.ts",
+        "default": "./dist/esm/last.js"
       },
       "webpack": {
-        "types": "./dist/webpack/last.d.ts",
-        "default": "./dist/webpack/last.js"
+        "types": "./dist/esm/last.d.ts",
+        "default": "./dist/esm/last.js"
       },
       "import": {
         "types": "./dist/esm/last.d.ts",
         "default": "./dist/esm/last.js"
       },
       "require": {
-        "types": "./dist/commonjs/last.d.ts",
-        "default": "./dist/commonjs/last.js"
+        "types": "./dist/esm/last.d.ts",
+        "default": "./dist/esm/last.js"
       }
     },
     "./map": {
       "browser": {
-        "types": "./dist/browser/map.d.ts",
-        "default": "./dist/browser/map.js"
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
       },
       "webpack": {
-        "types": "./dist/webpack/map.d.ts",
-        "default": "./dist/webpack/map.js"
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
       },
       "import": {
         "types": "./dist/esm/map.d.ts",
         "default": "./dist/esm/map.js"
       },
       "require": {
-        "types": "./dist/commonjs/map.d.ts",
-        "default": "./dist/commonjs/map.js"
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
       }
     },
     "./materialize": {
       "browser": {
-        "types": "./dist/browser/materialize.d.ts",
-        "default": "./dist/browser/materialize.js"
+        "types": "./dist/esm/materialize.d.ts",
+        "default": "./dist/esm/materialize.js"
       },
       "webpack": {
-        "types": "./dist/webpack/materialize.d.ts",
-        "default": "./dist/webpack/materialize.js"
+        "types": "./dist/esm/materialize.d.ts",
+        "default": "./dist/esm/materialize.js"
       },
       "import": {
         "types": "./dist/esm/materialize.d.ts",
         "default": "./dist/esm/materialize.js"
       },
       "require": {
-        "types": "./dist/commonjs/materialize.d.ts",
-        "default": "./dist/commonjs/materialize.js"
+        "types": "./dist/esm/materialize.d.ts",
+        "default": "./dist/esm/materialize.js"
       }
     },
     "./max": {
       "browser": {
-        "types": "./dist/browser/max.d.ts",
-        "default": "./dist/browser/max.js"
+        "types": "./dist/esm/max.d.ts",
+        "default": "./dist/esm/max.js"
       },
       "webpack": {
-        "types": "./dist/webpack/max.d.ts",
-        "default": "./dist/webpack/max.js"
+        "types": "./dist/esm/max.d.ts",
+        "default": "./dist/esm/max.js"
       },
       "import": {
         "types": "./dist/esm/max.d.ts",
         "default": "./dist/esm/max.js"
       },
       "require": {
-        "types": "./dist/commonjs/max.d.ts",
-        "default": "./dist/commonjs/max.js"
+        "types": "./dist/esm/max.d.ts",
+        "default": "./dist/esm/max.js"
       }
     },
     "./merge": {
       "browser": {
-        "types": "./dist/browser/merge.d.ts",
-        "default": "./dist/browser/merge.js"
+        "types": "./dist/esm/merge.d.ts",
+        "default": "./dist/esm/merge.js"
       },
       "webpack": {
-        "types": "./dist/webpack/merge.d.ts",
-        "default": "./dist/webpack/merge.js"
+        "types": "./dist/esm/merge.d.ts",
+        "default": "./dist/esm/merge.js"
       },
       "import": {
         "types": "./dist/esm/merge.d.ts",
         "default": "./dist/esm/merge.js"
       },
       "require": {
-        "types": "./dist/commonjs/merge.d.ts",
-        "default": "./dist/commonjs/merge.js"
+        "types": "./dist/esm/merge.d.ts",
+        "default": "./dist/esm/merge.js"
       }
     },
     "./merge-map": {
       "browser": {
-        "types": "./dist/browser/merge-map.d.ts",
-        "default": "./dist/browser/merge-map.js"
+        "types": "./dist/esm/merge-map.d.ts",
+        "default": "./dist/esm/merge-map.js"
       },
       "webpack": {
-        "types": "./dist/webpack/merge-map.d.ts",
-        "default": "./dist/webpack/merge-map.js"
+        "types": "./dist/esm/merge-map.d.ts",
+        "default": "./dist/esm/merge-map.js"
       },
       "import": {
         "types": "./dist/esm/merge-map.d.ts",
         "default": "./dist/esm/merge-map.js"
       },
       "require": {
-        "types": "./dist/commonjs/merge-map.d.ts",
-        "default": "./dist/commonjs/merge-map.js"
+        "types": "./dist/esm/merge-map.d.ts",
+        "default": "./dist/esm/merge-map.js"
       }
     },
     "./merge-scan": {
       "browser": {
-        "types": "./dist/browser/merge-scan.d.ts",
-        "default": "./dist/browser/merge-scan.js"
+        "types": "./dist/esm/merge-scan.d.ts",
+        "default": "./dist/esm/merge-scan.js"
       },
       "webpack": {
-        "types": "./dist/webpack/merge-scan.d.ts",
-        "default": "./dist/webpack/merge-scan.js"
+        "types": "./dist/esm/merge-scan.d.ts",
+        "default": "./dist/esm/merge-scan.js"
       },
       "import": {
         "types": "./dist/esm/merge-scan.d.ts",
         "default": "./dist/esm/merge-scan.js"
       },
       "require": {
-        "types": "./dist/commonjs/merge-scan.d.ts",
-        "default": "./dist/commonjs/merge-scan.js"
+        "types": "./dist/esm/merge-scan.d.ts",
+        "default": "./dist/esm/merge-scan.js"
       }
     },
     "./min": {
       "browser": {
-        "types": "./dist/browser/min.d.ts",
-        "default": "./dist/browser/min.js"
+        "types": "./dist/esm/min.d.ts",
+        "default": "./dist/esm/min.js"
       },
       "webpack": {
-        "types": "./dist/webpack/min.d.ts",
-        "default": "./dist/webpack/min.js"
+        "types": "./dist/esm/min.d.ts",
+        "default": "./dist/esm/min.js"
       },
       "import": {
         "types": "./dist/esm/min.d.ts",
         "default": "./dist/esm/min.js"
       },
       "require": {
-        "types": "./dist/commonjs/min.d.ts",
-        "default": "./dist/commonjs/min.js"
+        "types": "./dist/esm/min.d.ts",
+        "default": "./dist/esm/min.js"
       }
     },
     "./multicast": {
       "browser": {
-        "types": "./dist/browser/multicast.d.ts",
-        "default": "./dist/browser/multicast.js"
+        "types": "./dist/esm/multicast.d.ts",
+        "default": "./dist/esm/multicast.js"
       },
       "webpack": {
-        "types": "./dist/webpack/multicast.d.ts",
-        "default": "./dist/webpack/multicast.js"
+        "types": "./dist/esm/multicast.d.ts",
+        "default": "./dist/esm/multicast.js"
       },
       "import": {
         "types": "./dist/esm/multicast.d.ts",
         "default": "./dist/esm/multicast.js"
       },
       "require": {
-        "types": "./dist/commonjs/multicast.d.ts",
-        "default": "./dist/commonjs/multicast.js"
+        "types": "./dist/esm/multicast.d.ts",
+        "default": "./dist/esm/multicast.js"
       }
     },
     "./never": {
       "browser": {
-        "types": "./dist/browser/never.d.ts",
-        "default": "./dist/browser/never.js"
+        "types": "./dist/esm/never.d.ts",
+        "default": "./dist/esm/never.js"
       },
       "webpack": {
-        "types": "./dist/webpack/never.d.ts",
-        "default": "./dist/webpack/never.js"
+        "types": "./dist/esm/never.d.ts",
+        "default": "./dist/esm/never.js"
       },
       "import": {
         "types": "./dist/esm/never.d.ts",
         "default": "./dist/esm/never.js"
       },
       "require": {
-        "types": "./dist/commonjs/never.d.ts",
-        "default": "./dist/commonjs/never.js"
+        "types": "./dist/esm/never.d.ts",
+        "default": "./dist/esm/never.js"
       }
     },
     "./noop": {
       "browser": {
-        "types": "./dist/browser/noop.d.ts",
-        "default": "./dist/browser/noop.js"
+        "types": "./dist/esm/noop.d.ts",
+        "default": "./dist/esm/noop.js"
       },
       "webpack": {
-        "types": "./dist/webpack/noop.d.ts",
-        "default": "./dist/webpack/noop.js"
+        "types": "./dist/esm/noop.d.ts",
+        "default": "./dist/esm/noop.js"
       },
       "import": {
         "types": "./dist/esm/noop.d.ts",
         "default": "./dist/esm/noop.js"
       },
       "require": {
-        "types": "./dist/commonjs/noop.d.ts",
-        "default": "./dist/commonjs/noop.js"
+        "types": "./dist/esm/noop.d.ts",
+        "default": "./dist/esm/noop.js"
       }
     },
     "./not-found-error": {
       "browser": {
-        "types": "./dist/browser/not-found-error.d.ts",
-        "default": "./dist/browser/not-found-error.js"
+        "types": "./dist/esm/not-found-error.d.ts",
+        "default": "./dist/esm/not-found-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/not-found-error.d.ts",
-        "default": "./dist/webpack/not-found-error.js"
+        "types": "./dist/esm/not-found-error.d.ts",
+        "default": "./dist/esm/not-found-error.js"
       },
       "import": {
         "types": "./dist/esm/not-found-error.d.ts",
         "default": "./dist/esm/not-found-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/not-found-error.d.ts",
-        "default": "./dist/commonjs/not-found-error.js"
+        "types": "./dist/esm/not-found-error.d.ts",
+        "default": "./dist/esm/not-found-error.js"
       }
     },
     "./notification": {
       "browser": {
-        "types": "./dist/browser/notification.d.ts",
-        "default": "./dist/browser/notification.js"
+        "types": "./dist/esm/notification.d.ts",
+        "default": "./dist/esm/notification.js"
       },
       "webpack": {
-        "types": "./dist/webpack/notification.d.ts",
-        "default": "./dist/webpack/notification.js"
+        "types": "./dist/esm/notification.d.ts",
+        "default": "./dist/esm/notification.js"
       },
       "import": {
         "types": "./dist/esm/notification.d.ts",
         "default": "./dist/esm/notification.js"
       },
       "require": {
-        "types": "./dist/commonjs/notification.d.ts",
-        "default": "./dist/commonjs/notification.js"
+        "types": "./dist/esm/notification.d.ts",
+        "default": "./dist/esm/notification.js"
       }
     },
     "./observe-on": {
       "browser": {
-        "types": "./dist/browser/observe-on.d.ts",
-        "default": "./dist/browser/observe-on.js"
+        "types": "./dist/esm/observe-on.d.ts",
+        "default": "./dist/esm/observe-on.js"
       },
       "webpack": {
-        "types": "./dist/webpack/observe-on.d.ts",
-        "default": "./dist/webpack/observe-on.js"
+        "types": "./dist/esm/observe-on.d.ts",
+        "default": "./dist/esm/observe-on.js"
       },
       "import": {
         "types": "./dist/esm/observe-on.d.ts",
         "default": "./dist/esm/observe-on.js"
       },
       "require": {
-        "types": "./dist/commonjs/observe-on.d.ts",
-        "default": "./dist/commonjs/observe-on.js"
+        "types": "./dist/esm/observe-on.d.ts",
+        "default": "./dist/esm/observe-on.js"
       }
     },
     "./on-error-resume-next": {
       "browser": {
-        "types": "./dist/browser/on-error-resume-next.d.ts",
-        "default": "./dist/browser/on-error-resume-next.js"
+        "types": "./dist/esm/on-error-resume-next.d.ts",
+        "default": "./dist/esm/on-error-resume-next.js"
       },
       "webpack": {
-        "types": "./dist/webpack/on-error-resume-next.d.ts",
-        "default": "./dist/webpack/on-error-resume-next.js"
+        "types": "./dist/esm/on-error-resume-next.d.ts",
+        "default": "./dist/esm/on-error-resume-next.js"
       },
       "import": {
         "types": "./dist/esm/on-error-resume-next.d.ts",
         "default": "./dist/esm/on-error-resume-next.js"
       },
       "require": {
-        "types": "./dist/commonjs/on-error-resume-next.d.ts",
-        "default": "./dist/commonjs/on-error-resume-next.js"
+        "types": "./dist/esm/on-error-resume-next.d.ts",
+        "default": "./dist/esm/on-error-resume-next.js"
       }
     },
     "./pairwise": {
       "browser": {
-        "types": "./dist/browser/pairwise.d.ts",
-        "default": "./dist/browser/pairwise.js"
+        "types": "./dist/esm/pairwise.d.ts",
+        "default": "./dist/esm/pairwise.js"
       },
       "webpack": {
-        "types": "./dist/webpack/pairwise.d.ts",
-        "default": "./dist/webpack/pairwise.js"
+        "types": "./dist/esm/pairwise.d.ts",
+        "default": "./dist/esm/pairwise.js"
       },
       "import": {
         "types": "./dist/esm/pairwise.d.ts",
         "default": "./dist/esm/pairwise.js"
       },
       "require": {
-        "types": "./dist/commonjs/pairwise.d.ts",
-        "default": "./dist/commonjs/pairwise.js"
+        "types": "./dist/esm/pairwise.d.ts",
+        "default": "./dist/esm/pairwise.js"
       }
     },
     "./partition": {
       "browser": {
-        "types": "./dist/browser/partition.d.ts",
-        "default": "./dist/browser/partition.js"
+        "types": "./dist/esm/partition.d.ts",
+        "default": "./dist/esm/partition.js"
       },
       "webpack": {
-        "types": "./dist/webpack/partition.d.ts",
-        "default": "./dist/webpack/partition.js"
+        "types": "./dist/esm/partition.d.ts",
+        "default": "./dist/esm/partition.js"
       },
       "import": {
         "types": "./dist/esm/partition.d.ts",
         "default": "./dist/esm/partition.js"
       },
       "require": {
-        "types": "./dist/commonjs/partition.d.ts",
-        "default": "./dist/commonjs/partition.js"
+        "types": "./dist/esm/partition.d.ts",
+        "default": "./dist/esm/partition.js"
       }
     },
     "./per-subscription-subject-base": {
       "browser": {
-        "types": "./dist/browser/per-subscription-subject-base.d.ts",
-        "default": "./dist/browser/per-subscription-subject-base.js"
+        "types": "./dist/esm/per-subscription-subject-base.d.ts",
+        "default": "./dist/esm/per-subscription-subject-base.js"
       },
       "webpack": {
-        "types": "./dist/webpack/per-subscription-subject-base.d.ts",
-        "default": "./dist/webpack/per-subscription-subject-base.js"
+        "types": "./dist/esm/per-subscription-subject-base.d.ts",
+        "default": "./dist/esm/per-subscription-subject-base.js"
       },
       "import": {
         "types": "./dist/esm/per-subscription-subject-base.d.ts",
         "default": "./dist/esm/per-subscription-subject-base.js"
       },
       "require": {
-        "types": "./dist/commonjs/per-subscription-subject-base.d.ts",
-        "default": "./dist/commonjs/per-subscription-subject-base.js"
+        "types": "./dist/esm/per-subscription-subject-base.d.ts",
+        "default": "./dist/esm/per-subscription-subject-base.js"
       }
     },
     "./pipe": {
       "browser": {
-        "types": "./dist/browser/pipe.d.ts",
-        "default": "./dist/browser/pipe.js"
+        "types": "./dist/esm/pipe.d.ts",
+        "default": "./dist/esm/pipe.js"
       },
       "webpack": {
-        "types": "./dist/webpack/pipe.d.ts",
-        "default": "./dist/webpack/pipe.js"
+        "types": "./dist/esm/pipe.d.ts",
+        "default": "./dist/esm/pipe.js"
       },
       "import": {
         "types": "./dist/esm/pipe.d.ts",
         "default": "./dist/esm/pipe.js"
       },
       "require": {
-        "types": "./dist/commonjs/pipe.d.ts",
-        "default": "./dist/commonjs/pipe.js"
+        "types": "./dist/esm/pipe.d.ts",
+        "default": "./dist/esm/pipe.js"
       }
     },
     "./pluck": {
       "browser": {
-        "types": "./dist/browser/pluck.d.ts",
-        "default": "./dist/browser/pluck.js"
+        "types": "./dist/esm/pluck.d.ts",
+        "default": "./dist/esm/pluck.js"
       },
       "webpack": {
-        "types": "./dist/webpack/pluck.d.ts",
-        "default": "./dist/webpack/pluck.js"
+        "types": "./dist/esm/pluck.d.ts",
+        "default": "./dist/esm/pluck.js"
       },
       "import": {
         "types": "./dist/esm/pluck.d.ts",
         "default": "./dist/esm/pluck.js"
       },
       "require": {
-        "types": "./dist/commonjs/pluck.d.ts",
-        "default": "./dist/commonjs/pluck.js"
+        "types": "./dist/esm/pluck.d.ts",
+        "default": "./dist/esm/pluck.js"
       }
     },
     "./publish": {
       "browser": {
-        "types": "./dist/browser/publish.d.ts",
-        "default": "./dist/browser/publish.js"
+        "types": "./dist/esm/publish.d.ts",
+        "default": "./dist/esm/publish.js"
       },
       "webpack": {
-        "types": "./dist/webpack/publish.d.ts",
-        "default": "./dist/webpack/publish.js"
+        "types": "./dist/esm/publish.d.ts",
+        "default": "./dist/esm/publish.js"
       },
       "import": {
         "types": "./dist/esm/publish.d.ts",
         "default": "./dist/esm/publish.js"
       },
       "require": {
-        "types": "./dist/commonjs/publish.d.ts",
-        "default": "./dist/commonjs/publish.js"
+        "types": "./dist/esm/publish.d.ts",
+        "default": "./dist/esm/publish.js"
       }
     },
     "./publish-behavior": {
       "browser": {
-        "types": "./dist/browser/publish-behavior.d.ts",
-        "default": "./dist/browser/publish-behavior.js"
+        "types": "./dist/esm/publish-behavior.d.ts",
+        "default": "./dist/esm/publish-behavior.js"
       },
       "webpack": {
-        "types": "./dist/webpack/publish-behavior.d.ts",
-        "default": "./dist/webpack/publish-behavior.js"
+        "types": "./dist/esm/publish-behavior.d.ts",
+        "default": "./dist/esm/publish-behavior.js"
       },
       "import": {
         "types": "./dist/esm/publish-behavior.d.ts",
         "default": "./dist/esm/publish-behavior.js"
       },
       "require": {
-        "types": "./dist/commonjs/publish-behavior.d.ts",
-        "default": "./dist/commonjs/publish-behavior.js"
+        "types": "./dist/esm/publish-behavior.d.ts",
+        "default": "./dist/esm/publish-behavior.js"
       }
     },
     "./publish-last": {
       "browser": {
-        "types": "./dist/browser/publish-last.d.ts",
-        "default": "./dist/browser/publish-last.js"
+        "types": "./dist/esm/publish-last.d.ts",
+        "default": "./dist/esm/publish-last.js"
       },
       "webpack": {
-        "types": "./dist/webpack/publish-last.d.ts",
-        "default": "./dist/webpack/publish-last.js"
+        "types": "./dist/esm/publish-last.d.ts",
+        "default": "./dist/esm/publish-last.js"
       },
       "import": {
         "types": "./dist/esm/publish-last.d.ts",
         "default": "./dist/esm/publish-last.js"
       },
       "require": {
-        "types": "./dist/commonjs/publish-last.d.ts",
-        "default": "./dist/commonjs/publish-last.js"
+        "types": "./dist/esm/publish-last.d.ts",
+        "default": "./dist/esm/publish-last.js"
       }
     },
     "./publish-replay": {
       "browser": {
-        "types": "./dist/browser/publish-replay.d.ts",
-        "default": "./dist/browser/publish-replay.js"
+        "types": "./dist/esm/publish-replay.d.ts",
+        "default": "./dist/esm/publish-replay.js"
       },
       "webpack": {
-        "types": "./dist/webpack/publish-replay.d.ts",
-        "default": "./dist/webpack/publish-replay.js"
+        "types": "./dist/esm/publish-replay.d.ts",
+        "default": "./dist/esm/publish-replay.js"
       },
       "import": {
         "types": "./dist/esm/publish-replay.d.ts",
         "default": "./dist/esm/publish-replay.js"
       },
       "require": {
-        "types": "./dist/commonjs/publish-replay.d.ts",
-        "default": "./dist/commonjs/publish-replay.js"
+        "types": "./dist/esm/publish-replay.d.ts",
+        "default": "./dist/esm/publish-replay.js"
       }
     },
     "./race": {
       "browser": {
-        "types": "./dist/browser/race.d.ts",
-        "default": "./dist/browser/race.js"
+        "types": "./dist/esm/race.d.ts",
+        "default": "./dist/esm/race.js"
       },
       "webpack": {
-        "types": "./dist/webpack/race.d.ts",
-        "default": "./dist/webpack/race.js"
+        "types": "./dist/esm/race.d.ts",
+        "default": "./dist/esm/race.js"
       },
       "import": {
         "types": "./dist/esm/race.d.ts",
         "default": "./dist/esm/race.js"
       },
       "require": {
-        "types": "./dist/commonjs/race.d.ts",
-        "default": "./dist/commonjs/race.js"
+        "types": "./dist/esm/race.d.ts",
+        "default": "./dist/esm/race.js"
       }
     },
     "./reduce": {
       "browser": {
-        "types": "./dist/browser/reduce.d.ts",
-        "default": "./dist/browser/reduce.js"
+        "types": "./dist/esm/reduce.d.ts",
+        "default": "./dist/esm/reduce.js"
       },
       "webpack": {
-        "types": "./dist/webpack/reduce.d.ts",
-        "default": "./dist/webpack/reduce.js"
+        "types": "./dist/esm/reduce.d.ts",
+        "default": "./dist/esm/reduce.js"
       },
       "import": {
         "types": "./dist/esm/reduce.d.ts",
         "default": "./dist/esm/reduce.js"
       },
       "require": {
-        "types": "./dist/commonjs/reduce.d.ts",
-        "default": "./dist/commonjs/reduce.js"
+        "types": "./dist/esm/reduce.d.ts",
+        "default": "./dist/esm/reduce.js"
       }
     },
     "./ref-count": {
       "browser": {
-        "types": "./dist/browser/ref-count.d.ts",
-        "default": "./dist/browser/ref-count.js"
+        "types": "./dist/esm/ref-count.d.ts",
+        "default": "./dist/esm/ref-count.js"
       },
       "webpack": {
-        "types": "./dist/webpack/ref-count.d.ts",
-        "default": "./dist/webpack/ref-count.js"
+        "types": "./dist/esm/ref-count.d.ts",
+        "default": "./dist/esm/ref-count.js"
       },
       "import": {
         "types": "./dist/esm/ref-count.d.ts",
         "default": "./dist/esm/ref-count.js"
       },
       "require": {
-        "types": "./dist/commonjs/ref-count.d.ts",
-        "default": "./dist/commonjs/ref-count.js"
+        "types": "./dist/esm/ref-count.d.ts",
+        "default": "./dist/esm/ref-count.js"
       }
     },
     "./repeat": {
       "browser": {
-        "types": "./dist/browser/repeat.d.ts",
-        "default": "./dist/browser/repeat.js"
+        "types": "./dist/esm/repeat.d.ts",
+        "default": "./dist/esm/repeat.js"
       },
       "webpack": {
-        "types": "./dist/webpack/repeat.d.ts",
-        "default": "./dist/webpack/repeat.js"
+        "types": "./dist/esm/repeat.d.ts",
+        "default": "./dist/esm/repeat.js"
       },
       "import": {
         "types": "./dist/esm/repeat.d.ts",
         "default": "./dist/esm/repeat.js"
       },
       "require": {
-        "types": "./dist/commonjs/repeat.d.ts",
-        "default": "./dist/commonjs/repeat.js"
+        "types": "./dist/esm/repeat.d.ts",
+        "default": "./dist/esm/repeat.js"
       }
     },
     "./repeat-when": {
       "browser": {
-        "types": "./dist/browser/repeat-when.d.ts",
-        "default": "./dist/browser/repeat-when.js"
+        "types": "./dist/esm/repeat-when.d.ts",
+        "default": "./dist/esm/repeat-when.js"
       },
       "webpack": {
-        "types": "./dist/webpack/repeat-when.d.ts",
-        "default": "./dist/webpack/repeat-when.js"
+        "types": "./dist/esm/repeat-when.d.ts",
+        "default": "./dist/esm/repeat-when.js"
       },
       "import": {
         "types": "./dist/esm/repeat-when.d.ts",
         "default": "./dist/esm/repeat-when.js"
       },
       "require": {
-        "types": "./dist/commonjs/repeat-when.d.ts",
-        "default": "./dist/commonjs/repeat-when.js"
+        "types": "./dist/esm/repeat-when.d.ts",
+        "default": "./dist/esm/repeat-when.js"
       }
     },
     "./replay-subject": {
       "browser": {
-        "types": "./dist/browser/replay-subject.d.ts",
-        "default": "./dist/browser/replay-subject.js"
+        "types": "./dist/esm/replay-subject.d.ts",
+        "default": "./dist/esm/replay-subject.js"
       },
       "webpack": {
-        "types": "./dist/webpack/replay-subject.d.ts",
-        "default": "./dist/webpack/replay-subject.js"
+        "types": "./dist/esm/replay-subject.d.ts",
+        "default": "./dist/esm/replay-subject.js"
       },
       "import": {
         "types": "./dist/esm/replay-subject.d.ts",
         "default": "./dist/esm/replay-subject.js"
       },
       "require": {
-        "types": "./dist/commonjs/replay-subject.d.ts",
-        "default": "./dist/commonjs/replay-subject.js"
+        "types": "./dist/esm/replay-subject.d.ts",
+        "default": "./dist/esm/replay-subject.js"
       }
     },
     "./retry": {
       "browser": {
-        "types": "./dist/browser/retry.d.ts",
-        "default": "./dist/browser/retry.js"
+        "types": "./dist/esm/retry.d.ts",
+        "default": "./dist/esm/retry.js"
       },
       "webpack": {
-        "types": "./dist/webpack/retry.d.ts",
-        "default": "./dist/webpack/retry.js"
+        "types": "./dist/esm/retry.d.ts",
+        "default": "./dist/esm/retry.js"
       },
       "import": {
         "types": "./dist/esm/retry.d.ts",
         "default": "./dist/esm/retry.js"
       },
       "require": {
-        "types": "./dist/commonjs/retry.d.ts",
-        "default": "./dist/commonjs/retry.js"
+        "types": "./dist/esm/retry.d.ts",
+        "default": "./dist/esm/retry.js"
       }
     },
     "./retry-when": {
       "browser": {
-        "types": "./dist/browser/retry-when.d.ts",
-        "default": "./dist/browser/retry-when.js"
+        "types": "./dist/esm/retry-when.d.ts",
+        "default": "./dist/esm/retry-when.js"
       },
       "webpack": {
-        "types": "./dist/webpack/retry-when.d.ts",
-        "default": "./dist/webpack/retry-when.js"
+        "types": "./dist/esm/retry-when.d.ts",
+        "default": "./dist/esm/retry-when.js"
       },
       "import": {
         "types": "./dist/esm/retry-when.d.ts",
         "default": "./dist/esm/retry-when.js"
       },
       "require": {
-        "types": "./dist/commonjs/retry-when.d.ts",
-        "default": "./dist/commonjs/retry-when.js"
+        "types": "./dist/esm/retry-when.d.ts",
+        "default": "./dist/esm/retry-when.js"
       }
     },
     "./sample": {
       "browser": {
-        "types": "./dist/browser/sample.d.ts",
-        "default": "./dist/browser/sample.js"
+        "types": "./dist/esm/sample.d.ts",
+        "default": "./dist/esm/sample.js"
       },
       "webpack": {
-        "types": "./dist/webpack/sample.d.ts",
-        "default": "./dist/webpack/sample.js"
+        "types": "./dist/esm/sample.d.ts",
+        "default": "./dist/esm/sample.js"
       },
       "import": {
         "types": "./dist/esm/sample.d.ts",
         "default": "./dist/esm/sample.js"
       },
       "require": {
-        "types": "./dist/commonjs/sample.d.ts",
-        "default": "./dist/commonjs/sample.js"
+        "types": "./dist/esm/sample.d.ts",
+        "default": "./dist/esm/sample.js"
       }
     },
     "./sample-time": {
       "browser": {
-        "types": "./dist/browser/sample-time.d.ts",
-        "default": "./dist/browser/sample-time.js"
+        "types": "./dist/esm/sample-time.d.ts",
+        "default": "./dist/esm/sample-time.js"
       },
       "webpack": {
-        "types": "./dist/webpack/sample-time.d.ts",
-        "default": "./dist/webpack/sample-time.js"
+        "types": "./dist/esm/sample-time.d.ts",
+        "default": "./dist/esm/sample-time.js"
       },
       "import": {
         "types": "./dist/esm/sample-time.d.ts",
         "default": "./dist/esm/sample-time.js"
       },
       "require": {
-        "types": "./dist/commonjs/sample-time.d.ts",
-        "default": "./dist/commonjs/sample-time.js"
+        "types": "./dist/esm/sample-time.d.ts",
+        "default": "./dist/esm/sample-time.js"
       }
     },
     "./scan": {
       "browser": {
-        "types": "./dist/browser/scan.d.ts",
-        "default": "./dist/browser/scan.js"
+        "types": "./dist/esm/scan.d.ts",
+        "default": "./dist/esm/scan.js"
       },
       "webpack": {
-        "types": "./dist/webpack/scan.d.ts",
-        "default": "./dist/webpack/scan.js"
+        "types": "./dist/esm/scan.d.ts",
+        "default": "./dist/esm/scan.js"
       },
       "import": {
         "types": "./dist/esm/scan.d.ts",
         "default": "./dist/esm/scan.js"
       },
       "require": {
-        "types": "./dist/commonjs/scan.d.ts",
-        "default": "./dist/commonjs/scan.js"
+        "types": "./dist/esm/scan.d.ts",
+        "default": "./dist/esm/scan.js"
       }
     },
     "./sequence-equal": {
       "browser": {
-        "types": "./dist/browser/sequence-equal.d.ts",
-        "default": "./dist/browser/sequence-equal.js"
+        "types": "./dist/esm/sequence-equal.d.ts",
+        "default": "./dist/esm/sequence-equal.js"
       },
       "webpack": {
-        "types": "./dist/webpack/sequence-equal.d.ts",
-        "default": "./dist/webpack/sequence-equal.js"
+        "types": "./dist/esm/sequence-equal.d.ts",
+        "default": "./dist/esm/sequence-equal.js"
       },
       "import": {
         "types": "./dist/esm/sequence-equal.d.ts",
         "default": "./dist/esm/sequence-equal.js"
       },
       "require": {
-        "types": "./dist/commonjs/sequence-equal.d.ts",
-        "default": "./dist/commonjs/sequence-equal.js"
+        "types": "./dist/esm/sequence-equal.d.ts",
+        "default": "./dist/esm/sequence-equal.js"
       }
     },
     "./sequence-error": {
       "browser": {
-        "types": "./dist/browser/sequence-error.d.ts",
-        "default": "./dist/browser/sequence-error.js"
+        "types": "./dist/esm/sequence-error.d.ts",
+        "default": "./dist/esm/sequence-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/sequence-error.d.ts",
-        "default": "./dist/webpack/sequence-error.js"
+        "types": "./dist/esm/sequence-error.d.ts",
+        "default": "./dist/esm/sequence-error.js"
       },
       "import": {
         "types": "./dist/esm/sequence-error.d.ts",
         "default": "./dist/esm/sequence-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/sequence-error.d.ts",
-        "default": "./dist/commonjs/sequence-error.js"
+        "types": "./dist/esm/sequence-error.d.ts",
+        "default": "./dist/esm/sequence-error.js"
       }
     },
     "./share": {
       "browser": {
-        "types": "./dist/browser/share.d.ts",
-        "default": "./dist/browser/share.js"
+        "types": "./dist/esm/share.d.ts",
+        "default": "./dist/esm/share.js"
       },
       "webpack": {
-        "types": "./dist/webpack/share.d.ts",
-        "default": "./dist/webpack/share.js"
+        "types": "./dist/esm/share.d.ts",
+        "default": "./dist/esm/share.js"
       },
       "import": {
         "types": "./dist/esm/share.d.ts",
         "default": "./dist/esm/share.js"
       },
       "require": {
-        "types": "./dist/commonjs/share.d.ts",
-        "default": "./dist/commonjs/share.js"
+        "types": "./dist/esm/share.d.ts",
+        "default": "./dist/esm/share.js"
       }
     },
     "./share-replay": {
       "browser": {
-        "types": "./dist/browser/share-replay.d.ts",
-        "default": "./dist/browser/share-replay.js"
+        "types": "./dist/esm/share-replay.d.ts",
+        "default": "./dist/esm/share-replay.js"
       },
       "webpack": {
-        "types": "./dist/webpack/share-replay.d.ts",
-        "default": "./dist/webpack/share-replay.js"
+        "types": "./dist/esm/share-replay.d.ts",
+        "default": "./dist/esm/share-replay.js"
       },
       "import": {
         "types": "./dist/esm/share-replay.d.ts",
         "default": "./dist/esm/share-replay.js"
       },
       "require": {
-        "types": "./dist/commonjs/share-replay.d.ts",
-        "default": "./dist/commonjs/share-replay.js"
+        "types": "./dist/esm/share-replay.d.ts",
+        "default": "./dist/esm/share-replay.js"
       }
     },
     "./single": {
       "browser": {
-        "types": "./dist/browser/single.d.ts",
-        "default": "./dist/browser/single.js"
+        "types": "./dist/esm/single.d.ts",
+        "default": "./dist/esm/single.js"
       },
       "webpack": {
-        "types": "./dist/webpack/single.d.ts",
-        "default": "./dist/webpack/single.js"
+        "types": "./dist/esm/single.d.ts",
+        "default": "./dist/esm/single.js"
       },
       "import": {
         "types": "./dist/esm/single.d.ts",
         "default": "./dist/esm/single.js"
       },
       "require": {
-        "types": "./dist/commonjs/single.d.ts",
-        "default": "./dist/commonjs/single.js"
+        "types": "./dist/esm/single.d.ts",
+        "default": "./dist/esm/single.js"
       }
     },
     "./skip": {
       "browser": {
-        "types": "./dist/browser/skip.d.ts",
-        "default": "./dist/browser/skip.js"
+        "types": "./dist/esm/skip.d.ts",
+        "default": "./dist/esm/skip.js"
       },
       "webpack": {
-        "types": "./dist/webpack/skip.d.ts",
-        "default": "./dist/webpack/skip.js"
+        "types": "./dist/esm/skip.d.ts",
+        "default": "./dist/esm/skip.js"
       },
       "import": {
         "types": "./dist/esm/skip.d.ts",
         "default": "./dist/esm/skip.js"
       },
       "require": {
-        "types": "./dist/commonjs/skip.d.ts",
-        "default": "./dist/commonjs/skip.js"
+        "types": "./dist/esm/skip.d.ts",
+        "default": "./dist/esm/skip.js"
       }
     },
     "./skip-last": {
       "browser": {
-        "types": "./dist/browser/skip-last.d.ts",
-        "default": "./dist/browser/skip-last.js"
+        "types": "./dist/esm/skip-last.d.ts",
+        "default": "./dist/esm/skip-last.js"
       },
       "webpack": {
-        "types": "./dist/webpack/skip-last.d.ts",
-        "default": "./dist/webpack/skip-last.js"
+        "types": "./dist/esm/skip-last.d.ts",
+        "default": "./dist/esm/skip-last.js"
       },
       "import": {
         "types": "./dist/esm/skip-last.d.ts",
         "default": "./dist/esm/skip-last.js"
       },
       "require": {
-        "types": "./dist/commonjs/skip-last.d.ts",
-        "default": "./dist/commonjs/skip-last.js"
+        "types": "./dist/esm/skip-last.d.ts",
+        "default": "./dist/esm/skip-last.js"
       }
     },
     "./skip-until": {
       "browser": {
-        "types": "./dist/browser/skip-until.d.ts",
-        "default": "./dist/browser/skip-until.js"
+        "types": "./dist/esm/skip-until.d.ts",
+        "default": "./dist/esm/skip-until.js"
       },
       "webpack": {
-        "types": "./dist/webpack/skip-until.d.ts",
-        "default": "./dist/webpack/skip-until.js"
+        "types": "./dist/esm/skip-until.d.ts",
+        "default": "./dist/esm/skip-until.js"
       },
       "import": {
         "types": "./dist/esm/skip-until.d.ts",
         "default": "./dist/esm/skip-until.js"
       },
       "require": {
-        "types": "./dist/commonjs/skip-until.d.ts",
-        "default": "./dist/commonjs/skip-until.js"
+        "types": "./dist/esm/skip-until.d.ts",
+        "default": "./dist/esm/skip-until.js"
       }
     },
     "./skip-while": {
       "browser": {
-        "types": "./dist/browser/skip-while.d.ts",
-        "default": "./dist/browser/skip-while.js"
+        "types": "./dist/esm/skip-while.d.ts",
+        "default": "./dist/esm/skip-while.js"
       },
       "webpack": {
-        "types": "./dist/webpack/skip-while.d.ts",
-        "default": "./dist/webpack/skip-while.js"
+        "types": "./dist/esm/skip-while.d.ts",
+        "default": "./dist/esm/skip-while.js"
       },
       "import": {
         "types": "./dist/esm/skip-while.d.ts",
         "default": "./dist/esm/skip-while.js"
       },
       "require": {
-        "types": "./dist/commonjs/skip-while.d.ts",
-        "default": "./dist/commonjs/skip-while.js"
+        "types": "./dist/esm/skip-while.d.ts",
+        "default": "./dist/esm/skip-while.js"
       }
     },
     "./start-with": {
       "browser": {
-        "types": "./dist/browser/start-with.d.ts",
-        "default": "./dist/browser/start-with.js"
+        "types": "./dist/esm/start-with.d.ts",
+        "default": "./dist/esm/start-with.js"
       },
       "webpack": {
-        "types": "./dist/webpack/start-with.d.ts",
-        "default": "./dist/webpack/start-with.js"
+        "types": "./dist/esm/start-with.d.ts",
+        "default": "./dist/esm/start-with.js"
       },
       "import": {
         "types": "./dist/esm/start-with.d.ts",
         "default": "./dist/esm/start-with.js"
       },
       "require": {
-        "types": "./dist/commonjs/start-with.d.ts",
-        "default": "./dist/commonjs/start-with.js"
+        "types": "./dist/esm/start-with.d.ts",
+        "default": "./dist/esm/start-with.js"
       }
     },
     "./subject": {
       "browser": {
-        "types": "./dist/browser/subject.d.ts",
-        "default": "./dist/browser/subject.js"
+        "types": "./dist/esm/subject.d.ts",
+        "default": "./dist/esm/subject.js"
       },
       "webpack": {
-        "types": "./dist/webpack/subject.d.ts",
-        "default": "./dist/webpack/subject.js"
+        "types": "./dist/esm/subject.d.ts",
+        "default": "./dist/esm/subject.js"
       },
       "import": {
         "types": "./dist/esm/subject.d.ts",
         "default": "./dist/esm/subject.js"
       },
       "require": {
-        "types": "./dist/commonjs/subject.d.ts",
-        "default": "./dist/commonjs/subject.js"
+        "types": "./dist/esm/subject.d.ts",
+        "default": "./dist/esm/subject.js"
       }
     },
     "./subscribe-on": {
       "browser": {
-        "types": "./dist/browser/subscribe-on.d.ts",
-        "default": "./dist/browser/subscribe-on.js"
+        "types": "./dist/esm/subscribe-on.d.ts",
+        "default": "./dist/esm/subscribe-on.js"
       },
       "webpack": {
-        "types": "./dist/webpack/subscribe-on.d.ts",
-        "default": "./dist/webpack/subscribe-on.js"
+        "types": "./dist/esm/subscribe-on.d.ts",
+        "default": "./dist/esm/subscribe-on.js"
       },
       "import": {
         "types": "./dist/esm/subscribe-on.d.ts",
         "default": "./dist/esm/subscribe-on.js"
       },
       "require": {
-        "types": "./dist/commonjs/subscribe-on.d.ts",
-        "default": "./dist/commonjs/subscribe-on.js"
+        "types": "./dist/esm/subscribe-on.d.ts",
+        "default": "./dist/esm/subscribe-on.js"
       }
     },
     "./switch-map": {
       "browser": {
-        "types": "./dist/browser/switch-map.d.ts",
-        "default": "./dist/browser/switch-map.js"
+        "types": "./dist/esm/switch-map.d.ts",
+        "default": "./dist/esm/switch-map.js"
       },
       "webpack": {
-        "types": "./dist/webpack/switch-map.d.ts",
-        "default": "./dist/webpack/switch-map.js"
+        "types": "./dist/esm/switch-map.d.ts",
+        "default": "./dist/esm/switch-map.js"
       },
       "import": {
         "types": "./dist/esm/switch-map.d.ts",
         "default": "./dist/esm/switch-map.js"
       },
       "require": {
-        "types": "./dist/commonjs/switch-map.d.ts",
-        "default": "./dist/commonjs/switch-map.js"
+        "types": "./dist/esm/switch-map.d.ts",
+        "default": "./dist/esm/switch-map.js"
       }
     },
     "./switch-scan": {
       "browser": {
-        "types": "./dist/browser/switch-scan.d.ts",
-        "default": "./dist/browser/switch-scan.js"
+        "types": "./dist/esm/switch-scan.d.ts",
+        "default": "./dist/esm/switch-scan.js"
       },
       "webpack": {
-        "types": "./dist/webpack/switch-scan.d.ts",
-        "default": "./dist/webpack/switch-scan.js"
+        "types": "./dist/esm/switch-scan.d.ts",
+        "default": "./dist/esm/switch-scan.js"
       },
       "import": {
         "types": "./dist/esm/switch-scan.d.ts",
         "default": "./dist/esm/switch-scan.js"
       },
       "require": {
-        "types": "./dist/commonjs/switch-scan.d.ts",
-        "default": "./dist/commonjs/switch-scan.js"
+        "types": "./dist/esm/switch-scan.d.ts",
+        "default": "./dist/esm/switch-scan.js"
       }
     },
     "./take": {
       "browser": {
-        "types": "./dist/browser/take.d.ts",
-        "default": "./dist/browser/take.js"
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
       },
       "webpack": {
-        "types": "./dist/webpack/take.d.ts",
-        "default": "./dist/webpack/take.js"
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
       },
       "import": {
         "types": "./dist/esm/take.d.ts",
         "default": "./dist/esm/take.js"
       },
       "require": {
-        "types": "./dist/commonjs/take.d.ts",
-        "default": "./dist/commonjs/take.js"
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
       }
     },
     "./take-last": {
       "browser": {
-        "types": "./dist/browser/take-last.d.ts",
-        "default": "./dist/browser/take-last.js"
+        "types": "./dist/esm/take-last.d.ts",
+        "default": "./dist/esm/take-last.js"
       },
       "webpack": {
-        "types": "./dist/webpack/take-last.d.ts",
-        "default": "./dist/webpack/take-last.js"
+        "types": "./dist/esm/take-last.d.ts",
+        "default": "./dist/esm/take-last.js"
       },
       "import": {
         "types": "./dist/esm/take-last.d.ts",
         "default": "./dist/esm/take-last.js"
       },
       "require": {
-        "types": "./dist/commonjs/take-last.d.ts",
-        "default": "./dist/commonjs/take-last.js"
+        "types": "./dist/esm/take-last.d.ts",
+        "default": "./dist/esm/take-last.js"
       }
     },
     "./take-until": {
       "browser": {
-        "types": "./dist/browser/take-until.d.ts",
-        "default": "./dist/browser/take-until.js"
+        "types": "./dist/esm/take-until.d.ts",
+        "default": "./dist/esm/take-until.js"
       },
       "webpack": {
-        "types": "./dist/webpack/take-until.d.ts",
-        "default": "./dist/webpack/take-until.js"
+        "types": "./dist/esm/take-until.d.ts",
+        "default": "./dist/esm/take-until.js"
       },
       "import": {
         "types": "./dist/esm/take-until.d.ts",
         "default": "./dist/esm/take-until.js"
       },
       "require": {
-        "types": "./dist/commonjs/take-until.d.ts",
-        "default": "./dist/commonjs/take-until.js"
+        "types": "./dist/esm/take-until.d.ts",
+        "default": "./dist/esm/take-until.js"
       }
     },
     "./take-while": {
       "browser": {
-        "types": "./dist/browser/take-while.d.ts",
-        "default": "./dist/browser/take-while.js"
+        "types": "./dist/esm/take-while.d.ts",
+        "default": "./dist/esm/take-while.js"
       },
       "webpack": {
-        "types": "./dist/webpack/take-while.d.ts",
-        "default": "./dist/webpack/take-while.js"
+        "types": "./dist/esm/take-while.d.ts",
+        "default": "./dist/esm/take-while.js"
       },
       "import": {
         "types": "./dist/esm/take-while.d.ts",
         "default": "./dist/esm/take-while.js"
       },
       "require": {
-        "types": "./dist/commonjs/take-while.d.ts",
-        "default": "./dist/commonjs/take-while.js"
+        "types": "./dist/esm/take-while.d.ts",
+        "default": "./dist/esm/take-while.js"
       }
     },
     "./tap": {
       "browser": {
-        "types": "./dist/browser/tap.d.ts",
-        "default": "./dist/browser/tap.js"
+        "types": "./dist/esm/tap.d.ts",
+        "default": "./dist/esm/tap.js"
       },
       "webpack": {
-        "types": "./dist/webpack/tap.d.ts",
-        "default": "./dist/webpack/tap.js"
+        "types": "./dist/esm/tap.d.ts",
+        "default": "./dist/esm/tap.js"
       },
       "import": {
         "types": "./dist/esm/tap.d.ts",
         "default": "./dist/esm/tap.js"
       },
       "require": {
-        "types": "./dist/commonjs/tap.d.ts",
-        "default": "./dist/commonjs/tap.js"
+        "types": "./dist/esm/tap.d.ts",
+        "default": "./dist/esm/tap.js"
       }
     },
     "./throttle": {
       "browser": {
-        "types": "./dist/browser/throttle.d.ts",
-        "default": "./dist/browser/throttle.js"
+        "types": "./dist/esm/throttle.d.ts",
+        "default": "./dist/esm/throttle.js"
       },
       "webpack": {
-        "types": "./dist/webpack/throttle.d.ts",
-        "default": "./dist/webpack/throttle.js"
+        "types": "./dist/esm/throttle.d.ts",
+        "default": "./dist/esm/throttle.js"
       },
       "import": {
         "types": "./dist/esm/throttle.d.ts",
         "default": "./dist/esm/throttle.js"
       },
       "require": {
-        "types": "./dist/commonjs/throttle.d.ts",
-        "default": "./dist/commonjs/throttle.js"
+        "types": "./dist/esm/throttle.d.ts",
+        "default": "./dist/esm/throttle.js"
       }
     },
     "./throw-if-empty": {
       "browser": {
-        "types": "./dist/browser/throw-if-empty.d.ts",
-        "default": "./dist/browser/throw-if-empty.js"
+        "types": "./dist/esm/throw-if-empty.d.ts",
+        "default": "./dist/esm/throw-if-empty.js"
       },
       "webpack": {
-        "types": "./dist/webpack/throw-if-empty.d.ts",
-        "default": "./dist/webpack/throw-if-empty.js"
+        "types": "./dist/esm/throw-if-empty.d.ts",
+        "default": "./dist/esm/throw-if-empty.js"
       },
       "import": {
         "types": "./dist/esm/throw-if-empty.d.ts",
         "default": "./dist/esm/throw-if-empty.js"
       },
       "require": {
-        "types": "./dist/commonjs/throw-if-empty.d.ts",
-        "default": "./dist/commonjs/throw-if-empty.js"
+        "types": "./dist/esm/throw-if-empty.d.ts",
+        "default": "./dist/esm/throw-if-empty.js"
       }
     },
     "./time-interval": {
       "browser": {
-        "types": "./dist/browser/time-interval.d.ts",
-        "default": "./dist/browser/time-interval.js"
+        "types": "./dist/esm/time-interval.d.ts",
+        "default": "./dist/esm/time-interval.js"
       },
       "webpack": {
-        "types": "./dist/webpack/time-interval.d.ts",
-        "default": "./dist/webpack/time-interval.js"
+        "types": "./dist/esm/time-interval.d.ts",
+        "default": "./dist/esm/time-interval.js"
       },
       "import": {
         "types": "./dist/esm/time-interval.d.ts",
         "default": "./dist/esm/time-interval.js"
       },
       "require": {
-        "types": "./dist/commonjs/time-interval.d.ts",
-        "default": "./dist/commonjs/time-interval.js"
+        "types": "./dist/esm/time-interval.d.ts",
+        "default": "./dist/esm/time-interval.js"
       }
     },
     "./timeout": {
       "browser": {
-        "types": "./dist/browser/timeout.d.ts",
-        "default": "./dist/browser/timeout.js"
+        "types": "./dist/esm/timeout.d.ts",
+        "default": "./dist/esm/timeout.js"
       },
       "webpack": {
-        "types": "./dist/webpack/timeout.d.ts",
-        "default": "./dist/webpack/timeout.js"
+        "types": "./dist/esm/timeout.d.ts",
+        "default": "./dist/esm/timeout.js"
       },
       "import": {
         "types": "./dist/esm/timeout.d.ts",
         "default": "./dist/esm/timeout.js"
       },
       "require": {
-        "types": "./dist/commonjs/timeout.d.ts",
-        "default": "./dist/commonjs/timeout.js"
+        "types": "./dist/esm/timeout.d.ts",
+        "default": "./dist/esm/timeout.js"
       }
     },
     "./timeout-error": {
       "browser": {
-        "types": "./dist/browser/timeout-error.d.ts",
-        "default": "./dist/browser/timeout-error.js"
+        "types": "./dist/esm/timeout-error.d.ts",
+        "default": "./dist/esm/timeout-error.js"
       },
       "webpack": {
-        "types": "./dist/webpack/timeout-error.d.ts",
-        "default": "./dist/webpack/timeout-error.js"
+        "types": "./dist/esm/timeout-error.d.ts",
+        "default": "./dist/esm/timeout-error.js"
       },
       "import": {
         "types": "./dist/esm/timeout-error.d.ts",
         "default": "./dist/esm/timeout-error.js"
       },
       "require": {
-        "types": "./dist/commonjs/timeout-error.d.ts",
-        "default": "./dist/commonjs/timeout-error.js"
+        "types": "./dist/esm/timeout-error.d.ts",
+        "default": "./dist/esm/timeout-error.js"
       }
     },
     "./timer": {
       "browser": {
-        "types": "./dist/browser/timer.d.ts",
-        "default": "./dist/browser/timer.js"
+        "types": "./dist/esm/timer.d.ts",
+        "default": "./dist/esm/timer.js"
       },
       "webpack": {
-        "types": "./dist/webpack/timer.d.ts",
-        "default": "./dist/webpack/timer.js"
+        "types": "./dist/esm/timer.d.ts",
+        "default": "./dist/esm/timer.js"
       },
       "import": {
         "types": "./dist/esm/timer.d.ts",
         "default": "./dist/esm/timer.js"
       },
       "require": {
-        "types": "./dist/commonjs/timer.d.ts",
-        "default": "./dist/commonjs/timer.js"
+        "types": "./dist/esm/timer.d.ts",
+        "default": "./dist/esm/timer.js"
       }
     },
     "./timestamp": {
       "browser": {
-        "types": "./dist/browser/timestamp.d.ts",
-        "default": "./dist/browser/timestamp.js"
+        "types": "./dist/esm/timestamp.d.ts",
+        "default": "./dist/esm/timestamp.js"
       },
       "webpack": {
-        "types": "./dist/webpack/timestamp.d.ts",
-        "default": "./dist/webpack/timestamp.js"
+        "types": "./dist/esm/timestamp.d.ts",
+        "default": "./dist/esm/timestamp.js"
       },
       "import": {
         "types": "./dist/esm/timestamp.d.ts",
         "default": "./dist/esm/timestamp.js"
       },
       "require": {
-        "types": "./dist/commonjs/timestamp.d.ts",
-        "default": "./dist/commonjs/timestamp.js"
+        "types": "./dist/esm/timestamp.d.ts",
+        "default": "./dist/esm/timestamp.js"
       }
     },
     "./window": {
       "browser": {
-        "types": "./dist/browser/window.d.ts",
-        "default": "./dist/browser/window.js"
+        "types": "./dist/esm/window.d.ts",
+        "default": "./dist/esm/window.js"
       },
       "webpack": {
-        "types": "./dist/webpack/window.d.ts",
-        "default": "./dist/webpack/window.js"
+        "types": "./dist/esm/window.d.ts",
+        "default": "./dist/esm/window.js"
       },
       "import": {
         "types": "./dist/esm/window.d.ts",
         "default": "./dist/esm/window.js"
       },
       "require": {
-        "types": "./dist/commonjs/window.d.ts",
-        "default": "./dist/commonjs/window.js"
+        "types": "./dist/esm/window.d.ts",
+        "default": "./dist/esm/window.js"
       }
     },
     "./window-count": {
       "browser": {
-        "types": "./dist/browser/window-count.d.ts",
-        "default": "./dist/browser/window-count.js"
+        "types": "./dist/esm/window-count.d.ts",
+        "default": "./dist/esm/window-count.js"
       },
       "webpack": {
-        "types": "./dist/webpack/window-count.d.ts",
-        "default": "./dist/webpack/window-count.js"
+        "types": "./dist/esm/window-count.d.ts",
+        "default": "./dist/esm/window-count.js"
       },
       "import": {
         "types": "./dist/esm/window-count.d.ts",
         "default": "./dist/esm/window-count.js"
       },
       "require": {
-        "types": "./dist/commonjs/window-count.d.ts",
-        "default": "./dist/commonjs/window-count.js"
+        "types": "./dist/esm/window-count.d.ts",
+        "default": "./dist/esm/window-count.js"
       }
     },
     "./window-time": {
       "browser": {
-        "types": "./dist/browser/window-time.d.ts",
-        "default": "./dist/browser/window-time.js"
+        "types": "./dist/esm/window-time.d.ts",
+        "default": "./dist/esm/window-time.js"
       },
       "webpack": {
-        "types": "./dist/webpack/window-time.d.ts",
-        "default": "./dist/webpack/window-time.js"
+        "types": "./dist/esm/window-time.d.ts",
+        "default": "./dist/esm/window-time.js"
       },
       "import": {
         "types": "./dist/esm/window-time.d.ts",
         "default": "./dist/esm/window-time.js"
       },
       "require": {
-        "types": "./dist/commonjs/window-time.d.ts",
-        "default": "./dist/commonjs/window-time.js"
+        "types": "./dist/esm/window-time.d.ts",
+        "default": "./dist/esm/window-time.js"
       }
     },
     "./window-toggle": {
       "browser": {
-        "types": "./dist/browser/window-toggle.d.ts",
-        "default": "./dist/browser/window-toggle.js"
+        "types": "./dist/esm/window-toggle.d.ts",
+        "default": "./dist/esm/window-toggle.js"
       },
       "webpack": {
-        "types": "./dist/webpack/window-toggle.d.ts",
-        "default": "./dist/webpack/window-toggle.js"
+        "types": "./dist/esm/window-toggle.d.ts",
+        "default": "./dist/esm/window-toggle.js"
       },
       "import": {
         "types": "./dist/esm/window-toggle.d.ts",
         "default": "./dist/esm/window-toggle.js"
       },
       "require": {
-        "types": "./dist/commonjs/window-toggle.d.ts",
-        "default": "./dist/commonjs/window-toggle.js"
+        "types": "./dist/esm/window-toggle.d.ts",
+        "default": "./dist/esm/window-toggle.js"
       }
     },
     "./window-when": {
       "browser": {
-        "types": "./dist/browser/window-when.d.ts",
-        "default": "./dist/browser/window-when.js"
+        "types": "./dist/esm/window-when.d.ts",
+        "default": "./dist/esm/window-when.js"
       },
       "webpack": {
-        "types": "./dist/webpack/window-when.d.ts",
-        "default": "./dist/webpack/window-when.js"
+        "types": "./dist/esm/window-when.d.ts",
+        "default": "./dist/esm/window-when.js"
       },
       "import": {
         "types": "./dist/esm/window-when.d.ts",
         "default": "./dist/esm/window-when.js"
       },
       "require": {
-        "types": "./dist/commonjs/window-when.d.ts",
-        "default": "./dist/commonjs/window-when.js"
+        "types": "./dist/esm/window-when.d.ts",
+        "default": "./dist/esm/window-when.js"
       }
     },
     "./with-latest-from": {
       "browser": {
-        "types": "./dist/browser/with-latest-from.d.ts",
-        "default": "./dist/browser/with-latest-from.js"
+        "types": "./dist/esm/with-latest-from.d.ts",
+        "default": "./dist/esm/with-latest-from.js"
       },
       "webpack": {
-        "types": "./dist/webpack/with-latest-from.d.ts",
-        "default": "./dist/webpack/with-latest-from.js"
+        "types": "./dist/esm/with-latest-from.d.ts",
+        "default": "./dist/esm/with-latest-from.js"
       },
       "import": {
         "types": "./dist/esm/with-latest-from.d.ts",
         "default": "./dist/esm/with-latest-from.js"
       },
       "require": {
-        "types": "./dist/commonjs/with-latest-from.d.ts",
-        "default": "./dist/commonjs/with-latest-from.js"
+        "types": "./dist/esm/with-latest-from.d.ts",
+        "default": "./dist/esm/with-latest-from.js"
       }
     },
     "./zip": {
       "browser": {
-        "types": "./dist/browser/zip.d.ts",
-        "default": "./dist/browser/zip.js"
+        "types": "./dist/esm/zip.d.ts",
+        "default": "./dist/esm/zip.js"
       },
       "webpack": {
-        "types": "./dist/webpack/zip.d.ts",
-        "default": "./dist/webpack/zip.js"
+        "types": "./dist/esm/zip.d.ts",
+        "default": "./dist/esm/zip.js"
       },
       "import": {
         "types": "./dist/esm/zip.d.ts",
         "default": "./dist/esm/zip.js"
       },
       "require": {
-        "types": "./dist/commonjs/zip.d.ts",
-        "default": "./dist/commonjs/zip.js"
+        "types": "./dist/esm/zip.d.ts",
+        "default": "./dist/esm/zip.js"
       }
     },
     "./zip-all": {
       "browser": {
-        "types": "./dist/browser/zip-all.d.ts",
-        "default": "./dist/browser/zip-all.js"
+        "types": "./dist/esm/zip-all.d.ts",
+        "default": "./dist/esm/zip-all.js"
       },
       "webpack": {
-        "types": "./dist/webpack/zip-all.d.ts",
-        "default": "./dist/webpack/zip-all.js"
+        "types": "./dist/esm/zip-all.d.ts",
+        "default": "./dist/esm/zip-all.js"
       },
       "import": {
         "types": "./dist/esm/zip-all.d.ts",
         "default": "./dist/esm/zip-all.js"
       },
       "require": {
-        "types": "./dist/commonjs/zip-all.d.ts",
-        "default": "./dist/commonjs/zip-all.js"
+        "types": "./dist/esm/zip-all.d.ts",
+        "default": "./dist/esm/zip-all.js"
       }
     },
     "./zip-with": {
       "browser": {
-        "types": "./dist/browser/zip-with.d.ts",
-        "default": "./dist/browser/zip-with.js"
+        "types": "./dist/esm/zip-with.d.ts",
+        "default": "./dist/esm/zip-with.js"
       },
       "webpack": {
-        "types": "./dist/webpack/zip-with.d.ts",
-        "default": "./dist/webpack/zip-with.js"
+        "types": "./dist/esm/zip-with.d.ts",
+        "default": "./dist/esm/zip-with.js"
       },
       "import": {
         "types": "./dist/esm/zip-with.d.ts",
         "default": "./dist/esm/zip-with.js"
       },
       "require": {
-        "types": "./dist/commonjs/zip-with.d.ts",
-        "default": "./dist/commonjs/zip-with.js"
+        "types": "./dist/esm/zip-with.d.ts",
+        "default": "./dist/esm/zip-with.js"
       }
     }
   }

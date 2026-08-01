@@ -1,11 +1,11 @@
 # `@rxjs/migrate`
 
-Deterministic source-migration tools used by the RxJS Next agent-first
+Deterministic source-migration tools used by the RxJS 9 agent-first
 migration workflow. The current well-tested path migrates RxJS 7
 `TestScheduler` marble specs from Mocha/Chai to ordinary Vitest specs that call
 `rxTest` directly. The engine is not a complete migration product and does not
 choose lifecycle semantics; see
-[`MIGRATION_TOOLING_DESIGN.md`](../../docs/rxjs-next/MIGRATION_TOOLING_DESIGN.md).
+[`docs/MIGRATION_TOOLING_DESIGN.md`](docs/MIGRATION_TOOLING_DESIGN.md).
 
 The package separates two concerns:
 
@@ -84,7 +84,7 @@ the library and dry-run-first CLI as the only deterministic engine surfaces.
 
 The representative agent-workflow matrix and its deliberately bounded claims
 are documented in
-[`MIGRATION_QUALIFICATION.md`](../../docs/rxjs-next/MIGRATION_QUALIFICATION.md).
+[`docs/MIGRATION_QUALIFICATION.md`](docs/MIGRATION_QUALIFICATION.md).
 Live harness qualification is separate from deterministic engine correctness.
 
 ## Contract and Skill integrity

@@ -1,0 +1,120 @@
+name: Release readiness
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+    paths:
+      - '.github/actions/install-dependencies/**'
+      - '.github/workflows/release-readiness.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'packages/observable-polyfill/**'
+      - 'packages/rxjs/**'
+      - 'scripts/check-release-coherence.mjs'
+      - 'scripts/finalize-esm-package.mjs'
+  push:
+    branches: ['master']
+    paths:
+      - '.github/actions/install-dependencies/**'
+      - '.github/workflows/release-readiness.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'packages/observable-polyfill/**'
+      - 'packages/rxjs/**'
+      - 'scripts/check-release-coherence.mjs'
+      - 'scripts/finalize-esm-package.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-readiness-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-and-bundle:
+    name: Chrome, Firefox, WebKit, Webpack, and performance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build browser packages
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+      - name: Install pinned browser engines
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - name: Run browser contract
+        run: pnpm run test:release:browsers
+      - name: Run Webpack ESM and bundle-budget gate
+        run: pnpm run test:release:webpack
+      - name: Run performance budgets
+        run: pnpm run test:release:performance
+      - name: Run packed prerelease adoption gate
+        run: pnpm run test:release:adoption
+
+  alternate-runtime:
+    name: ${{ matrix.runtime.name }} ${{ matrix.runtime.version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime:
+          - name: Deno
+            version: 2.8.0
+          - name: Bun
+            version: 1.3.14
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install package-build dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build runtime packages
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+      - name: Install Deno
+        if: matrix.runtime.name == 'Deno'
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v${{ matrix.runtime.version }}
+      - name: Install Bun
+        if: matrix.runtime.name == 'Bun'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.runtime.version }}
+      - name: Run Deno contract
+        if: matrix.runtime.name == 'Deno'
+        run: deno run --allow-read packages/rxjs/test/release/runtime-contract.mjs
+      - name: Run Bun contract
+        if: matrix.runtime.name == 'Bun'
+        run: bun packages/rxjs/test/release/runtime-contract.mjs
+
+  safari:
+    name: ${{ matrix.target == 'ios' && 'Mobile Safari (iOS simulator)' || 'Desktop Safari' }}
+    runs-on: macos-15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [desktop, ios]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build Safari packages
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+      - name: Enable SafariDriver on the ephemeral runner
+        run: sudo safaridriver --enable
+      - name: Show available iOS simulators
+        if: matrix.target == 'ios'
+        run: xcrun simctl list devices available
+      - name: Run Safari contract
+        run: pnpm run test:release:safari:${{ matrix.target }}
