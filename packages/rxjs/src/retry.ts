@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import '@rxjs/observable-polyfill';
 
 export const retry: unique symbol = Symbol('retry');
@@ -34,7 +35,9 @@ Observable.prototype[retry] = function <T>(
 
       const sourceController = new AbortController();
 
-      this.subscribe(
+      subscribeToSource(
+        this,
+        subscriber,
         {
           next: (value) => {
             if (resetOnSuccess) {
@@ -54,28 +57,19 @@ Observable.prototype[retry] = function <T>(
                   const id = globalThis.setTimeout(innerSub, delay);
                   subscriber.addTeardown(() => globalThis.clearTimeout(id));
                 } else {
-                  let result: Observable<any>;
-
-                  try {
-                    result = Observable.from(delay(error, retryCount));
-                  } catch (error) {
-                    subscriber.error(error);
-                    return;
-                  }
+                  const result = Observable.from(delay(error, retryCount));
 
                   const notifierController = new AbortController();
-                  result.subscribe(
+                  subscribeToSource(
+                    result,
+                    subscriber,
                     {
                       next: () => {
                         notifierController.abort();
                         innerSub();
                       },
-                      error: (error) => subscriber.error(error),
-                      complete: () => subscriber.complete(),
                     },
-                    {
-                      signal: AbortSignal.any([subscriber.signal, notifierController.signal]),
-                    }
+                    notifierController.signal
                   );
                 }
               } else {
@@ -85,11 +79,8 @@ Observable.prototype[retry] = function <T>(
               subscriber.error(error);
             }
           },
-          complete: () => subscriber.complete(),
         },
-        {
-          signal: AbortSignal.any([subscriber.signal, sourceController.signal]),
-        }
+        sourceController.signal
       );
     };
 
