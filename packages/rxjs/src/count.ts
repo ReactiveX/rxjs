@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const count: unique symbol = Symbol('count');
 
@@ -13,33 +14,21 @@ Observable.prototype[count] = function <T>(this: Observable<T>, predicate?: (val
     let total = 0;
     let index = 0;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (!predicate) {
-            total++;
-            return;
-          }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (!predicate) {
+          total++;
+          return;
+        }
 
-          let matches: boolean;
-          try {
-            matches = predicate(value, index++);
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-
-          if (matches) {
-            total++;
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          subscriber.next(total);
-          subscriber.complete();
-        },
+        if (predicate(value, index++)) {
+          total++;
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        subscriber.next(total);
+        subscriber.complete();
+      },
+    });
   });
 };
