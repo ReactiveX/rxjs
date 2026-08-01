@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const isEmpty: unique symbol = Symbol('isEmpty');
 
@@ -13,7 +14,6 @@ function isEmptyOperator<T>(this: Observable<T>): Observable<boolean> {
 
   return source[create]((subscriber) => {
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
 
     const conclude = (result: boolean): void => {
       sourceController.abort();
@@ -21,7 +21,9 @@ function isEmptyOperator<T>(this: Observable<T>): Observable<boolean> {
       subscriber.complete();
     };
 
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: () => conclude(false),
         error: (error) => {
@@ -30,7 +32,7 @@ function isEmptyOperator<T>(this: Observable<T>): Observable<boolean> {
         },
         complete: () => conclude(true),
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
