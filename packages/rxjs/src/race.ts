@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const race: unique symbol = Symbol('race');
@@ -47,9 +48,9 @@ function raceImpl<Sources extends readonly ObservableValue<any>[]>(
       const innerController = new AbortController();
       innerControllers.push(innerController);
 
-      const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
-
-      Observable.from(source).subscribe(
+      subscribeToSource(
+        Observable.from(source),
+        subscriber,
         {
           next: (value) => {
             if (selectWinner(innerController)) {
@@ -67,7 +68,7 @@ function raceImpl<Sources extends readonly ObservableValue<any>[]>(
             }
           },
         },
-        { signal }
+        innerController.signal
       );
     }
   });
