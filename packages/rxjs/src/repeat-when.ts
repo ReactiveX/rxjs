@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const repeatWhen: unique symbol = Symbol('repeatWhen');
 
@@ -37,74 +38,40 @@ Observable.prototype[repeatWhen] = function <T>(
         sourceSubscribeInProgress = true;
         awaitingRepeat = false;
 
-        try {
-          source.subscribe(
-            {
-              next: (value) => subscriber.next(value),
-              error: (error) => subscriber.error(error),
-              complete: () => {
-                awaitingRepeat = true;
+        subscribeToSource(source, subscriber, {
+          complete: () => {
+            awaitingRepeat = true;
 
-                if (notifierComplete) {
-                  subscriber.complete();
-                  return;
-                }
+            if (notifierComplete) {
+              subscriber.complete();
+              return;
+            }
 
-                if (!completions) {
-                  completions = new Subject<void>();
+            if (!completions) {
+              completions = new Subject<void>();
 
-                  let notifierInput: ObservableValue<unknown>;
-                  try {
-                    notifierInput = notifier(completions);
-                  } catch (error) {
-                    subscriber.error(error);
-                    return;
+              const notifierResult = Observable.from(notifier(completions));
+              subscribeToSource(notifierResult, subscriber, {
+                next: () => {
+                  if (awaitingRepeat && !sourceRequested && subscriber.active) {
+                    requestSource();
                   }
-
-                  let notifierResult: Observable<unknown>;
-                  try {
-                    notifierResult = Observable.from(notifierInput);
-                  } catch (error) {
-                    subscriber.error(error);
-                    return;
+                },
+                complete: () => {
+                  notifierComplete = true;
+                  if (awaitingRepeat) {
+                    subscriber.complete();
                   }
+                },
+              });
+            }
 
-                  try {
-                    notifierResult.subscribe(
-                      {
-                        next: () => {
-                          if (awaitingRepeat && !sourceRequested && subscriber.active) {
-                            requestSource();
-                          }
-                        },
-                        error: (error) => subscriber.error(error),
-                        complete: () => {
-                          notifierComplete = true;
-                          if (awaitingRepeat) {
-                            subscriber.complete();
-                          }
-                        },
-                      },
-                      { signal: subscriber.signal }
-                    );
-                  } catch (error) {
-                    subscriber.error(error);
-                    return;
-                  }
-                }
-
-                if (subscriber.active && !notifierComplete) {
-                  completions.next();
-                }
-              },
-            },
-            { signal: subscriber.signal }
-          );
-        } catch (error) {
-          subscriber.error(error);
-        } finally {
-          sourceSubscribeInProgress = false;
-        }
+            if (subscriber.active && !notifierComplete) {
+              completions.next();
+            }
+          },
+        });
+        sourceSubscribeInProgress = false;
       } while (sourceRequested && subscriber.active);
     };
 
