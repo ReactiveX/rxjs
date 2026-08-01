@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const windowWhen: unique symbol = Symbol('windowWhen');
 
@@ -117,18 +118,16 @@ Observable.prototype[windowWhen] = function <T>(
             requestRotation();
           };
 
-          try {
-            closingSource.subscribe(
-              {
-                next: closeAndRotate,
-                error: terminateWithError,
-                complete: closeAndRotate,
-              },
-              { signal: controller.signal }
-            );
-          } catch (error) {
-            terminateWithError(error);
-          }
+          subscribeToSource(
+            closingSource,
+            subscriber,
+            {
+              next: closeAndRotate,
+              error: terminateWithError,
+              complete: closeAndRotate,
+            },
+            controller.signal
+          );
         }
       } finally {
         drainingRotations = false;
