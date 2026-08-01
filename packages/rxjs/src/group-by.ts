@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { Subject } from './subject.js';
 import type { SubjectLike } from './util/types.js';
@@ -305,4 +306,4 @@ function groupByOperator<T, K, E = T>(
   });
 }
 
-Observable.prototype[groupBy] = groupByOperator;
+installObservableExtension({ instance: groupByOperator, name: 'groupBy', symbol: groupBy });
