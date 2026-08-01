@@ -312,11 +312,12 @@ reports browser drift separately.
 
 ### Current pattern
 
-Most extension modules:
+Every current exact public extension module:
 
 1. create and export a Symbol;
 2. augment the global `Observable` or `ObservableCtor` TypeScript interface;
-3. assign an implementation to the constructor or prototype under that Symbol;
+3. installs an implementation transactionally on the constructor or prototype
+   under that Symbol;
 4. create returned observables through the receiver's constructor.
 
 A simplified instance extension looks like this:
@@ -492,6 +493,12 @@ idempotent installation, rejects an occupied exact key, and rolls back earlier
 definitions if a later definition fails. Installed properties are
 non-enumerable, writable, and configurable. Missing capacity and mutation
 failures produce capability-named diagnostics.
+
+P3.3 completed catalog adoption. All 97 current exact public extension Symbols
+use the common installer, including async-iteration Symbols that return
+generators instead of Observables. A blocking source audit rejects any exact
+public Symbol that omits the installer or returns to direct constructor or
+prototype assignment.
 
 ### Public Symbol consistency
 

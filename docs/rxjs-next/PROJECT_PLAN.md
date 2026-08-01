@@ -59,8 +59,9 @@ and `pipe` pilot proves it against packaged fallback and browser-native
 Observable. P3.1 confirmed that Phase 0 already restored the broad operator
 catalog and executable evidence; the remaining Phase 3 work is to move the
 catalog onto the accepted extension kernel. P3.2 has materialized the existing
-parity map as a validated migration-evidence ledger, and P3.3 is now the sole
-`NEXT` item.
+parity map as a validated migration-evidence ledger. P3.3 has moved the full
+exact Symbol catalog onto the transactional extension kernel, and P3.4 is now
+the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1174,12 +1175,12 @@ Phase exit:
 
 ### Phase 3 — Operator restoration and parity
 
-| Status    | ID   | Outcome                                                                                           |
-| --------- | ---- | ------------------------------------------------------------------------------------------------- |
-| `DONE`    | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
-| `DONE`    | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
-| `NEXT`    | P3.3 | Restore operators in small families using the extension kernel                                    |
-| `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
+| Status | ID   | Outcome                                                                                           |
+| ------ | ---- | ------------------------------------------------------------------------------------------------- |
+| `DONE` | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
+| `DONE` | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
+| `DONE` | P3.3 | Restore operators in small families using the extension kernel                                    |
+| `NEXT` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
 every supported API has portable or rewritten evidence and every divergence is
@@ -1256,6 +1257,26 @@ explicit.
   error, and package subpath behavior.
 - Small family commits pass focused source typing and the narrowest relevant
   behavior tests before the next family begins.
+
+#### P3.3 completion evidence
+
+- Migrated all 91 pre-kernel exact capabilities to the common installer in
+  nine focused family commits. Together with the six Phase 2 pilots, all 97
+  current exact public Symbols now install transactionally.
+- Kept every public Symbol, ambient augmentation, implementation body,
+  package subpath, and accepted behavior intact. Paired static/instance
+  capabilities now install atomically rather than through two assignments.
+- Verified each family with its focused behavior suite: state and query,
+  terminal, combination, higher-order, buffering/windowing, timed/static,
+  sharing/connection, and async-iteration coverage all passed.
+- Added a blocking source audit to both the ordinary RxJS unit gate and package
+  gate. It requires every exact public Symbol to import and use the common
+  installer and rejects direct public constructor or prototype assignment.
+- The complete focused source suite passes 107 files and 756 tests. The public
+  declaration consumer and multi-dialect package build pass. The broad raw
+  TypeScript project command remains unsuitable because it includes the known
+  generated parity-source diagnostics; the package build and public consumer
+  are the accepted type gates for this slice.
 
 #### P3.4 completion bar
 
@@ -2604,3 +2625,17 @@ conformance implementation depends on a runnable harness.
 - Added generation and freshness commands and updated the compatibility policy
   to name the ledger as the Phase 3 evidence authority.
 - Marked P3.2 `DONE` and advanced P3.3 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P3.3 complete extension-kernel adoption
+
+- Migrated the remaining 91 exact capabilities in nine small family commits;
+  all 97 current exact public Symbols now use transactional installation.
+- Preserved existing implementation bodies, public Symbols, declarations,
+  subpaths, and lifecycle behavior while making paired static/instance
+  installation atomic.
+- Added a permanent source audit to the ordinary unit and package gates so a
+  future direct public constructor/prototype assignment fails immediately.
+- Passed all family suites, then the complete 107-file/756-test focused suite,
+  the public type consumer, the installation audit, and the multi-dialect
+  package build.
+- Marked P3.3 `DONE` and advanced P3.4 as the sole project-level `NEXT` item.
