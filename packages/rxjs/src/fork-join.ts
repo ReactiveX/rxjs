@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 declare const anyCatcher: unique symbol;
 type AnyCatcher = typeof anyCatcher;
@@ -64,45 +65,36 @@ function forkJoinImpl(this: ObservableCtor, ...inputArguments: any[]): Observabl
         break;
       }
 
-      input.subscribe(
-        {
-          next: (value) => {
-            if (!hasValue) {
-              hasValue = true;
-              remainingEmissions--;
-            }
-            values[index] = value;
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            remainingCompletions--;
-
-            if (!hasValue) {
-              subscriber.complete();
-              return;
-            }
-
-            if (remainingCompletions === 0) {
-              let result: any = keys ? createResultObject(keys, values) : values;
-
-              if (resultSelector) {
-                try {
-                  result = keys ? resultSelector(result) : resultSelector(...values);
-                } catch (error) {
-                  subscriber.error(error);
-                  return;
-                }
-              }
-
-              if (remainingEmissions === 0) {
-                subscriber.next(result);
-              }
-              subscriber.complete();
-            }
-          },
+      subscribeToSource(input, subscriber, {
+        next: (value) => {
+          if (!hasValue) {
+            hasValue = true;
+            remainingEmissions--;
+          }
+          values[index] = value;
         },
-        { signal: subscriber.signal }
-      );
+        complete: () => {
+          remainingCompletions--;
+
+          if (!hasValue) {
+            subscriber.complete();
+            return;
+          }
+
+          if (remainingCompletions === 0) {
+            let result: any = keys ? createResultObject(keys, values) : values;
+
+            if (resultSelector) {
+              result = keys ? resultSelector(result) : resultSelector(...values);
+            }
+
+            if (remainingEmissions === 0) {
+              subscriber.next(result);
+            }
+            subscriber.complete();
+          }
+        },
+      });
     }
   });
 }
