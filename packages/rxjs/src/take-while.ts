@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const takeWhile: unique symbol = Symbol('takeWhile');
 
@@ -19,30 +20,17 @@ Observable.prototype[takeWhile] = function <T>(
   return this[create]((subscriber) => {
     const { includeLast = false } = config ?? {};
     let index = 0;
-    this.subscribe(
-      {
-        next: (value) => {
-          let result: boolean;
-          try {
-            result = predicate(value, index++);
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-
-          if (result) {
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (predicate(value, index++)) {
+          subscriber.next(value);
+        } else {
+          if (includeLast) {
             subscriber.next(value);
-          } else {
-            if (includeLast) {
-              subscriber.next(value);
-            }
-            subscriber.complete();
           }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+          subscriber.complete();
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
