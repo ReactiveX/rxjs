@@ -4,8 +4,8 @@
   "sourceCommit": "e5351d02e225e275ac0e497c7b66eaa5f0c88791",
   "audit": {
     "total": 2338,
-    "passed": 2296,
-    "failed": 42
+    "passed": 2299,
+    "failed": 39
   },
   "caseIds": [
     "spec/deprecation-equivalents/multicasting-deprecations-spec.ts:107:should be equivalent for multicast(() => new Subject()), refCount() and share() for async sources that retry [equivalence-0:multicast(() => new Subject()), refCount() and share()]",
@@ -235,6 +235,7 @@
     "spec/observables/partition-spec.ts:254:partition > should partition to infinite observable if source does not completes",
     "spec/observables/partition-spec.ts:273:partition > should partition to infinite observable if source never completes",
     "spec/observables/partition-spec.ts:292:partition > should partition into two observable with early unsubscription",
+    "spec/observables/partition-spec.ts:315:partition > should not break unsubscription chains when result is unsubscribed explicitly",
     "spec/observables/partition-spec.ts:39:partition > should partition an observable into two using a predicate",
     "spec/observables/partition-spec.ts:58:partition > should partition an observable into two using a predicate that takes an index",
     "spec/observables/partition-spec.ts:77:partition > should partition an observable into two using a predicate and thisArg",
@@ -1014,6 +1015,7 @@
     "spec/operators/groupBy-spec.ts:173:groupBy operator > should handle a just-throw Observable",
     "spec/operators/groupBy-spec.ts:186:groupBy operator > should handle an Observable with a single value",
     "spec/operators/groupBy-spec.ts:202:groupBy operator > should group values with a keySelector",
+    "spec/operators/groupBy-spec.ts:234:groupBy operator > should emit GroupObservables",
     "spec/operators/groupBy-spec.ts:261:groupBy operator > should group values with a keySelector, assert GroupSubject key",
     "spec/operators/groupBy-spec.ts:292:groupBy operator > should group values with a keySelector, but outer throws",
     "spec/operators/groupBy-spec.ts:323:groupBy operator > should group values with a keySelector, inners propagate error from outer",
@@ -2038,6 +2040,7 @@
     "spec/operators/toArray-spec.ts:47:toArray > should be never when source doesn't complete",
     "spec/operators/toArray-spec.ts:58:toArray > should reduce observable without values into an array of length zero",
     "spec/operators/toArray-spec.ts:69:toArray > should reduce the a single value of an observable into an array",
+    "spec/operators/toArray-spec.ts:80:toArray > should allow multiple subscriptions",
     "spec/operators/toArray-spec.ts:93:toArray > should allow unsubscribing explicitly and early",
     "spec/operators/window-spec.ts:105:window > should return a single Never window if source is Never",
     "spec/operators/window-spec.ts:123:window > should be able to split a never Observable into timely empty windows",
