@@ -73,9 +73,9 @@ application validation. P6.1 then accepted the exact RxJS 9 support and
 distribution policy, synchronized `9.0.0-beta.0`, and collapsed four duplicate
 dialects into one ESM implementation. P6.2 through P6.4 completed the release
 matrix, package-local documentation, packed-consumer adoption, and beta
-approval. P6.5 closed the terminal audit. The user has since prioritized P6.6
-to centralize eligible RxJS source subscriptions through the D-049 helper and
-measure the resulting bundle-size change.
+approval. P6.5 closed the terminal audit. P6.6 then centralized eligible RxJS
+source subscriptions through the D-049 helper and recorded the resulting
+bundle-size reduction. The execution queue is complete.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1557,7 +1557,7 @@ names.
 | `DONE` | P6.3 | Publish package-local API, migration, and contributor documentation                   |
 | `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
-| `NEXT` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
+| `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
 
 #### P6.1 completion bar
 
@@ -1757,6 +1757,42 @@ names.
   changes for the root control, `map`, a representative operator set, and the
   complete runtime catalog; representative and catalog bundles shrink without
   growing the root control or `map` bundle.
+
+#### P6.6 completion evidence
+
+- Replaced the transitional helper pair with one positional
+  `subscribeToSource`, migrated every semantically compatible operator/source
+  module, and removed the legacy options form, alias, synchronous-error
+  wrapper, and dead result/option types. Nine helper cases cover binding,
+  default forwarding, callback/setup failures, destination cancellation, and
+  joined local signals.
+- Audited all production `.subscribe(...)` calls. The 24 remaining raw calls
+  are confined to root-core direct subscriptions, Subject-like connection and
+  retained-group lifecycles, async-generator adapters without a destination
+  Subscriber, the helper itself, intentional reset/finalization host-error
+  paths, and subscriptions whose source/boundary activation must outlive or
+  follow the outer result's signal.
+- Passed 753/753 focused source tests, lint with zero errors, strict public
+  types, the complete build/package/migration/install/import gate, and the
+  eight-case packaged-fallback/native-Chrome kernel contract. The reviewed
+  audits remain unchanged at 2,299/2,338 cold and 2,316/2,338 fallback, with
+  the same classified 39 and 22 failures.
+- Passed Webpack 5.106.2 at 17,410 bytes and the performance gate at about
+  42.16 million map values/second and 117,131 cancellations/second.
+- Repeated the baseline's esbuild 0.19.11 browser-ESM `es2022` measurement with
+  tree shaking, minification, gzip level 9, and Brotli quality 11. The baseline
+  is HEAD `458e8d2c3` plus the initial helper/map diff identified by SHA-256
+  `621c2f87648337d34b3e81e2ea4b53a2f326c180a387cabb39632bd137425c31`.
+
+| Scenario                       |              Minified before → after |                 Gzip before → after |               Brotli before → after |
+| ------------------------------ | -----------------------------------: | ----------------------------------: | ----------------------------------: |
+| Root-only control              |         22,494 → 22,494 (0 B, 0.00%) |          6,376 → 6,376 (0 B, 0.00%) |          5,710 → 5,710 (0 B, 0.00%) |
+| `map` subpath                  |      14,413 → 14,375 (-38 B, -0.26%) |        4,219 → 4,218 (-1 B, -0.02%) |          3,789 → 3,789 (0 B, 0.00%) |
+| Representative 10-operator set |   21,133 → 19,348 (-1,785 B, -8.45%) |      6,235 → 5,751 (-484 B, -7.76%) |      5,564 → 5,175 (-389 B, -6.99%) |
+| Complete runtime catalog       | 77,064 → 64,351 (-12,713 B, -16.50%) | 20,789 → 17,599 (-3,190 B, -15.34%) | 17,963 → 15,570 (-2,393 B, -13.32%) |
+
+- Marked P6.6 `DONE`; the completed execution queue again has no `NEXT`
+  marker.
 
 ## Dependencies
 
@@ -3267,3 +3303,17 @@ conformance implementation depends on a runnable harness.
   test, publication, or deployment command ran.
 - Marked P6.5 `DONE`. The execution queue is complete with no remaining `NEXT`
   item; P5.3 and P5.4 retain their accepted `DEFERRED` status.
+
+### 2026-08-01 — P6.6 centralized source subscriptions
+
+- Consolidated source notification forwarding, setup/callback error handling,
+  and destination/local cancellation into the positional D-049 helper across
+  every semantically compatible operator and source module.
+- Preserved the 24 reviewed raw subscription boundaries required by root-core,
+  Subject-like, retained-lifecycle, async-generator, host-error, and terminal
+  ordering semantics; removed every obsolete helper identifier and type.
+- Passed focused, lint, type, package, import, kernel, Webpack, and performance
+  gates and retained the existing cold/fallback audit classifications.
+- Recorded byte-identical root control, non-growing `map`, 6.99–8.45%
+  representative compression reductions, and 13.32–16.50% catalog compression
+  reductions. Marked P6.6 `DONE` with no remaining `NEXT` item.
