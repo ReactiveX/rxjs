@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
@@ -21,7 +20,8 @@ declare global {
   }
 }
 
-installObservableExtension({ instance: mergeImpl, static: mergeImpl, name: 'merge', symbol: merge });
+Observable[merge] = mergeImpl;
+Observable.prototype[merge] = mergeImpl;
 
 function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
   this: Observable<T> | ObservableCtor,

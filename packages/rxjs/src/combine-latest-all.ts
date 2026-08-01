@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { combineLatest } from './combine-latest.js';
 import { create } from './create.js';
 import { map } from './map.js';
@@ -58,4 +57,4 @@ function combineLatestAllOperator<V, R>(this: Observable<ObservableValue<V>>, pr
   });
 }
 
-installObservableExtension({ instance: combineLatestAllOperator, name: 'combineLatestAll', symbol: combineLatestAll });
+Observable.prototype[combineLatestAll] = combineLatestAllOperator;

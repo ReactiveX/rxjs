@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import '@rxjs/observable-polyfill';
 import { isObservableInstance } from './util/ctor-helpers.js';
@@ -20,12 +19,8 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: onErrorResumeNextImpl,
-  static: onErrorResumeNextImpl,
-  name: 'onErrorResumeNext',
-  symbol: onErrorResumeNext,
-});
+Observable[onErrorResumeNext] = onErrorResumeNextImpl;
+Observable.prototype[onErrorResumeNext] = onErrorResumeNextImpl;
 
 function onErrorResumeNextImpl<Sources extends readonly ObservableValue<any>[]>(
   this: ObservableCtor | Observable<any>,

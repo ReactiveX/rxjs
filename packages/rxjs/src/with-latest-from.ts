@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import type { ObservableArrayToValueArray } from './util/types.js';
 
@@ -16,7 +15,7 @@ declare global {
   }
 }
 
-installObservableExtension({ instance: withLatestFromImpl, name: 'withLatestFrom', symbol: withLatestFrom });
+Observable.prototype[withLatestFrom] = withLatestFromImpl;
 
 function withLatestFromImpl<T, const Sources extends readonly ObservableValue<any>[]>(
   this: Observable<T>,

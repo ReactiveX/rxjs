@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { map } from './map.js';
 import { zip } from './zip.js';
@@ -47,4 +46,4 @@ function zipAllOperator<V, R>(this: Observable<ObservableValue<V>>, project?: (.
   });
 }
 
-installObservableExtension({ instance: zipAllOperator, name: 'zipAll', symbol: zipAll });
+Observable.prototype[zipAll] = zipAllOperator;

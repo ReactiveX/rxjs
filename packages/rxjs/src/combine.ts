@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
@@ -31,7 +30,8 @@ interface CombineState {
   causesEmit: boolean;
 }
 
-installObservableExtension({ instance: combineImpl, static: combineImpl, name: 'combine', symbol: combine });
+Observable[combine] = combineImpl;
+Observable.prototype[combine] = combineImpl;
 
 function combineImpl<Config extends readonly CombineItem<any>[]>(
   this: ObservableCtor | Observable<any>,

@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
@@ -15,7 +14,8 @@ declare global {
   }
 }
 
-installObservableExtension({ instance: raceImpl, static: raceImpl, name: 'race', symbol: race });
+Observable[race] = raceImpl;
+Observable.prototype[race] = raceImpl;
 
 function raceImpl<Sources extends readonly ObservableValue<any>[]>(
   this: ObservableCtor | Observable<any>,

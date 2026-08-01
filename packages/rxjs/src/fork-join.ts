@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 declare const anyCatcher: unique symbol;
@@ -108,7 +107,7 @@ function forkJoinImpl(this: ObservableCtor, ...inputArguments: any[]): Observabl
   });
 }
 
-installObservableExtension({ static: forkJoinImpl as ForkJoinMethod, name: 'forkJoin', symbol: forkJoin });
+Observable[forkJoin] = forkJoinImpl as ForkJoinMethod;
 
 function normalizeInputs(inputArguments: any[]): {
   readonly keys: string[] | null;

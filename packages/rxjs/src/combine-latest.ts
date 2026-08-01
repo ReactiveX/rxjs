@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { combine } from './combine.js';
 import { map } from './map.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
@@ -40,7 +39,8 @@ declare global {
   }
 }
 
-installObservableExtension({ instance: combineLatestImpl, static: combineLatestImpl, name: 'combineLatest', symbol: combineLatest });
+Observable[combineLatest] = combineLatestImpl;
+Observable.prototype[combineLatest] = combineLatestImpl;
 
 function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
   this: ObservableCtor | Observable<any>,

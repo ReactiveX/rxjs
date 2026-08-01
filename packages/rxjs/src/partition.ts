@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 interface PartitionMethod {
@@ -82,4 +81,4 @@ function partitionImpl<T, A>(
   return [createBranch(true), createBranch(false)];
 }
 
-installObservableExtension({ static: partitionImpl, name: 'partition', symbol: partition });
+Observable[partition] = partitionImpl;
