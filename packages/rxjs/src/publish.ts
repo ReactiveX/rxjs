@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import type { ConnectableObservable } from './connectable.js';
 import { multicast } from './multicast.js';
 import { Subject } from './subject.js';
@@ -15,19 +14,15 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T, Selected extends ObservableValue<unknown>>(
-    this: Observable<T>,
-    selector?: (shared: Observable<T>) => Selected
-  ): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
-    if (selector) {
-      return this[multicast](() => new Subject<T>(), selector);
-    }
+Observable.prototype[publish] = function <T, Selected extends ObservableValue<unknown>>(
+  this: Observable<T>,
+  selector?: (shared: Observable<T>) => Selected
+): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
+  if (selector) {
+    return this[multicast](() => new Subject<T>(), selector);
+  }
 
-    // RxJS 7 publish() retains one Subject instance for the lifetime of this
-    // manually connectable result.
-    return this[multicast](new Subject<T>());
-  },
-  name: 'publish',
-  symbol: publish,
-});
+  // RxJS 7 publish() retains one Subject instance for the lifetime of this
+  // manually connectable result.
+  return this[multicast](new Subject<T>());
+};

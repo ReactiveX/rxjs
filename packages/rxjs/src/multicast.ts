@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { connect } from './connect.js';
 import { ConnectableObservable } from './connectable.js';
 import type { ObservedValueOf, SubjectLike } from './util/types.js';
@@ -20,20 +19,16 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T, Selected extends ObservableValue<unknown>>(
-    this: Observable<T>,
-    subjectOrFactory: SubjectLike<T> | (() => SubjectLike<T>),
-    selector?: (shared: Observable<T>) => Selected
-  ): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
-    const subjectFactory = typeof subjectOrFactory === 'function' ? subjectOrFactory : () => subjectOrFactory;
+Observable.prototype[multicast] = function <T, Selected extends ObservableValue<unknown>>(
+  this: Observable<T>,
+  subjectOrFactory: SubjectLike<T> | (() => SubjectLike<T>),
+  selector?: (shared: Observable<T>) => Selected
+): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
+  const subjectFactory = typeof subjectOrFactory === 'function' ? subjectOrFactory : () => subjectOrFactory;
 
-    if (selector) {
-      return this[connect](selector, { connector: subjectFactory });
-    }
+  if (selector) {
+    return this[connect](selector, { connector: subjectFactory });
+  }
 
-    return new ConnectableObservable(this, subjectFactory);
-  },
-  name: 'multicast',
-  symbol: multicast,
-});
+  return new ConnectableObservable(this, subjectFactory);
+};
