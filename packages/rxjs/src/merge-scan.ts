@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const mergeScan: unique symbol = Symbol('mergeScan');
 
@@ -51,23 +52,7 @@ Observable.prototype[mergeScan] = function <T, R>(
     };
 
     const startInner = (value: T): void => {
-      const currentIndex = index++;
-      let input: ObservableValue<R>;
-
-      try {
-        input = accumulator(state, value, currentIndex);
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
-
-      let inner: Observable<R>;
-      try {
-        inner = Observable.from(input);
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
+      const inner = Observable.from(accumulator(state, value, index++));
 
       if (!subscriber.active) {
         return;
@@ -76,60 +61,41 @@ Observable.prototype[mergeScan] = function <T, R>(
       active++;
       let terminated = false;
 
-      try {
-        inner.subscribe(
-          {
-            next: (innerValue) => {
-              state = innerValue;
-              subscriber.next(innerValue);
-            },
-            error: (error) => {
-              if (!terminated) {
-                terminated = true;
-                active--;
-                subscriber.error(error);
-              }
-            },
-            complete: () => {
-              if (terminated) {
-                return;
-              }
-              terminated = true;
-              active--;
-              drainBuffer();
-            },
-          },
-          { signal: subscriber.signal }
-        );
-      } catch (error) {
-        if (!terminated) {
+      subscribeToSource(inner, subscriber, {
+        next: (innerValue) => {
+          state = innerValue;
+          subscriber.next(innerValue);
+        },
+        error: (error) => {
+          if (!terminated) {
+            terminated = true;
+            active--;
+            subscriber.error(error);
+          }
+        },
+        complete: () => {
+          if (terminated) {
+            return;
+          }
           terminated = true;
           active--;
-          subscriber.error(error);
-        }
-      }
+          drainBuffer();
+        },
+      });
     };
 
-    try {
-      source.subscribe(
-        {
-          next: (value) => {
-            if (active < concurrent) {
-              startInner(value);
-            } else {
-              buffer.push(value);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            sourceComplete = true;
-            completeIfDone();
-          },
-        },
-        { signal: subscriber.signal }
-      );
-    } catch (error) {
-      subscriber.error(error);
-    }
+    subscribeToSource(source, subscriber, {
+      next: (value) => {
+        if (active < concurrent) {
+          startInner(value);
+        } else {
+          buffer.push(value);
+        }
+      },
+      complete: () => {
+        sourceComplete = true;
+        completeIfDone();
+      },
+    });
   });
 };
