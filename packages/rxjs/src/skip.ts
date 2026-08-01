@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const skip: unique symbol = Symbol('skip');
 
@@ -12,17 +13,12 @@ Observable.prototype[skip] = function <T>(this: Observable<T>, count: number): O
   return this[create]((subscriber) => {
     let index = 0;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (count <= index++) {
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (count <= index++) {
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
