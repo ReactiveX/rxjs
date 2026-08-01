@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const delayWhen: unique symbol = Symbol('delayWhen');
 
@@ -56,23 +57,7 @@ Observable.prototype[delayWhen] = function <T>(
     };
 
     const delayValue = (value: T): void => {
-      const currentIndex = index++;
-      let durationInput: ObservableValue<any>;
-
-      try {
-        durationInput = durationSelector(value, currentIndex);
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
-
-      let duration: Observable<any>;
-      try {
-        duration = Observable.from(durationInput);
-      } catch (error) {
-        subscriber.error(error);
-        return;
-      }
+      const duration = Observable.from(durationSelector(value, index++));
 
       if (!subscriber.active) {
         return;
@@ -84,23 +69,17 @@ Observable.prototype[delayWhen] = function <T>(
       };
       delays.add(context);
 
-      try {
-        duration.subscribe(
-          {
-            next: () => settleDelay(context, true),
-            error: (error) => subscriber.error(error),
-            // Pinned RxJS 7 behavior: completion without a value releases
-            // this duration but swallows its associated source value.
-            complete: () => settleDelay(context, false),
-          },
-          { signal: AbortSignal.any([subscriber.signal, context.controller.signal]) }
-        );
-      } catch (error) {
-        if (delays.delete(context)) {
-          context.controller.abort();
-          subscriber.error(error);
-        }
-      }
+      subscribeToSource(
+        duration,
+        subscriber,
+        {
+          next: () => settleDelay(context, true),
+          // Pinned RxJS 7 behavior: completion without a value releases
+          // this duration but swallows its associated source value.
+          complete: () => settleDelay(context, false),
+        },
+        context.controller.signal
+      );
     };
 
     const startSource = (): void => {
@@ -111,25 +90,22 @@ Observable.prototype[delayWhen] = function <T>(
       sourceStarted = true;
       subscriptionDelayController.abort();
 
-      try {
-        source.subscribe(
-          {
-            next: (value) => {
-              if (subscriber.active) {
-                delayValue(value);
-              }
-            },
-            error: (error) => subscriber.error(error),
-            complete: () => {
-              sourceComplete = true;
-              completeIfDone();
-            },
+      subscribeToSource(
+        source,
+        subscriber,
+        {
+          next: (value) => {
+            if (subscriber.active) {
+              delayValue(value);
+            }
           },
-          { signal: sourceController.signal }
-        );
-      } catch (error) {
-        subscriber.error(error);
-      }
+          complete: () => {
+            sourceComplete = true;
+            completeIfDone();
+          },
+        },
+        sourceController.signal
+      );
     };
 
     subscriber.addTeardown(releaseInputs);
@@ -147,17 +123,11 @@ Observable.prototype[delayWhen] = function <T>(
       return;
     }
 
-    try {
-      subscriptionDelaySource.subscribe(
-        {
-          next: startSource,
-          error: (error) => subscriber.error(error),
-          complete: startSource,
-        },
-        { signal: subscriptionDelayController.signal }
-      );
-    } catch (error) {
-      subscriber.error(error);
-    }
+    subscribeToSource(
+      subscriptionDelaySource,
+      subscriber,
+      { next: startSource, complete: startSource },
+      subscriptionDelayController.signal
+    );
   });
 };
