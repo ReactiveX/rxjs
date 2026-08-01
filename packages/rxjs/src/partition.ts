@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 interface PartitionMethod {
   <T, U extends T, A>(source: ObservableValue<T>, predicate: (this: A, value: T, index: number) => value is U, thisArg: A): [
@@ -56,26 +57,13 @@ function partitionImpl<T, A>(
     ObservableCtor[create]((subscriber) => {
       let index = 0;
 
-      input.subscribe(
-        {
-          next: (value) => {
-            let matches: boolean;
-            try {
-              matches = predicate.call(thisArg as A, value, index++);
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-
-            if (matches === matchesBranch) {
-              subscriber.next(value);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
+      subscribeToSource(input, subscriber, {
+        next: (value) => {
+          if (predicate.call(thisArg as A, value, index++) === matchesBranch) {
+            subscriber.next(value);
+          }
         },
-        { signal: subscriber.signal }
-      );
+      });
     });
 
   return [createBranch(true), createBranch(false)];
