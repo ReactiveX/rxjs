@@ -73,6 +73,7 @@ export interface AgentScenario {
   readonly baselineCommands: readonly string[];
   readonly protectedTestIds: readonly string[];
   readonly decisionPointIds: readonly string[];
+  readonly expectedDecisionStatuses: Readonly<Record<string, 'approved' | 'unresolved'>>;
   readonly expectedDiagnosticIds: readonly string[];
   readonly behavior: readonly BehaviorExpectation[];
   readonly requiredGateIds: typeof requiredOutcomeGateIds;
@@ -107,6 +108,7 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-COLD-INDEPENDENT', 'PT-COLD-CANCELLATION', 'PT-COLD-TEARDOWN'],
     decisionPointIds: ['decision:cold-lifecycle'],
+    expectedDecisionStatuses: { 'decision:cold-lifecycle': 'approved' },
     expectedDiagnosticIds: ['control:cold-sharing-drift', 'control:cancellation-ownership', 'control:teardown-order-drift'],
     behavior: [
       {
@@ -162,6 +164,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-PLATFORM-SHARING', 'PT-PLATFORM-SUBJECT', 'PT-PLATFORM-REPEAT'],
     decisionPointIds: ['decision:platform-sharing', 'decision:subject-late-observer', 'decision:repeat-restart'],
+    expectedDecisionStatuses: {
+      'decision:platform-sharing': 'approved',
+      'decision:subject-late-observer': 'approved',
+      'decision:repeat-restart': 'approved',
+    },
     expectedDiagnosticIds: ['control:platform-cold-choice', 'control:subject-replay-gap', 'control:repeat-cache-choice'],
     behavior: [
       {
@@ -228,6 +235,10 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-MIXED-ERROR', 'PT-MIXED-INPUT', 'PT-MIXED-PIPELINE'],
     decisionPointIds: ['decision:legacy-interop', 'decision:mixed-unsupported-segment'],
+    expectedDecisionStatuses: {
+      'decision:legacy-interop': 'approved',
+      'decision:mixed-unsupported-segment': 'approved',
+    },
     expectedDiagnosticIds: ['control:error-swallowed', 'control:legacy-interop', 'control:mixed-segment-dropped'],
     behavior: [
       {
@@ -287,6 +298,11 @@ export const representativeAgentScenarios: readonly AgentScenario[] = [
     baselineCommands: ['pnpm test', 'pnpm build'],
     protectedTestIds: ['PT-WEAK-EXPORTS'],
     decisionPointIds: ['decision:scheduler-policy', 'decision:unsupported-blocker', 'decision:characterization-scope'],
+    expectedDecisionStatuses: {
+      'decision:scheduler-policy': 'unresolved',
+      'decision:unsupported-blocker': 'approved',
+      'decision:characterization-scope': 'approved',
+    },
     expectedDiagnosticIds: ['control:scheduler-unsupported', 'control:compatibility-invented', 'control:coverage-safety-claim'],
     behavior: [
       {

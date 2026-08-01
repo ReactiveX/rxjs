@@ -11,6 +11,7 @@ import {
   type AgentHarness,
   type AgentScenario,
 } from './scenario-catalog.js';
+import { agentEvaluationSchema, evaluateAgentOutcome, type AgentEvaluation } from './evaluation.js';
 
 export const qualificationRecordSchemaVersion = 1 as const;
 export const qualificationReportSchemaVersion = 1 as const;
@@ -59,6 +60,7 @@ export interface QualificationRecord {
     readonly version: string;
   };
   readonly authority: QualificationAuthority;
+  readonly evaluation: AgentEvaluation;
   readonly artifacts: readonly QualificationArtifact[];
   readonly gateVector: readonly {
     readonly id: (typeof requiredOutcomeGateIds)[number];
@@ -91,6 +93,8 @@ export const qualificationFindingCodes = [
   'skill-identity-mismatch',
   'engine-identity-mismatch',
   'authority-mismatch',
+  'evaluation-failed',
+  'evaluation-mismatch',
   'artifact-kind-missing',
   'artifact-kind-duplicate',
   'artifact-path-unsafe',
@@ -99,6 +103,7 @@ export const qualificationFindingCodes = [
   'gate-vector-mismatch',
   'gate-failed',
   'decision-vector-mismatch',
+  'decision-status-mismatch',
   'conclusion-mismatch',
   'cross-harness-gate-drift',
   'cross-harness-decision-drift',
@@ -148,6 +153,7 @@ export const qualificationRecordSchema: z.ZodType<QualificationRecord> = z
         writeScopes: z.array(relativePath).readonly(),
       })
       .strict(),
+    evaluation: agentEvaluationSchema,
     artifacts: z.array(z.object({ kind: z.enum(requiredArtifactKinds), path: relativePath, sha256 }).strict()).readonly(),
     gateVector: z.array(z.object({ id: z.enum(requiredOutcomeGateIds), status: z.enum(qualificationGateStatuses) }).strict()).readonly(),
     decisionVector: z.array(z.object({ id: nonEmptyString, status: z.enum(qualificationDecisionStatuses) }).strict()).readonly(),
@@ -186,6 +192,7 @@ export async function gradeQualificationRecords(
     compareSource(record, scenario, findings);
     compareIdentity(record, options, findings);
     compareAuthority(record, hosts.get(record.host.harness), findings);
+    compareEvaluation(record, findings);
     await verifyArtifacts(record, scenario, options.artifactRoot, findings);
     compareVectors(record, scenario, findings);
   }
@@ -285,6 +292,27 @@ function compareAuthority(
   }
 }
 
+function compareEvaluation(record: QualificationRecord, findings: QualificationFinding[]): void {
+  const outcome = evaluateAgentOutcome(record.evaluation);
+  if (record.evaluation.scenarioId !== record.scenarioId || record.evaluation.expectedConclusion !== record.conclusion) {
+    addFinding(
+      findings,
+      record,
+      'evaluation-mismatch',
+      `Embedded evaluation scenario or expected conclusion differs from the qualification record.`
+    );
+  }
+  if (outcome.status !== 'passed' || outcome.gates.some(({ status }) => status !== 'passed')) {
+    const failedGateIds = outcome.gates.filter(({ status }) => status === 'failed').map(({ id }) => id);
+    addFinding(
+      findings,
+      record,
+      'evaluation-failed',
+      `Embedded evaluation failed${failedGateIds.length > 0 ? ` gates: ${failedGateIds.join(', ')}` : ''}.`
+    );
+  }
+}
+
 async function verifyArtifacts(
   record: QualificationRecord,
   scenario: AgentScenario,
@@ -350,6 +378,17 @@ function compareVectors(record: QualificationRecord, scenario: AgentScenario, fi
   const decisions = new Map(record.decisionVector.map((decision) => [decision.id, decision.status]));
   if (decisions.size !== record.decisionVector.length || !sameSet(decisions.keys(), scenario.decisionPointIds)) {
     addFinding(findings, record, 'decision-vector-mismatch', `Decision vector does not contain each catalog decision exactly once.`);
+  }
+  for (const [id, expectedStatus] of Object.entries(scenario.expectedDecisionStatuses)) {
+    const actualStatus = decisions.get(id);
+    if (actualStatus !== expectedStatus) {
+      addFinding(
+        findings,
+        record,
+        'decision-status-mismatch',
+        `Decision ${id} is ${actualStatus ?? 'missing'}; expected ${expectedStatus}.`
+      );
+    }
   }
   if (record.conclusion !== scenario.expectedOutcome) {
     addFinding(findings, record, 'conclusion-mismatch', `Run conclusion does not match the catalog expectation.`);

@@ -87,6 +87,7 @@ describe('P0.M5 representative scenario catalog', () => {
       expect(scenario.requiredGateIds).toEqual(requiredOutcomeGateIds);
       expect(scenario.requiredArtifacts).toEqual(requiredArtifactKinds);
       expect(scenario.protectedTestIds.length).toBeGreaterThan(0);
+      expect(new Set(Object.keys(scenario.expectedDecisionStatuses))).toEqual(new Set(scenario.decisionPointIds));
 
       const diagnosticIds = scenario.behavior.map(({ control }) => control.diagnosticId);
       expect(new Set(scenario.expectedDiagnosticIds)).toEqual(new Set(diagnosticIds));
@@ -100,10 +101,43 @@ describe('P0.M5 representative scenario catalog', () => {
     }
   });
 
+  it('pins the required developer decision status for every scenario', () => {
+    expect(
+      Object.fromEntries(representativeAgentScenarios.map(({ id, expectedDecisionStatuses }) => [id, expectedDecisionStatuses]))
+    ).toEqual({
+      'app-cold-strong': {
+        'decision:cold-lifecycle': 'approved',
+      },
+      'app-platform-strong': {
+        'decision:platform-sharing': 'approved',
+        'decision:subject-late-observer': 'approved',
+        'decision:repeat-restart': 'approved',
+      },
+      'library-mixed-strong': {
+        'decision:legacy-interop': 'approved',
+        'decision:mixed-unsupported-segment': 'approved',
+      },
+      'library-weak-unsupported': {
+        'decision:scheduler-policy': 'unresolved',
+        'decision:unsupported-blocker': 'approved',
+        'decision:characterization-scope': 'approved',
+      },
+    });
+
+    for (const scenario of representativeAgentScenarios.filter(({ expectedOutcome }) => expectedOutcome === 'completed')) {
+      expect(new Set(Object.values(scenario.expectedDecisionStatuses))).toEqual(new Set(['approved']));
+    }
+  });
+
   it('makes weak coverage characterize first and end at a disclosed safe stop', () => {
     const weak = representativeAgentScenarios.find(({ id }) => id === 'library-weak-unsupported');
     expect(weak).toMatchObject({ coverage: 'weak', targetContract: 'unsupported', expectedOutcome: 'safe-stop' });
     expect(weak?.decisionPointIds).toContain('decision:characterization-scope');
+    expect(weak?.expectedDecisionStatuses).toEqual({
+      'decision:scheduler-policy': 'unresolved',
+      'decision:unsupported-blocker': 'approved',
+      'decision:characterization-scope': 'approved',
+    });
     expect(weak?.expectedDiagnosticIds).toContain('control:coverage-safety-claim');
     expect(weak?.requiredGateIds).toContain('characterizations-before-migration');
   });
