@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const windowCount: unique symbol = Symbol('windowCount');
 
@@ -52,38 +53,35 @@ Observable.prototype[windowCount] = function <T>(this: Observable<T>, windowSize
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          for (const window of windows) {
-            window.next(value);
-            if (!subscriber.active) {
-              return;
-            }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        for (const window of windows) {
+          window.next(value);
+          if (!subscriber.active) {
+            return;
           }
+        }
 
-          const closeCount = count - windowSize + 1;
-          if (closeCount >= 0 && closeCount % startEvery === 0) {
-            windows.shift()?.complete();
-          }
+        const closeCount = count - windowSize + 1;
+        if (closeCount >= 0 && closeCount % startEvery === 0) {
+          windows.shift()?.complete();
+        }
 
-          count++;
-          if (count % startEvery === 0 && subscriber.active) {
-            // Opening after the preceding value makes the window available
-            // before its first boundary value is routed.
-            openWindow();
-          }
-        },
-        error: (error) => {
-          errorWindows(error);
-          subscriber.error(error);
-        },
-        complete: () => {
-          closeWindows();
-          subscriber.complete();
-        },
+        count++;
+        if (count % startEvery === 0 && subscriber.active) {
+          // Opening after the preceding value makes the window available
+          // before its first boundary value is routed.
+          openWindow();
+        }
       },
-      { signal: subscriber.signal }
-    );
+      error: (error) => {
+        errorWindows(error);
+        subscriber.error(error);
+      },
+      complete: () => {
+        closeWindows();
+        subscriber.complete();
+      },
+    });
   });
 };
