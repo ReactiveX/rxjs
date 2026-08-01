@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const reduce: unique symbol = Symbol('reduce');
@@ -65,4 +64,4 @@ function reduceOperator<T, A>(
   });
 }
 
-installObservableExtension({ instance: reduceOperator, name: 'reduce', symbol: reduce });
+Observable.prototype[reduce] = reduceOperator;

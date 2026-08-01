@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const tap: unique symbol = Symbol('tap');
@@ -125,4 +124,4 @@ function tapOperator<T>(
   });
 }
 
-installObservableExtension({ instance: tapOperator, name: 'tap', symbol: tap });
+Observable.prototype[tap] = tapOperator;

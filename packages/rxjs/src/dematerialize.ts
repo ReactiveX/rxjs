@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import { observeNotification, type ObservableNotification, type ValueFromNotification } from './notification.js';
 
@@ -10,25 +9,23 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <N extends ObservableNotification<any>>(this: Observable<N>): Observable<ValueFromNotification<N>> {
-    return this[create]((subscriber) => {
-      this.subscribe(
-        {
-          next: (notification) => {
-            try {
-              observeNotification(notification, subscriber);
-            } catch (error) {
-              subscriber.error(error);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
+Observable.prototype[dematerialize] = function <N extends ObservableNotification<any>>(
+  this: Observable<N>
+): Observable<ValueFromNotification<N>> {
+  return this[create]((subscriber) => {
+    this.subscribe(
+      {
+        next: (notification) => {
+          try {
+            observeNotification(notification, subscriber);
+          } catch (error) {
+            subscriber.error(error);
+          }
         },
-        { signal: subscriber.signal }
-      );
-    });
-  },
-  name: 'dematerialize',
-  symbol: dematerialize,
-});
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};
