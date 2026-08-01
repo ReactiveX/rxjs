@@ -1311,12 +1311,12 @@ explicit.
 
 ### Phase 4 — Intentional API and migration contracts
 
-| Status    | ID   | Outcome                                                                                      |
-| --------- | ---- | -------------------------------------------------------------------------------------------- |
-| `DONE`    | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
-| `DONE`    | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
-| `DONE`    | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
-| `NEXT`    | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
+| Status | ID   | Outcome                                                                                      |
+| ------ | ---- | -------------------------------------------------------------------------------------------- |
+| `DONE` | P4.1 | Stabilize intentional cold, Subject, and Symbol-composition APIs on their own Next contracts |
+| `DONE` | P4.2 | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
+| `DONE` | P4.3 | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
+| `DONE` | P4.4 | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 
 Phase exit:
 
@@ -1380,11 +1380,28 @@ Phase exit:
   the ordinary package gate. Marked P4.3 `DONE` and advanced P4.4 as the sole
   project-level `NEXT` item.
 
+#### P4.4 completion evidence
+
+- Added four explicit migration fixtures for the accepted cold-preserving,
+  platform-shared, hot-Subject, and unsupported scheduler/interop outcomes.
+  Each fixture names its pinned RxJS 7 source, target lifecycle, cancellation
+  owner, controlling decisions, linked ledger/catalog rows, and unsafe negative
+  control.
+- Type-checked all three migrated targets against the current public RxJS Next
+  declarations. The safe-stop fixture deliberately has no invented target and
+  links the scheduler, legacy interop, arbitrary-subscribable, and multicasting
+  review categories instead.
+- Executed producer multiplicity, final-observer cancellation and restart,
+  behavior/replay state, exact Symbol construction, and lifecycle-swap negative
+  controls. The full migration package passes 17 files and 166 tests.
+- Marked P4.4 `DONE`. The original Phase 4 contract work is complete; P4.I1 is
+  the sole project-level `NEXT` item under the later D-051 simplification.
+
 ### Phase 5 — Migration experience and AI enablement
 
 | Status     | ID   | Outcome                                                                              |
 | ---------- | ---- | ------------------------------------------------------------------------------------ |
-| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `NEXT`     | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
 | `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
 | `DEFERRED` | P5.3 | Evaluate later RxJS usage Skills beyond the canonical migration workflow             |
 | `DEFERRED` | P5.4 | Evaluate optional integrations only under a new evidence-backed product decision     |
@@ -2751,3 +2768,12 @@ conformance implementation depends on a runnable harness.
   compatibility-only rows with no deferred status.
 - Regenerated and verified the machine-readable and Markdown ledgers, marked
   P4.2 `DONE`, and advanced P4.3 as the sole project-level `NEXT` item.
+
+### 2026-08-01 — P4.4 accepted migration fixtures
+
+- Added four source-linked fixtures for cold, shared platform, hot Subject, and
+  unsupported scheduler/interop migration outcomes.
+- Compiled the three accepted targets against public Next declarations and
+  executed their lifecycle, cancellation, Subject-state, and negative controls.
+- Verified all 166 migration-package tests, marked P4.4 `DONE`, and advanced
+  P5.1 as the sole project-level `NEXT` item.

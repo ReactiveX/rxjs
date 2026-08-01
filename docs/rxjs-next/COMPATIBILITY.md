@@ -614,6 +614,27 @@ fallback and a browser-native Observable. Package fixtures additionally cover
 missing initialization, preservation of existing side effects, mixed
 ESM/CommonJS duplicate installation, and ambient declaration visibility.
 
+## Accepted migration fixtures
+
+The P4.4 fixtures in `packages/migrate/test/contracts` turn the intentional API
+and lifecycle boundaries into executable migration outcomes:
+
+- a `ColdObservable` plus exact Symbol pipeline preserves one producer per
+  direct subscription and cancels through `AbortSignal`;
+- a platform Observable plus `share` retains one active producer until the
+  final observer cancels and restarts on the next activation;
+- lowercase behavior and replay factories preserve hot Subject ownership with
+  observer-local current/replayed state;
+- unresolved scheduler, legacy interop, arbitrary-subscribable, and legacy
+  multicasting input stops safely without an invented target.
+
+Every migrated fixture compiles against current public declarations and links
+completed migration-ledger rows. The safe-stop fixture instead links the
+unsupported-surface catalog. Runtime assertions cover producer multiplicity,
+final-observer teardown, restart, retained Subject state, and a negative
+cold/platform lifecycle swap. These fixtures are representative contract gates,
+not a claim that arbitrary applications can be migrated mechanically.
+
 ## Migration themes
 
 Migration guidance and future automation should distinguish mechanical edits
