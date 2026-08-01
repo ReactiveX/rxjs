@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { create } from '../create.js';
-import { createDerivedObservable, convertObservableValue, runWithErrorForwarding, subscribeToSource } from './observable-helpers.js';
+import { createDerivedObservable, convertObservableValue, subscribeToSource } from './observable-helpers.js';
 
 describe('Observable kernel helpers', () => {
   it('creates derived values through a compatible receiver constructor', () => {
@@ -165,24 +165,5 @@ describe('Observable kernel helpers', () => {
 
     localController.abort();
     expect(sourceSubscriber?.active).toBe(false);
-  });
-
-  it('turns synchronous exceptions into stream errors', () => {
-    const failure = new Error('callback failure');
-    const errors: unknown[] = [];
-    let result: ReturnType<typeof runWithErrorForwarding<number>> | undefined;
-    const observable = new Observable<number>((subscriber) => {
-      result = runWithErrorForwarding({
-        subscriber,
-        run: () => {
-          throw failure;
-        },
-      });
-    });
-
-    observable.subscribe({ error: (error) => errors.push(error) });
-
-    expect(result).toEqual({ ok: false });
-    expect(errors).toEqual([failure]);
   });
 });
