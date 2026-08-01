@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const combine: unique symbol = Symbol('combine');
 
@@ -54,30 +55,26 @@ function combineImpl<Config extends readonly CombineItem<any>[]>(
     for (let i = 0; i < actualConfig.length; i++) {
       const item = actualConfig[i]!;
       const itemState = state[i]!;
-      Observable.from(item.source).subscribe(
-        {
-          next: (value) => {
-            itemState.value = value;
+      subscribeToSource(Observable.from(item.source), subscriber, {
+        next: (value) => {
+          itemState.value = value;
 
-            if (!allReady && !itemState.ready) {
-              itemState.ready = true;
-              allReady = state.every(({ ready }) => ready);
-            }
+          if (!allReady && !itemState.ready) {
+            itemState.ready = true;
+            allReady = state.every(({ ready }) => ready);
+          }
 
-            if (itemState.causesEmit && allReady) {
-              subscriber.next(state.map(({ value }) => value) as any);
-            }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            itemState.complete = true;
-            if (state.every(({ complete }) => complete)) {
-              subscriber.complete();
-            }
-          },
+          if (itemState.causesEmit && allReady) {
+            subscriber.next(state.map(({ value }) => value) as any);
+          }
         },
-        { signal: subscriber.signal }
-      );
+        complete: () => {
+          itemState.complete = true;
+          if (state.every(({ complete }) => complete)) {
+            subscriber.complete();
+          }
+        },
+      });
     }
   });
 }
