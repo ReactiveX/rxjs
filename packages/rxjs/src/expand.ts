@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const expand: unique symbol = Symbol('expand');
 
@@ -54,51 +55,34 @@ Observable.prototype[expand] = function <T, R>(
             break;
           }
 
-          let inner: Observable<R>;
-          try {
-            inner = Observable.from(project(value as T, index++));
-          } catch (error) {
-            subscriber.error(error);
-            break;
-          }
+          const inner = Observable.from(project(value as T, index++));
 
           active++;
           let innerActive = true;
-          try {
-            inner.subscribe(
-              {
-                next: (innerValue) => {
-                  if (subscriber.active) {
-                    queue.push(innerValue);
-                    drain();
-                  }
-                },
-                error: (error) => {
-                  if (innerActive) {
-                    innerActive = false;
-                    active--;
-                  }
-                  subscriber.error(error);
-                },
-                complete: () => {
-                  if (!innerActive) {
-                    return;
-                  }
-                  innerActive = false;
-                  active--;
-                  drain();
-                  checkComplete();
-                },
-              },
-              { signal: subscriber.signal }
-            );
-          } catch (error) {
-            if (innerActive) {
+          subscribeToSource(inner, subscriber, {
+            next: (innerValue) => {
+              if (subscriber.active) {
+                queue.push(innerValue);
+                drain();
+              }
+            },
+            error: (error) => {
+              if (innerActive) {
+                innerActive = false;
+                active--;
+              }
+              subscriber.error(error);
+            },
+            complete: () => {
+              if (!innerActive) {
+                return;
+              }
               innerActive = false;
               active--;
-            }
-            subscriber.error(error);
-          }
+              drain();
+              checkComplete();
+            },
+          });
         }
       } finally {
         draining = false;
@@ -111,20 +95,16 @@ Observable.prototype[expand] = function <T, R>(
       queue.length = 0;
     });
 
-    this.subscribe(
-      {
-        next: (value) => {
-          queue.push(value);
-          drain();
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          sourceComplete = true;
-          drain();
-          checkComplete();
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        queue.push(value);
+        drain();
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        sourceComplete = true;
+        drain();
+        checkComplete();
+      },
+    });
   });
 };
