@@ -1198,12 +1198,13 @@ Status meanings:
   Subject-like connections, async-generator adapters, lifecycles intentionally
   retained beyond the outer result, and terminal/finalization paths keep raw
   subscriptions when destination-signal ownership would change behavior.
-- **Implementation pattern:** Internal helpers expose receiver-driven result
-  creation and active-realm input conversion. One positional source-subscription
-  helper owns bound default forwarding, guarded notification overrides,
-  setup-error routing, and optional local-signal joining. It does not add a
-  scheduler, legacy Subscription facade, compatibility input, or string-named
-  method.
+- **Implementation pattern:** Operators and factories invoke the receiver's
+  `[create]` protocol directly; a one-line construction wrapper adds no useful
+  boundary. Internal helpers retain active-realm input conversion, while one
+  positional source-subscription helper owns bound default forwarding, guarded
+  notification overrides, setup-error routing, and optional local-signal
+  joining. This pattern does not add a scheduler, legacy Subscription facade,
+  compatibility input, or string-named method.
 - **Rationale:** Result identity and input normalization solve different
   problems. Conflating them would either lose intentional construction such as
   `ColdObservable` or let a custom receiver redefine the platform conversion

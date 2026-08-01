@@ -439,16 +439,16 @@ recoverable as a result.
 
 ### Constructor preservation
 
-`create.ts` and the P2.3 helpers use the receiver's versioned `[create]`
-protocol for derived results. The inherited implementation preserves a
-same-realm subclass whose constructor accepts the platform initializer shape;
-an explicit override may select another result contract. `ColdObservable`
-uses that seam to construct another plain `ColdObservable`. Its native
-string-named methods instead delegate through a fresh base Observable and
-return platform Observables. Static Symbols follow their static receiver.
-Incompatible constructors and generic borrowing onto unrelated objects are
-unsupported. Transparent cross-realm operation is not supported: each realm
-initializes its own constructor and extensions.
+`create.ts` installs the receiver's versioned `[create]` protocol, and
+operators and factories invoke that protocol directly for derived results.
+The inherited implementation preserves a same-realm subclass whose constructor
+accepts the platform initializer shape; an explicit override may select another
+result contract. `ColdObservable` uses that seam to construct another plain
+`ColdObservable`. Its native string-named methods instead delegate through a
+fresh base Observable and return platform Observables. Static Symbols follow
+their static receiver. Incompatible constructors and generic borrowing onto
+unrelated objects are unsupported. Transparent cross-realm operation is not
+supported: each realm initializes its own constructor and extensions.
 
 Input conversion is deliberately independent. Operator inputs use the active
 realm's platform `Observable.from`, preserving its accepted input categories,
