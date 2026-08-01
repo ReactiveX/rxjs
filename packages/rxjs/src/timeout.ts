@@ -1,5 +1,5 @@
 import { TimeoutError, type TimeoutInfo } from './timeout-error.js';
-import { convertObservableValue, createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
+import { convertObservableValue, createDerivedObservable, subscribeToSource } from './util/observable-helpers.js';
 
 export { TimeoutError, type TimeoutInfo } from './timeout-error.js';
 
@@ -33,8 +33,6 @@ function timeoutOperator<T, W, M>(
       let lastValue: T | null = null;
       let timerController: AbortController | null = null;
       const sourceController = new AbortController();
-      const sourceSignal = AbortSignal.any([subscriber.signal, sourceController.signal]);
-
       const startTimer = (delay: number) => {
         timerController?.abort();
         const controller = new AbortController();
@@ -50,26 +48,21 @@ function timeoutOperator<T, W, M>(
             }
             timerController = null;
             sourceController.abort();
-            const nextSource = runWithErrorForwarding({
-              subscriber,
-              run: () =>
-                convertObservableValue({
-                  value: _with({
-                    meta,
-                    lastValue,
-                    seen,
-                  }),
+            let nextSource: Observable<W>;
+            try {
+              nextSource = convertObservableValue({
+                value: _with({
+                  meta,
+                  lastValue,
+                  seen,
                 }),
-            });
-            if (!nextSource.ok) {
+              });
+            } catch (error) {
+              subscriber.error(error);
               return;
             }
 
-            subscribeToSource({
-              source: nextSource.value,
-              subscriber,
-              next: (value) => subscriber.next(value),
-            });
+            subscribeToSource(nextSource, subscriber, { next: (value) => subscriber.next(value) });
           }, Math.max(0, delay));
         } catch (error) {
           subscriber.error(error);
@@ -79,31 +72,33 @@ function timeoutOperator<T, W, M>(
         signal.addEventListener('abort', () => globalThis.clearTimeout(id), { once: true });
       };
 
-      subscribeToSource({
-        source: this,
+      subscribeToSource(
+        this,
         subscriber,
-        signal: sourceSignal,
-        next: (value) => {
-          timerController?.abort();
-          timerController = null;
-          seen++;
-          lastValue = value;
-          subscriber.next(value);
-          if (subscriber.active && each !== null) {
-            startTimer(each);
-          }
+        {
+          next: (value) => {
+            timerController?.abort();
+            timerController = null;
+            seen++;
+            lastValue = value;
+            subscriber.next(value);
+            if (subscriber.active && each !== null) {
+              startTimer(each);
+            }
+          },
+          error: (error) => {
+            timerController?.abort();
+            timerController = null;
+            subscriber.error(error);
+          },
+          complete: () => {
+            timerController?.abort();
+            timerController = null;
+            subscriber.complete();
+          },
         },
-        error: (error) => {
-          timerController?.abort();
-          timerController = null;
-          subscriber.error(error);
-        },
-        complete: () => {
-          timerController?.abort();
-          timerController = null;
-          subscriber.complete();
-        },
-      });
+        sourceController.signal
+      );
 
       if (subscriber.active && seen === 0) {
         const initialDelay = first != null ? (typeof first === 'number' ? first : +first - globalThis.Date.now()) : each ?? 0;
