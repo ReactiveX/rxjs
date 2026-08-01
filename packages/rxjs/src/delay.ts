@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const delay: unique symbol = Symbol('delay');
 
@@ -26,32 +27,22 @@ Observable.prototype[delay] = function <T>(this: Observable<T>, due: number | Da
       timers.clear();
     });
 
-    this.subscribe(
-      {
-        next: (value) => {
-          const duration = Math.max(0, due instanceof globalThis.Date ? +due - globalThis.Date.now() : due);
-          let timer: ReturnType<typeof globalThis.setTimeout>;
-          try {
-            timer = globalThis.setTimeout(() => {
-              timers.delete(timer);
-              if (subscriber.active) {
-                subscriber.next(value);
-                completeIfSettled();
-              }
-            }, duration);
-          } catch (error) {
-            subscriber.error(error);
-            return;
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const duration = Math.max(0, due instanceof globalThis.Date ? +due - globalThis.Date.now() : due);
+        const timer = globalThis.setTimeout(() => {
+          timers.delete(timer);
+          if (subscriber.active) {
+            subscriber.next(value);
+            completeIfSettled();
           }
-          timers.add(timer);
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          sourceCompleted = true;
-          completeIfSettled();
-        },
+        }, duration);
+        timers.add(timer);
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        sourceCompleted = true;
+        completeIfSettled();
+      },
+    });
   });
 };
