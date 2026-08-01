@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { Subject } from './subject.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const windowTime: unique symbol = Symbol('windowTime');
 
@@ -89,42 +90,39 @@ Observable.prototype[windowTime] = function <T>(
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          for (const context of contexts.slice()) {
-            context.subject.next(value);
-            context.count++;
-            if (context.count >= maxWindowSize) {
-              closeContext(context);
-            }
-            if (!subscriber.active) {
-              return;
-            }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        for (const context of contexts.slice()) {
+          context.subject.next(value);
+          context.count++;
+          if (context.count >= maxWindowSize) {
+            closeContext(context);
           }
-        },
-        error: (error) => {
-          stopCreation();
-          const active = contexts.slice();
-          contexts.length = 0;
-          for (const context of active) {
-            globalThis.clearTimeout(context.timer);
-            context.subject.error(error);
+          if (!subscriber.active) {
+            return;
           }
-          subscriber.error(error);
-        },
-        complete: () => {
-          stopCreation();
-          const active = contexts.slice();
-          contexts.length = 0;
-          for (const context of active) {
-            globalThis.clearTimeout(context.timer);
-            context.subject.complete();
-          }
-          subscriber.complete();
-        },
+        }
       },
-      { signal: subscriber.signal }
-    );
+      error: (error) => {
+        stopCreation();
+        const active = contexts.slice();
+        contexts.length = 0;
+        for (const context of active) {
+          globalThis.clearTimeout(context.timer);
+          context.subject.error(error);
+        }
+        subscriber.error(error);
+      },
+      complete: () => {
+        stopCreation();
+        const active = contexts.slice();
+        contexts.length = 0;
+        for (const context of active) {
+          globalThis.clearTimeout(context.timer);
+          context.subject.complete();
+        }
+        subscriber.complete();
+      },
+    });
   });
 };
