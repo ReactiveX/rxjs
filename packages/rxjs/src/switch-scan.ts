@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import type { ObservedValueOf } from './util/types.js';
 
@@ -122,4 +121,4 @@ function switchScanOperator<T, R, Input extends ObservableValue<any>>(
   });
 }
 
-installObservableExtension({ instance: switchScanOperator, name: 'switchScan', symbol: switchScan });
+Observable.prototype[switchScan] = switchScanOperator;

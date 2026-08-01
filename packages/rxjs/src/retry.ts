@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 import '@rxjs/observable-polyfill';
 
@@ -14,90 +13,86 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(
-    this: Observable<T>,
-    config?: {
-      count?: number;
-      delay?: null | number | ((error: any, retryCount: number) => ObservableValue<any>);
-      resetOnSuccess?: boolean;
-    }
-  ) {
-    const { count = Infinity, delay = null, resetOnSuccess = true } = config ?? {};
+Observable.prototype[retry] = function <T>(
+  this: Observable<T>,
+  config?: {
+    count?: number;
+    delay?: null | number | ((error: any, retryCount: number) => ObservableValue<any>);
+    resetOnSuccess?: boolean;
+  }
+) {
+  const { count = Infinity, delay = null, resetOnSuccess = true } = config ?? {};
 
-    return this[create]((subscriber) => {
-      let retriesRemaining = count;
-      let retryCount = 0;
+  return this[create]((subscriber) => {
+    let retriesRemaining = count;
+    let retryCount = 0;
 
-      const innerSub = () => {
-        if (!subscriber.active) {
-          return;
-        }
+    const innerSub = () => {
+      if (!subscriber.active) {
+        return;
+      }
 
-        const sourceController = new AbortController();
+      const sourceController = new AbortController();
 
-        this.subscribe(
-          {
-            next: (value) => {
-              if (resetOnSuccess) {
-                retriesRemaining = count;
-                retryCount = 0;
-              }
-              subscriber.next(value);
-            },
-            error: (error) => {
-              sourceController.abort();
+      this.subscribe(
+        {
+          next: (value) => {
+            if (resetOnSuccess) {
+              retriesRemaining = count;
+              retryCount = 0;
+            }
+            subscriber.next(value);
+          },
+          error: (error) => {
+            sourceController.abort();
 
-              if (retriesRemaining > 0) {
-                retriesRemaining--;
-                retryCount++;
-                if (delay !== null) {
-                  if (typeof delay === 'number') {
-                    const id = globalThis.setTimeout(innerSub, delay);
-                    subscriber.addTeardown(() => globalThis.clearTimeout(id));
-                  } else {
-                    let result: Observable<any>;
-
-                    try {
-                      result = Observable.from(delay(error, retryCount));
-                    } catch (error) {
-                      subscriber.error(error);
-                      return;
-                    }
-
-                    const notifierController = new AbortController();
-                    result.subscribe(
-                      {
-                        next: () => {
-                          notifierController.abort();
-                          innerSub();
-                        },
-                        error: (error) => subscriber.error(error),
-                        complete: () => subscriber.complete(),
-                      },
-                      {
-                        signal: AbortSignal.any([subscriber.signal, notifierController.signal]),
-                      }
-                    );
-                  }
+            if (retriesRemaining > 0) {
+              retriesRemaining--;
+              retryCount++;
+              if (delay !== null) {
+                if (typeof delay === 'number') {
+                  const id = globalThis.setTimeout(innerSub, delay);
+                  subscriber.addTeardown(() => globalThis.clearTimeout(id));
                 } else {
-                  innerSub();
+                  let result: Observable<any>;
+
+                  try {
+                    result = Observable.from(delay(error, retryCount));
+                  } catch (error) {
+                    subscriber.error(error);
+                    return;
+                  }
+
+                  const notifierController = new AbortController();
+                  result.subscribe(
+                    {
+                      next: () => {
+                        notifierController.abort();
+                        innerSub();
+                      },
+                      error: (error) => subscriber.error(error),
+                      complete: () => subscriber.complete(),
+                    },
+                    {
+                      signal: AbortSignal.any([subscriber.signal, notifierController.signal]),
+                    }
+                  );
                 }
               } else {
-                subscriber.error(error);
+                innerSub();
               }
-            },
-            complete: () => subscriber.complete(),
+            } else {
+              subscriber.error(error);
+            }
           },
-          {
-            signal: AbortSignal.any([subscriber.signal, sourceController.signal]),
-          }
-        );
-      };
+          complete: () => subscriber.complete(),
+        },
+        {
+          signal: AbortSignal.any([subscriber.signal, sourceController.signal]),
+        }
+      );
+    };
 
-      innerSub();
-    });
-  },
-  name: 'retry',
-  symbol: retry,
-});
+    innerSub();
+  });
+};
