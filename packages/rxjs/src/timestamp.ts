@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const timestamp: unique symbol = Symbol('timestamp');
 
@@ -19,22 +20,11 @@ declare global {
 
 Observable.prototype[timestamp] = function <T>(this: Observable<T>, timestampProvider?: TimestampProvider): Observable<Timestamp<T>> {
   return this[create]((subscriber) => {
-    this.subscribe(
-      {
-        next: (value) => {
-          let currentTimestamp: number;
-          try {
-            currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-          subscriber.next({ value, timestamp: currentTimestamp });
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
+        subscriber.next({ value, timestamp: currentTimestamp });
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
