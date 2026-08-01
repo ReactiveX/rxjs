@@ -1,34 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { create } from '../create.js';
-import { createDerivedObservable, convertObservableValue, subscribeToSource } from './observable-helpers.js';
+import { convertObservableValue, subscribeToSource } from './observable-helpers.js';
 
 describe('Observable kernel helpers', () => {
-  it('creates derived values through a compatible receiver constructor', () => {
-    class DerivedObservable<T> extends Observable<T> {}
-    const source = new DerivedObservable<number>(() => {});
-    const derived = createDerivedObservable({
-      receiver: source,
-      init: (subscriber) => subscriber.complete(),
-    });
-
-    expect(derived).toBeInstanceOf(DerivedObservable);
-  });
-
-  it('honors an explicit receiver construction protocol', () => {
-    const constructions: Array<(subscriber: Subscriber<number>) => void> = [];
-    const receiver = {
-      [create]<T>(init: (subscriber: Subscriber<T>) => void): Observable<T> {
-        constructions.push(init as (subscriber: Subscriber<number>) => void);
-        return new Observable(init);
-      },
-    };
-
-    const derived = createDerivedObservable<number>({ receiver, init: () => {} });
-
-    expect(derived).toBeInstanceOf(Observable);
-    expect(constructions).toHaveLength(1);
-  });
-
   it('converts inputs with the active realm constructor rather than a derived receiver', () => {
     class DerivedObservable<T> extends Observable<T> {}
     const converted = convertObservableValue({ value: [1, 2, 3] });

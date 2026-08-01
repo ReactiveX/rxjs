@@ -1,22 +1,7 @@
 import '@rxjs/observable-polyfill';
-import { create } from '../create.js';
-
-interface ObservableCreator {
-  [create]<T>(init: (subscriber: Subscriber<T>) => void): Observable<T>;
-}
-
-export interface CreateDerivedObservableOptions<T> {
-  receiver: ObservableCreator;
-  init: (subscriber: Subscriber<T>) => void;
-}
 
 export interface ConvertObservableValueOptions<T> {
   value: ObservableValue<T>;
-}
-
-/** Creates a derived value through the receiver's versioned construction ABI. */
-export function createDerivedObservable<T>(options: CreateDerivedObservableOptions<T>): Observable<T> {
-  return options.receiver[create](options.init);
 }
 
 /** Converts inputs at the active realm's platform boundary. */
