@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const sampleTime: unique symbol = Symbol('sampleTime');
@@ -9,37 +8,33 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>, period: number): Observable<T> {
-    return this[create]((subscriber) => {
-      let hasValue = false;
-      let latestValue: T;
+Observable.prototype[sampleTime] = function <T>(this: Observable<T>, period: number): Observable<T> {
+  return this[create]((subscriber) => {
+    let hasValue = false;
+    let latestValue: T;
 
-      this.subscribe(
-        {
-          next: (value) => {
-            hasValue = true;
-            latestValue = value;
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => subscriber.complete(),
+    this.subscribe(
+      {
+        next: (value) => {
+          hasValue = true;
+          latestValue = value;
         },
-        { signal: subscriber.signal }
-      );
+        error: (error) => subscriber.error(error),
+        complete: () => subscriber.complete(),
+      },
+      { signal: subscriber.signal }
+    );
 
-      if (!subscriber.active) {
-        return;
+    if (!subscriber.active) {
+      return;
+    }
+
+    const id = globalThis.setInterval(() => {
+      if (hasValue) {
+        hasValue = false;
+        subscriber.next(latestValue);
       }
-
-      const id = globalThis.setInterval(() => {
-        if (hasValue) {
-          hasValue = false;
-          subscriber.next(latestValue);
-        }
-      }, period);
-      subscriber.addTeardown(() => globalThis.clearInterval(id));
-    });
-  },
-  name: 'sampleTime',
-  symbol: sampleTime,
-});
+    }, period);
+    subscriber.addTeardown(() => globalThis.clearInterval(id));
+  });
+};

@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const animationFrames: unique symbol = Symbol('animationFrames');
@@ -18,7 +17,7 @@ declare global {
   }
 }
 
-installObservableExtension({ static: animationFramesImpl, name: 'animationFrames', symbol: animationFrames });
+Observable[animationFrames] = animationFramesImpl;
 
 function animationFramesImpl(this: ObservableCtor, timestampProvider?: AnimationFrameTimestampProvider): Observable<AnimationFrameInfo> {
   return this[create]((subscriber) => {

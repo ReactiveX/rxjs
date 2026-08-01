@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import '@rxjs/observable-polyfill';
 import { create } from './create.js';
 
@@ -10,7 +9,7 @@ declare global {
   }
 }
 
-installObservableExtension({ static: intervalImpl, name: 'interval', symbol: interval });
+Observable[interval] = intervalImpl;
 
 function intervalImpl(this: ObservableCtor, ms: number): Observable<number> {
   return this[create]((subscriber) => {
