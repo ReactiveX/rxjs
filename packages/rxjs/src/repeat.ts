@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const repeat: unique symbol = Symbol('repeat');
 
@@ -22,8 +23,6 @@ Observable.prototype[repeat] = function <T>(
       return;
     }
 
-    const nextHandler = (value: T) => subscriber.next(value);
-    const errorHandler = (error: any) => subscriber.error(error);
     let id: ReturnType<typeof globalThis.setTimeout> | undefined;
     let repeatCount = 0;
     let subscriptionCount = 0;
@@ -38,47 +37,36 @@ Observable.prototype[repeat] = function <T>(
         return;
       }
       subscriptionCount++;
-      this.subscribe(
-        {
-          next: nextHandler,
-          error: errorHandler,
-          complete: () => {
-            if (subscriptionCount >= count) {
-              subscriber.complete();
+      subscribeToSource(this, subscriber, {
+        complete: () => {
+          if (subscriptionCount >= count) {
+            subscriber.complete();
+          } else {
+            if (delay == null) {
+              startSub();
             } else {
-              if (delay == null) {
-                startSub();
+              if (isTimeoutDelay) {
+                id = globalThis.setTimeout(startSub, delay);
               } else {
-                if (isTimeoutDelay) {
-                  id = globalThis.setTimeout(startSub, delay);
-                } else {
-                  const innerController = new AbortController();
-                  const signal = AbortSignal.any([innerController.signal, subscriber.signal]);
-                  let notifier: Observable<any>;
-                  try {
-                    notifier = Observable.from(delay(++repeatCount));
-                  } catch (error) {
-                    subscriber.error(error);
-                    return;
-                  }
-                  notifier.subscribe(
-                    {
-                      next: () => {
-                        innerController.abort();
-                        startSub();
-                      },
-                      error: errorHandler,
-                      complete: () => subscriber.complete(),
+                const innerController = new AbortController();
+                const notifier = Observable.from(delay(++repeatCount));
+                subscribeToSource(
+                  notifier,
+                  subscriber,
+                  {
+                    next: () => {
+                      innerController.abort();
+                      startSub();
                     },
-                    { signal }
-                  );
-                }
+                    complete: () => subscriber.complete(),
+                  },
+                  innerController.signal
+                );
               }
             }
-          },
+          }
         },
-        { signal: subscriber.signal }
-      );
+      });
     };
 
     startSub();
