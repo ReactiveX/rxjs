@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const exhaustMap: unique symbol = Symbol('exhaustMap');
 
@@ -24,42 +25,27 @@ Observable.prototype[exhaustMap] = function <T, R>(
     let index = 0;
     let active = 0;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          if (active < concurrent) {
-            let source: Observable<R>;
-            try {
-              source = Observable.from(mapper(value, index++));
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-            active++;
-            source.subscribe(
-              {
-                next: (value) => subscriber.next(value),
-                error: (error) => subscriber.error(error),
-                complete: () => {
-                  active--;
-                  if (outerComplete && active === 0) {
-                    subscriber.complete();
-                  }
-                },
-              },
-              { signal: subscriber.signal }
-            );
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          outerComplete = true;
-          if (active === 0) {
-            subscriber.complete();
-          }
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (active < concurrent) {
+          const source = Observable.from(mapper(value, index++));
+          active++;
+          subscribeToSource(source, subscriber, {
+            complete: () => {
+              active--;
+              if (outerComplete && active === 0) {
+                subscriber.complete();
+              }
+            },
+          });
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        outerComplete = true;
+        if (active === 0) {
+          subscriber.complete();
+        }
+      },
+    });
   });
 };
