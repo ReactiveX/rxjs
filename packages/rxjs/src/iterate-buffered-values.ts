@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import '@rxjs/observable-polyfill';
 import { bufferedValuesAsyncGenerator } from './util/observable-async-generators.js';
 
@@ -44,10 +43,6 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>): AsyncGenerator<T[], void, void> {
-    return bufferedValuesAsyncGenerator(this);
-  },
-  name: 'iterateBufferedValues',
-  symbol: iterateBufferedValues,
-});
+Observable.prototype[iterateBufferedValues] = function <T>(this: Observable<T>): AsyncGenerator<T[], void, void> {
+  return bufferedValuesAsyncGenerator(this);
+};

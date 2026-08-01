@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import '@rxjs/observable-polyfill';
 import { nextValueAsyncGenerator } from './util/observable-async-generators.js';
 
@@ -45,10 +44,6 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>): AsyncGenerator<T, void, void> {
-    return nextValueAsyncGenerator(this);
-  },
-  name: 'iterateNextValue',
-  symbol: iterateNextValue,
-});
+Observable.prototype[iterateNextValue] = function <T>(this: Observable<T>): AsyncGenerator<T, void, void> {
+  return nextValueAsyncGenerator(this);
+};
