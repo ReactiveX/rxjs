@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const takeLast: unique symbol = Symbol('takeLast');
 
@@ -20,22 +21,18 @@ Observable.prototype[takeLast] = function <T>(this: Observable<T>, amount = 1): 
     subscriber.addTeardown(() => {
       ring = null!;
     });
-    this.subscribe(
-      {
-        next: (value) => {
-          ring[counter++ % amount] = value;
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          const start = amount <= counter ? counter : 0;
-          const total = Math.min(amount, counter);
-          for (let i = 0; i < total; i++) {
-            subscriber.next(ring[(start + i) % amount]!);
-          }
-          subscriber.complete();
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        ring[counter++ % amount] = value;
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        const start = amount <= counter ? counter : 0;
+        const total = Math.min(amount, counter);
+        for (let i = 0; i < total; i++) {
+          subscriber.next(ring[(start + i) % amount]!);
+        }
+        subscriber.complete();
+      },
+    });
   });
 };
