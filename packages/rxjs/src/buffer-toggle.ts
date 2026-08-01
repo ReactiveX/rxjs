@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const bufferToggle: unique symbol = Symbol('bufferToggle');
 
@@ -80,7 +81,9 @@ Observable.prototype[bufferToggle] = function <T, Opening>(
         return;
       }
 
-      closingSource.subscribe(
+      subscribeToSource(
+        closingSource,
+        subscriber,
         {
           next: () => emitAndRemove(context),
           error: terminateWithError,
@@ -88,7 +91,7 @@ Observable.prototype[bufferToggle] = function <T, Opening>(
           // remove its buffer. The source's completion flushes it instead.
           complete: () => closingControllers.delete(context.closingController),
         },
-        { signal: context.closingController.signal }
+        context.closingController.signal
       );
     };
 
@@ -104,12 +107,15 @@ Observable.prototype[bufferToggle] = function <T, Opening>(
 
     // RxJS 7 activates openings before the source so synchronous openings can
     // establish (and even close) buffers before source work begins.
-    openingsSource.subscribe(
+    subscribeToSource(
+      openingsSource,
+      subscriber,
       {
         next: openBuffer,
         error: terminateWithError,
+        complete: () => void 0,
       },
-      { signal: openingsController.signal }
+      openingsController.signal
     );
 
     const sourceController = new AbortController();
