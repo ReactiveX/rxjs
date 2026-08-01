@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const timeInterval: unique symbol = Symbol('timeInterval');
 
@@ -29,24 +30,13 @@ Observable.prototype[timeInterval] = function <T>(
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          let currentTimestamp: number;
-          try {
-            currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-          const interval = currentTimestamp - lastTimestamp;
-          lastTimestamp = currentTimestamp;
-          subscriber.next(new TimeInterval(value, interval));
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
+        const interval = currentTimestamp - lastTimestamp;
+        lastTimestamp = currentTimestamp;
+        subscriber.next(new TimeInterval(value, interval));
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 };
