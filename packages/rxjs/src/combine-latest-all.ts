@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { combineLatest } from './combine-latest.js';
 import { create } from './create.js';
 import { map } from './map.js';
@@ -21,18 +22,9 @@ declare global {
 }
 
 function combineLatestAllOperator<V>(this: Observable<ObservableValue<V>>): Observable<V[]>;
-function combineLatestAllOperator<V, R>(
-  this: Observable<ObservableValue<V>>,
-  project: (...values: V[]) => R
-): Observable<R>;
-function combineLatestAllOperator<R>(
-  this: Observable<ObservableValue<any>>,
-  project: (...values: any[]) => R
-): Observable<R>;
-function combineLatestAllOperator<V, R>(
-  this: Observable<ObservableValue<V>>,
-  project?: (...values: V[]) => R
-): Observable<V[] | R> {
+function combineLatestAllOperator<V, R>(this: Observable<ObservableValue<V>>, project: (...values: V[]) => R): Observable<R>;
+function combineLatestAllOperator<R>(this: Observable<ObservableValue<any>>, project: (...values: any[]) => R): Observable<R>;
+function combineLatestAllOperator<V, R>(this: Observable<ObservableValue<V>>, project?: (...values: V[]) => R): Observable<V[] | R> {
   const outer = this;
 
   return outer[create]((subscriber) => {
@@ -66,4 +58,4 @@ function combineLatestAllOperator<V, R>(
   });
 }
 
-Observable.prototype[combineLatestAll] = combineLatestAllOperator;
+installObservableExtension({ instance: combineLatestAllOperator, name: 'combineLatestAll', symbol: combineLatestAll });

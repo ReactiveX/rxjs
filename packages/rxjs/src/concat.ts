@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { merge } from './merge.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
 
@@ -15,8 +16,7 @@ declare global {
   }
 }
 
-Observable[concat] = concatImpl;
-Observable.prototype[concat] = concatImpl;
+installObservableExtension({ instance: concatImpl, static: concatImpl, name: 'concat', symbol: concat });
 
 function concatImpl<Sources extends readonly ObservableValue<any>[]>(
   this: ObservableCtor | Observable<any>,
