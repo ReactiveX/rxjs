@@ -47,7 +47,7 @@ describe('Observable kernel helpers', () => {
     const values: number[] = [];
     const controller = new AbortController();
     const derived = new Observable<number>((subscriber) => {
-      subscribeToSource({ source, subscriber, next: (value) => subscriber.next(value) });
+      subscribeToSource(source, subscriber);
     });
 
     derived.subscribe((value) => values.push(value), { signal: controller.signal });
@@ -65,11 +65,7 @@ describe('Observable kernel helpers', () => {
     const results: Array<'complete' | Error> = [];
 
     new Observable<number>((subscriber) => {
-      subscribeToSource({
-        source: new Observable<number>((sourceSubscriber) => sourceSubscriber.error(failure)),
-        subscriber,
-        next: (value) => subscriber.next(value),
-      });
+      subscribeToSource(new Observable<number>((sourceSubscriber) => sourceSubscriber.error(failure)), subscriber);
     }).subscribe({
       error: (error) => results.push(error as Error),
       complete: () => results.push('complete'),
@@ -78,14 +74,71 @@ describe('Observable kernel helpers', () => {
     expect(results).toEqual([failure]);
 
     new Observable<number>((subscriber) => {
-      subscribeToSource({
-        source: new Observable<number>((sourceSubscriber) => sourceSubscriber.complete()),
-        subscriber,
-        next: (value) => subscriber.next(value),
-      });
+      subscribeToSource(new Observable<number>((sourceSubscriber) => sourceSubscriber.complete()), subscriber);
     }).subscribe({ complete: () => results.push('complete') });
 
     expect(results).toEqual([failure, 'complete']);
+  });
+
+  it('turns overridden notification callback exceptions into stream errors', () => {
+    const failures = [new Error('next failure'), new Error('error failure'), new Error('complete failure')];
+    const errors: unknown[] = [];
+
+    const sources = [
+      new Observable<number>((sourceSubscriber) => sourceSubscriber.next(1)),
+      new Observable<number>((sourceSubscriber) => sourceSubscriber.error(new Error('source failure'))),
+      new Observable<number>((sourceSubscriber) => sourceSubscriber.complete()),
+    ];
+    const overrides: Array<Partial<Observer<number>>> = [
+      { next: () => { throw failures[0]; } },
+      { error: () => { throw failures[1]; } },
+      { complete: () => { throw failures[2]; } },
+    ];
+
+    for (let index = 0; index < sources.length; index++) {
+      new Observable<number>((subscriber) => subscribeToSource(sources[index]!, subscriber, overrides[index])).subscribe({
+        error: (error) => errors.push(error),
+      });
+    }
+
+    expect(errors).toEqual(failures);
+  });
+
+  it('turns synchronous subscription setup exceptions into stream errors', () => {
+    const failure = new Error('setup failure');
+    const errors: unknown[] = [];
+    const source = {
+      subscribe: () => {
+        throw failure;
+      },
+    } as unknown as Observable<number>;
+
+    new Observable<number>((subscriber) => subscribeToSource(source, subscriber)).subscribe({
+      error: (error) => errors.push(error),
+    });
+
+    expect(errors).toEqual([failure]);
+  });
+
+  it('joins an operator-local signal with the destination signal', () => {
+    let sourceSubscriber: Subscriber<number> | undefined;
+    const localController = new AbortController();
+    const derived = new Observable<number>((subscriber) => {
+      subscribeToSource(
+        new Observable<number>((innerSubscriber) => {
+          sourceSubscriber = innerSubscriber;
+        }),
+        subscriber,
+        undefined,
+        localController.signal
+      );
+    });
+
+    derived.subscribe(() => {});
+    expect(sourceSubscriber?.active).toBe(true);
+
+    localController.abort();
+    expect(sourceSubscriber?.active).toBe(false);
   });
 
   it('turns synchronous exceptions into stream errors', () => {

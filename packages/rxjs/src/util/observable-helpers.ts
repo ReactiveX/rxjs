@@ -40,17 +40,78 @@ export function convertObservableValue<T>(options: ConvertObservableValueOptions
   return Observable.from(options.value);
 }
 
-/** Subscribes upstream with cancellation owned by the derived subscriber. */
-export function subscribeToSource<T>(options: SubscribeToSourceOptions<T>): void {
-  options.source.subscribe(
-    {
-      next: options.next,
-      error: options.error ?? ((error) => options.subscriber.error(error)),
-      complete: options.complete ?? (() => options.subscriber.complete()),
-    },
-    { signal: options.signal ?? options.subscriber.signal }
-  );
+/** Subscribes upstream with cancellation and errors owned by the derived subscriber. */
+export function subscribeToSource<T>(options: SubscribeToSourceOptions<T>): void;
+export function subscribeToSource<T>(
+  source: Observable<T>,
+  subscriber: Subscriber<unknown>,
+  overrides?: Partial<Observer<T>>,
+  signal?: AbortSignal
+): void;
+export function subscribeToSource<T>(
+  sourceOrOptions: Observable<T> | SubscribeToSourceOptions<T>,
+  subscriber?: Subscriber<unknown>,
+  overrides?: Partial<Observer<T>>,
+  signal?: AbortSignal
+): void {
+  if (arguments.length === 1) {
+    const options = sourceOrOptions as SubscribeToSourceOptions<T>;
+    subscribeToSource(
+      options.source,
+      options.subscriber,
+      {
+        next: options.next,
+        error: options.error,
+        complete: options.complete,
+      },
+      options.signal
+    );
+    return;
+  }
+
+  const source = sourceOrOptions as Observable<T>;
+  const destination = subscriber!;
+
+  try {
+    source.subscribe(
+      {
+        next: overrides?.next
+          ? (value) => {
+              try {
+                overrides.next!(value);
+              } catch (error) {
+                destination.error(error);
+              }
+            }
+          : (value) => destination.next(value),
+        error: overrides?.error
+          ? (error) => {
+              try {
+                overrides.error!(error);
+              } catch (callbackError) {
+                destination.error(callbackError);
+              }
+            }
+          : (error) => destination.error(error),
+        complete: overrides?.complete
+          ? () => {
+              try {
+                overrides.complete!();
+              } catch (error) {
+                destination.error(error);
+              }
+            }
+          : () => destination.complete(),
+      },
+      { signal: signal ? AbortSignal.any([destination.signal, signal]) : destination.signal }
+    );
+  } catch (error) {
+    destination.error(error);
+  }
 }
+
+/** @deprecated Temporary migration alias. */
+export const subscribeToSource2 = subscribeToSource;
 
 /** Turns a synchronous callback or conversion exception into a stream error. */
 export function runWithErrorForwarding<T>(options: RunWithErrorForwardingOptions<T>): ErrorForwardingResult<T> {
