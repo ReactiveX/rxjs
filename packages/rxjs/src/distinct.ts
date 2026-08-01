@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const distinct: unique symbol = Symbol('distinct');
 
@@ -16,27 +17,15 @@ Observable.prototype[distinct] = function <T, K = T>(
   return this[create]((subscriber) => {
     const keys = new Set<K | T>();
 
-    this.subscribe(
-      {
-        next: (value) => {
-          let key: K | T;
-          try {
-            key = keySelector ? keySelector(value) : value;
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-
-          if (!keys.has(key)) {
-            keys.add(key);
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const key = keySelector ? keySelector(value) : value;
+        if (!keys.has(key)) {
+          keys.add(key);
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
 
     if (!subscriber.active || !flushes) {
       return;
@@ -50,12 +39,6 @@ Observable.prototype[distinct] = function <T, K = T>(
       return;
     }
 
-    flushSource.subscribe(
-      {
-        next: () => keys.clear(),
-        error: (error) => subscriber.error(error),
-      },
-      { signal: subscriber.signal }
-    );
+    subscribeToSource(flushSource, subscriber, { next: () => keys.clear(), complete: () => void 0 });
   });
 };
