@@ -1,5 +1,6 @@
 import { ConnectableObservable, type ConnectableConnection } from './connectable.js';
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const refCount: unique symbol = Symbol('refCount');
 
@@ -59,7 +60,7 @@ Observable.prototype[refCount] = function <T>(this: ConnectableObservable<T>): O
 
     // The destination must be subscribed before the first source connection
     // so no synchronous source value is lost.
-    source.subscribe(subscriber, { signal: subscriber.signal });
+    subscribeToSource(source, subscriber);
 
     if (!subscriber.active || state.activeRuns === 0 || state.connecting) {
       return;
