@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const bufferTime: unique symbol = Symbol('bufferTime');
 
@@ -78,34 +79,30 @@ Observable.prototype[bufferTime] = function <T>(
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => {
-          for (const context of contexts.slice()) {
-            context.values.push(value);
-            if (context.values.length >= maxBufferSize) {
-              closeContext(context);
-            }
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        for (const context of contexts.slice()) {
+          context.values.push(value);
+          if (context.values.length >= maxBufferSize) {
+            closeContext(context);
           }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          if (creationTimer !== undefined) {
-            globalThis.clearInterval(creationTimer);
-            creationTimer = undefined;
-          }
-          const remaining = contexts.slice();
-          contexts.length = 0;
-          for (const context of remaining) {
-            globalThis.clearTimeout(context.timer);
-            if (subscriber.active) {
-              subscriber.next(context.values.slice());
-            }
-          }
-          subscriber.complete();
-        },
+        }
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        if (creationTimer !== undefined) {
+          globalThis.clearInterval(creationTimer);
+          creationTimer = undefined;
+        }
+        const remaining = contexts.slice();
+        contexts.length = 0;
+        for (const context of remaining) {
+          globalThis.clearTimeout(context.timer);
+          if (subscriber.active) {
+            subscriber.next(context.values.slice());
+          }
+        }
+        subscriber.complete();
+      },
+    });
   });
 };
