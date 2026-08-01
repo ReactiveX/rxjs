@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const find: unique symbol = Symbol('find');
 
@@ -43,7 +44,6 @@ function findOperator<T>(
   return source[create]((subscriber) => {
     let index = 0;
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
 
     const conclude = (value: T | undefined): void => {
       sourceController.abort();
@@ -51,19 +51,12 @@ function findOperator<T>(
       subscriber.complete();
     };
 
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: (value) => {
-          let matches: boolean;
-          try {
-            matches = predicate.call(thisArg, value, index++, source);
-          } catch (error) {
-            sourceController.abort();
-            subscriber.error(error);
-            return;
-          }
-
-          if (matches) {
+          if (predicate.call(thisArg, value, index++, source)) {
             conclude(value);
           }
         },
@@ -73,7 +66,7 @@ function findOperator<T>(
         },
         complete: () => conclude(undefined),
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
