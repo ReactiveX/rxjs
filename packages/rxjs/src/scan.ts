@@ -1,4 +1,5 @@
-import { createDerivedObservable, subscribeToSource } from './util/observable-helpers.js';
+import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const scan: unique symbol = Symbol('scan');
 
@@ -22,34 +23,31 @@ function scanOperator<T, A, S>(
   accumulator: (accumulator: T | A | S, value: T, index: number) => A,
   ...seed: [] | [S]
 ): Observable<T | A> {
-  return createDerivedObservable({
-    receiver: this,
-    init: (subscriber) => {
-      let state: { initialized: false } | { initialized: true; value: T | A | S } =
-        seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
-      let index = 0;
+  return this[create]((subscriber) => {
+    let state: { initialized: false } | { initialized: true; value: T | A | S } =
+      seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
+    let index = 0;
 
-      subscribeToSource(this, subscriber, {
-        next: (value) => {
-          const currentIndex = index++;
-          if (!state.initialized) {
-            state = {
-              initialized: true,
-              value,
-            };
-            subscriber.next(value);
-            return;
-          }
-
-          const nextState = accumulator(state.value, value, currentIndex);
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        const currentIndex = index++;
+        if (!state.initialized) {
           state = {
             initialized: true,
-            value: nextState,
+            value,
           };
-          subscriber.next(nextState);
-        },
-      });
-    },
+          subscriber.next(value);
+          return;
+        }
+
+        const nextState = accumulator(state.value, value, currentIndex);
+        state = {
+          initialized: true,
+          value: nextState,
+        };
+        subscriber.next(nextState);
+      },
+    });
   });
 }
 
