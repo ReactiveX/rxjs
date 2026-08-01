@@ -75,7 +75,9 @@ dialects into one ESM implementation. P6.2 through P6.4 completed the release
 matrix, package-local documentation, packed-consumer adoption, and beta
 approval. P6.5 closed the terminal audit. P6.6 then centralized eligible RxJS
 source subscriptions through the D-049 helper and recorded the resulting
-bundle-size reduction. The execution queue is complete.
+bundle-size reduction. The user has since prioritized P6.7 to consolidate
+receiver-driven derived construction behind the RxJS-7-shaped `operate`
+helper and measure the resulting bundle-size change.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1558,6 +1560,7 @@ names.
 | `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
 | `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
+| `NEXT` | P6.7 | Consolidate derived construction behind `operate` and record bundle-size evidence     |
 
 #### P6.1 completion bar
 
@@ -1793,6 +1796,21 @@ names.
 
 - Marked P6.6 `DONE`; the completed execution queue again has no `NEXT`
   marker.
+
+#### P6.7 completion bar
+
+- One internal positional `operate(source, init)` helper owns receiver-driven
+  derived Observable construction through the D-037 `[create]` protocol.
+- Every production use of the legacy derived-construction helper moves to
+  `operate`; the obsolete helper, options type, and dead tests are removed.
+- The user's draft `map` migration remains a separate commit, followed by one
+  commit per migrated operator/factory and separate helper cleanup,
+  architecture/decision, and verification-evidence commits.
+- Focused behavior, type, package, kernel, classified cold/fallback, Webpack,
+  and performance gates retain their accepted outcomes.
+- Identical pre/post esbuild scenarios record minified, gzip, and Brotli
+  changes for the root control, `map`, representative operator set, and full
+  runtime catalog without growing any scenario.
 
 ## Dependencies
 
