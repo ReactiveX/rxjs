@@ -1,0 +1,188 @@
+diff --git a/package.json b/package.json
+index a9b0925..180eca5 100644
+--- a/package.json
++++ b/package.json
+@@ -7,12 +7,18 @@
+     "test": "vitest --run"
+   },
+   "dependencies": {
+-    "rxjs": "7.8.1"
++    "@rxjs/observable-polyfill": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz",
++    "rxjs": "file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz"
+   },
+   "devDependencies": {
+     "@rxjs/migrate": "file:.qualification/packages/rxjs-migrate-8.0.0-alpha.14.tgz",
+     "@types/node": "20.11.0",
+     "typescript": "5.7.3",
+     "vitest": "1.2.1"
++  },
++  "pnpm": {
++    "overrides": {
++      "@rxjs/observable-polyfill": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz"
++    }
+   }
+ }
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 827f8d3..48f2e49 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -4,13 +4,19 @@ settings:
+   autoInstallPeers: true
+   excludeLinksFromLockfile: false
+ 
++overrides:
++  '@rxjs/observable-polyfill': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++
+ importers:
+ 
+   .:
+     dependencies:
++      '@rxjs/observable-polyfill':
++        specifier: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+       rxjs:
+-        specifier: 7.8.1
+-        version: 7.8.1
++        specifier: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
+     devDependencies:
+       '@rxjs/migrate':
+         specifier: file:.qualification/packages/rxjs-migrate-8.0.0-alpha.14.tgz
+@@ -302,6 +308,10 @@ packages:
+     version: 8.0.0-alpha.14
+     hasBin: true
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz':
++    resolution: {integrity: sha512-IK2uj+dLiY3kplu68HeT8KI8FkKccU18pqSg+SZuRvjad3NrY9TQbAttdhHDAico82p4Y5B6i++cW4xub2jGWw==, tarball: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
++
+   '@sinclair/typebox@0.27.12':
+     resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
+ 
+@@ -491,8 +501,9 @@ packages:
+     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
+     hasBin: true
+ 
+-  rxjs@7.8.1:
+-    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
++    resolution: {integrity: sha512-7qiXQw+TgyHRmGTof+TpYlHNZYhrajxZ/DFdj4XYgVkw0KZkyYdq4Vv9oUEDCYJ9zOSn8T7iXX0zWHmUA8m+uQ==, tarball: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
+ 
+   shebang-command@2.0.0:
+     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
+@@ -537,9 +548,6 @@ packages:
+     resolution: {integrity: sha512-KYad6Vy5VDWV4GH3fjpseMQ/XU2BhIYP7Vzd0LG44qRWm/Yt2WCOTicFdvmgo6gWaqooMQCawTtILVQJupKu7A==}
+     engines: {node: '>=14.0.0'}
+ 
+-  tslib@2.8.1:
+-    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+-
+   type-detect@4.1.0:
+     resolution: {integrity: sha512-Acylog8/luQ8L7il+geoSxhEkazvkslg7PSNKOX59mbB9cOveP5aq9h74Y7YU8yDpJwetzQQrfIwtf4Wp4LKcw==}
+     engines: {node: '>=4'}
+@@ -790,6 +798,8 @@ snapshots:
+       typescript: 5.7.3
+       zod: 3.25.76
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz': {}
++
+   '@sinclair/typebox@0.27.12': {}
+ 
+   '@types/estree@1.0.9': {}
+@@ -1029,9 +1039,9 @@ snapshots:
+       '@rollup/rollup-win32-x64-msvc': 4.62.3
+       fsevents: 2.3.3
+ 
+-  rxjs@7.8.1:
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
+     dependencies:
+-      tslib: 2.8.1
++      '@rxjs/observable-polyfill': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+ 
+   shebang-command@2.0.0:
+     dependencies:
+@@ -1061,8 +1071,6 @@ snapshots:
+ 
+   tinyspy@2.2.1: {}
+ 
+-  tslib@2.8.1: {}
+-
+   type-detect@4.1.0: {}
+ 
+   typescript@5.7.3: {}
+diff --git a/src/request.ts b/src/request.ts
+index 7e6ec86..af7561d 100644
+--- a/src/request.ts
++++ b/src/request.ts
+@@ -1,9 +1,12 @@
+-import { Observable, map } from 'rxjs';
++// Migrated from fixture://app-cold-strong @ f7cb6d139c979bf8f5b577120529ac236e59b9a4
++// Source: src/request.ts
++import { ColdObservable } from 'rxjs';
++import { map } from 'rxjs/map';
+ 
+ export function request(log: string[]): Observable<number> {
+-  return new Observable<number>((subscriber) => {
++  return new ColdObservable<number>((subscriber) => {
+     log.push('start');
+     subscriber.next(21);
+-    return () => log.push('stop');
+-  }).pipe(map((value) => value * 2));
++    subscriber.addTeardown(() => log.push('stop'));
++  })[map]((value) => value * 2);
+ }
+diff --git a/test/request.test-source.ts b/test/request.test-source.ts
+index 05cd32e..26ad42d 100644
+--- a/test/request.test-source.ts
++++ b/test/request.test-source.ts
+@@ -1,28 +1,40 @@
++// Migrated from fixture://app-cold-strong @ f7cb6d139c979bf8f5b577120529ac236e59b9a4
++// Source: test/request.test-source.ts
+ import { describe, expect, it } from 'vitest';
+ import { request } from '../src/request.js';
+ 
+ describe('cold request lifecycle', () => {
+   it('PT-COLD-INDEPENDENT starts one producer per direct subscription', () => {
+     const log: string[] = [];
+-    const first = request(log).subscribe();
+-    const second = request(log).subscribe();
++    const values: number[] = [];
++    const first = new AbortController();
++    const second = new AbortController();
++    request(log).subscribe((value) => values.push(value), { signal: first.signal });
++    request(log).subscribe(null, { signal: second.signal });
+     expect(log).toEqual(['start', 'start']);
+-    first.unsubscribe();
+-    second.unsubscribe();
++    expect(values).toEqual([42]);
++    first.abort();
++    second.abort();
+   });
+ 
+   it('PT-COLD-CANCELLATION closes the producer on unsubscribe', () => {
+     const log: string[] = [];
+-    const subscription = request(log).subscribe();
+-    subscription.unsubscribe();
++    const controller = new AbortController();
++    request(log).subscribe(null, { signal: controller.signal });
++    controller.abort();
+     expect(log).toEqual(['start', 'stop']);
+   });
+ 
+   it('PT-COLD-TEARDOWN keeps teardown ordering observable', () => {
+     const log: string[] = [];
+-    const subscription = request(log).subscribe();
+-    subscription.add(() => log.push('outer-stop'));
+-    subscription.unsubscribe();
++    const producer = new AbortController();
++    const outer = new AbortController();
++    request(log).subscribe(null, { signal: producer.signal });
++    outer.signal.addEventListener('abort', () => {
++      producer.abort();
++      log.push('outer-stop');
++    });
++    outer.abort();
+     expect(log).toEqual(['start', 'stop', 'outer-stop']);
+   });
+ });

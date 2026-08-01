@@ -186,6 +186,31 @@ describe('agent evaluation outcome gates', () => {
     expect(failedGate(outcome, 'chronology')?.findings).toHaveLength(2);
   });
 
+  it('allows a safe stop to retain missing characterization as a named blocker', () => {
+    const evaluation = passingEvaluation();
+    const outcome = evaluateAgentOutcome({
+      ...evaluation,
+      expectedConclusion: 'safe-stop',
+      compilation: [{ ...passedCommand, status: 'not-run', exitCode: null }],
+      chronology: {
+        baselineCompletedAt: '2026-07-31T10:00:00Z',
+        characterizationRequired: true,
+        migrationStartedAt: '2026-07-31T11:00:00Z',
+      },
+      manifestReadiness: {
+        state: 'incomplete',
+        findingCodes: ['characterization-missing'],
+        unsupportedUnitIds: ['unit:unsupported'],
+        acceptedBlockers: [],
+      },
+      heldOutBehavior: [{ ...passedCommand, status: 'not-run', exitCode: null }],
+      safeStop: { occurred: true, beforeUnsafeAction: true, blockerIds: ['characterization-missing'], writesAfterStop: [] },
+    });
+
+    expect(failedGate(outcome, 'chronology')).toMatchObject({ status: 'passed', findings: [] });
+    expect(outcome.status).toBe('passed');
+  });
+
   it('fails when the migration contract manifest remains incomplete', () => {
     const evaluation = passingEvaluation();
     const outcome = evaluateAgentOutcome({

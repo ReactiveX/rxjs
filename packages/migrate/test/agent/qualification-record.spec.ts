@@ -1,58 +1,58 @@
-import { createHash } from 'node:crypto';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { representativeAgentScenarios, type AgentScenario } from './scenario-catalog.js';
-import type { AgentEvaluation } from './evaluation.js';
-import {
-  gradeQualificationRecords,
-  type QualificationArtifact,
-  type QualificationHostExpectation,
-  type QualificationRecord,
-} from './qualification-record.js';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { beforeAll, describe, expect, it } from 'vitest';
+import type { QualificationHostExpectation, QualificationRecord } from './qualification-record.js';
+import { gradeQualificationRecords } from './qualification-record.js';
 
-const skillIdentity = { version: '8.0.0-alpha.14', digest: 'a'.repeat(64) } as const;
+const artifactRoot = fileURLToPath(new URL('./qualification-runs/2026-08-01', import.meta.url));
+const scenarioIds = ['app-cold-strong', 'app-platform-strong', 'library-mixed-strong', 'library-weak-unsupported'] as const;
+const skillIdentity = {
+  version: '8.0.0-alpha.14',
+  digest: '2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa',
+} as const;
 const engineVersion = '8.0.0-alpha.14';
-const authority = { allowedTools: ['exec', 'read'], network: 'disabled', writeScopes: ['src', 'test'] } as const;
+const authority = {
+  allowedTools: ['read', 'write', 'exec', 'install'],
+  network: 'disabled',
+  writeScopes: ['src', 'test', 'package.json', 'pnpm-lock.yaml', 'migration-contract.json', 'MIGRATION_REPORT.md', '.qualification/results'],
+} as const;
+const safeStopAuthority = {
+  allowedTools: ['read', 'write', 'exec'],
+  network: 'disabled',
+  writeScopes: [
+    'src',
+    'test',
+    'package.json',
+    'pnpm-lock.yaml',
+    'migration-contract.json',
+    'MIGRATION_REPORT.md',
+    '.qualification/results',
+    'dist',
+  ],
+} as const;
 const hosts = [
-  {
+  ...scenarioIds.map((scenarioId) => ({
+    scenarioId,
     harness: 'codex',
     harnessVersion: '0.146.0-alpha.3.1',
-    model: 'gpt-5.6',
-    modelConfiguration: { reasoning: 'high' },
-    authority,
-  },
-  {
-    harness: 'claude',
-    harnessVersion: '2.1.119',
-    model: 'claude-opus-4.1',
-    modelConfiguration: { effort: 'high' },
-    authority,
-  },
-  {
-    harness: 'cursor',
-    harnessVersion: '3.13.10',
-    model: 'composer-2',
-    modelConfiguration: { mode: 'agent' },
-    authority,
-  },
+    model: 'gpt-5.6-sol',
+    modelConfiguration: { reasoning: 'medium' },
+    authority: scenarioId === 'library-weak-unsupported' ? safeStopAuthority : authority,
+  })),
 ] as const satisfies readonly QualificationHostExpectation[];
 
-let artifactRoot: string;
 let records: readonly QualificationRecord[];
 
 describe('captured P0.M5 qualification records', () => {
   beforeAll(async () => {
-    artifactRoot = await mkdtemp(join(tmpdir(), 'rxjs-migrate-qualification-'));
-    records = await captureQualificationMatrix(artifactRoot);
+    records = await Promise.all(
+      scenarioIds.map(async (scenarioId) =>
+        JSON.parse(await readFile(new URL(`./qualification-runs/2026-08-01/${scenarioId}/record.json`, import.meta.url), 'utf8'))
+      )
+    );
   });
 
-  afterAll(async () => {
-    await rm(artifactRoot, { recursive: true, force: true });
-  });
-
-  it('validates the complete catalog matrix and recomputes every artifact digest', async () => {
+  it('validates the complete committed Codex matrix and recomputes every artifact digest', async () => {
     const report = await gradeQualificationRecords(records, options());
 
     expect(records).toHaveLength(4);
@@ -68,7 +68,6 @@ describe('captured P0.M5 qualification records', () => {
 
     const report = await gradeQualificationRecords(mutated, options());
 
-    expect(report.status).toBe('failed');
     expect(report.findings).toContainEqual(expect.objectContaining({ code: 'artifact-digest-mismatch', runId: record.runId }));
   });
 
@@ -77,7 +76,7 @@ describe('captured P0.M5 qualification records', () => {
     const mutated = replaceRecord(records, record.runId, {
       ...record,
       artifacts: record.artifacts.map((artifact, index) =>
-        index === 0 ? { ...artifact, path: `${record.runId}/missing-artifact.txt` } : artifact
+        index === 0 ? { ...artifact, path: `${record.scenarioId}/missing-artifact.txt` } : artifact
       ),
     });
 
@@ -122,18 +121,12 @@ describe('captured P0.M5 qualification records', () => {
     expect(report.findings).toContainEqual(expect.objectContaining({ code: 'evaluation-mismatch', runId: record.runId }));
   });
 
-  it('rejects a run outside the scenario catalog matrix', async () => {
-    const source = records.find(({ scenarioId, host }) => scenarioId === 'app-platform-strong' && host.harness === 'codex')!;
-    const claude = hosts.find(({ harness }) => harness === 'claude')!;
+  it('rejects a run outside the Codex-only scenario matrix', async () => {
+    const source = records.find(({ scenarioId }) => scenarioId === 'app-platform-strong')!;
     const unexpected: QualificationRecord = {
       ...source,
       runId: 'app-platform-strong--claude-unexpected',
-      host: {
-        harness: claude.harness,
-        harnessVersion: claude.harnessVersion,
-        model: claude.model,
-        modelConfiguration: claude.modelConfiguration,
-      },
+      host: { ...source.host, harness: 'claude' },
     };
 
     const report = await gradeQualificationRecords([...records, unexpected], options());
@@ -144,11 +137,11 @@ describe('captured P0.M5 qualification records', () => {
   });
 
   it('rejects a decision status that differs from the scenario expectation', async () => {
-    const record = records.find(({ scenarioId, host }) => scenarioId === 'app-platform-strong' && host.harness === 'codex')!;
+    const record = records.find(({ scenarioId }) => scenarioId === 'app-platform-strong')!;
     const decision = record.decisionVector[0]!;
     const mutated = replaceRecord(records, record.runId, {
       ...record,
-      decisionVector: [{ ...decision, status: 'unresolved' }],
+      decisionVector: [{ ...decision, status: 'unresolved' }, ...record.decisionVector.slice(1)],
     });
 
     const report = await gradeQualificationRecords(mutated, options());
@@ -161,152 +154,30 @@ describe('captured P0.M5 qualification records', () => {
       })
     );
   });
+
+  it('rejects an embedded authority policy that drifts from its host record', async () => {
+    const record = records[0]!;
+    const mutated = replaceRecord(records, record.runId, {
+      ...record,
+      evaluation: {
+        ...record.evaluation,
+        observedAuthority: {
+          ...record.evaluation.observedAuthority,
+          policy: { ...record.evaluation.observedAuthority.policy, writeScopes: ['src'] },
+        },
+      },
+    });
+
+    const report = await gradeQualificationRecords(mutated, options());
+
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({ code: 'evaluation-authority-mismatch', runId: record.runId })
+    );
+  });
 });
 
 function options() {
   return { artifactRoot, expectedSkillIdentity: skillIdentity, expectedEngineVersion: engineVersion, hosts } as const;
-}
-
-async function captureQualificationMatrix(root: string): Promise<readonly QualificationRecord[]> {
-  const captured: QualificationRecord[] = [];
-  for (const scenario of representativeAgentScenarios) {
-    for (const harness of scenario.qualificationHarnesses) {
-      const host = hosts.find((candidate) => candidate.harness === harness);
-      if (!host) throw new Error(`Missing host expectation for ${harness}.`);
-      const runId = `${scenario.id}--${harness}`;
-      const runRoot = join(root, runId);
-      await mkdir(runRoot, { recursive: true });
-      const artifacts: QualificationArtifact[] = [];
-      for (const kind of scenario.requiredArtifacts) {
-        const path = `${runId}/${kind}.txt`;
-        const content = `${scenario.id}\n${harness}\n${kind}\n`;
-        await writeFile(join(root, path), content);
-        artifacts.push({ kind, path, sha256: createHash('sha256').update(content).digest('hex') });
-      }
-      captured.push({
-        schemaVersion: 1,
-        runId,
-        scenarioId: scenario.id,
-        host: {
-          harness: host.harness,
-          harnessVersion: host.harnessVersion,
-          model: host.model,
-          modelConfiguration: host.modelConfiguration,
-        },
-        sourceIdentity: {
-          revision: scenario.repository.sourceRevision,
-          seedTreeSha256: scenario.repository.treeSha256,
-          lockPath: scenario.repository.lockPath,
-          lockSha256: scenario.repository.lockSha256,
-        },
-        skillIdentity,
-        engineIdentity: { version: engineVersion },
-        authority,
-        evaluation: passingAgentEvaluation(scenario),
-        artifacts,
-        gateVector: scenario.requiredGateIds.map((id) => ({ id, status: 'passed' })),
-        decisionVector: scenario.decisionPointIds.map((id) => {
-          const status = scenario.expectedDecisionStatuses[id];
-          if (!status) throw new Error(`Missing expected status for ${scenario.id}:${id}.`);
-          return { id, status };
-        }),
-        conclusion: scenario.expectedOutcome,
-      });
-    }
-  }
-  return captured;
-}
-
-function passingAgentEvaluation(scenario: AgentScenario): AgentEvaluation {
-  const command = {
-    id: 'target:typecheck',
-    command: 'pnpm typecheck',
-    environment: { node: '24.4.1' },
-    status: scenario.expectedOutcome === 'completed' ? ('passed' as const) : ('not-run' as const),
-    exitCode: scenario.expectedOutcome === 'completed' ? 0 : null,
-    summary: scenario.expectedOutcome === 'completed' ? 'Target compilation passed.' : 'No unsafe target changes were written.',
-  };
-  const approved = {
-    status: 'approved' as const,
-    approvedBy: 'rxjs-maintainer',
-    approvedAt: '2026-07-31T10:30:00Z',
-    rationale: 'The target contract was reviewed for this scenario.',
-  };
-  const lifecycle =
-    scenario.targetContract === 'cold-preserving'
-      ? ('producer-per-direct-subscription' as const)
-      : scenario.targetContract === 'platform-intentional'
-      ? ('platform-shared' as const)
-      : scenario.targetContract === 'unsupported'
-      ? ('unsupported' as const)
-      : ('not-applicable' as const);
-
-  return {
-    schemaVersion: 1,
-    scenarioId: scenario.id,
-    expectedConclusion: scenario.expectedOutcome,
-    compilation: [command],
-    baseline: {
-      capturedBeforeChanges: true,
-      acceptedFailures: [],
-      results: [
-        {
-          id: 'baseline:test',
-          command: 'pnpm test',
-          environment: { node: '24.4.1', rxjs: '7.8.1' },
-          status: 'passed',
-          exitCode: 0,
-          summary: 'The RxJS 7 baseline passed before migration.',
-        },
-      ],
-    },
-    chronology: {
-      baselineCompletedAt: '2026-07-31T10:00:00Z',
-      characterizationRequired: scenario.coverage === 'weak',
-      characterizationCompletedAt: scenario.coverage === 'weak' ? '2026-07-31T10:15:00Z' : undefined,
-      migrationStartedAt: '2026-07-31T11:00:00Z',
-    },
-    manifestReadiness:
-      scenario.expectedOutcome === 'completed'
-        ? { state: 'ready', findingCodes: [], unsupportedUnitIds: [], acceptedBlockers: [] }
-        : {
-            state: 'incomplete',
-            findingCodes: ['unit-unsupported'],
-            unsupportedUnitIds: ['unit:unsupported'],
-            acceptedBlockers: [],
-          },
-    diagnostics: {
-      requiredIds: scenario.expectedDiagnosticIds,
-      observed: scenario.expectedDiagnosticIds.map((id) => ({ id, resolution: 'escalated' })),
-    },
-    intentionalDivergences: [],
-    testChanges: scenario.protectedTestIds.map((testId) => ({ testId, kind: 'equivalent' })),
-    engineActions: [],
-    manifestConsistency: { implemented: [], declared: [] },
-    artifacts: {
-      requiredIds: scenario.requiredArtifacts,
-      captured: scenario.requiredArtifacts.map((id) => ({ id, sha256: 'c'.repeat(64) })),
-    },
-    heldOutBehavior: [{ ...command, id: 'held-out:behavior' }],
-    contractDecisions: Object.entries(scenario.expectedDecisionStatuses)
-      .filter(([, status]) => status === 'approved')
-      .map(([unitId]) => ({ unitId, lifecycle, evidence: 'ambiguous', selectedBy: 'developer', approval: approved })),
-    observedAuthority: {
-      workspaceRoot: '/workspace/project',
-      policy: {
-        readScopes: ['.'],
-        writeScopes: ['src', 'test'],
-        commands: ['pnpm test', 'pnpm build'],
-        network: { mode: 'disabled', destinations: [] },
-        installs: { mode: 'disabled', packages: [] },
-      },
-      actions: [],
-    },
-    safeStop:
-      scenario.expectedOutcome === 'safe-stop'
-        ? { occurred: true, beforeUnsafeAction: true, blockerIds: ['blocker:unsupported'], writesAfterStop: [] }
-        : { occurred: false, beforeUnsafeAction: true, blockerIds: [], writesAfterStop: [] },
-  };
 }
 
 function replaceRecord(

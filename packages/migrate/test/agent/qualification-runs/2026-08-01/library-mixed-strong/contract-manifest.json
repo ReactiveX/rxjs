@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "8.0.0-alpha.14",
+  "capabilityRegistryVersion": "1.0.0",
+  "skillDigest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa",
+  "sourceRxjsVersion": "7.8.1",
+  "targetRxjsVersion": "8.0.0-alpha.14",
+  "baseline": [
+    {
+      "id": "baseline-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript build passed against unchanged RxJS 7 source and dependency."
+    },
+    {
+      "id": "baseline-test",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "framework": "Jest 29.7.0",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "All 3 protected tests passed: PT-MIXED-ERROR, PT-MIXED-INPUT, and PT-MIXED-PIPELINE."
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-selector-error",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 286, "line": 11, "column": 1 },
+          "end": { "offset": 411, "line": 17, "column": 1 }
+        },
+        {
+          "file": "test/index.test-source.ts",
+          "start": { "offset": 169, "line": 5, "column": 1 },
+          "end": { "offset": 321, "line": 7, "column": 4 }
+        }
+      ],
+      "lifecycle": "not-applicable",
+      "evidenceClassification": "portable",
+      "claims": [
+        "RxJS 7 selector exceptions are delivered as Observable errors.",
+        "RxJS Next exact-Symbol map preserves rejection with the message selector failed.",
+        "Covered by PT-MIXED-ERROR; control:error-swallowed=satisfied."
+      ],
+      "approval": { "status": "not-required" }
+    },
+    {
+      "id": "unit-iterable-input",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 59, "line": 3, "column": 1 },
+          "end": { "offset": 157, "line": 3, "column": 99 }
+        },
+        {
+          "file": "test/index.test-source.ts",
+          "start": { "offset": 323, "line": 9, "column": 1 },
+          "end": { "offset": 477, "line": 11, "column": 4 }
+        }
+      ],
+      "lifecycle": "not-applicable",
+      "evidenceClassification": "portable",
+      "claims": [
+        "RxJS 7 from accepts the standard iterable [1, 2] and map produces [2, 4].",
+        "RxJS Next uses the platform Observable.from conversion boundary and does not add custom legacy subscribable support.",
+        "Covered by PT-MIXED-INPUT; control:legacy-interop=satisfied."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:40Z",
+        "rationale": "decision:legacy-interop=approved explicitly selects standard iterable platform conversion and excludes invented custom legacy subscribable support."
+      }
+    },
+    {
+      "id": "unit-mixed-window-pipeline",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 159, "line": 5, "column": 1 },
+          "end": { "offset": 284, "line": 9, "column": 5 }
+        },
+        {
+          "file": "test/index.test-source.ts",
+          "start": { "offset": 479, "line": 13, "column": 1 },
+          "end": { "offset": 647, "line": 16, "column": 1 }
+        }
+      ],
+      "lifecycle": "not-applicable",
+      "evidenceClassification": "unsupported-or-obsolete",
+      "claims": [
+        "RxJS 7 applies map before windowTime(10) and emits a defined window Observable.",
+        "RxJS Next retains both ordered segments using their exact Symbol APIs, including windowTime(10).",
+        "Covered by PT-MIXED-PIPELINE; control:mixed-segment-dropped=satisfied."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:40Z",
+        "rationale": "decision:mixed-unsupported-segment=approved requires the engine refusal to be recorded and the full pipeline to be migrated manually without dropping windowTime(10)."
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "resolved:unsafe-binding:src/index.ts:130-133:operator.map",
+      "code": "unsafe-binding",
+      "message": "The atomic dry-run refusal was reviewed; every map use was migrated together to the exact rxjs/map Symbol API.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "harness-rewrite",
+      "span": { "file": "src/index.ts", "start": { "offset": 130, "line": 3, "column": 72 }, "end": { "offset": 133, "line": 3, "column": 75 } },
+      "nextAction": { "code": "migrate-manually", "message": "Completed in the reviewed manual Symbol-form batch and verified by protected tests." },
+      "capabilityId": "operator.map"
+    },
+    {
+      "id": "resolved:unsafe-binding:src/index.ts:234-237:operator.map",
+      "code": "unsafe-binding",
+      "message": "The mixed pipeline refusal was reviewed atomically; map and windowTime remain ordered and present as exact Symbol calls.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "harness-rewrite",
+      "span": { "file": "src/index.ts", "start": { "offset": 234, "line": 7, "column": 5 }, "end": { "offset": 237, "line": 7, "column": 8 } },
+      "nextAction": { "code": "migrate-manually", "message": "Completed in the approved mixed-pipeline batch and verified by PT-MIXED-PIPELINE." },
+      "capabilityId": "operator.map"
+    },
+    {
+      "id": "resolved:missing-capability:src/index.ts:265-279",
+      "code": "missing-capability",
+      "message": "The engine had no fixture-proved windowTime mapping; the approved decision required reviewed manual use of rxjs/window-time without dropping the segment.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "unsupported-or-obsolete",
+      "span": { "file": "src/index.ts", "start": { "offset": 265, "line": 8, "column": 5 }, "end": { "offset": 279, "line": 8, "column": 19 } },
+      "nextAction": { "code": "migrate-manually", "message": "Completed with source[windowTime](10); PT-MIXED-PIPELINE passes and control:mixed-segment-dropped=satisfied." }
+    },
+    {
+      "id": "resolved:unsafe-binding:src/index.ts:345-348:operator.map",
+      "code": "unsafe-binding",
+      "message": "The selector map binding was migrated in the complete reviewed batch and still rejects on selector error.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "harness-rewrite",
+      "span": { "file": "src/index.ts", "start": { "offset": 345, "line": 13, "column": 5 }, "end": { "offset": 348, "line": 13, "column": 8 } },
+      "nextAction": { "code": "migrate-manually", "message": "Completed and verified by PT-MIXED-ERROR; control:error-swallowed=satisfied." },
+      "capabilityId": "operator.map"
+    },
+    {
+      "id": "resolved:missing-capability:test/index.test-source.ts:435-444",
+      "code": "missing-capability",
+      "message": "The unsupported RxJS 7 toArray pipeable test form was migrated to the platform Observable toArray Promise API while preserving Jest.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "unsupported-or-obsolete",
+      "span": { "file": "test/index.test-source.ts", "start": { "offset": 435, "line": 10, "column": 52 }, "end": { "offset": 444, "line": 10, "column": 61 } },
+      "nextAction": { "code": "migrate-manually", "message": "Completed and verified by PT-MIXED-INPUT; control:legacy-interop=satisfied." }
+    }
+  ],
+  "intentionalDivergences": [],
+  "verification": [
+    {
+      "id": "next-narrow-build",
+      "command": "pnpm run build",
+      "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "8.0.0-alpha.14", "observableImplementation": "@rxjs/observable-polyfill 8.0.0-alpha.14", "network": "disabled" },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Changed source and tests parsed and type-checked successfully."
+    },
+    {
+      "id": "next-engine-idempotence",
+      "command": "rxjs-migrate --source-root . --source-repo https://qualification.local/library-mixed-strong --source-sha 6dde871f4813f53a94fca0b292a5eca46d84f78d --mode platform --framework preserve src/index.ts test/index.test-source.ts",
+      "environment": { "engine": "8.0.0-alpha.14", "registry": "1.0.0", "network": "disabled" },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Dry-run completed with both files unchanged and no diagnostics."
+    },
+    {
+      "id": "next-focused-protected-tests",
+      "command": "pnpm run build && node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand --testNamePattern='PT-MIXED'",
+      "environment": { "node": "v24.12.0", "rxjs": "8.0.0-alpha.14", "framework": "Jest 29.7.0", "observableImplementation": "@rxjs/observable-polyfill 8.0.0-alpha.14", "network": "disabled" },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "All 3 protected tests passed."
+    },
+    {
+      "id": "next-full-test",
+      "command": "pnpm test",
+      "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "8.0.0-alpha.14", "framework": "Jest 29.7.0", "observableImplementation": "@rxjs/observable-polyfill 8.0.0-alpha.14", "network": "disabled" },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Build passed and the complete suite passed: 1 suite, 3 tests, 0 failures."
+    },
+    {
+      "id": "next-frozen-lockfile",
+      "command": "pnpm install --lockfile-only --offline --ignore-workspace --frozen-lockfile",
+      "environment": { "pnpm": "10.26.0", "network": "disabled", "targetTarballs": "repository-local 8.0.0-alpha.14" },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "The final lockfile resolves offline and is frozen; no package download or node_modules mutation was required."
+    }
+  ],
+  "blockers": []
+}

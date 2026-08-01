@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "8.0.0-alpha.14",
+  "capabilityRegistryVersion": "1.0.0",
+  "skillDigest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa",
+  "sourceRxjsVersion": "7.8.1",
+  "targetRxjsVersion": "8.0.0-alpha.14",
+  "baseline": [
+    {
+      "id": "rxjs7-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript build passed against unchanged RxJS 7.8.1. Generated root dist output was moved out after recording."
+    },
+    {
+      "id": "rxjs7-test",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "vitest": "1.2.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Vitest passed 1 file and 1 test, including PT-WEAK-EXPORTS. This is shallow export evidence only."
+    }
+  ],
+  "units": [
+    {
+      "id": "ticks-scheduled-interval",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 131, "line": 4, "column": 1 },
+          "end": { "offset": 187, "line": 4, "column": 57 }
+        }
+      ],
+      "lifecycle": "unresolved",
+      "evidenceClassification": "unsupported-or-obsolete",
+      "claims": [
+        "RxJS 7 interval uses asyncScheduler and publicly exposes ticks.",
+        "Timing, cancellation, teardown, restart, completion, and error behavior are not characterized.",
+        "No RxJS Next scheduler semantics may be chosen while decision:scheduler-policy remains unresolved."
+      ],
+      "approval": { "status": "pending" }
+    },
+    {
+      "id": "legacy-scheduled-values",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 188, "line": 5, "column": 1 },
+          "end": { "offset": 275, "line": 5, "column": 88 }
+        }
+      ],
+      "lifecycle": "unresolved",
+      "evidenceClassification": "unsupported-or-obsolete",
+      "claims": [
+        "RxJS 7 scheduled(values, asyncScheduler) publicly exposes legacyScheduled.",
+        "Scheduler ordering, cancellation, teardown, completion, and error behavior are not characterized.",
+        "No RxJS Next scheduler semantics may be chosen while decision:scheduler-policy remains unresolved."
+      ],
+      "approval": { "status": "pending" }
+    },
+    {
+      "id": "cached-publish-replay-ref-count",
+      "sourceLocations": [
+        {
+          "file": "src/index.ts",
+          "start": { "offset": 276, "line": 6, "column": 1 },
+          "end": { "offset": 372, "line": 6, "column": 97 }
+        }
+      ],
+      "lifecycle": "unsupported",
+      "evidenceClassification": "unsupported-or-obsolete",
+      "claims": [
+        "RxJS 7 composes publishReplay(1) and refCount() and publicly exposes cached.",
+        "Sharing, replay, cancellation, final teardown, later restart, completion, and error behavior are not characterized.",
+        "The installed registry has no fixture-proved publishReplay or refCount mapping; preserve the source and stop."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "Ben Lesh via .qualification/scenario.md",
+        "approvedAt": "2026-08-01T01:32:58Z",
+        "rationale": "decision:unsupported-blocker=approved requires retaining unsupported behavior and forbids an invented compatibility layer."
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "missing-capability:src/index.ts:342-358",
+      "code": "missing-capability",
+      "message": "No fixture-proved RxJS Next capability is configured for publishReplay.",
+      "severity": "error",
+      "disposition": "refused",
+      "refusalScope": "transform",
+      "classification": "unsupported-or-obsolete",
+      "span": {
+        "file": "src/index.ts",
+        "start": { "offset": 342, "line": 6, "column": 67 },
+        "end": { "offset": 358, "line": 6, "column": 83 }
+      },
+      "nextAction": {
+        "code": "update-engine",
+        "message": "Preserve this pipeline and wait for or implement a fixture-proved mapping."
+      }
+    },
+    {
+      "id": "missing-capability:src/index.ts:360-370",
+      "code": "missing-capability",
+      "message": "No fixture-proved RxJS Next capability is configured for refCount.",
+      "severity": "error",
+      "disposition": "refused",
+      "refusalScope": "transform",
+      "classification": "unsupported-or-obsolete",
+      "span": {
+        "file": "src/index.ts",
+        "start": { "offset": 360, "line": 6, "column": 85 },
+        "end": { "offset": 370, "line": 6, "column": 95 }
+      },
+      "nextAction": {
+        "code": "update-engine",
+        "message": "Preserve this pipeline and wait for or implement a fixture-proved mapping."
+      }
+    }
+  ],
+  "intentionalDivergences": [],
+  "verification": [
+    {
+      "id": "engine-dry-run",
+      "command": "pnpm exec rxjs-migrate --source-root . --source-repo fixture-library-weak-unsupported --source-sha 7e1c9c373e2cb3a7a410c78dc9ce92054c70d04f --framework preserve src/index.ts test/index.test-source.ts",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "engine": "8.0.0-alpha.14",
+        "registry": "1.0.0",
+        "mode": "unselected",
+        "framework": "preserve",
+        "write": "false",
+        "network": "disabled"
+      },
+      "status": "accepted-failure",
+      "exitCode": 1,
+      "summary": "Structured refusal was the required safety result: publishReplay and refCount lack fixture-proved capabilities; no files were written."
+    }
+  ],
+  "blockers": [
+    {
+      "owner": "Library maintainer",
+      "reason": "Required scheduler, sharing, replay, cancellation, teardown, restart, completion, and error characterizations do not exist on RxJS 7.",
+      "unitIds": ["ticks-scheduled-interval", "legacy-scheduled-values", "cached-publish-replay-ref-count"],
+      "evidence": [
+        ".qualification/scenario.md decision:characterization-scope=approved",
+        "test/index.test-source.ts PT-WEAK-EXPORTS asserts export names only"
+      ],
+      "accepted": true
+    },
+    {
+      "owner": "Library maintainer",
+      "reason": "Scheduler semantics remain unresolved and cannot be inferred.",
+      "unitIds": ["ticks-scheduled-interval", "legacy-scheduled-values"],
+      "evidence": [".qualification/scenario.md decision:scheduler-policy=unresolved"],
+      "accepted": false
+    },
+    {
+      "owner": "RxJS migration engine / library maintainer",
+      "reason": "publishReplay and refCount have no fixture-proved RxJS Next capability, and compatibility invention is forbidden.",
+      "unitIds": ["cached-publish-replay-ref-count"],
+      "evidence": [
+        ".qualification/results/engine-report.json missing-capability diagnostics",
+        ".qualification/scenario.md decision:unsupported-blocker=approved"
+      ],
+      "accepted": true
+    }
+  ]
+}

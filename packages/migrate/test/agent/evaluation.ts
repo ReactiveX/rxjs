@@ -531,7 +531,7 @@ function evaluateChronology(evaluation: AgentEvaluation): AgentEvaluationGateOut
   const baselineAt = Date.parse(evaluation.chronology.baselineCompletedAt);
   const migrationAt = Date.parse(evaluation.chronology.migrationStartedAt);
   if (baselineAt >= migrationAt) findings.push('The RxJS 7 baseline did not complete before migration began.');
-  if (evaluation.chronology.characterizationRequired) {
+  if (evaluation.chronology.characterizationRequired && evaluation.expectedConclusion === 'completed') {
     const characterizationAt = evaluation.chronology.characterizationCompletedAt
       ? Date.parse(evaluation.chronology.characterizationCompletedAt)
       : undefined;

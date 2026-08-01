@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "8.0.0-alpha.14",
+  "capabilityRegistryVersion": "1.0.0",
+  "skillDigest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa",
+  "sourceRxjsVersion": "7.8.1",
+  "targetRxjsVersion": "8.0.0-alpha.14",
+  "baseline": [
+    {
+      "id": "rxjs7-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript compiled successfully against unchanged RxJS 7.8.1 after adding the value characterization assertion."
+    },
+    {
+      "id": "rxjs7-tests",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "framework": "vitest 1.2.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "One file and all three protected tests passed; PT-COLD-INDEPENDENT also characterized emitted value 42."
+    }
+  ],
+  "units": [
+    {
+      "id": "request-cold-producer",
+      "sourceLocations": [
+        {
+          "file": "src/request.ts",
+          "start": { "offset": 41, "line": 3, "column": 1 },
+          "end": { "offset": 274, "line": 9, "column": 2 }
+        }
+      ],
+      "lifecycle": "producer-per-direct-subscription",
+      "evidenceClassification": "portable",
+      "claims": [
+        "Each direct subscription starts an independent producer.",
+        "The producer emits 42 after mapping the source value 21.",
+        "Cancelling a subscription closes only its owned producer.",
+        "Producer teardown records stop before outer subscription teardown records outer-stop.",
+        "Evidence: PT-COLD-INDEPENDENT, PT-COLD-CANCELLATION, and PT-COLD-TEARDOWN in test/request.test-source.ts.",
+        "control:cold-sharing-drift=satisfied",
+        "control:cancellation-ownership=satisfied",
+        "control:teardown-order-drift=satisfied"
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:34Z",
+        "rationale": "decision:cold-lifecycle=approved requires the RxJS Next cold-preserving contract and forbids platform sharing."
+      }
+    }
+  ],
+  "diagnostics": [],
+  "intentionalDivergences": [],
+  "verification": [
+    {
+      "id": "next-offline-frozen-install",
+      "command": "pnpm install --offline --ignore-workspace --frozen-lockfile",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "8.0.0-alpha.14",
+        "observablePolyfill": "8.0.0-alpha.14",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "The lockfile was current and all dependencies resolved offline from the authorized state."
+    },
+    {
+      "id": "next-focused-teardown",
+      "command": "pnpm exec vitest --run -t PT-COLD-TEARDOWN",
+      "environment": {
+        "node": "v24.12.0",
+        "rxjs": "8.0.0-alpha.14",
+        "framework": "vitest 1.2.1"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "The focused protected teardown test passed; 1 test passed and 2 were filtered out."
+    },
+    {
+      "id": "next-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "8.0.0-alpha.14"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript compiled successfully against RxJS Next."
+    },
+    {
+      "id": "next-tests",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "8.0.0-alpha.14",
+        "framework": "vitest 1.2.1"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "One test file and all three protected behavior tests passed."
+    },
+    {
+      "id": "engine-idempotence",
+      "command": "pnpm exec rxjs-migrate --source-root . --source-repo fixture://app-cold-strong --source-sha f7cb6d139c979bf8f5b577120529ac236e59b9a4 --mode cold --framework preserve src/request.ts test/request.test-source.ts",
+      "environment": {
+        "engine": "8.0.0-alpha.14",
+        "capabilityRegistry": "1.0.0",
+        "mode": "cold",
+        "framework": "preserve"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Both integrated files were unchanged with stable empty diagnostics."
+    }
+  ],
+  "blockers": []
+}

@@ -73,6 +73,7 @@ export interface QualificationRecord {
 }
 
 export interface QualificationHostExpectation extends QualificationHostIdentity {
+  readonly scenarioId?: string;
   readonly authority: QualificationAuthority;
 }
 
@@ -92,6 +93,7 @@ export const qualificationFindingCodes = [
   'skill-identity-mismatch',
   'engine-identity-mismatch',
   'authority-mismatch',
+  'evaluation-authority-mismatch',
   'evaluation-failed',
   'evaluation-mismatch',
   'artifact-kind-missing',
@@ -169,7 +171,7 @@ export async function gradeQualificationRecords(
   const records = inputs.map(parseQualificationRecord);
   const findings: QualificationFinding[] = [];
   const scenarios = new Map(representativeAgentScenarios.map((scenario) => [scenario.id, scenario]));
-  const hosts = new Map(options.hosts.map((host) => [host.harness, host]));
+  const hosts = new Map(options.hosts.map((host) => [host.scenarioId ? matrixKey(host.scenarioId, host.harness) : host.harness, host]));
   const matrix = expectedMatrix();
   const observedMatrix = new Map<string, QualificationRecord[]>();
 
@@ -185,10 +187,11 @@ export async function gradeQualificationRecords(
       continue;
     }
 
-    compareHost(record, hosts.get(record.host.harness), findings);
+    const expectedHost = hosts.get(key) ?? hosts.get(record.host.harness);
+    compareHost(record, expectedHost, findings);
     compareSource(record, scenario, findings);
     compareIdentity(record, options, findings);
-    compareAuthority(record, hosts.get(record.host.harness), findings);
+    compareAuthority(record, expectedHost, findings);
     compareEvaluation(record, findings);
     await verifyArtifacts(record, scenario, options.artifactRoot, findings);
     compareVectors(record, scenario, findings);
@@ -305,6 +308,28 @@ function compareEvaluation(record: QualificationRecord, findings: QualificationF
       record,
       'evaluation-failed',
       `Embedded evaluation failed${failedGateIds.length > 0 ? ` gates: ${failedGateIds.join(', ')}` : ''}.`
+    );
+  }
+
+  const observedPolicy = record.evaluation.observedAuthority.policy;
+  const observedNetwork = observedPolicy.network.mode === 'disabled' ? 'disabled' : 'restricted';
+  const observedTools = [
+    ...(observedPolicy.readScopes.length > 0 ? ['read'] : []),
+    ...(observedPolicy.writeScopes.length > 0 ? ['write'] : []),
+    ...(observedPolicy.commands.length > 0 ? ['exec'] : []),
+    ...(observedPolicy.network.mode === 'allowlist' ? ['network'] : []),
+    ...(observedPolicy.installs.mode === 'allowlist' ? ['install'] : []),
+  ];
+  if (
+    record.authority.network !== observedNetwork ||
+    !sameSet(record.authority.allowedTools, observedTools) ||
+    !sameSet(record.authority.writeScopes, observedPolicy.writeScopes)
+  ) {
+    addFinding(
+      findings,
+      record,
+      'evaluation-authority-mismatch',
+      `Embedded observed-authority policy differs from the qualification record.`
     );
   }
 }
