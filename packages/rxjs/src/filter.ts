@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 type TruthyTypesOf<T> = T extends Falsy ? never : T;
@@ -34,26 +35,13 @@ function filterOperator<T>(
   return this[create]((subscriber) => {
     let index = 0;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          let result: boolean;
-          try {
-            result = predicate.call(thisArg, value, index++);
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-
-          if (result) {
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        if (predicate.call(thisArg, value, index++)) {
+          subscriber.next(value);
+        }
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 }
 
