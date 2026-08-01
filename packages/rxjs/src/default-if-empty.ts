@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const defaultIfEmpty: unique symbol = Symbol('defaultIfEmpty');
 
@@ -11,21 +12,17 @@ declare global {
 Observable.prototype[defaultIfEmpty] = function <T, R>(this: Observable<T>, defaultValue: R): Observable<T | R> {
   return this[create]((subscriber) => {
     let hasValue = false;
-    this.subscribe(
-      {
-        next: (value) => {
-          hasValue = true;
-          subscriber.next(value);
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          if (!hasValue) {
-            subscriber.next(defaultValue);
-          }
-          subscriber.complete();
-        },
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        hasValue = true;
+        subscriber.next(value);
       },
-      { signal: subscriber.signal }
-    );
+      complete: () => {
+        if (!hasValue) {
+          subscriber.next(defaultValue);
+        }
+        subscriber.complete();
+      },
+    });
   });
 };
