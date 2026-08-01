@@ -1,6 +1,7 @@
 import { create } from './create.js';
 import '@rxjs/observable-polyfill';
 import { isObservableInstance } from './util/ctor-helpers.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 import type { ObservableArrayToValueUnion } from './util/types.js';
 
 export const onErrorResumeNext: unique symbol = Symbol('onErrorResumeNext');
@@ -41,16 +42,11 @@ function onErrorResumeNextImpl<Sources extends readonly ObservableValue<any>[]>(
       }
 
       const source = Observable.from(actualSources[currentSourceIndex++]!);
-      source.subscribe(
-        {
-          next: (value: any) => {
-            subscriber.next(value);
-          },
-          error: subscribeNext,
-          complete: subscribeNext,
-        },
-        { signal: subscriber.signal }
-      );
+      subscribeToSource(source, subscriber, {
+        next: (value: any) => subscriber.next(value),
+        error: subscribeNext,
+        complete: subscribeNext,
+      });
     };
 
     subscribeNext();
