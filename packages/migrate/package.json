@@ -18,6 +18,7 @@
     "build": "tshy",
     "lint": "eslint ./src",
     "test": "vitest --run",
+    "test:agent": "vitest --run test/agent",
     "test:watch": "vitest",
     "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
