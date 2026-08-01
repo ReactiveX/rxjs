@@ -82,6 +82,11 @@ framework assertions are refused or preserved with structured findings.
 The package ships no MCP binary, export, or runtime dependency. D-046 keeps
 the library and dry-run-first CLI as the only deterministic engine surfaces.
 
+The representative agent-workflow matrix and its deliberately bounded claims
+are documented in
+[`MIGRATION_QUALIFICATION.md`](../../docs/rxjs-next/MIGRATION_QUALIFICATION.md).
+Live harness qualification is separate from deterministic engine correctness.
+
 ## Contract and Skill integrity
 
 `parseMigrationContractManifest` validates the versioned migration decision

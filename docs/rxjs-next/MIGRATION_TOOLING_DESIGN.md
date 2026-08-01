@@ -583,6 +583,10 @@ frameworks, coverage levels, lifecycle choices, and unsupported behavior. It
 publishes measured outcomes and limitations rather than a blanket automatic
 migration claim.
 
+The live matrix, offline outcome gates, current measured evidence, and claim
+limits are tracked in `MIGRATION_QUALIFICATION.md`. P0.M5 remains incomplete
+until every declared live record and captured artifact passes that verifier.
+
 ## Risks and controls
 
 | Risk                                      | Control                                                                                    |
