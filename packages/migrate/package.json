@@ -11,7 +11,8 @@
   "main": "./dist/commonjs/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "bin": {
-    "rxjs-migrate": "./dist/esm/cli.js"
+    "rxjs-migrate": "./dist/esm/cli.js",
+    "rxjs-migrate-skill": "./dist/esm/skill-cli.js"
   },
   "scripts": {
     "build": "tshy",
@@ -64,7 +65,8 @@
       "./adapters/mocha-chai-vitest": "./src/mocha-chai-vitest.ts",
       "./node": "./src/node.ts",
       "./cli": "./src/cli.ts",
-      "./skill": "./src/skill-integrity.ts"
+      "./skill": "./src/skill.ts",
+      "./skill-cli": "./src/skill-cli.ts"
     }
   },
   "exports": {
@@ -111,12 +113,22 @@
     },
     "./skill": {
       "import": {
-        "types": "./dist/esm/skill-integrity.d.ts",
-        "default": "./dist/esm/skill-integrity.js"
+        "types": "./dist/esm/skill.d.ts",
+        "default": "./dist/esm/skill.js"
       },
       "require": {
-        "types": "./dist/commonjs/skill-integrity.d.ts",
-        "default": "./dist/commonjs/skill-integrity.js"
+        "types": "./dist/commonjs/skill.d.ts",
+        "default": "./dist/commonjs/skill.js"
+      }
+    },
+    "./skill-cli": {
+      "import": {
+        "types": "./dist/esm/skill-cli.d.ts",
+        "default": "./dist/esm/skill-cli.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/skill-cli.d.ts",
+        "default": "./dist/commonjs/skill-cli.js"
       }
     }
   }

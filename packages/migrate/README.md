@@ -90,9 +90,21 @@ lifecycle choices, approvals, diagnostics, verification, and blockers so
 schema validity is never mistaken for completion.
 
 The Node-only `@rxjs/migrate/skill` subpath computes and verifies the canonical
-Skill's deterministic SHA-256 content descriptor. P0.M4 uses that primitive to
-synchronize generated harness discovery copies without creating a second
-authored workflow.
+Skill's deterministic SHA-256 content descriptor and manages generated harness
+discovery copies without creating a second authored workflow.
+
+Install the canonical Skill into a repository with the package command:
+
+```sh
+npx rxjs-migrate-skill install --harness codex --project-root .
+```
+
+Use `--harness cursor` for Cursor; Codex and Cursor share the open
+`.agents/skills` placement. Use `--harness claude` for Claude Code's
+`.claude/skills` placement. The same command supports `check`, `update`, and
+`remove`. It refuses to overwrite or remove local modifications unless the
+developer supplies `--force`, and each installed copy records its package
+version and canonical digest in `.rxjs-migrate-skill.json`.
 
 ## Review requirements
 

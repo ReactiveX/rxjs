@@ -4,6 +4,7 @@ import { relative, resolve, sep } from 'node:path';
 import { migrationEngineVersion } from './version.js';
 
 export const skillIntegritySchemaVersion = 1 as const;
+export const skillProvenanceFileName = '.rxjs-migrate-skill.json';
 
 export interface SkillIntegrity {
   readonly schemaVersion: typeof skillIntegritySchemaVersion;
@@ -61,10 +62,12 @@ async function collectFiles(root: string, directory: string): Promise<string[]> 
   const result: string[] = [];
   for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
     const absolutePath = resolve(directory, entry.name);
+    const localPath = relative(root, absolutePath).replaceAll(sep, '/');
+    if (localPath === skillProvenanceFileName) continue;
     const stats = await lstat(absolutePath);
     if (stats.isSymbolicLink()) throw new Error(`Canonical Skill content must not contain symbolic links: ${absolutePath}`);
     if (stats.isDirectory()) result.push(...(await collectFiles(root, absolutePath)));
-    else if (stats.isFile()) result.push(relative(root, absolutePath).replaceAll(sep, '/'));
+    else if (stats.isFile()) result.push(localPath);
     else throw new Error(`Canonical Skill content must contain only regular files and directories: ${absolutePath}`);
   }
   return result.sort();

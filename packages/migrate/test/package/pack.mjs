@@ -24,9 +24,15 @@ for (const target of declaredPackageTargets(packageJson)) {
 }
 
 assert.ok(packedFiles.has('skill/SKILL.md'), 'The canonical migration Skill must be included in the packed artifact.');
-assert.ok([...packedFiles].some((path) => path.startsWith('skill/references/')), 'The packed Skill must include its references.');
-assert.ok([...packedFiles].some((path) => path.startsWith('skill/assets/')), 'The packed Skill must include its assets.');
-assert.deepEqual(Object.keys(packageJson.bin), ['rxjs-migrate']);
+assert.ok(
+  [...packedFiles].some((path) => path.startsWith('skill/references/')),
+  'The packed Skill must include its references.'
+);
+assert.ok(
+  [...packedFiles].some((path) => path.startsWith('skill/assets/')),
+  'The packed Skill must include its assets.'
+);
+assert.deepEqual(Object.keys(packageJson.bin), ['rxjs-migrate', 'rxjs-migrate-skill']);
 assert.ok(!Object.keys(packageJson.exports).includes('./mcp'), 'The rejected MCP subpath must not be exported.');
 assert.ok(![...packedFiles].some((path) => /(^|\/)mcp(?:\.|\/)/i.test(path)), 'The packed artifact must not contain MCP files.');
 
