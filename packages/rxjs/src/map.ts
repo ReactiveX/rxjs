@@ -24,7 +24,7 @@ function mapOperator<T, R, A>(
       let index = 0;
 
       subscribeToSource(this, subscriber, {
-        next: (value) => {
+        next(value) {
           subscriber.next(project.call(thisArg, value, index++));
         },
       });
