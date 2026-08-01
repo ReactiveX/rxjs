@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const take: unique symbol = Symbol('take');
 
@@ -17,7 +18,9 @@ Observable.prototype[take] = function <T>(this: Observable<T>, count: number): O
 
     let seen = 0;
     const sourceController = new AbortController();
-    this.subscribe(
+    subscribeToSource(
+      this,
+      subscriber,
       {
         next: (value) => {
           if (++seen <= count) {
@@ -31,10 +34,8 @@ Observable.prototype[take] = function <T>(this: Observable<T>, count: number): O
             }
           }
         },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
       },
-      { signal: AbortSignal.any([subscriber.signal, sourceController.signal]) }
+      sourceController.signal
     );
   });
 };
