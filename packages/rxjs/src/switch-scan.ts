@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import type { ObservedValueOf } from './util/types.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const switchScan: unique symbol = Symbol('switchScan');
 
@@ -36,88 +37,54 @@ function switchScanOperator<T, R, Input extends ObservableValue<any>>(
 
       const controller = new AbortController();
       innerController = controller;
-      const currentIndex = index++;
-      let input: Input;
-
-      try {
-        // RxJS 7 types the accumulator state from the seed even though each
-        // emitted inner value becomes the runtime state for the next call.
-        input = accumulator(state as R, value, currentIndex);
-      } catch (error) {
-        innerController = undefined;
-        controller.abort();
-        subscriber.error(error);
-        return;
-      }
-
-      let inner: Observable<ObservedValueOf<Input>>;
-      try {
-        inner = Observable.from(input);
-      } catch (error) {
-        innerController = undefined;
-        controller.abort();
-        subscriber.error(error);
-        return;
-      }
+      // RxJS 7 types the accumulator state from the seed even though each
+      // emitted inner value becomes the runtime state for the next call.
+      const inner = Observable.from(accumulator(state as R, value, index++));
 
       if (!subscriber.active || controller.signal.aborted) {
         return;
       }
 
-      try {
-        inner.subscribe(
-          {
-            next: (innerValue) => {
-              if (innerController !== controller || controller.signal.aborted) {
-                return;
-              }
-              state = innerValue;
-              subscriber.next(innerValue);
-            },
-            error: (error) => {
-              if (innerController === controller) {
-                innerController = undefined;
-              }
-              subscriber.error(error);
-            },
-            complete: () => {
-              if (innerController !== controller) {
-                return;
-              }
-              innerController = undefined;
-              completeIfDone();
-            },
-          },
-          { signal: AbortSignal.any([subscriber.signal, controller.signal]) }
-        );
-      } catch (error) {
-        if (innerController === controller) {
-          innerController = undefined;
-        }
-        controller.abort();
-        subscriber.error(error);
-      }
-    };
-
-    try {
-      source.subscribe(
+      subscribeToSource(
+        inner,
+        subscriber,
         {
-          next: (value) => {
-            if (subscriber.active) {
-              startInner(value);
+          next: (innerValue) => {
+            if (innerController !== controller || controller.signal.aborted) {
+              return;
             }
+            state = innerValue;
+            subscriber.next(innerValue);
           },
-          error: (error) => subscriber.error(error),
+          error: (error) => {
+            if (innerController === controller) {
+              innerController = undefined;
+            }
+            subscriber.error(error);
+          },
           complete: () => {
-            sourceComplete = true;
+            if (innerController !== controller) {
+              return;
+            }
+            innerController = undefined;
             completeIfDone();
           },
         },
-        { signal: subscriber.signal }
+        controller.signal
       );
-    } catch (error) {
-      subscriber.error(error);
-    }
+    };
+
+    subscribeToSource(source, subscriber, {
+      next: (value) => {
+        if (subscriber.active) {
+          startInner(value);
+        }
+      },
+      complete: () => {
+        sourceComplete = true;
+        completeIfDone();
+      },
+    });
   });
 }
 
