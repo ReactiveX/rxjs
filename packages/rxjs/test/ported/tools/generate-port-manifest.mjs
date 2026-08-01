@@ -695,8 +695,92 @@ const intentionalDivergenceReasons = new Map([
     'Intentional RxJS Next divergence: overlapping projections join one platform Observable run instead of restarting the reused cold inner fixture.',
   ],
   [
+    'spec/operators/mergeMap-spec.ts:374:mergeMap > should mergeMap many outer to many inner, and inner throws',
+    'Intentional RxJS Next divergence: overlapping projections join one platform inner run. Its terminal error closes the shared result before later sibling delivery, so the platform reports that later delivery to the host instead of modeling independent cold inners.',
+  ],
+  [
+    'spec/operators/mergeMap-spec.ts:422:mergeMap > should mergeMap many outer to many inner, both inner and outer throw',
+    'Intentional RxJS Next divergence: overlapping projections join one platform inner run. Its terminal error closes the shared result before later sibling delivery, so the platform reports that later delivery to the host instead of modeling independent cold inners.',
+  ],
+  [
     'spec/operators/mergeMapTo-spec.ts:216:mergeMapTo > should not break unsubscription chains when result is unsubscribed explicitly',
     'Intentional RxJS Next divergence: overlapping projections join one platform Observable run instead of restarting the reused cold inner fixture.',
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:271:mergeMapTo > should mergeMapTo many outer to many inner, and inner throws',
+    'Intentional RxJS Next divergence: overlapping projections join one platform inner run. Its terminal error closes the shared result before later sibling delivery, so the platform reports that later delivery to the host instead of modeling independent cold inners.',
+  ],
+  [
+    'spec/operators/mergeMapTo-spec.ts:314:mergeMapTo > should mergeMapTo many outer to many inner, both inner and outer throw',
+    'Intentional RxJS Next divergence: overlapping projections join one platform inner run. Its terminal error closes the shared result before later sibling delivery, so the platform reports that later delivery to the host instead of modeling independent cold inners.',
+  ],
+  [
+    'spec/operators/multicast-spec.ts:100:multicast > should accept a multicast selector and connect to a hot source for each subscriber',
+    'Intentional RxJS Next divergence: the hot-derived selector result keeps one active platform run, so concurrent observers do not create the two independent selector connections asserted by the RxJS 7 cold expectation.',
+  ],
+  [
+    'spec/operators/multicast-spec.ts:559:multicast > with refCount() and subject factory > should be retryable',
+    'Intentional RxJS Next divergence: retry observes the ref-counted platform result lifecycle; it does not restore producer-per-subscription ColdObservable connection behavior around the migrated hot fixture.',
+  ],
+  [
+    'spec/operators/multicast-spec.ts:597:multicast > with refCount() and subject factory > should be retryable using a ReplaySubject',
+    'Intentional RxJS Next divergence: retry observes the ref-counted platform result lifecycle; it does not restore producer-per-subscription ColdObservable connection behavior around the migrated hot fixture.',
+  ],
+  [
+    'spec/operators/multicast-spec.ts:620:multicast > with refCount() and subject factory > should be repeatable',
+    'Intentional RxJS Next divergence: repeat observes the ref-counted platform result lifecycle; it does not restore producer-per-subscription ColdObservable connection behavior around the migrated hot fixture.',
+  ],
+  [
+    'spec/operators/multicast-spec.ts:656:multicast > with refCount() and subject factory > should be repeatable using a ReplaySubject',
+    'Intentional RxJS Next divergence: repeat observes the ref-counted platform result lifecycle; it does not restore producer-per-subscription ColdObservable connection behavior around the migrated hot fixture.',
+  ],
+  [
+    'spec/operators/publish-spec.ts:70:publish operator > should accept selectors',
+    'Intentional RxJS Next divergence: the hot-derived selector result keeps one active platform run, so concurrent observers do not create the two independent selector connections asserted by the RxJS 7 cold expectation.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:49:publishBehavior operator > should multicast the same values to multiple observers',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run and receive future BehaviorSubject values; they do not start independent cold result runs with separate current-value delivery.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:70:publishBehavior operator > should multicast an error from the source to multiple observers',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run and receive future BehaviorSubject values and its terminal error; they do not start independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:91:publishBehavior operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run, so late observers do not receive the independent cold-run BehaviorSubject state asserted by RxJS 7.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:123:publishBehavior operator > should not break unsubscription chains when result is unsubscribed explicitly',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run, so late observers do not receive the independent cold-run BehaviorSubject state asserted by RxJS 7.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:159:publishBehavior operator > with refCount() > should connect when first subscriber subscribes',
+    'Intentional RxJS Next divergence: ref-counted observers join one active platform result run and receive only future values after joining, rather than independent cold-run current-value delivery.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:178:publishBehavior operator > with refCount() > should disconnect when last subscriber unsubscribes',
+    'Intentional RxJS Next divergence: ref-counted observers join one active platform result run and receive only future values after joining, rather than independent cold-run current-value delivery.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:196:publishBehavior operator > with refCount() > should NOT be retryable',
+    'Intentional RxJS Next divergence: retry observers join the active ref-counted platform result and share its terminal BehaviorSubject state instead of creating independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishBehavior-spec.ts:215:publishBehavior operator > with refCount() > should NOT be repeatable',
+    'Intentional RxJS Next divergence: repeat observers join the active ref-counted platform result and share its terminal BehaviorSubject state instead of creating independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:49:publishReplay operator > should multicast the same values to multiple observers, bufferSize=1',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run and receive future replay-subject values; they do not create independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:70:publishReplay operator > should multicast the same values to multiple observers, bufferSize=2',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run and receive future replay-subject values; they do not create independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:91:publishReplay operator > should multicast an error from the source to multiple observers',
+    'Intentional RxJS Next divergence: concurrent observers join one active platform result run and share its replay and terminal error; they do not create independent cold result runs.',
   ],
   [
     'spec/operators/publishReplay-spec.ts:112:publishReplay operator > should multicast the same values to multiple observers, but is unsubscribed explicitly and early',
@@ -705,6 +789,26 @@ const intentionalDivergenceReasons = new Map([
   [
     'spec/operators/publishReplay-spec.ts:144:publishReplay operator > should not break unsubscription chains when result is unsubscribed explicitly',
     'Intentional RxJS Next divergence: the bounded cold case retains RxJS 7 replay for each observer, while platform observers joining one active result run do not create separate ReplaySubject subscriptions.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:180:publishReplay operator > with refCount() > should connect when first subscriber subscribes',
+    'Intentional RxJS Next divergence: ref-counted observers join one active platform result run and receive only future values after joining, rather than independent cold-run replay.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:199:publishReplay operator > with refCount() > should disconnect when last subscriber unsubscribes',
+    'Intentional RxJS Next divergence: ref-counted observers join one active platform result run and receive only future values after joining, rather than independent cold-run replay.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:217:publishReplay operator > with refCount() > should NOT be retryable',
+    'Intentional RxJS Next divergence: retry observers join the active ref-counted platform result and share its replay and terminal state instead of creating independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:236:publishReplay operator > with refCount() > should NOT be repeatable',
+    'Intentional RxJS Next divergence: repeat observers join the active ref-counted platform result and share its replay and terminal state instead of creating independent cold result runs.',
+  ],
+  [
+    'spec/operators/publishReplay-spec.ts:480:publishReplay operator > should emit an error when the selector returns an Observable that emits an error',
+    'Intentional RxJS Next divergence: overlapping selector projections join one platform inner run. Its error closes the selector result before later sibling delivery, so the platform reports that later delivery to the host instead of modeling independent cold inners.',
   ],
   [
     'spec/operators/publishReplay-spec.ts:495:publishReplay operator > should terminate immediately when the selector returns an empty Observable',
@@ -741,6 +845,14 @@ const intentionalDivergenceReasons = new Map([
   [
     'spec/Observable-spec.ts:1400:Observable.lift > should compose through zip',
     'Intentional RxJS Next divergence: exact zipWith and map Symbols replace the removed lift/source/operator protocol and preserve the zipped projection, while the standalone zip construction boundary returns the active base Observable.',
+  ],
+  [
+    'spec/deprecation-equivalents/multicasting-deprecations-spec.ts:107:should be equivalent for publish(fn) and connect({ setup: fn }) for async sources that retry [equivalence-6:publish(fn) and connect({ setup: fn })]',
+    'Intentional RxJS Next divergence: both selector forms merge two subscriptions to one shared platform view. Terminal fanout reaches a sibling closed by the first delivery, so the platform reports the later error to the host before retry can express the RxJS 7 cold equivalence claim.',
+  ],
+  [
+    'spec/deprecation-equivalents/multicasting-deprecations-spec.ts:107:should be equivalent for publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })` for async sources that retry [equivalence-7:publishReplay(3, 10, fn) and `subject = new ReplaySubject(3, 10), connect({ connector: () => subject , setup: fn })`]',
+    'Intentional RxJS Next divergence: both selector forms merge two subscriptions to one shared platform view. Terminal fanout reaches a sibling closed by the first delivery, so the platform reports the later error to the host before retry can express the RxJS 7 cold equivalence claim.',
   ],
 ]);
 const unsupportedOrObsoleteReasons = new Map([]);
@@ -2815,6 +2927,7 @@ function extractCases({ path, sourceText }) {
                   variantKey: variant.key,
                 })
               : null;
+          const intentionalDivergenceReason = intentionalDivergenceReasons.get(id);
           const usedImports = dynamicMigration?.imports ?? [];
           const availability = assessAvailability(usedImports);
           const genuinelySchedulerInternal = isGenuinelySchedulerInternal({
@@ -2838,12 +2951,14 @@ function extractCases({ path, sourceText }) {
             disposition = 'missing-api';
             reason = `Required runtime capabilities are unavailable: ${[...availability.missing, ...availability.external].join(', ')}.`;
           } else {
-            classification = 'harness-rewrite';
+            classification = intentionalDivergenceReason ? 'intentional-divergence' : 'harness-rewrite';
             disposition = 'expected-failure';
-            reason = reviewFlags.includes('source-skipped')
-              ? 'The source case was skipped in RxJS 7; its parameterized declaration is mechanically preserved as ' +
-                'executable parity evidence.'
-              : `Parameterized variant ${variant.key} is mechanically expanded and retained as failing parity evidence.`;
+            reason =
+              intentionalDivergenceReason ??
+              (reviewFlags.includes('source-skipped')
+                ? 'The source case was skipped in RxJS 7; its parameterized declaration is mechanically preserved as ' +
+                  'executable parity evidence.'
+                : `Parameterized variant ${variant.key} is mechanically expanded and retained as failing parity evidence.`);
           }
           extracted.push({
             id,
