@@ -1,5 +1,6 @@
 import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 type TruthyTypesOf<T> = T extends Falsy ? never : T;
@@ -48,21 +49,15 @@ function firstOperator<T, D>(
   return source[create]((subscriber) => {
     let index = 0;
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
-
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: (value) => {
           let matches = true;
 
           if (predicate) {
-            try {
-              matches = predicate(value, index++, source);
-            } catch (error) {
-              sourceController.abort();
-              subscriber.error(error);
-              return;
-            }
+            matches = predicate(value, index++, source);
           }
 
           if (matches) {
@@ -85,7 +80,7 @@ function firstOperator<T, D>(
           }
         },
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
