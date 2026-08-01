@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const debounce: unique symbol = Symbol('debounce');
@@ -9,74 +8,73 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>, delay: number | ((value: T, index: number) => ObservableValue<any>)): Observable<T> {
-    return this[create]((subscriber) => {
-      let innerController: AbortController | null = null;
-      let hasValue = false;
-      let lastValue: T;
-      let index = 0;
+Observable.prototype[debounce] = function <T>(
+  this: Observable<T>,
+  delay: number | ((value: T, index: number) => ObservableValue<any>)
+): Observable<T> {
+  return this[create]((subscriber) => {
+    let innerController: AbortController | null = null;
+    let hasValue = false;
+    let lastValue: T;
+    let index = 0;
 
-      const emitPendingValue = () => {
-        if (!hasValue) {
-          return;
-        }
-        hasValue = false;
-        innerController?.abort();
-        innerController = null;
-        subscriber.next(lastValue);
-      };
+    const emitPendingValue = () => {
+      if (!hasValue) {
+        return;
+      }
+      hasValue = false;
+      innerController?.abort();
+      innerController = null;
+      subscriber.next(lastValue);
+    };
 
-      subscriber.addTeardown(() => innerController?.abort());
+    subscriber.addTeardown(() => innerController?.abort());
 
-      this.subscribe(
-        {
-          next: (value) => {
-            hasValue = true;
-            lastValue = value;
+    this.subscribe(
+      {
+        next: (value) => {
+          hasValue = true;
+          lastValue = value;
 
-            innerController?.abort();
-            innerController = new AbortController();
-            const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
+          innerController?.abort();
+          innerController = new AbortController();
+          const signal = AbortSignal.any([subscriber.signal, innerController.signal]);
 
-            if (typeof delay === 'number') {
-              const id = globalThis.setTimeout(emitPendingValue, delay);
-              innerController.signal.addEventListener(
-                'abort',
-                () => {
-                  globalThis.clearTimeout(id);
-                },
-                { once: true }
-              );
-            } else {
-              let result: Observable<any>;
+          if (typeof delay === 'number') {
+            const id = globalThis.setTimeout(emitPendingValue, delay);
+            innerController.signal.addEventListener(
+              'abort',
+              () => {
+                globalThis.clearTimeout(id);
+              },
+              { once: true }
+            );
+          } else {
+            let result: Observable<any>;
 
-              try {
-                result = Observable.from(delay(value, index++));
-              } catch (error) {
-                subscriber.error(error);
-                return;
-              }
-
-              result.subscribe(
-                {
-                  next: emitPendingValue,
-                  error: (error) => subscriber.error(error),
-                },
-                { signal }
-              );
+            try {
+              result = Observable.from(delay(value, index++));
+            } catch (error) {
+              subscriber.error(error);
+              return;
             }
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            emitPendingValue();
-            subscriber.complete();
-          },
+
+            result.subscribe(
+              {
+                next: emitPendingValue,
+                error: (error) => subscriber.error(error),
+              },
+              { signal }
+            );
+          }
         },
-        { signal: subscriber.signal }
-      );
-    });
-  },
-  name: 'debounce',
-  symbol: debounce,
-});
+        error: (error) => subscriber.error(error),
+        complete: () => {
+          emitPendingValue();
+          subscriber.complete();
+        },
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};

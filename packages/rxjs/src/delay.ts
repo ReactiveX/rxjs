@@ -1,4 +1,3 @@
-import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const delay: unique symbol = Symbol('delay');
@@ -9,54 +8,50 @@ declare global {
   }
 }
 
-installObservableExtension({
-  instance: function <T>(this: Observable<T>, due: number | Date): Observable<T> {
-    return this[create]((subscriber) => {
-      const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
-      let sourceCompleted = false;
+Observable.prototype[delay] = function <T>(this: Observable<T>, due: number | Date): Observable<T> {
+  return this[create]((subscriber) => {
+    const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
+    let sourceCompleted = false;
 
-      const completeIfSettled = () => {
-        if (sourceCompleted && timers.size === 0) {
-          subscriber.complete();
-        }
-      };
+    const completeIfSettled = () => {
+      if (sourceCompleted && timers.size === 0) {
+        subscriber.complete();
+      }
+    };
 
-      subscriber.addTeardown(() => {
-        for (const timer of timers) {
-          globalThis.clearTimeout(timer);
-        }
-        timers.clear();
-      });
-
-      this.subscribe(
-        {
-          next: (value) => {
-            const duration = Math.max(0, due instanceof globalThis.Date ? +due - globalThis.Date.now() : due);
-            let timer: ReturnType<typeof globalThis.setTimeout>;
-            try {
-              timer = globalThis.setTimeout(() => {
-                timers.delete(timer);
-                if (subscriber.active) {
-                  subscriber.next(value);
-                  completeIfSettled();
-                }
-              }, duration);
-            } catch (error) {
-              subscriber.error(error);
-              return;
-            }
-            timers.add(timer);
-          },
-          error: (error) => subscriber.error(error),
-          complete: () => {
-            sourceCompleted = true;
-            completeIfSettled();
-          },
-        },
-        { signal: subscriber.signal }
-      );
+    subscriber.addTeardown(() => {
+      for (const timer of timers) {
+        globalThis.clearTimeout(timer);
+      }
+      timers.clear();
     });
-  },
-  name: 'delay',
-  symbol: delay,
-});
+
+    this.subscribe(
+      {
+        next: (value) => {
+          const duration = Math.max(0, due instanceof globalThis.Date ? +due - globalThis.Date.now() : due);
+          let timer: ReturnType<typeof globalThis.setTimeout>;
+          try {
+            timer = globalThis.setTimeout(() => {
+              timers.delete(timer);
+              if (subscriber.active) {
+                subscriber.next(value);
+                completeIfSettled();
+              }
+            }, duration);
+          } catch (error) {
+            subscriber.error(error);
+            return;
+          }
+          timers.add(timer);
+        },
+        error: (error) => subscriber.error(error),
+        complete: () => {
+          sourceCompleted = true;
+          completeIfSettled();
+        },
+      },
+      { signal: subscriber.signal }
+    );
+  });
+};
