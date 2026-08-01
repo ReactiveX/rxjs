@@ -63,9 +63,9 @@ with this read-only request:
 > green RxJS 7 baseline and state who must approve lifecycle selection.
 
 Every host must reach the same canonical workflow and answer that the baseline
-is established during **Protect uncovered behavior**, while the developer must
-approve lifecycle selection. It must not choose platform sharing or
-producer-per-subscription behavior automatically.
+is established during **Stage 3: Establish the green RxJS 7 baseline**, while
+the developer must approve lifecycle selection. It must not choose platform
+sharing or producer-per-subscription behavior automatically.
 
 The package acceptance suite installs clean Codex, Claude, and Cursor fixtures,
 checks their discovery and invocation metadata, compares their canonical bytes
