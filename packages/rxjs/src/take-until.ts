@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const takeUntil: unique symbol = Symbol('takeUntil');
 
@@ -18,25 +19,12 @@ Observable.prototype[takeUntil] = function <T>(this: Observable<T>, notifier: Ob
       return;
     }
 
-    notifierSource.subscribe(
-      {
-        next: () => subscriber.complete(),
-        error: (error) => subscriber.error(error),
-      },
-      { signal: subscriber.signal }
-    );
+    subscribeToSource(notifierSource, subscriber, { next: () => subscriber.complete(), complete: () => void 0 });
 
     if (!subscriber.active) {
       return;
     }
 
-    this.subscribe(
-      {
-        next: (value) => subscriber.next(value),
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
+    subscribeToSource(this, subscriber);
   });
 };
