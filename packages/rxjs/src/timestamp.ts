@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const timestamp: unique symbol = Symbol('timestamp');
@@ -17,24 +18,28 @@ declare global {
   }
 }
 
-Observable.prototype[timestamp] = function <T>(this: Observable<T>, timestampProvider?: TimestampProvider): Observable<Timestamp<T>> {
-  return this[create]((subscriber) => {
-    this.subscribe(
-      {
-        next: (value) => {
-          let currentTimestamp: number;
-          try {
-            currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
-          } catch (error) {
-            subscriber.error(error);
-            return;
-          }
-          subscriber.next({ value, timestamp: currentTimestamp });
+installObservableExtension({
+  instance: function <T>(this: Observable<T>, timestampProvider?: TimestampProvider): Observable<Timestamp<T>> {
+    return this[create]((subscriber) => {
+      this.subscribe(
+        {
+          next: (value) => {
+            let currentTimestamp: number;
+            try {
+              currentTimestamp = timestampProvider === undefined ? globalThis.Date.now() : timestampProvider.now();
+            } catch (error) {
+              subscriber.error(error);
+              return;
+            }
+            subscriber.next({ value, timestamp: currentTimestamp });
+          },
+          error: (error) => subscriber.error(error),
+          complete: () => subscriber.complete(),
         },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
-  });
-};
+        { signal: subscriber.signal }
+      );
+    });
+  },
+  name: 'timestamp',
+  symbol: timestamp,
+});

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { map } from './map.js';
 
 type PluckKey = string | number | symbol;
@@ -168,4 +169,4 @@ function pluckOperator<T>(this: Observable<T>, ...properties: PluckKey[]): Obser
   });
 }
 
-Observable.prototype[pluck] = pluckOperator;
+installObservableExtension({ instance: pluckOperator, name: 'pluck', symbol: pluck });

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const observeOn: unique symbol = Symbol('observeOn');
@@ -8,37 +9,41 @@ declare global {
   }
 }
 
-Observable.prototype[observeOn] = function <T>(this: Observable<T>, delay = 0): Observable<T> {
-  return this[create]((subscriber) => {
-    const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
+installObservableExtension({
+  instance: function <T>(this: Observable<T>, delay = 0): Observable<T> {
+    return this[create]((subscriber) => {
+      const timers = new Set<ReturnType<typeof globalThis.setTimeout>>();
 
-    const schedule = (work: () => void): void => {
-      if (delay === Infinity) {
-        return;
-      }
-      const id = globalThis.setTimeout(() => {
-        timers.delete(id);
-        if (subscriber.active) {
-          work();
+      const schedule = (work: () => void): void => {
+        if (delay === Infinity) {
+          return;
         }
-      }, delay);
-      timers.add(id);
-    };
+        const id = globalThis.setTimeout(() => {
+          timers.delete(id);
+          if (subscriber.active) {
+            work();
+          }
+        }, delay);
+        timers.add(id);
+      };
 
-    subscriber.addTeardown(() => {
-      for (const id of timers) {
-        globalThis.clearTimeout(id);
-      }
-      timers.clear();
+      subscriber.addTeardown(() => {
+        for (const id of timers) {
+          globalThis.clearTimeout(id);
+        }
+        timers.clear();
+      });
+
+      this.subscribe(
+        {
+          next: (value) => schedule(() => subscriber.next(value)),
+          error: (error) => schedule(() => subscriber.error(error)),
+          complete: () => schedule(() => subscriber.complete()),
+        },
+        { signal: subscriber.signal }
+      );
     });
-
-    this.subscribe(
-      {
-        next: (value) => schedule(() => subscriber.next(value)),
-        error: (error) => schedule(() => subscriber.error(error)),
-        complete: () => schedule(() => subscriber.complete()),
-      },
-      { signal: subscriber.signal }
-    );
-  });
-};
+  },
+  name: 'observeOn',
+  symbol: observeOn,
+});
