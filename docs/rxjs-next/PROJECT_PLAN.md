@@ -56,8 +56,10 @@ lifecycle boundaries, while P0.5 and P1.4b had already completed the pinned
 fallback-conformance work. Phase 2 is also complete: D-048 and D-049 define
 the extension kernel, and the `map`, `scan`, `switchMap`, `timeout`, `timer`,
 and `pipe` pilot proves it against packaged fallback and browser-native
-Observable. P3.1, an audit of the restoration inventory already accumulated
-during Phase 0, is now the sole `NEXT` item.
+Observable. P3.1 confirmed that Phase 0 already restored the broad operator
+catalog and executable evidence; the remaining Phase 3 work is to move the
+catalog onto the accepted extension kernel and turn the existing parity map
+into a complete migration-evidence ledger. P3.2 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1173,14 +1175,78 @@ Phase exit:
 
 | Status    | ID   | Outcome                                                                                           |
 | --------- | ---- | ------------------------------------------------------------------------------------------------- |
-| `NEXT`    | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
-| `PLANNED` | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
+| `DONE`    | P3.1 | Audit the existing API/evidence inventory and rebase the remaining restoration by migration value |
+| `NEXT`    | P3.2 | Audit and maintain the migration-evidence ledger                                                  |
 | `PLANNED` | P3.3 | Restore operators in small families using the extension kernel                                    |
 | `PLANNED` | P3.4 | Classify, retain, or rewrite former RxJS 7 tests for each restored family                         |
 
 Do not use “all former tests pass” as an unqualified milestone. The gate is that
 every supported API has portable or rewritten evidence and every divergence is
 explicit.
+
+#### P3.1 completion bar
+
+- Reconcile the published subpath inventory, exact Symbol catalog, parity
+  capability registry, and executable RxJS 7 evidence without recreating the
+  Phase 0 audit.
+- Separate already restored behavior from extension-kernel adoption, evidence
+  metadata, and intentional compatibility gaps.
+- Order the remaining work by migration value while preserving small
+  operator-family commits and the accepted platform lifecycle.
+
+#### P3.1 completion evidence
+
+- Audited 117 public source subpaths and 97 exact public extension Symbols.
+  Six pilot capabilities (`map`, `scan`, `switchMap`, `timeout`, `timer`, and
+  `pipe`) already use the transactional installer; the other 91 exact
+  capabilities retain pre-kernel direct installation and are implementation
+  migration work rather than missing APIs.
+- Reconciled the versioned parity registry: it describes 111 RxJS 7 operators,
+  21 creation/static functions, and 29 public values. The source-pinned corpus
+  retains 2,338 executable registrations, with 2,296 reviewed cold passes and
+  2,316 reviewed fallback passes before the Phase 2 pilot additions.
+- Confirmed that the remaining ordinary failures are already classified input
+  conversion or lifecycle evidence. There are no `missing-api` or
+  `unsupported-or-obsolete` registrations hidden from collection.
+- Rebased P3.3 into four migration-value families: portable synchronous and
+  query operators; combination, flattening, recovery, and recursive operators;
+  host-time, windowing, and static factories; then sharing, connection,
+  Subject-adjacent, and async-iteration capabilities. Each family must adopt
+  the installer without changing its accepted behavior or public Symbol.
+- Assigned P3.2 to materialize the existing parity and package data as one
+  validated ledger before code migration. P3.4 will then audit every family
+  against focused, cold, fallback, native/fallback-kernel, type, and package
+  evidence rather than treating a raw RxJS 7 pass total as the milestone.
+
+#### P3.2 completion bar
+
+- One machine-readable ledger contains every prioritized RxJS 7 operator,
+  creation function, and public value exactly once.
+- Each row records the RxJS 7 import, evidence, Next surface, sharing and
+  cancellation models, classification, type status, migration action, and
+  controlling decision or open question.
+- Generation is deterministic, rejects incomplete or duplicate rows, and
+  produces a readable checked-in summary.
+
+#### P3.3 completion bar
+
+- Every public exact Symbol capability installs through the D-048 transactional
+  installer; no direct public constructor or prototype assignment remains.
+- Each migrated implementation preserves its exact Symbol, ambient
+  augmentation, derived-construction policy, input boundary, cancellation,
+  error, and package subpath behavior.
+- Small family commits pass focused source typing and the narrowest relevant
+  behavior tests before the next family begins.
+
+#### P3.4 completion bar
+
+- Every supported family links focused evidence and a classified RxJS 7 claim;
+  every compatibility-only or intentional difference stays explicit.
+- Complete cold and fallback audits account for all registrations without
+  skip, quarantine, or expected-failure inversion; native/fallback kernel,
+  type, build, and package gates cover the public installation contract.
+- Phase 3 documentation records exact results and advances the sole `NEXT`
+  marker to P4.1.
 
 ### Phase 4 — Intentional API and migration contracts
 
@@ -2491,3 +2557,18 @@ conformance implementation depends on a runnable harness.
 - Marked P2.4 `DONE`, completed Phase 2, and advanced P3.1 as the sole
   project-level `NEXT` item. P3.1 begins by reconciling the restoration and
   evidence inventory already produced during Phase 0 instead of recreating it.
+
+### 2026-08-01 — P3.1 restoration inventory audit
+
+- Reconciled 117 public source subpaths, 97 exact extension Symbols, the
+  111-operator/21-factory/29-value capability registry, and all 2,338
+  source-pinned executable RxJS 7 registrations.
+- Confirmed that behavior restoration is already broad: only the six Phase 2
+  pilots use the common installer, while 91 existing exact capabilities need
+  implementation-pattern migration rather than new API design.
+- Rebased restoration into four migration-value families and added explicit
+  P3.2 through P3.4 completion bars so ledger work, kernel adoption, and
+  evidence closure cannot be conflated.
+- Preserved every compatibility-only input and lifecycle claim; no missing or
+  unsupported registration is hidden from collection.
+- Marked P3.1 `DONE` and advanced P3.2 as the sole project-level `NEXT` item.
