@@ -1,4 +1,4 @@
-import { createDerivedObservable, runWithErrorForwarding, subscribeToSource } from './util/observable-helpers.js';
+import { createDerivedObservable, subscribeToSource } from './util/observable-helpers.js';
 
 export const scan: unique symbol = Symbol('scan');
 
@@ -29,9 +29,7 @@ function scanOperator<T, A, S>(
         seed.length === 0 ? { initialized: false } : { initialized: true, value: seed[0] };
       let index = 0;
 
-      subscribeToSource({
-        source: this,
-        subscriber,
+      subscribeToSource(this, subscriber, {
         next: (value) => {
           const currentIndex = index++;
           if (!state.initialized) {
@@ -43,19 +41,12 @@ function scanOperator<T, A, S>(
             return;
           }
 
-          const accumulatedState = state.value;
-          const nextState = runWithErrorForwarding({
-            subscriber,
-            run: () => accumulator(accumulatedState, value, currentIndex),
-          });
-          if (!nextState.ok) {
-            return;
-          }
+          const nextState = accumulator(state.value, value, currentIndex);
           state = {
             initialized: true,
-            value: nextState.value,
+            value: nextState,
           };
-          subscriber.next(nextState.value);
+          subscriber.next(nextState);
         },
       });
     },
