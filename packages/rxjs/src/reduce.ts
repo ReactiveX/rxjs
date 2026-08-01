@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const reduce: unique symbol = Symbol('reduce');
 
@@ -32,9 +33,9 @@ function reduceOperator<T, A>(
     let state: A | T | undefined = seed;
     let index = 0;
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
-
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: (value) => {
           const currentIndex = index++;
@@ -44,12 +45,7 @@ function reduceOperator<T, A>(
             return;
           }
 
-          try {
-            state = accumulator(state as A | T, value, currentIndex);
-          } catch (error) {
-            sourceController.abort();
-            subscriber.error(error);
-          }
+          state = accumulator(state as A | T, value, currentIndex);
         },
         error: (error) => subscriber.error(error),
         complete: () => {
@@ -59,7 +55,7 @@ function reduceOperator<T, A>(
           subscriber.complete();
         },
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
