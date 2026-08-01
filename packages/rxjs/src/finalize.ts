@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const finalize: unique symbol = Symbol('finalize');
@@ -8,45 +9,49 @@ declare global {
   }
 }
 
-Observable.prototype[finalize] = function <T>(this: Observable<T>, callback: () => void): Observable<T> {
-  return this[create]((subscriber) => {
-    let finalized = false;
-    let sourceTerminated = false;
+installObservableExtension({
+  instance: function <T>(this: Observable<T>, callback: () => void): Observable<T> {
+    return this[create]((subscriber) => {
+      let finalized = false;
+      let sourceTerminated = false;
 
-    const finalizeOnce = () => {
-      if (!finalized) {
-        finalized = true;
-        callback();
-      }
-    };
+      const finalizeOnce = () => {
+        if (!finalized) {
+          finalized = true;
+          callback();
+        }
+      };
 
-    subscriber.addTeardown(() => {
-      if (!sourceTerminated) {
-        finalizeOnce();
-      }
+      subscriber.addTeardown(() => {
+        if (!sourceTerminated) {
+          finalizeOnce();
+        }
+      });
+
+      this.subscribe(
+        {
+          next: (value) => subscriber.next(value),
+          error: (error) => {
+            sourceTerminated = true;
+            try {
+              subscriber.error(error);
+            } finally {
+              finalizeOnce();
+            }
+          },
+          complete: () => {
+            sourceTerminated = true;
+            try {
+              subscriber.complete();
+            } finally {
+              finalizeOnce();
+            }
+          },
+        },
+        { signal: subscriber.signal }
+      );
     });
-
-    this.subscribe(
-      {
-        next: (value) => subscriber.next(value),
-        error: (error) => {
-          sourceTerminated = true;
-          try {
-            subscriber.error(error);
-          } finally {
-            finalizeOnce();
-          }
-        },
-        complete: () => {
-          sourceTerminated = true;
-          try {
-            subscriber.complete();
-          } finally {
-            finalizeOnce();
-          }
-        },
-      },
-      { signal: subscriber.signal }
-    );
-  });
-};
+  },
+  name: 'finalize',
+  symbol: finalize,
+});

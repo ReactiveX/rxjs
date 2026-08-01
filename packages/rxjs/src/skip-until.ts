@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const skipUntil: unique symbol = Symbol('skipUntil');
@@ -8,50 +9,54 @@ declare global {
   }
 }
 
-Observable.prototype[skipUntil] = function <T>(this: Observable<T>, notifier: ObservableValue<any>): Observable<T> {
-  return this[create]((subscriber) => {
-    let taking = false;
-    const notifierController = new AbortController();
-    subscriber.addTeardown(() => notifierController.abort(subscriber.signal.reason));
+installObservableExtension({
+  instance: function <T>(this: Observable<T>, notifier: ObservableValue<any>): Observable<T> {
+    return this[create]((subscriber) => {
+      let taking = false;
+      const notifierController = new AbortController();
+      subscriber.addTeardown(() => notifierController.abort(subscriber.signal.reason));
 
-    let notifierSource: Observable<any>;
-    try {
-      notifierSource = Observable.from(notifier);
-    } catch (error) {
-      subscriber.error(error);
-      return;
-    }
+      let notifierSource: Observable<any>;
+      try {
+        notifierSource = Observable.from(notifier);
+      } catch (error) {
+        subscriber.error(error);
+        return;
+      }
 
-    try {
-      notifierSource.subscribe(
+      try {
+        notifierSource.subscribe(
+          {
+            next: () => {
+              notifierController.abort();
+              taking = true;
+            },
+            error: (error) => subscriber.error(error),
+          },
+          { signal: notifierController.signal }
+        );
+      } catch (error) {
+        subscriber.error(error);
+      }
+
+      if (!subscriber.active) {
+        return;
+      }
+
+      this.subscribe(
         {
-          next: () => {
-            notifierController.abort();
-            taking = true;
+          next: (value) => {
+            if (taking) {
+              subscriber.next(value);
+            }
           },
           error: (error) => subscriber.error(error),
+          complete: () => subscriber.complete(),
         },
-        { signal: notifierController.signal }
+        { signal: subscriber.signal }
       );
-    } catch (error) {
-      subscriber.error(error);
-    }
-
-    if (!subscriber.active) {
-      return;
-    }
-
-    this.subscribe(
-      {
-        next: (value) => {
-          if (taking) {
-            subscriber.next(value);
-          }
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
-      },
-      { signal: subscriber.signal }
-    );
-  });
-};
+    });
+  },
+  name: 'skipUntil',
+  symbol: skipUntil,
+});

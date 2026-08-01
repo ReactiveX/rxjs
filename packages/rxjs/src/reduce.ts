@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { create } from './create.js';
 
 export const reduce: unique symbol = Symbol('reduce');
@@ -12,15 +13,8 @@ declare global {
   }
 }
 
-function reduceOperator<T, A = T>(
-  this: Observable<T>,
-  accumulator: (accumulator: A | T, value: T, index: number) => A
-): Observable<T | A>;
-function reduceOperator<T, A>(
-  this: Observable<T>,
-  accumulator: (accumulator: A, value: T, index: number) => A,
-  seed: A
-): Observable<A>;
+function reduceOperator<T, A = T>(this: Observable<T>, accumulator: (accumulator: A | T, value: T, index: number) => A): Observable<T | A>;
+function reduceOperator<T, A>(this: Observable<T>, accumulator: (accumulator: A, value: T, index: number) => A, seed: A): Observable<A>;
 function reduceOperator<T, A, S = A>(
   this: Observable<T>,
   accumulator: (accumulator: A | S, value: T, index: number) => A,
@@ -71,4 +65,4 @@ function reduceOperator<T, A>(
   });
 }
 
-Observable.prototype[reduce] = reduceOperator;
+installObservableExtension({ instance: reduceOperator, name: 'reduce', symbol: reduce });

@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { reduce } from './reduce.js';
 
 type Comparer<T> = (previous: T, current: T) => number;
@@ -10,11 +11,15 @@ declare global {
   }
 }
 
-Observable.prototype[max] = function <T>(this: Observable<T>, comparer?: Comparer<T>): Observable<T> {
-  const selectMaximum =
-    typeof comparer === 'function'
-      ? (previous: T, current: T) => (comparer(previous, current) > 0 ? previous : current)
-      : (previous: T, current: T) => (previous > current ? previous : current);
+installObservableExtension({
+  instance: function <T>(this: Observable<T>, comparer?: Comparer<T>): Observable<T> {
+    const selectMaximum =
+      typeof comparer === 'function'
+        ? (previous: T, current: T) => (comparer(previous, current) > 0 ? previous : current)
+        : (previous: T, current: T) => (previous > current ? previous : current);
 
-  return this[reduce](selectMaximum);
-};
+    return this[reduce](selectMaximum);
+  },
+  name: 'max',
+  symbol: max,
+});
