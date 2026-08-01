@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { replaySubject } from './replay-subject.js';
 import { share } from './share.js';
 
@@ -17,39 +18,43 @@ declare global {
   }
 }
 
-Observable.prototype[shareReplay] = function <T>(
-  this: Observable<T>,
-  configOrBufferSize?: ShareReplayConfig | number,
-  windowTime = Infinity,
-  scheduler?: unknown
-): Observable<T> {
-  if (scheduler !== undefined) {
-    throw new Error('Scheduler-backed shareReplay is not supported by this Symbol contract.');
-  }
-
-  let bufferSize = Infinity;
-  let refCount = false;
-
-  if (configOrBufferSize && typeof configOrBufferSize === 'object') {
-    if (configOrBufferSize.scheduler !== undefined) {
+installObservableExtension({
+  instance: function <T>(
+    this: Observable<T>,
+    configOrBufferSize?: ShareReplayConfig | number,
+    windowTime = Infinity,
+    scheduler?: unknown
+  ): Observable<T> {
+    if (scheduler !== undefined) {
       throw new Error('Scheduler-backed shareReplay is not supported by this Symbol contract.');
     }
 
-    bufferSize = configOrBufferSize.bufferSize ?? Infinity;
-    windowTime = configOrBufferSize.windowTime ?? Infinity;
-    refCount = configOrBufferSize.refCount ?? false;
-  } else {
-    bufferSize = configOrBufferSize ?? Infinity;
-  }
+    let bufferSize = Infinity;
+    let refCount = false;
 
-  return this[share]({
-    connector: () =>
-      replaySubject<T>({
-        size: bufferSize,
-        maxAge: windowTime,
-      }),
-    resetOnError: true,
-    resetOnComplete: false,
-    resetOnRefCountZero: refCount,
-  });
-};
+    if (configOrBufferSize && typeof configOrBufferSize === 'object') {
+      if (configOrBufferSize.scheduler !== undefined) {
+        throw new Error('Scheduler-backed shareReplay is not supported by this Symbol contract.');
+      }
+
+      bufferSize = configOrBufferSize.bufferSize ?? Infinity;
+      windowTime = configOrBufferSize.windowTime ?? Infinity;
+      refCount = configOrBufferSize.refCount ?? false;
+    } else {
+      bufferSize = configOrBufferSize ?? Infinity;
+    }
+
+    return this[share]({
+      connector: () =>
+        replaySubject<T>({
+          size: bufferSize,
+          maxAge: windowTime,
+        }),
+      resetOnError: true,
+      resetOnComplete: false,
+      resetOnRefCountZero: refCount,
+    });
+  },
+  name: 'shareReplay',
+  symbol: shareReplay,
+});

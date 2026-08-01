@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import { AsyncSubject } from './async-subject.js';
 import type { ConnectableObservable } from './connectable.js';
 import { multicast } from './multicast.js';
@@ -10,8 +11,12 @@ declare global {
   }
 }
 
-Observable.prototype[publishLast] = function <T>(this: Observable<T>): ConnectableObservable<T> {
-  // RxJS 7 retains one AsyncSubject for the lifetime of the manually
-  // connectable result, including after completion or error.
-  return this[multicast](new AsyncSubject<T>());
-};
+installObservableExtension({
+  instance: function <T>(this: Observable<T>): ConnectableObservable<T> {
+    // RxJS 7 retains one AsyncSubject for the lifetime of the manually
+    // connectable result, including after completion or error.
+    return this[multicast](new AsyncSubject<T>());
+  },
+  name: 'publishLast',
+  symbol: publishLast,
+});

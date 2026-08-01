@@ -1,3 +1,4 @@
+import { installObservableExtension } from './util/install-observable-extension.js';
 import type { ConnectableObservable } from './connectable.js';
 import { multicast } from './multicast.js';
 import { replaySubject } from './replay-subject.js';
@@ -29,32 +30,36 @@ declare global {
   }
 }
 
-Observable.prototype[publishReplay] = function <T, Selected extends ObservableValue<unknown>>(
-  this: Observable<T>,
-  bufferSize?: number,
-  windowTime?: number,
-  selectorOrScheduler?: ((shared: Observable<T>) => Selected) | unknown,
-  scheduler?: unknown
-): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
-  if (scheduler !== undefined) {
-    throw new Error(SCHEDULER_ERROR);
-  }
+installObservableExtension({
+  instance: function <T, Selected extends ObservableValue<unknown>>(
+    this: Observable<T>,
+    bufferSize?: number,
+    windowTime?: number,
+    selectorOrScheduler?: ((shared: Observable<T>) => Selected) | unknown,
+    scheduler?: unknown
+  ): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {
+    if (scheduler !== undefined) {
+      throw new Error(SCHEDULER_ERROR);
+    }
 
-  const selector = typeof selectorOrScheduler === 'function' ? (selectorOrScheduler as (shared: Observable<T>) => Selected) : undefined;
-  if (selectorOrScheduler !== undefined && !selector) {
-    throw new Error(SCHEDULER_ERROR);
-  }
+    const selector = typeof selectorOrScheduler === 'function' ? (selectorOrScheduler as (shared: Observable<T>) => Selected) : undefined;
+    if (selectorOrScheduler !== undefined && !selector) {
+      throw new Error(SCHEDULER_ERROR);
+    }
 
-  const subject = replaySubject<T>({
-    size: bufferSize,
-    maxAge: windowTime,
-  });
+    const subject = replaySubject<T>({
+      size: bufferSize,
+      maxAge: windowTime,
+    });
 
-  if (selector) {
-    return this[multicast](subject, selector);
-  }
+    if (selector) {
+      return this[multicast](subject, selector);
+    }
 
-  // RxJS 7 retains one ReplaySubject for the lifetime of every publishReplay
-  // result, including selector-form results that are later retried or repeated.
-  return this[multicast](subject);
-};
+    // RxJS 7 retains one ReplaySubject for the lifetime of every publishReplay
+    // result, including selector-form results that are later retried or repeated.
+    return this[multicast](subject);
+  },
+  name: 'publishReplay',
+  symbol: publishReplay,
+});
