@@ -75,9 +75,9 @@ dialects into one ESM implementation. P6.2 through P6.4 completed the release
 matrix, package-local documentation, packed-consumer adoption, and beta
 approval. P6.5 closed the terminal audit. P6.6 then centralized eligible RxJS
 source subscriptions through the D-049 helper and recorded the resulting
-bundle-size reduction. The user has since prioritized P6.7 to remove the
-remaining derived-construction wrappers in favor of direct D-037 `[create]`
-calls and measure the resulting bundle-size change.
+bundle-size reduction. P6.7 then removed the remaining derived-construction
+wrappers in favor of direct D-037 `[create]` calls and recorded a further
+bundle-size reduction. The execution queue is complete.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1560,7 +1560,7 @@ names.
 | `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
 | `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
-| `NEXT` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
+| `DONE` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
 
 #### P6.1 completion bar
 
@@ -1812,6 +1812,35 @@ names.
 - Identical pre/post esbuild scenarios record minified, gzip, and Brotli
   changes for the root control, `map`, representative operator set, and full
   runtime catalog without growing any scenario.
+
+#### P6.7 completion evidence
+
+- Moved `map`, `scan`, `switchMap`, `timeout`, and `timer` to direct receiver
+  `[create]` construction. Removed `operate`, `createDerivedObservable`, the
+  obsolete options type, and the two tests that existed only for the deleted
+  wrappers; no production or test references remain.
+- Kept the user's draft `map` migration separate, then committed each remaining
+  operator or factory, helper cleanup, architecture/decision wording, and this
+  verification evidence as independent small changes.
+- Passed all 751 RxJS source tests, lint with zero errors, public types, the
+  complete package/import gate, and the eight-case packaged-fallback/native
+  Chrome kernel contract. The classified audits retained exactly 2,299 of
+  2,338 cold passes and 2,316 of 2,338 fallback passes.
+- Passed Webpack 5.106.2 at 17,369 bytes and the performance gate at about
+  44.15 million map values/second and 125,014 cancellations/second.
+- Repeated the baseline's esbuild 0.19.11 browser-ESM `es2022` measurement with
+  tree shaking, minification, gzip level 9, and Brotli quality 11. The baseline
+  is HEAD `94b95651e` plus the initial helper/map diff identified by SHA-256
+  `76a8817c1383a6ef2a2bbe21ee17918814a6bf2d6aaa13d78c1dc578db5a8c1f`.
+
+| Scenario                       |          Minified before → after |             Gzip before → after |           Brotli before → after |
+| ------------------------------ | -------------------------------: | ------------------------------: | ------------------------------: |
+| Root-only control              |     22,494 → 22,494 (0 B, 0.00%) |      6,376 → 6,376 (0 B, 0.00%) |      5,710 → 5,710 (0 B, 0.00%) |
+| `map` subpath                  |  14,347 → 14,315 (-32 B, -0.22%) |    4,202 → 4,194 (-8 B, -0.19%) |    3,778 → 3,771 (-7 B, -0.19%) |
+| Representative 10-operator set | 19,365 → 19,243 (-122 B, -0.63%) |   5,762 → 5,703 (-59 B, -1.02%) |   5,180 → 5,134 (-46 B, -0.89%) |
+| Complete runtime catalog       | 64,368 → 64,231 (-137 B, -0.21%) | 17,606 → 17,542 (-64 B, -0.36%) | 15,591 → 15,508 (-83 B, -0.53%) |
+
+- Marked P6.7 `DONE`; the completed execution queue has no `NEXT` marker.
 
 ## Dependencies
 
@@ -3336,3 +3365,15 @@ conformance implementation depends on a runnable harness.
 - Recorded byte-identical root control, non-growing `map`, 6.99–8.45%
   representative compression reductions, and 13.32–16.50% catalog compression
   reductions. Marked P6.6 `DONE` with no remaining `NEXT` item.
+
+### 2026-08-01 — P6.7 direct derived construction
+
+- Replaced the remaining derived-construction wrappers in `map`, `scan`,
+  `switchMap`, `timeout`, and `timer` with direct D-037 `[create]` calls, then
+  deleted both wrappers, their obsolete options type, and their dead tests.
+- Passed the complete source, lint, public-type, package/import, native/fallback
+  kernel, Webpack, and performance gates while retaining the reviewed cold and
+  fallback audit classifications.
+- Recorded a byte-identical root control and reductions in every encoding for
+  `map`, the representative operator set, and the complete runtime catalog.
+  Marked P6.7 `DONE` with no remaining `NEXT` item.
