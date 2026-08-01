@@ -7,11 +7,63 @@ import prettier from 'prettier';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(toolDirectory, '../../../../..');
-const capabilityRegistry = JSON.parse(await readFile(resolve(toolDirectory, '../capability-registry.json'), 'utf8'));
-const manifest = JSON.parse(await readFile(resolve(toolDirectory, '../manifest.generated.json'), 'utf8'));
+const [capabilityRegistry, manifest, verifiedColdPasses, verifiedPolyfillPasses] = await Promise.all(
+  [
+    '../capability-registry.json',
+    '../manifest.generated.json',
+    '../verified-cold-passes.json',
+    '../verified-polyfill-passes.json',
+  ].map((path) => readFile(resolve(toolDirectory, path), 'utf8').then(JSON.parse))
+);
 const jsonPath = resolve(toolDirectory, '../migration-evidence-ledger.generated.json');
 const markdownPath = resolve(repositoryRoot, 'docs/rxjs-next/MIGRATION_EVIDENCE_LEDGER.md');
 const checkOnly = process.argv.includes('--check');
+const verifiedPasses = {
+  cold: new Set(verifiedColdPasses.caseIds),
+  polyfill: new Set(verifiedPolyfillPasses.caseIds),
+};
+const manifestByCaseId = new Map(manifest.cases.map((testCase) => [testCase.id, testCase]));
+const evidenceAliases = new Map([
+  ['factory:never', 'value:NEVER'],
+  ['operator:exhaust', 'operator:exhaustAll'],
+  ['operator:flatMap', 'operator:mergeMap'],
+  ['value:TimeInterval', 'operator:timeInterval'],
+]);
+const supplementalEvidence = new Map([
+  [
+    'value:ColdObservable',
+    {
+      sourceFiles: [],
+      localEvidence: [
+        'packages/rxjs/src/cold-observable.spec.ts',
+        'packages/rxjs/test/types/intentional-apis.ts',
+      ],
+      note: 'Intentional Next API evidence is local because RxJS 7 did not publish this class as a public migration source.',
+    },
+  ],
+  [
+    'value:firstValueFrom',
+    {
+      sourceFiles: ['spec/firstValueFrom-spec.ts'],
+      localEvidence: [
+        'packages/observable-polyfill/src/index.spec.ts',
+        'packages/rxjs/src/cold-observable.spec.ts',
+      ],
+      note: 'The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform first() mapping.',
+    },
+  ],
+  [
+    'value:lastValueFrom',
+    {
+      sourceFiles: ['spec/lastValueFrom-spec.ts'],
+      localEvidence: [
+        'packages/observable-polyfill/src/index.spec.ts',
+        'packages/rxjs/src/cold-observable.spec.ts',
+      ],
+      note: 'The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform last() mapping.',
+    },
+  ],
+]);
 
 const evidenceByRoleAndName = collectEvidence();
 const entries = [
@@ -37,6 +89,8 @@ const ledger = {
     values: entries.filter(({ category }) => category === 'value').length,
     evidenceCases: new Set(entries.flatMap(({ evidence }) => evidence.caseIds)).size,
     uncoveredEntries: entries.filter(({ evidence }) => evidence.status === 'uncovered').length,
+    aliasedEvidenceEntries: entries.filter(({ evidence }) => evidence.status === 'source-pinned-alias').length,
+    supplementalEvidenceEntries: entries.filter(({ evidence }) => evidence.status === 'supplemental').length,
   },
   entries,
 };
@@ -55,15 +109,25 @@ if (checkOnly) {
 
 function createEntry(category, name, capability) {
   const role = category === 'operator' ? 'operator' : 'value';
-  const evidence = evidenceByRoleAndName.get(`${role}:${name}`) ?? {
+  const id = `${category}:${name}`;
+  const aliasEvidenceKey = evidenceAliases.get(id);
+  const evidence = evidenceByRoleAndName.get(aliasEvidenceKey ?? `${role}:${name}`) ?? {
     caseIds: [],
     classifications: [],
     sourceFiles: [],
   };
-  const status = evidence.caseIds.length === 0 ? 'uncovered' : 'source-pinned';
+  const supplemental = supplementalEvidence.get(id);
+  const status =
+    evidence.caseIds.length > 0
+      ? aliasEvidenceKey
+        ? 'source-pinned-alias'
+        : 'source-pinned'
+      : supplemental
+        ? 'supplemental'
+        : 'uncovered';
 
   return {
-    id: `${category}:${name}`,
+    id,
     category,
     rxjs7: {
       name,
@@ -73,8 +137,18 @@ function createEntry(category, name, capability) {
       status,
       caseCount: evidence.caseIds.length,
       caseIds: evidence.caseIds,
-      sourceFiles: evidence.sourceFiles,
+      sourceFiles: supplemental?.sourceFiles ?? evidence.sourceFiles,
+      localEvidence: supplemental?.localEvidence ?? [],
       testClassifications: evidence.classifications,
+      modeResults: {
+        cold: modeResult(evidence.caseIds, verifiedPasses.cold),
+        polyfill: modeResult(evidence.caseIds, verifiedPasses.polyfill),
+      },
+      note:
+        supplemental?.note ??
+        (aliasEvidenceKey
+          ? `Uses the canonical executable evidence for ${aliasEvidenceKey}; the RxJS 7 public name is an alias or equivalent surface.`
+          : undefined),
     },
     next: {
       surface: surfaceFor(category, capability),
@@ -160,9 +234,26 @@ function cancellationModelFor(category, name, capability) {
 
 function typeStatusFor(status) {
   if (status.includes('parity verified')) return 'preserved';
-  if (status.includes('Compatibility') || status.includes('compatibility') || status.includes('Partial')) return 'changed';
-  if (status.includes('Platform mapping')) return 'changed';
-  return 'deferred';
+  if (status.includes('Type-only')) return 'compatibility-only';
+  return 'changed';
+}
+
+function modeResult(caseIds, passingCaseIds) {
+  const passed = caseIds.filter((caseId) => passingCaseIds.has(caseId)).length;
+  const failureClassifications = [
+    ...new Set(
+      caseIds
+        .filter((caseId) => !passingCaseIds.has(caseId))
+        .map((caseId) => manifestByCaseId.get(caseId)?.classification)
+        .filter(Boolean)
+    ),
+  ].sort();
+  return {
+    total: caseIds.length,
+    passed,
+    failed: caseIds.length - passed,
+    failureClassifications,
+  };
 }
 
 function migrationActionFor(status) {
@@ -200,6 +291,9 @@ function decisionsFor(category, name, capability) {
     decisions.add('D-039');
   }
   if (name === 'ColdObservable') decisions.add('D-037');
+  if (['AsyncSubject', 'BehaviorSubject', 'ColdObservable', 'ReplaySubject', 'Subject', 'pipe'].includes(name)) {
+    decisions.add('D-050');
+  }
   if (capability.status.includes('Compatibility') || capability.status.includes('compatibility')) decisions.add('D-039');
   if (decisions.size === 0) decisions.add('D-039');
   return [...decisions].sort();
@@ -223,6 +317,16 @@ function validate(generatedEntries) {
     }
     if (entry.decisions.length === 0) throw new Error(`Missing controlling decision: ${entry.id}`);
     if (entry.evidence.caseCount !== entry.evidence.caseIds.length) throw new Error(`Evidence count mismatch: ${entry.id}`);
+    for (const result of Object.values(entry.evidence.modeResults)) {
+      if (result.passed + result.failed !== result.total || result.total !== entry.evidence.caseCount) {
+        throw new Error(`Mode-result mismatch: ${entry.id}`);
+      }
+      if (result.failureClassifications.some((classification) => !['compatibility-only', 'intentional-divergence'].includes(classification))) {
+        throw new Error(`Unclassified failing migration evidence: ${entry.id}`);
+      }
+    }
+    if (entry.evidence.status === 'uncovered') throw new Error(`Uncovered prioritized migration entry: ${entry.id}`);
+    if (entry.next.typeStatus === 'deferred') throw new Error(`Deferred prioritized type status: ${entry.id}`);
   }
 }
 
@@ -244,10 +348,14 @@ evidence; it does not promise an RxJS 7 runtime compatibility surface.
 - **Entries:** ${generatedLedger.totals.entries} (${generatedLedger.totals.operators} operators, ${generatedLedger.totals.factories} creation/static functions, ${generatedLedger.totals.values} values/types)
 - **Distinct evidence cases:** ${generatedLedger.totals.evidenceCases}
 - **Entries without source-pinned cases:** ${generatedLedger.totals.uncoveredEntries}
+- **Rows using canonical alias evidence:** ${generatedLedger.totals.aliasedEvidenceEntries}
+- **Rows using pinned non-marble or focused Next evidence:** ${generatedLedger.totals.supplementalEvidenceEntries}
 
 The complete case IDs and source files are retained in
-\`packages/rxjs/test/ported/migration-evidence-ledger.generated.json\`. An
-\`uncovered\` row is explicit missing behavioral evidence, not an implied pass.
+\`packages/rxjs/test/ported/migration-evidence-ledger.generated.json\`. Every
+prioritized row has direct, canonical-alias, or supplemental evidence. Cold and
+fallback totals account for every linked executable case; supplemental rows
+name their pinned non-marble or focused Next sources explicitly.
 
 Regenerate or verify the ledger with:
 
@@ -261,13 +369,29 @@ ${body}
 }
 
 function markdownTable(sectionEntries) {
-  const headers = ['RxJS 7 API', 'Next status', 'Cases', 'Classifications', 'Sharing', 'Cancellation', 'Types', 'Migration', 'Decisions'];
+  const headers = [
+    'RxJS 7 API',
+    'Next status',
+    'Evidence',
+    'Cases',
+    'Cold',
+    'Fallback',
+    'Classifications',
+    'Sharing',
+    'Cancellation',
+    'Types',
+    'Migration',
+    'Decisions',
+  ];
   const divider = headers.map(() => '---');
   const rows = sectionEntries.map((entry) => [
     `\`${entry.rxjs7.name}\``,
     entry.next.status,
+    entry.evidence.status,
     String(entry.evidence.caseCount),
-    entry.evidence.testClassifications.length === 0 ? 'uncovered' : entry.evidence.testClassifications.join(', '),
+    formatModeResult(entry.evidence.modeResults.cold),
+    formatModeResult(entry.evidence.modeResults.polyfill),
+    entry.evidence.testClassifications.length === 0 ? 'supplemental' : entry.evidence.testClassifications.join(', '),
     entry.next.sharingModel,
     entry.next.cancellationModel,
     entry.next.typeStatus,
@@ -277,6 +401,10 @@ function markdownTable(sectionEntries) {
   return [`| ${headers.join(' | ')} |`, `| ${divider.join(' | ')} |`, ...rows.map((row) => `| ${row.map(escapeCell).join(' | ')} |`)].join(
     '\n'
   );
+}
+
+function formatModeResult(result) {
+  return result.total === 0 ? 'supplemental' : `${result.passed}/${result.total}`;
 }
 
 function escapeCell(value) {

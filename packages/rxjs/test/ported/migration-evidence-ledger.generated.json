@@ -12,7 +12,9 @@
     "factories": 21,
     "values": 29,
     "evidenceCases": 2271,
-    "uncoveredEntries": 7
+    "uncoveredEntries": 0,
+    "aliasedEvidenceEntries": 4,
+    "supplementalEvidenceEntries": 3
   },
   "entries": [
     {
@@ -34,10 +36,25 @@
         "sourceFiles": [
           "spec/observables/dom/animationFrames-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -46,7 +63,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -110,9 +127,24 @@
         "sourceFiles": [
           "spec/observables/combineLatest-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 32,
+            "passed": 32,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 32,
+            "passed": 32,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -271,11 +303,30 @@
           "spec/operators/multicast-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 115,
+            "passed": 114,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 115,
+            "passed": 114,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -327,10 +378,25 @@
           "spec/observables/defer-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -366,9 +432,24 @@
         "sourceFiles": [
           "spec/observables/empty-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "standalone",
@@ -443,10 +524,29 @@
         "sourceFiles": [
           "spec/observables/forkJoin-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 39,
+            "passed": 35,
+            "failed": 4,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 39,
+            "passed": 35,
+            "failed": 4,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -455,7 +555,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -498,11 +598,30 @@
           "spec/operators/mergeMap-spec.ts",
           "spec/operators/shareReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 8,
+            "passed": 6,
+            "failed": 2,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 8,
+            "passed": 6,
+            "failed": 2,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -538,9 +657,24 @@
         "sourceFiles": [
           "spec/observables/fromEvent-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -588,10 +722,25 @@
         "sourceFiles": [
           "spec/observables/generate-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -600,7 +749,7 @@
         "status": "Present; scheduler overload deferred",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -636,9 +785,24 @@
         "sourceFiles": [
           "spec/observables/if-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -687,10 +851,25 @@
           "spec/operators/bufferTime-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -699,7 +878,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -818,12 +997,32 @@
           "spec/schedulers/QueueScheduler-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 81,
+            "passed": 78,
+            "failed": 3,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 81,
+            "passed": 76,
+            "failed": 5,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -855,11 +1054,87 @@
         "importPath": "rxjs"
       },
       "evidence": {
-        "status": "uncovered",
-        "caseCount": 0,
-        "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "status": "source-pinned-alias",
+        "caseCount": 42,
+        "caseIds": [
+          "spec/observables/fromEvent-spec.ts:16:fromEvent > should create an observable of click on the element",
+          "spec/observables/fromEventPattern-spec.ts:18:fromEventPattern > should create an observable from the handler API",
+          "spec/observables/never-spec.ts:15:NEVER > should create a cold observable that never emits",
+          "spec/observables/timer-spec.ts:14:timer > should create an observable emitting periodically",
+          "spec/operators/buffer-spec.ts:103:Observable.prototype.buffer > should work with never and empty selector",
+          "spec/operators/buffer-spec.ts:112:Observable.prototype.buffer > should work with empty and never selector",
+          "spec/operators/buffer-spec.ts:94:Observable.prototype.buffer > should work with never and never selector",
+          "spec/operators/debounce-spec.ts:394:debounce > should ignore all values except last, when given a never selector Observable",
+          "spec/operators/mergeScan-spec.ts:242:mergeScan > should handle a never projected Observable",
+          "spec/operators/publishReplay-spec.ts:508:publishReplay operator > should not emit and should not complete/error when the selector returns never",
+          "spec/operators/share-spec.ts:113:should not change the output of the observable when error [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:124:should not change the output of the observable when successful with cold observable [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:135:should not change the output of the observable when error with cold observable [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:146:should retry just fine [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:161:should share the same values to multiple observers [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:181:should share an error from the source to multiple observers [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:201:should share the same values to multiple observers, but is unsubscribed explicitly and early [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:222:should share an empty source [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:235:should share a never source [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:248:should share a throw source [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:261:should connect when first subscriber subscribes [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:281:should disconnect when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:323:should be retryable when cold source is synchronous [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:359:should be repeatable when cold source is synchronous [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:395:should be retryable [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:430:should be repeatable [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:465:should not change the output of the observable when never [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:465:should not change the output of the observable when never [share() using sync reset notifiers equivalent to default config and notifying again after reset is notified] [share-config-2:share() using sync reset notifiers equivalent to default config and notifying again after reset is notified]",
+          "spec/operators/share-spec.ts:465:should not change the output of the observable when never [share() using sync reset notifiers equivalent to default config and throwing an error after reset is notified] [share-config-4:share() using sync reset notifiers equivalent to default config and throwing an error after reset is notified]",
+          "spec/operators/share-spec.ts:465:should not change the output of the observable when never [share() using sync reset notifiers equivalent to default config] [share-config-1:share() using sync reset notifiers equivalent to default config]",
+          "spec/operators/share-spec.ts:465:should not change the output of the observable when never [share()] [share-config-0:share()]",
+          "spec/operators/share-spec.ts:474:should not change the output of the observable when empty [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:501:should not fail on reentrant subscription [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:538:should not reset on error if configured to do so [share(config) using NEVER as sync reset notifier equivalents] [share-config-2:share(config) using NEVER as sync reset notifier equivalents]",
+          "spec/operators/share-spec.ts:559:should not reset on complete if configured to do so [share(config) using NEVER as sync reset notifier equivalents] [share-config-2:share(config) using NEVER as sync reset notifier equivalents]",
+          "spec/operators/share-spec.ts:593:should not reset on refCount 0 if configured to do so [share(config) using NEVER as sync reset notifier equivalents] [share-config-2:share(config) using NEVER as sync reset notifier equivalents]",
+          "spec/operators/share-spec.ts:622:should be referentially-transparent [share(config) using NEVER as sync reset notifier equivalents] [share-config-2:share(config) using NEVER as sync reset notifier equivalents]",
+          "spec/operators/share-spec.ts:84:should mirror a simple source Observable [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/timeout-spec.ts:694:timeout operator > using with > should not timeout if source emits synchronously when subscribed",
+          "spec/operators/windowToggle-spec.ts:246:windowToggle > should dispose window Subjects if the outer is unsubscribed early",
+          "spec/schedulers/TestScheduler-spec.ts:279:TestScheduler > jasmine helpers > expectObservable() > should handle never"
+        ],
+        "sourceFiles": [
+          "spec/observables/fromEvent-spec.ts",
+          "spec/observables/fromEventPattern-spec.ts",
+          "spec/observables/never-spec.ts",
+          "spec/observables/timer-spec.ts",
+          "spec/operators/buffer-spec.ts",
+          "spec/operators/debounce-spec.ts",
+          "spec/operators/mergeScan-spec.ts",
+          "spec/operators/publishReplay-spec.ts",
+          "spec/operators/share-spec.ts",
+          "spec/operators/timeout-spec.ts",
+          "spec/operators/windowToggle-spec.ts",
+          "spec/schedulers/TestScheduler-spec.ts"
+        ],
+        "localEvidence": [],
+        "testClassifications": [
+          "harness-rewrite",
+          "intentional-divergence",
+          "portable"
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "Uses the canonical executable evidence for value:NEVER; the RxJS 7 public name is an alias or equivalent surface."
       },
       "next": {
         "surface": "standalone",
@@ -1404,12 +1679,33 @@
           "spec/scheduled/scheduled-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 400,
+            "passed": 394,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 400,
+            "passed": 394,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -1447,9 +1743,24 @@
         "sourceFiles": [
           "spec/observables/onErrorResumeNext-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -1490,9 +1801,24 @@
         "sourceFiles": [
           "spec/observables/pairs-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -1543,10 +1869,25 @@
         "sourceFiles": [
           "spec/observables/partition-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -1555,7 +1896,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -1600,9 +1941,24 @@
         "sourceFiles": [
           "spec/observables/race-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -1644,9 +2000,24 @@
         "sourceFiles": [
           "spec/observables/range-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -1720,11 +2091,26 @@
           "spec/operators/retry-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 31,
+            "passed": 31,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 31,
+            "passed": 31,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform",
@@ -1801,10 +2187,25 @@
           "spec/operators/repeat-spec.ts",
           "spec/operators/retry-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 37,
+            "passed": 37,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 37,
+            "passed": 37,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "static-symbol",
@@ -1864,9 +2265,24 @@
         "sourceFiles": [
           "spec/operators/audit-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -1916,9 +2332,24 @@
         "sourceFiles": [
           "spec/operators/auditTime-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -1982,10 +2413,25 @@
         "sourceFiles": [
           "spec/operators/buffer-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 26,
+            "passed": 26,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 26,
+            "passed": 26,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2032,9 +2478,24 @@
         "sourceFiles": [
           "spec/operators/bufferCount-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2090,9 +2551,24 @@
         "sourceFiles": [
           "spec/operators/bufferTime-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2101,7 +2577,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -2150,10 +2626,25 @@
         "sourceFiles": [
           "spec/operators/bufferToggle-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2162,7 +2653,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -2207,9 +2698,24 @@
         "sourceFiles": [
           "spec/operators/bufferWhen-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2266,11 +2772,30 @@
           "spec/Observable-spec.ts",
           "spec/operators/catchError-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 17,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 17,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2279,7 +2804,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -2344,10 +2869,25 @@
           "spec/operators/combineLatest-legacy-spec.ts",
           "spec/operators/combineLatest-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 34,
+            "passed": 34,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 34,
+            "passed": 34,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2416,9 +2956,24 @@
         "sourceFiles": [
           "spec/operators/combineLatestAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 31,
+            "passed": 31,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 31,
+            "passed": 31,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2427,7 +2982,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -2486,9 +3041,24 @@
         "sourceFiles": [
           "spec/operators/combineLatestWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 30,
+            "passed": 30,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 30,
+            "passed": 30,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2557,11 +3127,26 @@
           "spec/observables/timer-spec.ts",
           "spec/operators/concat-legacy-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 27,
+            "passed": 27,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 27,
+            "passed": 27,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2630,10 +3215,25 @@
           "spec/observables/of-spec.ts",
           "spec/operators/concatAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 30,
+            "passed": 30,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 30,
+            "passed": 30,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2709,10 +3309,25 @@
           "spec/operators/concatMap-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 34,
+            "passed": 34,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 34,
+            "passed": 34,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2768,9 +3383,24 @@
         "sourceFiles": [
           "spec/operators/concatMapTo-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2831,9 +3461,24 @@
           "spec/operators/concatWith-spec.ts",
           "spec/operators/timeout-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2922,11 +3567,28 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/connect-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 50,
+            "passed": 50,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 50,
+            "passed": 48,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -2935,7 +3597,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -2989,9 +3651,24 @@
           "spec/operators/combineLatestWith-spec.ts",
           "spec/operators/count-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3000,7 +3677,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3055,9 +3732,24 @@
         "sourceFiles": [
           "spec/operators/debounce-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 26,
+            "passed": 26,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 26,
+            "passed": 26,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3066,7 +3758,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3113,9 +3805,24 @@
           "spec/operators/debounceTime-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3160,9 +3867,24 @@
         "sourceFiles": [
           "spec/operators/defaultIfEmpty-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3171,7 +3893,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3257,11 +3979,26 @@
           "spec/schedulers/QueueScheduler-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 43,
+            "passed": 43,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 43,
+            "passed": 43,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3270,7 +4007,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -3316,10 +4053,25 @@
         "sourceFiles": [
           "spec/operators/delayWhen-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3328,7 +4080,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3370,9 +4122,24 @@
         "sourceFiles": [
           "spec/operators/dematerialize-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3381,7 +4148,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3434,9 +4201,24 @@
           "spec/operators/combineLatestWith-spec.ts",
           "spec/operators/distinct-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3445,7 +4227,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3496,9 +4278,24 @@
         "sourceFiles": [
           "spec/operators/distinctUntilChanged-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3507,7 +4304,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3557,9 +4354,24 @@
         "sourceFiles": [
           "spec/operators/distinctUntilKeyChanged-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3568,7 +4380,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3609,9 +4421,24 @@
         "sourceFiles": [
           "spec/operators/elementAt-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3620,7 +4447,7 @@
         "status": "Present; partial empty behavior",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3665,10 +4492,25 @@
         "sourceFiles": [
           "spec/operators/endWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3728,9 +4570,24 @@
         "sourceFiles": [
           "spec/operators/every-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 22,
+            "passed": 22,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3739,7 +4596,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3761,11 +4618,47 @@
         "importPath": "rxjs/operators"
       },
       "evidence": {
-        "status": "uncovered",
-        "caseCount": 0,
-        "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "status": "source-pinned-alias",
+        "caseCount": 15,
+        "caseIds": [
+          "spec/operators/exhaustAll-spec.ts:102:exhaust > should handle a hot observable of observables, outer is unsubscribed early",
+          "spec/operators/exhaustAll-spec.ts:118:exhaust > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/exhaustAll-spec.ts:140:exhaust > should handle a hot observable of observables, inner never completes",
+          "spec/operators/exhaustAll-spec.ts:158:exhaust > should handle a synchronous switch and stay on the first inner observable",
+          "spec/operators/exhaustAll-spec.ts:15:exhaust > should handle a hot observable of hot observables",
+          "spec/operators/exhaustAll-spec.ts:173:exhaust > should handle a hot observable of observables, one inner throws",
+          "spec/operators/exhaustAll-spec.ts:188:exhaust > should handle a hot observable of observables, outer throws",
+          "spec/operators/exhaustAll-spec.ts:203:exhaust > should handle an empty hot observable",
+          "spec/operators/exhaustAll-spec.ts:214:exhaust > should handle a never hot observable",
+          "spec/operators/exhaustAll-spec.ts:225:exhaust > should complete not before the outer completes",
+          "spec/operators/exhaustAll-spec.ts:35:exhaust > should switch to first immediately-scheduled inner Observable",
+          "spec/operators/exhaustAll-spec.ts:49:exhaust > should handle throw",
+          "spec/operators/exhaustAll-spec.ts:60:exhaust > should handle empty",
+          "spec/operators/exhaustAll-spec.ts:71:exhaust > should handle never",
+          "spec/operators/exhaustAll-spec.ts:82:exhaust > should handle a hot observable of observables"
+        ],
+        "sourceFiles": [
+          "spec/operators/exhaustAll-spec.ts"
+        ],
+        "localEvidence": [],
+        "testClassifications": [
+          "portable"
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "Uses the canonical executable evidence for operator:exhaustAll; the RxJS 7 public name is an alias or equivalent surface."
       },
       "next": {
         "surface": "instance-symbol",
@@ -3818,9 +4711,24 @@
         "sourceFiles": [
           "spec/operators/exhaustAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3876,10 +4784,29 @@
         "sourceFiles": [
           "spec/operators/exhaustMap-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 17,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 17,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3888,7 +4815,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -3930,10 +4857,25 @@
         "sourceFiles": [
           "spec/operators/expand-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -3942,7 +4884,7 @@
         "status": "Present; scheduler overload deferred",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -3994,9 +4936,24 @@
         "sourceFiles": [
           "spec/operators/filter-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 21,
+            "passed": 21,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4005,7 +4962,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4043,9 +5000,24 @@
           "spec/operators/finalize-spec.ts",
           "spec/operators/scan-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4054,7 +5026,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4095,9 +5067,24 @@
         "sourceFiles": [
           "spec/operators/find-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4106,7 +5093,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4147,9 +5134,24 @@
         "sourceFiles": [
           "spec/operators/findIndex-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4158,7 +5160,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4204,9 +5206,24 @@
         "sourceFiles": [
           "spec/operators/first-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4215,7 +5232,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4237,11 +5254,292 @@
         "importPath": "rxjs/operators"
       },
       "evidence": {
-        "status": "uncovered",
-        "caseCount": 0,
-        "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "status": "source-pinned-alias",
+        "caseCount": 149,
+        "caseIds": [
+          "spec/observables/combineLatest-spec.ts:596:static combineLatest > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/observables/concat-spec.ts:68:static concat > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/observables/defer-spec.ts:144:defer > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/observables/partition-spec.ts:315:partition > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/observables/race-spec.ts:142:race > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/observables/timer-spec.ts:112:timer > 'should still target the same date if a date is provided even for the ' + 'second subscription'",
+          "spec/operators/audit-spec.ts:98:audit operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/auditTime-spec.ts:158:auditTime > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/buffer-spec.ts:210:Observable.prototype.buffer > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/buffer-spec.ts:384:should be equivalent for case 0 [buffer-case-0]",
+          "spec/operators/buffer-spec.ts:384:should be equivalent for case 1 [buffer-case-1]",
+          "spec/operators/buffer-spec.ts:384:should be equivalent for case 2 [buffer-case-2]",
+          "spec/operators/buffer-spec.ts:384:should be equivalent for case 3 [buffer-case-3]",
+          "spec/operators/bufferCount-spec.ts:102:bufferCount operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/bufferTime-spec.ts:248:bufferTime operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/bufferToggle-spec.ts:183:bufferToggle operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/bufferWhen-spec.ts:151:bufferWhen operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/catchError-spec.ts:87:catchError operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/combineLatest-legacy-spec.ts:526:combineLatest > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/combineLatestAll-spec.ts:190:combineLatestAll operator > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/combineLatestWith-spec.ts:571:combineLatestWith > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/concat-legacy-spec.ts:233:concat operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/concatAll-spec.ts:399:concatAll operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/concatMap-spec.ts:585:Observable.prototype.concatMap > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/concatMapTo-spec.ts:243:concatMapTo > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/concatWith-spec.ts:234:concat operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/count-spec.ts:232:count > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/debounce-spec.ts:137:debounce > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/debounceTime-spec.ts:117:debounceTime > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/defaultIfEmpty-spec.ts:73:defaultIfEmpty > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/delay-spec.ts:193:delay > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/dematerialize-spec.ts:155:dematerialize > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/distinct-spec.ts:148:distinct > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/distinctUntilChanged-spec.ts:159:distinctUntilChanged > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/distinctUntilKeyChanged-spec.ts:193:distinctUntilKeyChanged > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/elementAt-spec.ts:117:elementAt > should not break unsubscription chains when result Observable is unsubscribed",
+          "spec/operators/endWith-spec.ts:152:endWith > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/every-spec.ts:152:every > should not break unsubscription chains when result observable is unsubscribed",
+          "spec/operators/exhaustAll-spec.ts:118:exhaust > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/exhaustMap-spec.ts:198:exhaustMap > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/exhaustMap-spec.ts:227:exhaustMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly",
+          "spec/operators/expand-spec.ts:177:expand > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/filter-spec.ts:347:filter > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/find-spec.ts:136:find > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/findIndex-spec.ts:135:findIndex > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/first-spec.ts:118:first > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/groupBy-spec.ts:387:groupBy operator > should unsubscribe from the source when the outer and inner subscriptions are disposed",
+          "spec/operators/groupBy-spec.ts:418:groupBy operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/ignoreElements-spec.ts:39:ignoreElements > should allow unsubscribing early and explicitly with higher order",
+          "spec/operators/isEmpty-spec.ts:81:isEmpty > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/last-spec.ts:92:last > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/map-spec.ts:299:map > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/mapTo-spec.ts:99:mapTo > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/materialize-spec.ts:91:materialize > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/max-spec.ts:104:max > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/mergeAll-spec.ts:169:mergeAll > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/mergeMap-spec.ts:108:mergeMap > should mergeMap many regular interval inners",
+          "spec/operators/mergeMap-spec.ts:16:mergeMap > should map-and-flatten each item to an Observable",
+          "spec/operators/mergeMap-spec.ts:208:mergeMap > should mergeMap many outer values to many inner values",
+          "spec/operators/mergeMap-spec.ts:232:mergeMap > should mergeMap many outer to many inner, complete late",
+          "spec/operators/mergeMap-spec.ts:256:mergeMap > should mergeMap many outer to many inner, outer never completes",
+          "spec/operators/mergeMap-spec.ts:285:mergeMap > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/mergeMap-spec.ts:318:mergeMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly",
+          "spec/operators/mergeMap-spec.ts:350:mergeMap > should mergeMap many outer to many inner, inner never completes",
+          "spec/operators/mergeMap-spec.ts:374:mergeMap > should mergeMap many outer to many inner, and inner throws",
+          "spec/operators/mergeMap-spec.ts:398:mergeMap > should mergeMap many outer to many inner, and outer throws",
+          "spec/operators/mergeMap-spec.ts:422:mergeMap > should mergeMap many outer to many inner, both inner and outer throw",
+          "spec/operators/mergeMap-spec.ts:444:mergeMap > should mergeMap to many cold Observable, with parameter concurrency=1",
+          "spec/operators/mergeMap-spec.ts:467:mergeMap > should mergeMap to many cold Observable, with parameter concurrency=2",
+          "spec/operators/mergeMap-spec.ts:490:mergeMap > should mergeMap to many hot Observable, with parameter concurrency=1",
+          "spec/operators/mergeMap-spec.ts:514:mergeMap > should mergeMap to many hot Observable, with parameter concurrency=2",
+          "spec/operators/mergeMap-spec.ts:538:mergeMap > should mergeMap many complex, where all inners are finite",
+          "spec/operators/mergeMap-spec.ts:574:mergeMap > should mergeMap many complex, all inners finite except one",
+          "spec/operators/mergeMap-spec.ts:610:mergeMap > should mergeMap many complex, inners finite, outer does not complete",
+          "spec/operators/mergeMap-spec.ts:646:mergeMap > should mergeMap many complex, all inners finite, and outer throws",
+          "spec/operators/mergeMap-spec.ts:682:mergeMap > should mergeMap many complex, all inners complete except one throws",
+          "spec/operators/mergeMap-spec.ts:718:mergeMap > should mergeMap many complex, all inners finite, outer is unsubscribed",
+          "spec/operators/mergeMap-spec.ts:755:mergeMap > should mergeMap many complex, all inners finite, project throws",
+          "spec/operators/mergeMap-spec.ts:805:mergeMap > should mergeMap many outer to an array for each value",
+          "spec/operators/mergeMap-spec.ts:818:mergeMap > should mergeMap many outer to inner arrays, and outer throws",
+          "spec/operators/mergeMap-spec.ts:831:mergeMap > should mergeMap many outer to inner arrays, outer gets unsubscribed",
+          "spec/operators/mergeMap-spec.ts:845:mergeMap > should mergeMap many outer to inner arrays, project throws",
+          "spec/operators/mergeMap-spec.ts:975:mergeMap > should properly handle errors from iterables that are processed after some async",
+          "spec/operators/mergeScan-spec.ts:135:mergeScan > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/min-spec.ts:217:min > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/multicast-spec.ts:272:multicast > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/observeOn-spec.ts:87:observeOn > should not break unsubscription chains when the result is unsubscribed explicitly",
+          "spec/operators/pluck-spec.ts:206:pluck > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/publish-spec.ts:146:publish operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/publishBehavior-spec.ts:123:publishBehavior operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/publishLast-spec.ts:123:publishLast operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/publishReplay-spec.ts:144:publishReplay operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/race-legacy-spec.ts:129:race operator > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/raceWith-spec.ts:113:raceWith operator > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/reduce-spec.ts:146:reduce > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/repeat-spec.ts:102:repeat operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/repeatWhen-spec.ts:383:repeatWhen operator > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/repeatWhen-spec.ts:438:repeatWhen operator > should handle a source with eventual error using a dynamic notifier selector which eventually completes",
+          "spec/operators/retry-spec.ts:333:retry > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/retryWhen-spec.ts:335:retryWhen > should not break unsubscription chains when unsubscribed explicitly",
+          "spec/operators/retryWhen-spec.ts:394:retryWhen > should handle a source with eventual error using a dynamic notifier selector which eventually completes",
+          "spec/operators/sample-spec.ts:127:sample > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/sampleTime-spec.ts:93:sampleTime > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/scan-spec.ts:219:scan > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config and never completing after reset is notified] [share-config-3:share() using sync reset notifiers equivalent to default config and never completing after reset is notified]",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config and notifying again after reset is notified] [share-config-2:share() using sync reset notifiers equivalent to default config and notifying again after reset is notified]",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config and throwing an error after reset is notified] [share-config-4:share() using sync reset notifiers equivalent to default config and throwing an error after reset is notified]",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share() using sync reset notifiers equivalent to default config] [share-config-1:share() using sync reset notifiers equivalent to default config]",
+          "spec/operators/share-spec.ts:300:should not break unsubscription chain when last subscriber unsubscribes [share()] [share-config-0:share()]",
+          "spec/operators/single-spec.ts:60:single operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/skip-spec.ts:82:skip > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/skipLast-spec.ts:181:skipLast operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/skipUntil-spec.ts:105:skipUntil > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/skipUntil-spec.ts:126:skipUntil > should not break unsubscription chains with interop inners when result is unsubscribed explicitly",
+          "spec/operators/skipWhile-spec.ts:140:skipWhile > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/startWith-spec.ts:161:startWith > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/subscribeOn-spec.ts:95:subscribeOn > should not break unsubscription chains when the result is unsubscribed explicitly",
+          "spec/operators/switchAll-spec.ts:122:switchAll > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/switchMap-spec.ts:161:switchMap > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/switchMap-spec.ts:187:switchMap > should not break unsubscription chains with interop inners when result is unsubscribed explicitly",
+          "spec/operators/switchMapTo-spec.ts:159:switchMapTo > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/switchScan-spec.ts:126:switchScan > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/take-spec.ts:148:take > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/takeLast-spec.ts:191:takeLast operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/takeUntil-spec.ts:234:takeUntil operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/takeWhile-spec.ts:274:takeWhile > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/tap-spec.ts:240:tap > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/throttle-spec.ts:106:throttle > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/throttleTime-spec.ts:150:throttleTime operator > default behavior { leading: true, trailing: false } > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/timeInterval-spec.ts:108:timeInterval > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/timeout-spec.ts:133:timeout operator > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/timeout-spec.ts:305:timeout operator > config > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/timeout-spec.ts:501:timeout operator > using with > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/timeout-spec.ts:523:timeout operator > using with > should not subscribe to withObservable after explicit unsubscription",
+          "spec/operators/timeoutWith-spec.ts:107:timeoutWith operator > should not subscribe to withObservable after explicit unsubscription",
+          "spec/operators/timeoutWith-spec.ts:85:timeoutWith operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/timestamp-spec.ts:107:timestamp > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/toArray-spec.ts:105:toArray > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/window-spec.ts:223:window > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/windowCount-spec.ts:155:windowCount > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/windowTime-spec.ts:247:windowTime > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/windowToggle-spec.ts:210:windowToggle > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/windowWhen-spec.ts:166:windowWhen > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/withLatestFrom-spec.ts:107:withLatestFrom > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/zipAll-spec.ts:772:zipAll operator > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/operators/zipWith-spec.ts:479:zipWith > should not break unsubscription chain when unsubscribed explicitly",
+          "spec/schedulers/TestScheduler-spec.ts:739:TestScheduler > TestScheduler.run() > schedulers > should support animationFrame, async and asap schedulers",
+          "spec/schedulers/TestScheduler-spec.ts:756:TestScheduler > TestScheduler.run() > schedulers > should emit asap notifications before async notifications",
+          "spec/schedulers/TestScheduler-spec.ts:769:TestScheduler > TestScheduler.run() > schedulers > should support intervals with zero duration"
+        ],
+        "sourceFiles": [
+          "spec/observables/combineLatest-spec.ts",
+          "spec/observables/concat-spec.ts",
+          "spec/observables/defer-spec.ts",
+          "spec/observables/partition-spec.ts",
+          "spec/observables/race-spec.ts",
+          "spec/observables/timer-spec.ts",
+          "spec/operators/audit-spec.ts",
+          "spec/operators/auditTime-spec.ts",
+          "spec/operators/buffer-spec.ts",
+          "spec/operators/bufferCount-spec.ts",
+          "spec/operators/bufferTime-spec.ts",
+          "spec/operators/bufferToggle-spec.ts",
+          "spec/operators/bufferWhen-spec.ts",
+          "spec/operators/catchError-spec.ts",
+          "spec/operators/combineLatest-legacy-spec.ts",
+          "spec/operators/combineLatestAll-spec.ts",
+          "spec/operators/combineLatestWith-spec.ts",
+          "spec/operators/concat-legacy-spec.ts",
+          "spec/operators/concatAll-spec.ts",
+          "spec/operators/concatMap-spec.ts",
+          "spec/operators/concatMapTo-spec.ts",
+          "spec/operators/concatWith-spec.ts",
+          "spec/operators/count-spec.ts",
+          "spec/operators/debounce-spec.ts",
+          "spec/operators/debounceTime-spec.ts",
+          "spec/operators/defaultIfEmpty-spec.ts",
+          "spec/operators/delay-spec.ts",
+          "spec/operators/dematerialize-spec.ts",
+          "spec/operators/distinct-spec.ts",
+          "spec/operators/distinctUntilChanged-spec.ts",
+          "spec/operators/distinctUntilKeyChanged-spec.ts",
+          "spec/operators/elementAt-spec.ts",
+          "spec/operators/endWith-spec.ts",
+          "spec/operators/every-spec.ts",
+          "spec/operators/exhaustAll-spec.ts",
+          "spec/operators/exhaustMap-spec.ts",
+          "spec/operators/expand-spec.ts",
+          "spec/operators/filter-spec.ts",
+          "spec/operators/find-spec.ts",
+          "spec/operators/findIndex-spec.ts",
+          "spec/operators/first-spec.ts",
+          "spec/operators/groupBy-spec.ts",
+          "spec/operators/ignoreElements-spec.ts",
+          "spec/operators/isEmpty-spec.ts",
+          "spec/operators/last-spec.ts",
+          "spec/operators/map-spec.ts",
+          "spec/operators/mapTo-spec.ts",
+          "spec/operators/materialize-spec.ts",
+          "spec/operators/max-spec.ts",
+          "spec/operators/mergeAll-spec.ts",
+          "spec/operators/mergeMap-spec.ts",
+          "spec/operators/mergeScan-spec.ts",
+          "spec/operators/min-spec.ts",
+          "spec/operators/multicast-spec.ts",
+          "spec/operators/observeOn-spec.ts",
+          "spec/operators/pluck-spec.ts",
+          "spec/operators/publish-spec.ts",
+          "spec/operators/publishBehavior-spec.ts",
+          "spec/operators/publishLast-spec.ts",
+          "spec/operators/publishReplay-spec.ts",
+          "spec/operators/race-legacy-spec.ts",
+          "spec/operators/raceWith-spec.ts",
+          "spec/operators/reduce-spec.ts",
+          "spec/operators/repeat-spec.ts",
+          "spec/operators/repeatWhen-spec.ts",
+          "spec/operators/retry-spec.ts",
+          "spec/operators/retryWhen-spec.ts",
+          "spec/operators/sample-spec.ts",
+          "spec/operators/sampleTime-spec.ts",
+          "spec/operators/scan-spec.ts",
+          "spec/operators/share-spec.ts",
+          "spec/operators/single-spec.ts",
+          "spec/operators/skip-spec.ts",
+          "spec/operators/skipLast-spec.ts",
+          "spec/operators/skipUntil-spec.ts",
+          "spec/operators/skipWhile-spec.ts",
+          "spec/operators/startWith-spec.ts",
+          "spec/operators/subscribeOn-spec.ts",
+          "spec/operators/switchAll-spec.ts",
+          "spec/operators/switchMap-spec.ts",
+          "spec/operators/switchMapTo-spec.ts",
+          "spec/operators/switchScan-spec.ts",
+          "spec/operators/take-spec.ts",
+          "spec/operators/takeLast-spec.ts",
+          "spec/operators/takeUntil-spec.ts",
+          "spec/operators/takeWhile-spec.ts",
+          "spec/operators/tap-spec.ts",
+          "spec/operators/throttle-spec.ts",
+          "spec/operators/throttleTime-spec.ts",
+          "spec/operators/timeInterval-spec.ts",
+          "spec/operators/timeout-spec.ts",
+          "spec/operators/timeoutWith-spec.ts",
+          "spec/operators/timestamp-spec.ts",
+          "spec/operators/toArray-spec.ts",
+          "spec/operators/window-spec.ts",
+          "spec/operators/windowCount-spec.ts",
+          "spec/operators/windowTime-spec.ts",
+          "spec/operators/windowToggle-spec.ts",
+          "spec/operators/windowWhen-spec.ts",
+          "spec/operators/withLatestFrom-spec.ts",
+          "spec/operators/zipAll-spec.ts",
+          "spec/operators/zipWith-spec.ts",
+          "spec/schedulers/TestScheduler-spec.ts"
+        ],
+        "localEvidence": [],
+        "testClassifications": [
+          "compatibility-only",
+          "harness-rewrite",
+          "intentional-divergence",
+          "portable"
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 149,
+            "passed": 143,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 149,
+            "passed": 143,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          }
+        },
+        "note": "Uses the canonical executable evidence for operator:mergeMap; the RxJS 7 public name is an alias or equivalent surface."
       },
       "next": {
         "surface": "instance-symbol",
@@ -4315,10 +5613,25 @@
         "sourceFiles": [
           "spec/operators/groupBy-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 36,
+            "passed": 36,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 36,
+            "passed": 36,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4327,7 +5640,7 @@
         "status": "Present; scheduler-internal cases deferred",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -4369,10 +5682,25 @@
           "spec/operators/groupBy-spec.ts",
           "spec/operators/ignoreElements-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4417,9 +5745,24 @@
         "sourceFiles": [
           "spec/operators/isEmpty-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4428,7 +5771,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4468,9 +5811,24 @@
         "sourceFiles": [
           "spec/operators/last-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4479,7 +5837,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4626,11 +5984,28 @@
           "spec/operators/timeInterval-spec.ts",
           "spec/operators/timestamp-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 93,
+            "passed": 92,
+            "failed": 1,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 93,
+            "passed": 93,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4639,7 +6014,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4682,10 +6057,25 @@
           "spec/operators/mapTo-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4734,9 +6124,24 @@
           "spec/operators/dematerialize-spec.ts",
           "spec/operators/materialize-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4745,7 +6150,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4792,9 +6197,24 @@
         "sourceFiles": [
           "spec/operators/max-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4803,7 +6223,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -4833,9 +6253,24 @@
         "sourceFiles": [
           "spec/Observable-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -4898,9 +6333,24 @@
         "sourceFiles": [
           "spec/operators/mergeAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 25,
+            "passed": 25,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 25,
+            "passed": 25,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5189,12 +6639,33 @@
           "spec/operators/zipWith-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 149,
+            "passed": 143,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 149,
+            "passed": 143,
+            "failed": 6,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5348,11 +6819,30 @@
           "spec/subjects/BehaviorSubject-spec.ts",
           "spec/subjects/ReplaySubject-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 106,
+            "passed": 87,
+            "failed": 19,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 106,
+            "passed": 103,
+            "failed": 3,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5410,9 +6900,24 @@
         "sourceFiles": [
           "spec/operators/mergeScan-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 20,
+            "passed": 20,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 20,
+            "passed": 20,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5421,7 +6926,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -5467,9 +6972,24 @@
         "sourceFiles": [
           "spec/operators/mergeWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5525,9 +7045,24 @@
         "sourceFiles": [
           "spec/operators/min-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5536,7 +7071,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -5636,11 +7171,30 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/multicast-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 70,
+            "passed": 65,
+            "failed": 5,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 70,
+            "passed": 68,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5686,9 +7240,24 @@
         "sourceFiles": [
           "spec/operators/observeOn-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5740,10 +7309,29 @@
           "spec/operators/onErrorResumeNext-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 10,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 10,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5788,9 +7376,24 @@
         "sourceFiles": [
           "spec/operators/pairwise-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5799,7 +7402,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -5842,9 +7445,24 @@
         "sourceFiles": [
           "spec/operators/pluck-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 14,
+            "passed": 14,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 14,
+            "passed": 14,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -5853,7 +7471,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -5948,11 +7566,30 @@
           "spec/operators/publish-spec.ts",
           "spec/operators/refCount-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 64,
+            "passed": 63,
+            "failed": 1,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 64,
+            "passed": 62,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6054,11 +7691,30 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/publishBehavior-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 62,
+            "passed": 54,
+            "failed": 8,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 62,
+            "passed": 60,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6159,11 +7815,28 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/publishLast-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 61,
+            "passed": 61,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 61,
+            "passed": 59,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6272,11 +7945,30 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/publishReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 69,
+            "passed": 60,
+            "failed": 9,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 69,
+            "passed": 66,
+            "failed": 3,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6328,10 +8020,25 @@
           "spec/Observable-spec.ts",
           "spec/operators/race-legacy-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6379,9 +8086,24 @@
         "sourceFiles": [
           "spec/operators/raceWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6437,9 +8159,24 @@
         "sourceFiles": [
           "spec/operators/reduce-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6448,7 +8185,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -6557,11 +8294,30 @@
           "spec/operators/publishReplay-spec.ts",
           "spec/operators/refCount-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 74,
+            "passed": 62,
+            "failed": 12,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 74,
+            "passed": 72,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6670,11 +8426,28 @@
           "spec/operators/repeat-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 64,
+            "passed": 60,
+            "failed": 4,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 64,
+            "passed": 64,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6733,11 +8506,26 @@
           "spec/operators/delay-spec.ts",
           "spec/operators/repeatWhen-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 20,
+            "passed": 20,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 20,
+            "passed": 20,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6746,7 +8534,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -6850,11 +8638,30 @@
           "spec/operators/share-spec.ts",
           "spec/operators/shareReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 67,
+            "passed": 63,
+            "failed": 4,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 67,
+            "passed": 65,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6911,9 +8718,24 @@
         "sourceFiles": [
           "spec/operators/retryWhen-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6922,7 +8744,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -6967,9 +8789,24 @@
         "sourceFiles": [
           "spec/operators/sample-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -6978,7 +8815,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7017,9 +8854,24 @@
         "sourceFiles": [
           "spec/operators/sampleTime-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7028,7 +8880,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -7071,9 +8923,24 @@
         "sourceFiles": [
           "spec/operators/scan-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7082,7 +8949,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7134,10 +9001,25 @@
         "sourceFiles": [
           "spec/operators/sequenceEqual-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7352,11 +9234,28 @@
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts",
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 176,
+            "passed": 176,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 176,
+            "passed": 174,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7365,7 +9264,7 @@
         "status": "Present; platform lifecycle review required",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -7410,10 +9309,25 @@
         "sourceFiles": [
           "spec/operators/shareReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7422,7 +9336,7 @@
         "status": "Present; platform lifecycle review required",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -7476,9 +9390,24 @@
         "sourceFiles": [
           "spec/operators/single-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 25,
+            "passed": 25,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 25,
+            "passed": 25,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7487,7 +9416,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7547,11 +9476,26 @@
           "spec/operators/groupBy-spec.ts",
           "spec/operators/skip-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 29,
+            "passed": 29,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 29,
+            "passed": 29,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7560,7 +9504,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7605,9 +9549,24 @@
         "sourceFiles": [
           "spec/operators/skipLast-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7616,7 +9575,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7664,11 +9623,30 @@
         "sourceFiles": [
           "spec/operators/skipUntil-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 19,
+            "passed": 18,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 19,
+            "passed": 18,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7677,7 +9655,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7721,9 +9699,24 @@
         "sourceFiles": [
           "spec/operators/skipWhile-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7732,7 +9725,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -7787,10 +9780,25 @@
           "spec/operators/share-spec.ts",
           "spec/operators/startWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 24,
+            "passed": 24,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 24,
+            "passed": 24,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7799,7 +9807,7 @@
         "status": "Present; scheduler overload deferred",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -7838,9 +9846,24 @@
         "sourceFiles": [
           "spec/operators/subscribeOn-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7891,9 +9914,24 @@
         "sourceFiles": [
           "spec/operators/switchAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7950,10 +9988,29 @@
         "sourceFiles": [
           "spec/operators/switchMap-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 19,
+            "passed": 18,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          },
+          "polyfill": {
+            "total": 19,
+            "passed": 18,
+            "failed": 1,
+            "failureClassifications": [
+              "compatibility-only"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -7962,7 +10019,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8006,9 +10063,24 @@
         "sourceFiles": [
           "spec/operators/switchMapTo-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8064,9 +10136,24 @@
         "sourceFiles": [
           "spec/operators/switchScan-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8075,7 +10162,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8164,11 +10251,26 @@
           "spec/operators/take-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 47,
+            "passed": 47,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 47,
+            "passed": 47,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8177,7 +10279,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8225,10 +10327,25 @@
           "spec/operators/multicast-spec.ts",
           "spec/operators/takeLast-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8237,7 +10354,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8293,10 +10410,25 @@
           "spec/operators/share-spec.ts",
           "spec/operators/takeUntil-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8305,7 +10437,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8359,10 +10491,25 @@
           "spec/operators/share-spec.ts",
           "spec/operators/takeWhile-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 23,
+            "passed": 23,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8371,7 +10518,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8492,11 +10639,28 @@
           "spec/subjects/BehaviorSubject-spec.ts",
           "spec/subjects/ReplaySubject-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 73,
+            "passed": 66,
+            "failed": 7,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 73,
+            "passed": 73,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8505,7 +10669,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8562,9 +10726,24 @@
         "sourceFiles": [
           "spec/operators/throttle-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 28,
+            "passed": 28,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 28,
+            "passed": 28,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8573,7 +10752,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8618,9 +10797,24 @@
         "sourceFiles": [
           "spec/operators/throttleTime-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 16,
+            "passed": 16,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8665,9 +10859,24 @@
         "sourceFiles": [
           "spec/operators/throwIfEmpty-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8676,7 +10885,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -8716,9 +10925,24 @@
         "sourceFiles": [
           "spec/operators/timeInterval-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8727,7 +10951,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -8796,9 +11020,24 @@
         "sourceFiles": [
           "spec/operators/timeout-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 38,
+            "passed": 38,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 38,
+            "passed": 38,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8853,9 +11092,24 @@
         "sourceFiles": [
           "spec/operators/timeoutWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8904,9 +11158,24 @@
         "sourceFiles": [
           "spec/operators/timestamp-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -8915,7 +11184,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -8962,10 +11231,25 @@
           "spec/operators/buffer-spec.ts",
           "spec/operators/toArray-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9022,10 +11306,25 @@
           "spec/operators/buffer-spec.ts",
           "spec/operators/window-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 18,
+            "passed": 18,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9034,7 +11333,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9072,10 +11371,25 @@
         "sourceFiles": [
           "spec/operators/windowCount-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 9,
+            "passed": 9,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9084,7 +11398,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9126,10 +11440,25 @@
         "sourceFiles": [
           "spec/operators/windowTime-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9138,7 +11467,7 @@
         "status": "Present; scheduler adapted to host timing",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change-and-semantic-review",
@@ -9188,11 +11517,26 @@
         "sourceFiles": [
           "spec/operators/windowToggle-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9201,7 +11545,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9245,10 +11589,25 @@
         "sourceFiles": [
           "spec/operators/windowWhen-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 15,
+            "passed": 15,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9257,7 +11616,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9304,10 +11663,25 @@
           "spec/operators/share-spec.ts",
           "spec/operators/withLatestFrom-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 17,
+            "passed": 17,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9316,7 +11690,7 @@
         "status": "Unified mapping",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9358,10 +11732,27 @@
           "spec/operators/zip-legacy-spec.ts",
           "spec/operators/zip-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 10,
+            "passed": 8,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9446,9 +11837,24 @@
         "sourceFiles": [
           "spec/operators/zipAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 46,
+            "passed": 46,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 46,
+            "passed": 46,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9457,7 +11863,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9518,9 +11924,24 @@
         "sourceFiles": [
           "spec/operators/zipWith-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 32,
+            "passed": 32,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 32,
+            "passed": 32,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "instance-symbol",
@@ -9529,7 +11950,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9560,9 +11981,24 @@
         "sourceFiles": [
           "spec/operators/elementAt-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -9646,10 +12082,27 @@
         "sourceFiles": [
           "spec/deprecation-equivalents/multicasting-deprecations-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 48,
+            "passed": 48,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 48,
+            "passed": 46,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -9669,7 +12122,8 @@
       "decisions": [
         "D-035",
         "D-039",
-        "D-040"
+        "D-040",
+        "D-050"
       ]
     },
     {
@@ -9740,11 +12194,28 @@
           "spec/operators/connect-spec.ts",
           "spec/subjects/BehaviorSubject-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 51,
+            "passed": 51,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 51,
+            "passed": 49,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -9764,7 +12235,8 @@
       "decisions": [
         "D-035",
         "D-039",
-        "D-040"
+        "D-040",
+        "D-050"
       ]
     },
     {
@@ -9775,11 +12247,30 @@
         "importPath": "rxjs"
       },
       "evidence": {
-        "status": "uncovered",
+        "status": "supplemental",
         "caseCount": 0,
         "caseIds": [],
         "sourceFiles": [],
-        "testClassifications": []
+        "localEvidence": [
+          "packages/rxjs/src/cold-observable.spec.ts",
+          "packages/rxjs/test/types/intentional-apis.ts"
+        ],
+        "testClassifications": [],
+        "modeResults": {
+          "cold": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "Intentional Next API evidence is local because RxJS 7 did not publish this class as a public migration source."
       },
       "next": {
         "surface": "intentional-next-value",
@@ -9800,7 +12291,8 @@
         "D-035",
         "D-037",
         "D-039",
-        "D-040"
+        "D-040",
+        "D-050"
       ]
     },
     {
@@ -9821,9 +12313,24 @@
         "sourceFiles": [
           "spec/operators/share-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -9862,10 +12369,25 @@
         "sourceFiles": [
           "spec/observables/connectable-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -9874,7 +12396,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "subject-hot",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -9952,11 +12474,28 @@
           "spec/operators/publishLast-spec.ts",
           "spec/operators/publishReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 45,
+            "passed": 36,
+            "failed": 9,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 45,
+            "passed": 45,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10051,11 +12590,26 @@
           "spec/operators/windowToggle-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10064,7 +12618,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -10107,9 +12661,24 @@
           "spec/operators/single-spec.ts",
           "spec/operators/throwIfEmpty-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 13,
+            "passed": 13,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10118,7 +12687,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -10138,11 +12707,32 @@
         "importPath": "rxjs"
       },
       "evidence": {
-        "status": "uncovered",
+        "status": "supplemental",
         "caseCount": 0,
         "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "sourceFiles": [
+          "spec/firstValueFrom-spec.ts"
+        ],
+        "localEvidence": [
+          "packages/observable-polyfill/src/index.spec.ts",
+          "packages/rxjs/src/cold-observable.spec.ts"
+        ],
+        "testClassifications": [],
+        "modeResults": {
+          "cold": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform first() mapping."
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -10179,9 +12769,24 @@
         "sourceFiles": [
           "spec/observables/fromEventPattern-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10190,7 +12795,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -10218,9 +12823,24 @@
         "sourceFiles": [
           "spec/operators/map-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10249,11 +12869,32 @@
         "importPath": "rxjs"
       },
       "evidence": {
-        "status": "uncovered",
+        "status": "supplemental",
         "caseCount": 0,
         "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "sourceFiles": [
+          "spec/lastValueFrom-spec.ts"
+        ],
+        "localEvidence": [
+          "packages/observable-polyfill/src/index.spec.ts",
+          "packages/rxjs/src/cold-observable.spec.ts"
+        ],
+        "testClassifications": [],
+        "modeResults": {
+          "cold": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 0,
+            "passed": 0,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "The pinned non-marble source defines RxJS 7 Promise conversion; focused Next evidence covers the partial platform last() mapping."
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -10342,11 +12983,26 @@
           "spec/operators/windowToggle-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10355,7 +13011,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -10389,10 +13045,25 @@
           "spec/observables/dom/ajax-spec.ts",
           "spec/operators/tap-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10432,9 +13103,24 @@
         "sourceFiles": [
           "spec/operators/single-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10443,7 +13129,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -10491,9 +13177,24 @@
           "spec/operators/dematerialize-spec.ts",
           "spec/operators/materialize-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10633,12 +13334,33 @@
           "spec/operators/windowWhen-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "compatibility-only",
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 85,
+            "passed": 76,
+            "failed": 9,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 85,
+            "passed": 77,
+            "failed": 8,
+            "failureClassifications": [
+              "compatibility-only",
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -10678,9 +13400,24 @@
         "sourceFiles": [
           "spec/operators/dematerialize-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10689,7 +13426,7 @@
         "status": "Type-only compatibility",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "changed"
+        "typeStatus": "compatibility-only"
       },
       "migration": {
         "action": "semantic-review",
@@ -10718,9 +13455,24 @@
         "sourceFiles": [
           "spec/observables/from-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -10729,7 +13481,7 @@
         "status": "Type-only compatibility",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "changed"
+        "typeStatus": "compatibility-only"
       },
       "migration": {
         "action": "semantic-review",
@@ -10762,9 +13514,26 @@
         "sourceFiles": [
           "spec/Observable-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "intentional-divergence"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 5,
+            "passed": 4,
+            "failed": 1,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -10773,7 +13542,7 @@
         "status": "Type-only compatibility",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "changed"
+        "typeStatus": "compatibility-only"
       },
       "migration": {
         "action": "semantic-review",
@@ -10888,11 +13657,30 @@
           "spec/operators/share-spec.ts",
           "spec/operators/shareReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 82,
+            "passed": 64,
+            "failed": 18,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 82,
+            "passed": 81,
+            "failed": 1,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -10913,7 +13701,8 @@
         "D-003",
         "D-040",
         "D-048",
-        "D-049"
+        "D-049",
+        "D-050"
       ]
     },
     {
@@ -10991,10 +13780,29 @@
           "spec/operators/multicast-spec.ts",
           "spec/subjects/ReplaySubject-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 58,
+            "passed": 56,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 58,
+            "passed": 56,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -11014,7 +13822,8 @@
       "decisions": [
         "D-035",
         "D-039",
-        "D-040"
+        "D-040",
+        "D-050"
       ]
     },
     {
@@ -11037,9 +13846,24 @@
         "sourceFiles": [
           "spec/operators/single-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -11048,7 +13872,7 @@
         "status": "Present; parity unverified",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -11157,11 +13981,30 @@
           "spec/operators/take-spec.ts",
           "spec/schedulers/TestScheduler-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 75,
+            "passed": 72,
+            "failed": 3,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 75,
+            "passed": 73,
+            "failed": 2,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -11170,7 +14013,7 @@
         "status": "Present; observable view verified",
         "sharingModel": "subject-hot",
         "cancellationModel": "AbortSignal",
-        "typeStatus": "deferred"
+        "typeStatus": "changed"
       },
       "migration": {
         "action": "mechanical-change",
@@ -11181,7 +14024,8 @@
       "decisions": [
         "D-035",
         "D-039",
-        "D-040"
+        "D-040",
+        "D-050"
       ]
     },
     {
@@ -11213,10 +14057,27 @@
           "spec/operators/publishLast-spec.ts",
           "spec/operators/publishReplay-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 10,
+            "passed": 6,
+            "failed": 4,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 10,
+            "passed": 10,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "platform-or-type-adapter",
@@ -11225,7 +14086,7 @@
         "status": "Type-only compatibility",
         "sharingModel": "not-applicable",
         "cancellationModel": "not-applicable",
-        "typeStatus": "changed"
+        "typeStatus": "compatibility-only"
       },
       "migration": {
         "action": "semantic-review",
@@ -11246,11 +14107,43 @@
         "importPath": "rxjs"
       },
       "evidence": {
-        "status": "uncovered",
-        "caseCount": 0,
-        "caseIds": [],
-        "sourceFiles": [],
-        "testClassifications": []
+        "status": "source-pinned-alias",
+        "caseCount": 11,
+        "caseIds": [
+          "spec/operators/timeInterval-spec.ts:108:timeInterval > should not break unsubscription chains when result is unsubscribed explicitly",
+          "spec/operators/timeInterval-spec.ts:131:timeInterval > should not completes if source never completes",
+          "spec/operators/timeInterval-spec.ts:142:timeInterval > raise error if source raises error",
+          "spec/operators/timeInterval-spec.ts:153:timeInterval > should record interval then raise error if source raises error after emit",
+          "spec/operators/timeInterval-spec.ts:169:timeInterval > should raise error if source immediately throws",
+          "spec/operators/timeInterval-spec.ts:16:timeInterval > should record the time interval between source elements",
+          "spec/operators/timeInterval-spec.ts:33:timeInterval > should record interval if source emit elements",
+          "spec/operators/timeInterval-spec.ts:51:timeInterval > should completes without record interval if source does not emits",
+          "spec/operators/timeInterval-spec.ts:62:timeInterval > should complete immediately if source is empty",
+          "spec/operators/timeInterval-spec.ts:73:timeInterval > should record interval then does not completes if source emits but not completes",
+          "spec/operators/timeInterval-spec.ts:89:timeInterval > should allow unsubscribing explicitly and early"
+        ],
+        "sourceFiles": [
+          "spec/operators/timeInterval-spec.ts"
+        ],
+        "localEvidence": [],
+        "testClassifications": [
+          "portable"
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 11,
+            "passed": 11,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        },
+        "note": "Uses the canonical executable evidence for operator:timeInterval; the RxJS 7 public name is an alias or equivalent surface."
       },
       "next": {
         "surface": "intentional-next-value",
@@ -11325,9 +14218,24 @@
         "sourceFiles": [
           "spec/operators/timeout-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 38,
+            "passed": 38,
+            "failed": 0,
+            "failureClassifications": []
+          },
+          "polyfill": {
+            "total": 38,
+            "passed": 38,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
@@ -11406,11 +14314,28 @@
           "spec/operators/multicast-spec.ts",
           "spec/operators/zipAll-spec.ts"
         ],
+        "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
           "intentional-divergence",
           "portable"
-        ]
+        ],
+        "modeResults": {
+          "cold": {
+            "total": 41,
+            "passed": 40,
+            "failed": 1,
+            "failureClassifications": [
+              "intentional-divergence"
+            ]
+          },
+          "polyfill": {
+            "total": 41,
+            "passed": 41,
+            "failed": 0,
+            "failureClassifications": []
+          }
+        }
       },
       "next": {
         "surface": "intentional-next-value",
