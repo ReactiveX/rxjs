@@ -124,8 +124,9 @@ Symbol. Observable-returning implementations create through the receiver's
 `[create]`, normalize inputs through the active platform `Observable.from`,
 own upstream work with the derived subscriber's signal plus any joined local
 controller, and forward synchronous setup or callback failures through
-`subscriber.error`. P2.4 validates the operator-kernel behavior; P4.I1 owns
-the installation simplification. Async-iteration Symbols remain a
+`subscriber.error`. P2.4 validates the operator-kernel behavior; P4.I1 completed
+the installation simplification for all 97 exact public Symbols, with source,
+package, bundler, and native/fallback gates. Async-iteration Symbols remain a
 documented non-Observable-result variant because they return generators rather
 than derived Observables.
 

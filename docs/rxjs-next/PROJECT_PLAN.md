@@ -62,8 +62,9 @@ catalog onto the accepted extension kernel. P3.2 has materialized the existing
 parity map as a validated migration-evidence ledger. P3.3 moved the full exact
 Symbol catalog onto the transactional extension kernel, and P3.4 completed the
 source-pinned evidence audit. D-051 now supersedes that installation mechanism:
-P4.I1 will remove the common installer and use direct exact-Symbol assignment
-without changing operator behavior. P4.I1 is now the sole `NEXT` item.
+P4.I1 removed the common installer and moved all 97 public capabilities to
+direct exact-Symbol assignment without changing operator behavior. Phase 4 is
+complete, and P5.1 is now the sole `NEXT` item.
 
 No dates, staffing commitments, or final release version are assigned.
 
@@ -1319,7 +1320,7 @@ explicit.
 | `DONE` | P4.2  | Complete the migration-evidence ledger for prioritized RxJS 7 public APIs                    |
 | `DONE` | P4.3  | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
 | `DONE` | P4.4  | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
-| `NEXT` | P4.I1 | Remove the common public-extension installer and restore direct exact-Symbol assignment      |
+| `DONE` | P4.I1 | Remove the common public-extension installer and restore direct exact-Symbol assignment      |
 
 Phase exit:
 
@@ -1428,11 +1429,35 @@ Phase exit:
   import, bundler, and native/fallback kernel gates. WPT is not a gate for the
   RxJS-owned Symbol descriptor or installation mechanism.
 
+#### P4.I1 completion evidence
+
+- Migrated all 97 exact public Symbol capabilities in ten small family commits
+  while preserving the public Symbols, ambient declarations, implementation
+  bodies, construction, cancellation, lifecycle, and string-method isolation.
+- Deleted `installObservableExtension` and its six installer-only tests. The
+  replacement audit requires direct installation on the declared static or
+  instance target, rejects installer references and RxJS-specific string-named
+  additions, and keeps D-037's construction protocol separate.
+- Updated descriptor, ESM/CommonJS, duplicate-dialect, bundler, and kernel
+  fixtures to the D-051 contract. The D-041 frozen fallback-acquisition fixture
+  remains; unsupported extension targets receive ordinary assignment behavior.
+- With esbuild 0.19.11, the minified `import 'rxjs/map'` browser ESM bundle fell
+  from 15,726 to 14,447 bytes (-1,279; -8.1%); gzip fell from 4,584 to 4,244
+  (-340; -7.4%); and Brotli fell from 4,126 to 3,819 (-307; -7.4%). The
+  root-only control stayed byte-identical at 19,650 minified, 5,638 gzip, and
+  5,050 Brotli bytes.
+- Passed the 106-file/750-test focused source suite, the 97-Symbol source audit,
+  public types, build, package/import and bundler fixtures, and all eight kernel
+  cases against the packaged fallback and native Observable in Chrome
+  `150.0.7871.126`.
+- Marked P4.I1 `DONE`, completed Phase 4, and advanced P5.1 as the sole
+  project-level `NEXT` item.
+
 ### Phase 5 — Migration experience and AI enablement
 
 | Status     | ID   | Outcome                                                                              |
 | ---------- | ---- | ------------------------------------------------------------------------------------ |
-| `PLANNED`  | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
+| `NEXT`     | P5.1 | Write migration guidance from the migration-evidence ledger and accepted divergences |
 | `PLANNED`  | P5.2 | Validate mechanical and semantic migration steps on representative applications      |
 | `DEFERRED` | P5.3 | Evaluate later RxJS usage Skills beyond the canonical migration workflow             |
 | `DEFERRED` | P5.4 | Evaluate optional integrations only under a new evidence-backed product decision     |
@@ -2824,3 +2849,19 @@ conformance implementation depends on a runnable harness.
   verification gates. This decision-only session changes no production source
   or test baseline.
 - Advanced P4.I1 as the sole project-level `NEXT` item after P4.4 completed.
+
+### 2026-08-01 — P4.I1 direct public Symbol installation
+
+- Migrated all 97 exact public capabilities from the common installer to
+  ordinary direct assignment in ten small family commits without changing
+  their Symbols, declarations, implementations, construction, or cancellation.
+- Deleted the installer and its six transactional-only tests, then changed the
+  permanent source audit and package fixtures to enforce the D-051 contract.
+- Reduced the representative `rxjs/map` bundle by 1,279 minified bytes (8.1%),
+  340 gzip bytes (7.4%), and 307 Brotli bytes (7.4%); the root-only control was
+  byte-identical.
+- Passed the 106-file/750-test focused suite, all 97 direct-installation audit
+  cases, public types, build, package/import/bundler fixtures, and all eight
+  fallback/native Chrome kernel cases.
+- Marked P4.I1 `DONE`, completed Phase 4, and advanced P5.1 as the sole
+  project-level `NEXT` item.

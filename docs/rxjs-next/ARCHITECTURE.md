@@ -67,14 +67,14 @@ Migration tooling is not a runtime dependency.
 
 ## Current component inventory
 
-| Component                      | Current responsibility                                                                                                                                                                                             | Intended responsibility                                                                                        | Current gap                                                                                    |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                                                            | Independently publishable conditional fallback and owner of the base ambient platform types                    | Runtime-version support and future specification/WPT revision policy remain open               |
-| `packages/rxjs`                | Installs entry-scoped Symbol operators/factories and async-iteration adapters through a common transactional helper; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library with direct exact-Symbol assignment plus intentional non-operator RxJS Next APIs | D-051 direct-installation simplification is accepted but not yet implemented                   |
-| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                                | Retained only as prototype history until removed                                                               | Superseded by the accepted `@rxjs/test` boundary                                               |
-| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                              | Implementation-neutral framework testing that consumes an already active realm Observable                      | Broader runtime-version and module-system support remains open                                 |
-| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, package/fixture gates, and committed Codex qualification records      | Deterministic migration engine and canonical versioned Skill; never a runtime dependency                       | Broader repository, capability, model, and non-Codex outcome qualification remains future work |
-| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                                   | Eventually explain the new platform and migration model                                                        | Still represents the prior generation; redesign is out of scope for the foundation phase       |
+| Component                      | Current responsibility                                                                                                                                                                                           | Intended responsibility                                                                                        | Current gap                                                                                    |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `packages/observable-polyfill` | Conditionally supplies the ambient platform-shaped `Observable`, paired `Subscriber`, native-style methods, `EventTarget.when()`, and fallback metadata                                                          | Independently publishable conditional fallback and owner of the base ambient platform types                    | Runtime-version support and future specification/WPT revision policy remain open               |
+| `packages/rxjs`                | Installs entry-scoped Symbol operators, factories, and async-iteration adapters by direct exact-Symbol assignment; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library with direct exact-Symbol assignment plus intentional non-operator RxJS Next APIs | Broader runtime-version, bundle-budget, and release qualification remain future work           |
+| `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                              | Retained only as prototype history until removed                                                               | Superseded by the accepted `@rxjs/test` boundary                                               |
+| `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                            | Implementation-neutral framework testing that consumes an already active realm Observable                      | Broader runtime-version and module-system support remains open                                 |
+| `packages/migrate`             | Provides a versioned deterministic engine, canonical portable Skill, safe Skill installer, structured CLIs, capability and contract schemas, package/fixture gates, and committed Codex qualification records    | Deterministic migration engine and canonical versioned Skill; never a runtime dependency                       | Broader repository, capability, model, and non-Codex outcome qualification remains future work |
+| `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                                 | Eventually explain the new platform and migration model                                                        | Still represents the prior generation; redesign is out of scope for the foundation phase       |
 
 ## Platform Observable lifecycle
 
@@ -316,12 +316,11 @@ Every current exact public extension module:
 
 1. creates and exports a Symbol;
 2. augments the global `Observable` or `ObservableCtor` TypeScript interface;
-3. installs an implementation through the current common transactional helper
-   on the constructor or prototype under that Symbol;
+3. assigns an implementation directly to the constructor or prototype under
+   that exact Symbol;
 4. creates returned observables through the receiver's construction protocol.
 
-D-051 accepts direct assignment under the exported exact Symbol as the target
-installation pattern. P4.I1 will remove the current helper without changing
+D-051 and P4.I1 establish this direct-assignment pattern without changing
 Symbol identity, public augmentation, construction, or operator behavior.
 
 The accepted target instance-extension pattern looks like this:
@@ -491,18 +490,21 @@ P2.1 accepts D-048: public extension Symbols are exact and module-owned. An
 independently evaluated ESM/CommonJS dialect, duplicate package copy, or other
 version receives a different public Symbol and installs a separate slot. Only
 the versioned construction ABI remains shared across compatible copies. P2.2
-adds the common internal installer for those public slots. It preflights every
-requested constructor and prototype property, treats the identical value as an
-idempotent installation, rejects an occupied exact key, and rolls back earlier
-definitions if a later definition fails. Installed properties are
-non-enumerable, writable, and configurable. Missing capacity and mutation
-failures produce capability-named diagnostics.
+historically added a common internal installer for those public slots. It
+preflighted every requested constructor and prototype property, treated the
+identical value as an idempotent installation, rejected an occupied exact key,
+and rolled back earlier definitions if a later definition failed. Installed
+properties were non-enumerable, writable, and configurable. Missing capacity
+and mutation failures produced capability-named diagnostics. D-051 and P4.I1
+supersede that installation mechanism.
 
-P3.3 completed catalog adoption. All 97 current exact public extension Symbols
-use the common installer, including async-iteration Symbols that return
-generators instead of Observables. A blocking source audit rejects any exact
-public Symbol that omits the installer or returns to direct constructor or
-prototype assignment.
+P3.3 completed the historical catalog adoption. P4.I1 then migrated all 97
+current exact public extension Symbols to direct assignment, including
+async-iteration Symbols that return generators instead of Observables. The
+common installer and its installer-only tests no longer exist. A blocking
+source audit now requires each public capability to assign its exported exact
+Symbol on the declared constructor or prototype and rejects RxJS-specific
+string-named additions or a return to the installer abstraction.
 
 D-051 supersedes that installation mechanism while preserving D-048's identity,
 realm, and bundling policy. Exact module-owned Symbols already isolate unrelated
@@ -510,10 +512,10 @@ libraries, module dialects, package copies, and versions; normal module caching
 handles repeat evaluation of one module instance. The accepted target is direct
 assignment to the constructor or prototype under the module's own exported
 Symbol. It deliberately removes runtime preflight, collision diagnostics,
-descriptor customization, extensibility checks, and rollback. P4.I1 owns the
-code, test, audit, and bundle-evidence migration; until it completes, the common
-installer remains a current implementation fact rather than the target
-architecture.
+descriptor customization, extensibility checks, and rollback. P4.I1 completed
+the code, test, audit, and bundle-evidence migration. Direct assignment uses
+the ordinary writable, enumerable, configurable descriptor; unsupported
+hardened targets receive no RxJS-specific preflight, rollback, or diagnostic.
 
 ### Public Symbol consistency
 
@@ -1069,8 +1071,8 @@ The P2.4 extension-kernel baseline was verified on 2026-08-01:
 | Targeted migrated evidence      | 97/98 pilot registrations pass in cold mode and 97/98 pass in fallback mode; only the classified compatibility-only `switchMap` arbitrary-subscribable input remains unsupported by D-049 |
 | Complete migrated evidence      | 2,296/2,338 cold and 2,321/2,343 fallback registrations pass; the remaining restoration/compatibility backlog is outside the extension-kernel phase                                       |
 
-This baseline proves the common extension pattern, not RxJS 7 runtime
-compatibility or completion of the operator catalog. The strict all-mode
+That historical baseline proved the P2.4 common extension pattern, not RxJS 7
+runtime compatibility or completion of the operator catalog. The strict all-mode
 ported command therefore remains intentionally nonzero while Phase 3 and
 Phase 4 classify and resolve the remaining API work.
 
@@ -1079,6 +1081,22 @@ the current 2,338-case corpus: 2,299 cold and 2,316 fallback cases pass. Every
 remaining failure is explicitly `intentional-divergence` or
 `compatibility-only`; the reviewed case-ID baselines and generated migration
 ledger are the authoritative current evidence.
+
+P4.I1 supersedes the installer-specific portions of the P2.4 baseline. All 97
+exact public Symbols now use direct assignment, and the following current
+verification passed on 2026-08-01:
+
+| Check                            | Result                                                                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Focused RxJS source suite        | 106 files and 750 tests pass; the six removed cases were installer-only transactional tests                                                                                    |
+| Direct-installation source audit | All 97 exact public Symbols install on their declared static or instance target; installer references and RxJS-specific string additions are rejected                          |
+| Type and package contracts       | Public declaration consumers, build, ESM/CommonJS imports, duplicate-dialect coexistence, root isolation, direct-extension bundling, and retained D-041 fallback fixtures pass |
+| Native/fallback kernel contract  | The same eight cases pass against the packaged fallback and native Observable in Chrome `150.0.7871.126`                                                                       |
+| Representative bundle delta      | `import 'rxjs/map'` falls from 15,726 to 14,447 minified bytes (-1,279; -8.1%), 4,584 to 4,244 gzip bytes (-340; -7.4%), and 4,126 to 3,819 Brotli bytes (-307; -7.4%)         |
+| Root-only bundle control         | `import 'rxjs'` is byte-identical before and after: 19,650 minified, 5,638 gzip, and 5,050 Brotli bytes                                                                        |
+
+The bundle comparison used esbuild 0.19.11 for a browser-platform ESM bundle
+with tree shaking and minification, gzip level 9, and default Brotli settings.
 
 The repository development engine declaration accepts Node 18, Node 20, and
 Node 24. The blocking Observable WPT workflow uses Node 24, and the harness

@@ -1264,8 +1264,11 @@ Status meanings:
   the Observable specification or WPT because RxJS extension Symbols are a
   library surface. Direct assignment keeps the acquisition side effect visible
   and makes its cost proportional to the capability being installed.
-- **Consequence:** P4.I1 removes `installObservableExtension`, migrates every
-  exact public capability back to direct assignment, deletes installer-only
-  tests, and revises package audits to enforce exact Symbol ownership and
+- **Consequence:** P4.I1 removed `installObservableExtension`, migrated all 97
+  exact public capabilities back to direct assignment, deleted installer-only
+  tests, and revised package audits to enforce exact Symbol ownership and
   string-method non-interference rather than transactional installation.
   Package side-effect metadata and bundler-retention fixtures remain required.
+  The representative `rxjs/map` bundle decreased by 1,279 minified bytes
+  (8.1%), 340 gzip bytes (7.4%), and 307 Brotli bytes (7.4%); the root-only
+  control remained byte-identical.
