@@ -1,6 +1,7 @@
 import { create } from './create.js';
 import { map } from './map.js';
 import { zip } from './zip.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const zipAll: unique symbol = Symbol('zipAll');
 
@@ -23,26 +24,16 @@ function zipAllOperator<V, R>(this: Observable<ObservableValue<V>>, project?: (.
   return outer[create]((subscriber) => {
     const sources: Array<ObservableValue<V>> = [];
 
-    outer.subscribe(
-      {
-        next: (source) => sources.push(source),
-        error: (error) => subscriber.error(error),
-        complete: () => {
-          const zipped = zip(sources);
-          const result = project ? zipped[map]((values) => project(...values)) : zipped;
+    subscribeToSource(outer, subscriber, {
+      next: (source) => sources.push(source),
+      error: (error) => subscriber.error(error),
+      complete: () => {
+        const zipped = zip(sources);
+        const result = project ? zipped[map]((values) => project(...values)) : zipped;
 
-          result.subscribe(
-            {
-              next: (value: V[] | R) => subscriber.next(value),
-              error: (error) => subscriber.error(error),
-              complete: () => subscriber.complete(),
-            },
-            { signal: subscriber.signal }
-          );
-        },
+          subscribeToSource(result as Observable<V[] | R>, subscriber);
       },
-      { signal: subscriber.signal }
-    );
+    });
   });
 }
 
