@@ -2,6 +2,7 @@ import { create } from './create.js';
 import { EmptyError } from './empty-error.js';
 import { NotFoundError } from './not-found-error.js';
 import { SequenceError } from './sequence-error.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 type Falsy = null | undefined | false | 0 | -0 | 0n | '';
 type TruthyTypesOf<T> = T extends Falsy ? never : T;
@@ -28,22 +29,16 @@ function singleOperator<T>(this: Observable<T>, predicate?: (value: T, index: nu
     let seenValue = false;
     let index = 0;
     const sourceController = new AbortController();
-    const signal = AbortSignal.any([subscriber.signal, sourceController.signal]);
-
-    source.subscribe(
+    subscribeToSource(
+      source,
+      subscriber,
       {
         next: (value) => {
           seenValue = true;
           let isMatch = true;
 
           if (predicate) {
-            try {
-              isMatch = predicate(value, index++, source);
-            } catch (error) {
-              sourceController.abort();
-              subscriber.error(error);
-              return;
-            }
+            isMatch = predicate(value, index++, source);
           }
 
           if (!isMatch) {
@@ -73,7 +68,7 @@ function singleOperator<T>(this: Observable<T>, predicate?: (value: T, index: nu
           }
         },
       },
-      { signal }
+      sourceController.signal
     );
   });
 }
