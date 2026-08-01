@@ -324,7 +324,7 @@ describe('partition (cold)', () => {
       const result = ColdObservable[partition](e1Pipe, (x) => x === 'a');
       expectObservable(result[0], unsub).toBe(expected[0]);
       expectObservable(result[1], unsub).toBe(expected[1]);
-      expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+      expectSubscriptions(e1.subscriptions).toBe([e1subs]);
     });
   });
 });

@@ -68,7 +68,7 @@ describe('toArray (cold)', () => {
       const result = e1[buffer]({ emitEmpty: true, emitRemainingOnError: false });
       expectObservable(result).toBe(expected, { w: ['y'] });
       expectObservable(result).toBe(expected, { w: ['y'] });
-      expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+      expectSubscriptions(e1.subscriptions).toBe([e1subs]);
     });
   });
   it('should allow unsubscribing explicitly and early', async () => {

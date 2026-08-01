@@ -191,7 +191,7 @@ describe('groupBy (cold)', () => {
       const source = e1[groupBy]((val) => val.toLowerCase().trim())
         [tap]((group) => {
           expect(group.key).toBe('foo');
-          expect(group instanceof ColdObservable).toBe(true);
+          expect(group instanceof Observable).toBe(true);
         })
         [map]((group) => {
           return group.key;
