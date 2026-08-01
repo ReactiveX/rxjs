@@ -1,4 +1,5 @@
 import { create } from './create.js';
+import { subscribeToSource } from './util/observable-helpers.js';
 
 export const sampleTime: unique symbol = Symbol('sampleTime');
 
@@ -13,17 +14,12 @@ Observable.prototype[sampleTime] = function <T>(this: Observable<T>, period: num
     let hasValue = false;
     let latestValue: T;
 
-    this.subscribe(
-      {
-        next: (value) => {
-          hasValue = true;
-          latestValue = value;
-        },
-        error: (error) => subscriber.error(error),
-        complete: () => subscriber.complete(),
+    subscribeToSource(this, subscriber, {
+      next: (value) => {
+        hasValue = true;
+        latestValue = value;
       },
-      { signal: subscriber.signal }
-    );
+    });
 
     if (!subscriber.active) {
       return;
