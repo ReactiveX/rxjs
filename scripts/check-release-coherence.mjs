@@ -121,20 +121,25 @@ function auditReleaseMatrix(input, errors) {
   ]) {
     if (source.includes('rxjs.dev')) errors.push(`${label} must not build, test, publish, or otherwise reference rxjs.dev.`);
   }
-  if (!/node-version:\s*['"]24['"]/.test(input.publishWorkflowSource)) {
-    errors.push('Publishing must use the supported Node 24 lane.');
+  if (!/node-version:\s*['"]24\.12\.0['"]/.test(input.publishWorkflowSource)) {
+    errors.push('Publishing must use exact Node 24.12.0.');
   }
   if (
     !/Verify release policy and repository configuration[\s\S]*?Build release packages[\s\S]*?Pack, inventory, and hash/.test(
       input.publishWorkflowSource
     )
   ) {
-    errors.push('Publishing must verify release policy before building and packing one candidate.');
+    errors.push('Qualification must verify release policy before building and packing each independent candidate.');
   }
   for (const requirement of [
     'RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}',
+    'compare-release-candidates.mjs',
+    'Exact tarballs / package, type, import, and migration gates',
+    'pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test',
+    'run test:imports',
     'release-candidate.mjs verify',
     'release-candidate.mjs hydrate',
+    'authorize-stage.mjs',
     'stage-release.mjs publish',
     'id-token: write',
   ]) {
@@ -230,7 +235,10 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/observable-wpt.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/release-readiness.yml'), 'utf8'),
-    readFile(resolve(root, '.github/workflows/release-stage.yml'), 'utf8'),
+    Promise.all([
+      readFile(resolve(root, '.github/workflows/release-qualify.yml'), 'utf8'),
+      readFile(resolve(root, '.github/workflows/release-stage.yml'), 'utf8'),
+    ]).then((sources) => sources.join('\n')),
     readFile(resolve(root, 'packages/rxjs/test/release/safari-driver.mjs'), 'utf8'),
     readFile(resolve(root, 'packages/observable-polyfill/test/wpt/lib/runner.mjs'), 'utf8'),
   ]);

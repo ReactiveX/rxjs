@@ -78,6 +78,7 @@ not support legacy CommonJS resolvers.
 
 ## Documentation
 
+- [Security assurance and release verification](docs/SECURITY_ASSURANCE.md)
 - [API and import guide](docs/API.md)
 - [Migrate from RxJS 7](MIGRATION.md)
 - [Unsupported RxJS 7 surfaces](docs/UNSUPPORTED_RXJS_7_SURFACES.md)

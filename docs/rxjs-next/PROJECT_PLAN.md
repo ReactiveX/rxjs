@@ -81,7 +81,7 @@ bundle-size reduction. P6.8 completed durable pull-request and `master` CI
 ownership for every accepted RxJS 9 test and release check. P6.9 implemented
 truthful status signals and security automation; its first live GitHub results
 remain external validation. The user has now prioritized P6.10: the secure
-release-PR, exact-tarball qualification, npm staged-approval, succession, and
+single-maintainer release-PR, reproducible qualification, and manually authorized npm staged-approval
 maintenance process.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
@@ -1573,8 +1573,9 @@ names.
 #### P6.9 completion bar
 
 - The root README exposes authoritative `master` CI, release-readiness, WPT,
-  npm channel, download, license, and OpenSSF Scorecard signals plus factual
-  native-Observable and Symbol-extension badges.
+  npm channel, download, and license signals plus factual native-Observable and
+  Symbol-extension badges. The package security-assurance document presents
+  OpenSSF Scorecard in context rather than as a headline release claim.
 - Prepublication wording does not claim that `9.0.0-beta.0` is already on npm
   or direct readers to install the older prerelease currently under `next`.
 - A SHA-pinned Scorecard workflow publishes attested results and SARIF from
@@ -1587,9 +1588,10 @@ names.
 
 #### P6.9 implementation evidence
 
-- Added ten source-linked README badges: three `master` workflow signals,
+- Initially added ten source-linked README badges: three `master` workflow signals,
   OpenSSF Scorecard, npm `latest` and `next`, monthly downloads, license, and
-  two architecture-backed native/Symbol claims. All ten image endpoints
+  two architecture-backed native/Symbol claims. P6.10 later moved Scorecard to
+  the security-assurance document because it is secondary to release evidence. The image endpoints
   returned HTTP 200; workflow and Scorecard destinations resolved, while npm's
   canonical web pages returned their expected automated-client 403 response.
 - Corrected the unpublished-beta wording, removed the unsafe `rxjs@next`
@@ -1606,35 +1608,41 @@ names.
 
 #### P6.10 completion bar
 
-- A public role-based runbook begins with the accepted steps and security
-  considerations, documents each version scenario consistently, and separates
-  public operations from the credential-free private succession inventory.
-- Deterministic tests cover beta, promotion, patch, minor, accumulated,
-  documentation-only, stable-breaking, link, order, stage-ID, digest, and
-  byte-integrity behavior.
-- A narrowly scoped organization-owned GitHub App refreshes one allowlisted
-  release PR after configured `master` checks pass. Merging it is the only
-  authorization for the privileged workflow.
-- Fresh GitHub-hosted jobs build and pack once, attest and qualify the exact
-  tarballs across every blocking environment, create the protected tag, and
-  submit the same filenames through stage-only npm OIDC. No direct-publish
-  command or long-lived npm publishing token remains.
-- Administrator setup, disposable-package rehearsal, staged eligibility,
-  tag/release protection, and the annual private reminder remain explicit
+- The public runbook and security-assurance document state that Ben is the sole
+  author, reviewer, merger, release operator, and security responder. No team,
+  approving review, CODEOWNER, environment reviewer, or succession role is
+  required or implied.
+- A narrowly scoped release App automatically refreshes one allowlisted release
+  PR after an ordinary successful `master` merge. Self-merging that PR starts
+  read-only qualification, not npm staging.
+- Two fresh exact-toolchain builds must be byte-identical. Every blocking gate,
+  the exception-free release OSV scan, SBOM generation, and attestations use the
+  canonical tarballs. Qualification publishes the run ID, version, and manifest
+  SHA-512 and then stops.
+- Only `benlesh` can manually authorize stage-only npm OIDC by typing all three
+  values. Tests reject wrong, failed, stale, expired, changed, unauthorized,
+  non-current, or replayed candidates. npm 11.18.0 is registry-hash verified;
+  no direct publish command or reusable publishing token remains.
+- Root vulnerability paths are classified; only time-bounded `apps/rxjs.dev`
+  exceptions remain, while the isolated release train has no exceptions.
+  Bounded and scheduled properties cover release parsing/authorization and the
+  Observable lifecycle state machine.
+- GitHub/npm WebAuthn, protected-branch/tag/environment/trusted-publisher setup,
+  and the sole-account disposable-package rehearsal remain explicit external
   pre-publication gates. P6.10 remains active until they are verified.
 
 #### P6.10 implementation evidence
 
-- Added repository-owned release policy, release-PR generation, synchronized
+- Added repository-owned release policy, automatic release-PR generation, synchronized
   version/provenance updates, changelog generation, release-bot allowlisting,
   exact candidate manifests, hash verification, exact-artifact hydration,
   staged comments, public-integrity finalization, and a read-only doctor.
 - Replaced private Nx release imports and token publishing with GitHub-App
-  release PRs, exact-tarball qualification, artifact attestations, stage-only
-  OIDC, TFA approval order, draft evidence releases, and no-npm-authority
-  finalization. Added CodeQL, action-pin enforcement, Dependabot, and release
-  CODEOWNERS.
-- Added the public runbook and credential-free succession template. npm routes
+  release PRs, two-build exact-tarball qualification, artifact attestations,
+  typed manual staging authorization, stage-only OIDC, WebAuthn approval order,
+  draft evidence releases, and no-npm-authority finalization. Added CodeQL,
+  action-pin enforcement, Dependabot, and OSV/property gates.
+- Added the sole-maintainer public runbook and security-assurance document. npm routes
   are never guessed: setup records a manually verified URL, rendering validates
   its origin, and comments retain stage-ID CLI fallbacks.
 - Local verification is recorded in the P6.10 session entry. Live App,
@@ -3538,14 +3546,13 @@ conformance implementation depends on a runnable harness.
 ### 2026-08-02 — P6.10 secure staged release implementation
 
 - Accepted D-057 and added the irreversible-publication runbook, deterministic
-  scenarios, exact-tarball boundary, npm-link validation, recovery, bootstrap,
-  and credential-free succession template.
+  scenarios, exact-tarball boundary, npm-link validation, recovery, and bootstrap.
 - Replaced private Nx release APIs and `NPM_TOKEN` publishing with a GitHub-App
   release PR, protected-commit qualification, artifact attestations,
   exact-tarball environment gates, stage-only npm OIDC, TFA approval order, and
   registry-integrity-driven GitHub Release finalization.
 - Added release policy/candidate/staging tests, the read-only doctor, CodeQL,
-  full action pin enforcement, action Dependabot, and release CODEOWNERS. No
+  full action pin enforcement, and action Dependabot. No
   npm, tag, release, or external-account mutation was performed locally.
 - Corrected the first PR CI findings by making source-commit binding explicit
   only at the privileged release boundary and replacing incomplete HTML-comment
@@ -3553,3 +3560,34 @@ conformance implementation depends on a runnable harness.
 - P6.9 is blocked only on its first GitHub-side security runs. P6.10 is the
   sole `NEXT` item until administrator setup and the disposable-package
   rehearsal prove the external npm/GitHub controls.
+
+### 2026-08-02 — P6.10 single-maintainer hardening
+
+- Replaced every team/reviewer assumption with the accepted single-maintainer
+  invariant. Ordinary successful merges still automatically create or refresh
+  the release PR; self-merging it starts read-only qualification.
+- Split qualification from staging. Two fresh exact-toolchain builds must match
+  byte-for-byte, all blocking gates use the canonical tarballs, and the run
+  stops after publishing its ID, version, and manifest SHA-512. Only `benlesh`
+  can later type those values. A no-OIDC authorization job validates them before
+  the protected staging job can start and revalidate for stage-only npm OIDC;
+  tested rejection covers actor, run, branch, commit, version, digest, expiry,
+  bytes, and replay.
+- Added checked npm 11.18.0 integrity, CycloneDX, exception-free release OSV,
+  stable attestation assets, registry/signature/attestation finalization, and
+  consumer verification documentation. Moved Scorecard into that contextual
+  assurance document and accepted Code-Review `0`.
+- Upgraded or overrode every dependency path reachable from release, build, or
+  test tooling. The remaining 253 npm advisory paths are isolated to excluded
+  `apps/rxjs.dev`, represented by 176 reviewed OSV IDs expiring 2026-10-31, and
+  guarded by a path-aware checker. Added bounded PR and scheduled extended
+  fast-check properties for release controls and Observable lifecycle.
+- Local rehearsal produced two byte-identical four-package candidates, hydrated
+  the retained tarballs, and passed 1,044 package/source tests, all four type and
+  import suites, migration packing/contracts, the 45-test release/security
+  suite, workflow formatting, package preparation, and a frozen install. The
+  broader strict cold compatibility command reproduced the reviewed 2,299-pass,
+  39-failure baseline rather than introducing a new failure.
+- P6.10 remains the sole `NEXT` item because WebAuthn, GitHub/npm rules and
+  trusted-publisher configuration, live workflow evidence, and the sole-account
+  disposable-package rehearsal are external and have not yet been verified.

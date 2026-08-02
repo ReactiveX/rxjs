@@ -1,252 +1,144 @@
-name: Qualify and stage release
+name: Stage qualified RxJS 9 release
 
 on:
-  push:
-    branches: ['master']
-    paths:
-      - 'CHANGELOG.md'
-      - 'packages/migrate/package.json'
-      - 'packages/observable-polyfill/package.json'
-      - 'packages/rxjs/package.json'
-      - 'packages/test/package.json'
+  workflow_dispatch:
+    inputs:
+      qualification_run_id:
+        description: Successful qualification run ID
+        required: true
+        type: string
+      version:
+        description: Exact qualified version
+        required: true
+        type: string
+      manifest_sha512:
+        description: Exact release-manifest.json SHA-512
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: rxjs-9-release
+  group: rxjs-9-npm-stage
   cancel-in-progress: false
 
 env:
-  CANDIDATE_ARTIFACT: rxjs-release-candidate-${{ github.run_id }}
+  RELEASE_OPERATOR_LOGIN: benlesh
   RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}
 
 jobs:
-  build:
-    name: Build and pack once
-    runs-on: ubuntu-latest
+  authorize:
+    name: Verify typed manual authorization without npm authority
+    if: github.ref == 'refs/heads/master' && github.actor == 'benlesh'
+    runs-on: ubuntu-24.04
     outputs:
-      pull-request: ${{ steps.authorize.outputs.pull-request }}
-      version: ${{ steps.candidate.outputs.version }}
-      channel: ${{ steps.candidate.outputs.channel }}
+      source-commit: ${{ steps.details.outputs.source-commit }}
+      pull-request: ${{ steps.details.outputs.pull-request }}
     permissions:
-      attestations: write
+      actions: read
       contents: read
-      id-token: write
       pull-requests: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with:
-          version: 10.34.5
-          run_install: false
+        with: { ref: '${{ github.sha }}', fetch-depth: 0, persist-credentials: false }
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with: { node-version: '24.12.0', package-manager-cache: false }
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
-          node-version: '24'
-          package-manager-cache: false
-
-      - name: Verify that a merged secure release PR authorized this commit
-        id: authorize
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          pr_number=$(node scripts/release/authorize-release-commit.mjs "$GITHUB_REPOSITORY" "$GITHUB_SHA")
-          echo "pull-request=$pr_number" >> "$GITHUB_OUTPUT"
-
-      - name: Fresh frozen dependency install
-        run: pnpm install --frozen-lockfile
-      - name: Verify release policy and repository configuration
-        env:
-          GH_TOKEN: ${{ github.token }}
-          NPM_STAGED_PACKAGES_URL: ${{ vars.NPM_STAGED_PACKAGES_URL }}
-          RELEASE_REQUIRED_CHECKS: ${{ vars.RELEASE_REQUIRED_CHECKS }}
-          RELEASE_TAG_RULESET_ID: ${{ vars.RELEASE_TAG_RULESET_ID }}
-        run: |
-          pnpm run release:check
-          node scripts/release/release-doctor.mjs --strict
-      - name: Build release packages
-        run: pnpm run prepare-packages
-      - name: Pack, inventory, and hash the candidate once
-        id: candidate
-        run: |
-          node scripts/release/release-candidate.mjs build .release/candidate
-          echo "version=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").version)')" >> "$GITHUB_OUTPUT"
-          echo "channel=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").channel)')" >> "$GITHUB_OUTPUT"
-      - name: Attest every exact npm tarball
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
-        with:
-          subject-path: '.release/candidate/*.tgz'
-      - name: Preserve exact candidate for qualification jobs
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: ${{ env.CANDIDATE_ARTIFACT }}
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.qualification_run_id }}
+          name: rxjs-release-candidate-${{ inputs.qualification_run_id }}
           path: .release/candidate
-          if-no-files-found: error
-          retention-days: 14
-
-  node:
-    name: Exact tarballs / Node ${{ matrix.node }}${{ matrix.advisory && ' (advisory)' || '' }}
-    needs: build
-    runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.advisory }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - node: '22.13.0'
-            advisory: false
-          - node: '24'
-            advisory: false
-          - node: '26'
-            advisory: true
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with: { version: 10.34.5, run_install: false }
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '${{ matrix.node }}', package-manager-cache: false }
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
-      - run: pnpm run test:release:runtime
-
-  browser:
-    name: Exact tarballs / browsers, Webpack, performance
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with: { version: 10.34.5, run_install: false }
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '24', package-manager-cache: false }
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
-      - run: pnpm exec playwright install --with-deps chromium firefox webkit
-      - run: pnpm run test:release:browsers && pnpm run test:release:webpack && pnpm run test:release:performance
-
-  alternate-runtime:
-    name: Exact tarballs / ${{ matrix.runtime }}
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: { runtime: [deno, bun] }
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with: { version: 10.34.5, run_install: false }
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '24', package-manager-cache: false }
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
-      - if: matrix.runtime == 'deno'
-        uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.5
-        with: { deno-version: v2.8.0 }
-      - if: matrix.runtime == 'bun'
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with: { bun-version: 1.3.14 }
-      - if: matrix.runtime == 'deno'
-        run: deno run --allow-read packages/rxjs/test/release/runtime-contract.mjs
-      - if: matrix.runtime == 'bun'
-        run: bun packages/rxjs/test/release/runtime-contract.mjs
-
-  safari:
-    name: Exact tarballs / ${{ matrix.target }} Safari
-    needs: build
-    runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix: { target: [desktop, ios] }
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with: { version: 10.34.5, run_install: false }
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '24', package-manager-cache: false }
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
-      - run: sudo safaridriver --enable
-      - if: matrix.target == 'ios'
-        run: node packages/rxjs/test/release/boot-ios-simulator.mjs
-      - run: pnpm run test:release:safari:${{ matrix.target }}
-
-  wpt:
-    name: Exact tarballs / pinned Observable WPT
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
-        with: { version: 10.34.5, run_install: false }
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '24', package-manager-cache: false }
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
-        with: { python-version: '3.11' }
-      - run: sudo apt-get update && sudo apt-get install --yes libatspi2.0-dev libcairo2-dev libgirepository1.0-dev pkg-config
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
-      - run: pnpm run test:wpt
+      - name: Reject wrong actor, run, branch, commit, version, digest, expiry, bytes, or replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ACTOR: ${{ github.actor }}
+        run: >-
+          node scripts/release/authorize-stage.mjs "$GITHUB_REPOSITORY"
+          "${{ inputs.qualification_run_id }}" "${{ inputs.version }}"
+          "${{ inputs.manifest_sha512 }}" .release/candidate
+      - name: Reconfirm the generated release PR authorized this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          expected=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").authorizingPullRequest)')
+          actual=$(node scripts/release/authorize-release-commit.mjs "$GITHUB_REPOSITORY" "$(git rev-parse HEAD)")
+          test "$actual" = "$expected"
+      - id: details
+        run: |
+          echo "source-commit=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").sourceCommit)')" >> "$GITHUB_OUTPUT"
+          echo "pull-request=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").authorizingPullRequest)')" >> "$GITHUB_OUTPUT"
 
   stage:
-    name: Create protected tag and stage exact tarballs
-    needs: [build, node, browser, alternate-runtime, safari, wpt]
-    runs-on: ubuntu-latest
+    name: Reverify authorization and stage exact tarballs with npm OIDC
+    needs: authorize
+    runs-on: ubuntu-24.04
     environment: npm-stage
     permissions:
+      actions: read
+      attestations: read
       contents: write
       id-token: write
       pull-requests: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { fetch-depth: 0, persist-credentials: true }
+        with: { ref: '${{ needs.authorize.outputs.source-commit }}', fetch-depth: 0, persist-credentials: true }
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with: { node-version: '24', package-manager-cache: false }
+        with: { node-version: '24.12.0', package-manager-cache: false }
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
-        with: { name: '${{ env.CANDIDATE_ARTIFACT }}', path: .release/candidate }
-      - name: Verify candidate again and require staged-publishing npm
-        run: |
-          npm install --global npm@11.18.0
-          node scripts/release/release-candidate.mjs verify .release/candidate
-      - name: Create the protected candidate tag and draft evidence release
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.qualification_run_id }}
+          name: rxjs-release-candidate-${{ inputs.qualification_run_id }}
+          path: .release/candidate
+      - name: Recheck current head, retained bytes, typed digest, and replay immediately before staging
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.build.outputs.version }}
+          RELEASE_ACTOR: ${{ github.actor }}
+        run: >-
+          node scripts/release/authorize-stage.mjs "$GITHUB_REPOSITORY"
+          "${{ inputs.qualification_run_id }}" "${{ inputs.version }}"
+          "${{ inputs.manifest_sha512 }}" .release/candidate
+      - name: Reconfirm the generated release PR again in the privileged job
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          expected="${{ needs.authorize.outputs.pull-request }}"
+          actual=$(node scripts/release/authorize-release-commit.mjs "$GITHUB_REPOSITORY" "$(git rev-parse HEAD)")
+          test "$actual" = "$expected"
+      - name: Install the checked npm CLI only after registry SHA-512 verification
+        run: |
+          npm_bin=$(node scripts/release/install-pinned-npm.mjs "$RUNNER_TEMP/npm-cli")
+          echo "$(dirname "$npm_bin")" >> "$GITHUB_PATH"
+      - name: Verify GitHub attestations and candidate bytes again
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/release/release-candidate.mjs verify .release/candidate
+          for tarball in .release/candidate/*.tgz; do gh attestation verify "$tarball" --repo "$GITHUB_REPOSITORY"; done
+      - name: Create protected candidate tag and draft evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag --annotate "$VERSION" --message "RxJS $VERSION qualified release candidate"
           git push origin "refs/tags/$VERSION"
           gh release create "$VERSION" --draft --verify-tag --title "RxJS $VERSION" --notes-file CHANGELOG.md .release/candidate/*
-      - name: Stage the exact attested tarballs with stage-only OIDC
+      - name: Stage exact attested tarballs with stage-only npm OIDC
         run: node scripts/release/stage-release.mjs publish .release/candidate .release/staged-release.json
-      - name: Comment approval links, hashes, stage IDs, order, and CLI fallback
+      - name: Comment WebAuthn approval links, hashes, stage IDs, order, and CLI fallback
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           NPM_STAGED_PACKAGES_URL: ${{ vars.NPM_STAGED_PACKAGES_URL }}
-          PR_NUMBER: ${{ needs.build.outputs.pull-request }}
         run: |
           test -f .release/staged-release.json
+          pr_number=$(node -e 'console.log(require("./.release/candidate/release-manifest.json").authorizingPullRequest)')
           node scripts/release/stage-release.mjs comment .release/candidate .release/staged-release.json > "$RUNNER_TEMP/staging-comment.md"
-          gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/staging-comment.md"
+          gh pr comment "$pr_number" --body-file "$RUNNER_TEMP/staging-comment.md"
       - name: Preserve staging receipt
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

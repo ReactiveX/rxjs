@@ -38,7 +38,13 @@ export class Notification<T> {
   }
 
   do(next: (value: T) => void, error?: (error: any) => void, complete?: () => void): void {
-    this.kind === 'N' ? next?.(this.value as T) : this.kind === 'E' ? error?.(this.error) : complete?.();
+    if (this.kind === 'N') {
+      next?.(this.value as T);
+    } else if (this.kind === 'E') {
+      error?.(this.error);
+    } else {
+      complete?.();
+    }
   }
 
   accept(observer: Partial<Observer<T>>): void;

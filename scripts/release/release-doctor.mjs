@@ -3,11 +3,21 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { assertNpmWebUrl, releasePackages, stagedPackagesVariable } from './release-config.mjs';
+import { assertNpmWebUrl, releaseOperatorLogin, releasePackages, releaseToolchain, stagedPackagesVariable } from './release-config.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const strict = process.argv.includes('--strict');
 const errors = [];
+if (releaseOperatorLogin !== 'benlesh') errors.push('The sole release operator must remain benlesh unless D-057 is explicitly reopened.');
+if (
+  releaseToolchain.runner !== 'ubuntu-24.04' ||
+  releaseToolchain.node !== '24.12.0' ||
+  releaseToolchain.pnpm !== '10.34.5' ||
+  releaseToolchain.npm !== '11.18.0' ||
+  !/^sha512-[A-Za-z0-9+/]+={0,2}$/.test(releaseToolchain.npmIntegrity)
+) {
+  errors.push('The checked release toolchain or npm SHA-512 drifted.');
+}
 
 const workflowDirectory = path.join(root, '.github/workflows');
 const workflowFiles = (await readdir(workflowDirectory)).filter((file) => /\.ya?ml$/.test(file));
@@ -29,23 +39,45 @@ for (const relativePath of [...workflowFiles.map((file) => `.github/workflows/${
 }
 
 const stageWorkflow = await readFile(path.join(root, '.github/workflows/release-stage.yml'), 'utf8').catch(() => '');
+const qualificationWorkflow = await readFile(path.join(root, '.github/workflows/release-qualify.yml'), 'utf8').catch(() => '');
 for (const requirement of [
   'id-token: write',
+  'workflow_dispatch:',
+  'qualification_run_id:',
+  'manifest_sha512:',
+  "github.actor == 'benlesh'",
+  'Verify typed manual authorization without npm authority',
+  'needs: authorize',
+  'authorize-stage.mjs',
   'authorize-release-commit.mjs',
   'stage-release.mjs publish',
   'release-candidate.mjs verify',
-  'runs-on: ubuntu-latest',
+  'runs-on: ubuntu-24.04',
 ]) {
   if (!stageWorkflow.includes(requirement)) errors.push(`release-stage.yml is missing ${requirement}.`);
 }
-const stagedNpm = /npm install --global npm@(\d+)\.(\d+)\.(\d+)/.exec(stageWorkflow);
-if (!stagedNpm || Number(stagedNpm[1]) < 11 || (Number(stagedNpm[1]) === 11 && Number(stagedNpm[2]) < 15)) {
-  errors.push('release-stage.yml must pin an npm CLI version that supports staged publishing (11.15.0 or newer).');
+for (const requirement of [
+  'matrix: { build: [a, b] }',
+  'compare-release-candidates.mjs',
+  'Exact tarballs / package, type, import, and migration gates',
+  'ubuntu-24.04',
+  "node-version: '24.12.0'",
+  'generate-release-evidence.mjs',
+  'osv-scanner-action@',
+  'release-candidate.mjs manifest-digest',
+]) {
+  if (!qualificationWorkflow.includes(requirement)) errors.push(`release-qualify.yml is missing ${requirement}.`);
 }
-if (!stageWorkflow.includes("node-version: '24'")) {
-  errors.push('release-stage.yml must use the supported Node 24 release environment.');
+if (!stageWorkflow.includes('install-pinned-npm.mjs')) {
+  errors.push('release-stage.yml must install the checked npm CLI through install-pinned-npm.mjs.');
 }
-if (stageWorkflow.includes('actions/cache') || stageWorkflow.includes('cache: pnpm')) {
+if (!stageWorkflow.includes("node-version: '24.12.0'")) {
+  errors.push('release-stage.yml must use exact Node 24.12.0.');
+}
+if (
+  `${stageWorkflow}\n${qualificationWorkflow}`.includes('actions/cache') ||
+  `${stageWorkflow}\n${qualificationWorkflow}`.includes('cache: pnpm')
+) {
   errors.push('The privileged release workflow must not restore dependency or build caches.');
 }
 if (stageWorkflow.includes('registry-url:')) {
@@ -74,16 +106,33 @@ for (const { directory, name } of releasePackages) {
   names.push(manifest.name);
   versions.add(manifest.version);
   if (manifest.name !== name) errors.push(`${directory}/package.json must identify ${name}.`);
+  if (manifest.repository?.url !== 'https://github.com/ReactiveX/rxjs.git') {
+    errors.push(`${directory}/package.json must use the exact case-sensitive ReactiveX repository URL.`);
+  }
 }
 if (versions.size !== 1) errors.push('The four release packages do not have one synchronized version.');
 
 const runbook = await readFile(path.join(root, 'docs/RELEASE_PROCESS.md'), 'utf8').catch(() => '');
+const normalizedRunbook = runbook.replaceAll('`', '');
 if (!/^# RxJS 9 secure release process\n\n## Basic steps\n/.test(runbook)) errors.push('The public runbook must begin with Basic steps.');
 if (runbook.indexOf('## Security considerations') < runbook.indexOf('## Basic steps')) {
   errors.push('Security considerations must follow Basic steps.');
 }
-for (const role of ['Release maintainer does', 'Release maintainer sees', 'GitHub automation does', 'npm does']) {
-  if (!runbook.includes(`**${role}:**`)) errors.push(`The runbook is missing the ${role} scenario role.`);
+for (const requiredText of [
+  'one maintainer',
+  'zero approvals',
+  'automatically creates or refreshes the release PR',
+  'release-manifest.json SHA-512',
+  'WebAuthn',
+]) {
+  if (!normalizedRunbook.toLowerCase().includes(requiredText.toLowerCase())) errors.push(`The runbook is missing: ${requiredText}.`);
+}
+if (
+  /@ReactiveX\/release-maintainers|add-reviewer|required code-owner|environment reviewer requirement/i.test(
+    `${runbook}\n${stageWorkflow}\n${qualificationWorkflow}`
+  )
+) {
+  errors.push('Release documentation or workflows still imply a second reviewer or release team.');
 }
 for (const { name } of releasePackages) {
   if (!runbook.includes(`\`${name}\``)) errors.push(`The public runbook does not identify ${name}.`);
@@ -115,6 +164,12 @@ if (strict) {
     .filter(Boolean);
   if (requiredChecks.length === 0) errors.push('RELEASE_REQUIRED_CHECKS must list the protected master checks.');
   if (new Set(requiredChecks).size !== requiredChecks.length) errors.push('RELEASE_REQUIRED_CHECKS contains duplicate check names.');
+  for (const requiredSignal of ['codeql', 'dependency', 'osv', 'migration evidence', 'package gates', 'wpt', 'release readiness']) {
+    if (!requiredChecks.some((check) => check.toLowerCase().includes(requiredSignal))) {
+      errors.push(`RELEASE_REQUIRED_CHECKS does not include the ${requiredSignal} gate.`);
+    }
+  }
+  await validateBranchRuleset();
   await validateTagRuleset();
 }
 
@@ -156,4 +211,47 @@ async function validateTagRuleset() {
   } catch (error) {
     errors.push(`Could not audit release tag ruleset ${rulesetId}: ${error.message}`);
   }
+}
+
+async function validateBranchRuleset() {
+  const rulesetId = process.env.RELEASE_BRANCH_RULESET_ID;
+  if (!rulesetId) {
+    errors.push('RELEASE_BRANCH_RULESET_ID is required to audit single-maintainer master protection.');
+    return;
+  }
+  try {
+    const ruleset = await readRuleset(rulesetId);
+    if (ruleset.target !== 'branch' || ruleset.enforcement !== 'active') {
+      errors.push(`Ruleset ${rulesetId} must be an active branch ruleset.`);
+    }
+    if (!ruleset.conditions?.ref_name?.include?.includes('refs/heads/master')) {
+      errors.push(`Ruleset ${rulesetId} must include refs/heads/master.`);
+    }
+    const rules = new Map((ruleset.rules ?? []).map((rule) => [rule.type, rule]));
+    for (const requiredRule of ['deletion', 'non_fast_forward', 'pull_request', 'required_status_checks', 'required_signatures']) {
+      if (!rules.has(requiredRule)) errors.push(`Ruleset ${rulesetId} is missing the ${requiredRule} rule.`);
+    }
+    const pullRequest = rules.get('pull_request')?.parameters ?? {};
+    if (pullRequest.required_approving_review_count !== 0) errors.push(`Ruleset ${rulesetId} must require zero approving reviews.`);
+    if (JSON.stringify(pullRequest.allowed_merge_methods) !== JSON.stringify(['squash'])) {
+      errors.push(`Ruleset ${rulesetId} must allow only squash merges.`);
+    }
+  } catch (error) {
+    errors.push(`Could not audit release branch ruleset ${rulesetId}: ${error.message}`);
+  }
+}
+
+async function readRuleset(rulesetId) {
+  const repository = process.env.GITHUB_REPOSITORY;
+  const token = process.env.GH_TOKEN;
+  if (!repository || !token) throw new Error('GITHUB_REPOSITORY and GH_TOKEN are required.');
+  const response = await fetch(`https://api.github.com/repos/${repository}/rulesets/${encodeURIComponent(rulesetId)}`, {
+    headers: {
+      accept: 'application/vnd.github+json',
+      authorization: `Bearer ${token}`,
+      'x-github-api-version': '2022-11-28',
+    },
+  });
+  if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
+  return response.json();
 }

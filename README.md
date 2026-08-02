@@ -3,8 +3,6 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/ci_main.yml?branch=master&style=flat-square&label=CI)](https://github.com/ReactiveX/rxjs/actions/workflows/ci_main.yml?query=branch%3Amaster)
 [![Release readiness](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/release-readiness.yml?branch=master&style=flat-square&label=release%20readiness)](https://github.com/ReactiveX/rxjs/actions/workflows/release-readiness.yml?query=branch%3Amaster)
 [![Observable WPT](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/observable-wpt.yml?branch=master&style=flat-square&label=Observable%20WPT)](https://github.com/ReactiveX/rxjs/actions/workflows/observable-wpt.yml?query=branch%3Amaster)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ReactiveX/rxjs/badge)](https://scorecard.dev/viewer/?uri=github.com/ReactiveX/rxjs)
-
 [![npm stable](https://img.shields.io/npm/v/rxjs/latest?style=flat-square&label=npm%20stable)](https://www.npmjs.com/package/rxjs?activeTab=versions)
 [![npm next](https://img.shields.io/npm/v/rxjs/next?style=flat-square&label=npm%20next)](https://www.npmjs.com/package/rxjs?activeTab=versions)
 [![npm downloads](https://img.shields.io/npm/dm/rxjs?style=flat-square&label=downloads)](https://www.npmjs.com/package/rxjs)
@@ -78,6 +76,9 @@ Import the Symbol and call it with bracket syntax. A platform method such as
 Release support, budgets, and exact environment gates are documented in the
 [`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). The irreversible npm
 publication process is the public [secure release runbook](docs/RELEASE_PROCESS.md).
+The [RxJS 9 security-assurance document](packages/rxjs/docs/SECURITY_ASSURANCE.md)
+explains the release evidence, verification commands, sole-maintainer model,
+and OpenSSF Scorecard in context.
 Repository-wide design records live in
 [`docs/rxjs-next`](docs/rxjs-next/PROJECT_CHARTER.md).
 
