@@ -40,6 +40,7 @@ export function baselineFromAuditReport({ manifest, migrationReport, mode, packa
     failed: assertions.filter(({ assertion }) => assertion.status === 'failed').length,
     incomplete: assertions.filter(({ assertion }) => assertion.status !== 'passed' && assertion.status !== 'failed').length,
   };
+  const unhandledErrors = report.unhandledErrors ?? 0;
   if (
     reportTotals.total !== manifest.totals.cases ||
     reportTotals.total !== assertionTotals.total ||
@@ -47,7 +48,7 @@ export function baselineFromAuditReport({ manifest, migrationReport, mode, packa
     reportTotals.failed !== assertionTotals.failed ||
     reportTotals.pending !== 0 ||
     reportTotals.todo !== 0 ||
-    report.unhandledErrors !== 0 ||
+    unhandledErrors !== 0 ||
     assertionTotals.incomplete !== 0 ||
     reportTotals.passed + reportTotals.failed !== reportTotals.total
   ) {

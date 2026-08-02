@@ -32,7 +32,7 @@ function validInput() {
       'test:bundle-analysis',
       'test:release:safari',
       'test:workflows',
-      'fetch-depth: 0',
+      'git fetch --no-tags --depth=1 origin 7.x:7.x',
       'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
     ].join('\n'),
     tsWorkflowSource: [
@@ -180,10 +180,10 @@ test('rejects removal of WPT and release-readiness runner prerequisites', () => 
 
 test('rejects shallow migration-evidence CI and sandboxed hosted WPT Chrome', () => {
   const input = validInput();
-  input.ciWorkflowSource = input.ciWorkflowSource.replace('fetch-depth: 0', 'fetch-depth: 1');
+  input.ciWorkflowSource = input.ciWorkflowSource.replace('git fetch --no-tags --depth=1 origin 7.x:7.x', '');
   input.wptRunnerSource = '';
 
   const errors = auditReleaseCoherence(input).join('\n');
-  assert.match(errors, /RxJS 7 source history/);
+  assert.match(errors, /RxJS 7 source ref/);
   assert.match(errors, /Linux Chrome sandbox argument/);
 });

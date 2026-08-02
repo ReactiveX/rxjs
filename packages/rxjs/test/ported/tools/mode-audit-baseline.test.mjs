@@ -11,6 +11,12 @@ test('accepts a complete report and exact reviewed pass set', () => {
   assert.doesNotThrow(() => assertAuditBaseline(actual, actual));
 });
 
+test('accepts Vitest JSON reports that omit an empty unhandled-errors field', () => {
+  const input = fixture();
+  delete input.report.unhandledErrors;
+  assert.doesNotThrow(() => baselineFromAuditReport(input));
+});
+
 test('rejects incomplete execution', () => {
   const input = fixture();
   input.report.numTotalTests = 1;

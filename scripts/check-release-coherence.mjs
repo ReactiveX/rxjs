@@ -86,7 +86,7 @@ function auditReleaseMatrix(input, errors) {
     ['test:bundle-analysis', 'bundle-analysis tooling tests'],
     ['test:release:safari', 'SafariDriver contract tests'],
     ['test:workflows', 'active-workflow parsing and formatting'],
-    ['fetch-depth: 0', 'the RxJS 7 source history required by migration-evidence freshness checks'],
+    ['git fetch --no-tags --depth=1 origin 7.x:7.x', 'the RxJS 7 source ref required by migration-evidence freshness checks'],
     [
       'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
       'the clean-workspace release-package build before consumer tests',
