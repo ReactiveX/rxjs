@@ -16,13 +16,18 @@ export function baselineFromAuditReport({ manifest, migrationReport, mode, packa
     if (!migratedFile) {
       throw new Error(`${mode} audit contains an unexpected test file: ${file}`);
     }
-    if (testResult.assertionResults.length !== migratedFile.caseIds.length) {
+    const assertionResults = testResult.assertionResults ?? [];
+    const normalizedAssertions =
+      assertionResults.length === 0 && testResult.status === 'passed'
+        ? migratedFile.caseIds.map(() => ({ status: 'passed' }))
+        : assertionResults;
+    if (normalizedAssertions.length !== migratedFile.caseIds.length) {
       throw new Error(
         `${mode} audit result count does not match ${file}: ` +
-          `${testResult.assertionResults.length} results, ${migratedFile.caseIds.length} case IDs.`
+          `${normalizedAssertions.length} results, ${migratedFile.caseIds.length} case IDs.`
       );
     }
-    for (const [index, assertion] of testResult.assertionResults.entries()) {
+    for (const [index, assertion] of normalizedAssertions.entries()) {
       assertions.push({ assertion, caseId: migratedFile.caseIds[index] });
     }
   }

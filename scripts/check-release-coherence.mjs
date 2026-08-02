@@ -85,6 +85,10 @@ function auditReleaseMatrix(input, errors) {
     ['test:bundle-analysis', 'bundle-analysis tooling tests'],
     ['test:release:safari', 'SafariDriver contract tests'],
     ['test:workflows', 'active-workflow parsing and formatting'],
+    [
+      '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
+      'the clean-workspace release-package build before consumer tests',
+    ],
   ]) {
     if (!input.ciWorkflowSource.includes(command)) {
       errors.push(`Package CI must retain ${label}.`);

@@ -32,6 +32,7 @@ function validInput() {
       'test:bundle-analysis',
       'test:release:safari',
       'test:workflows',
+      '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
     ].join('\n'),
     tsWorkflowSource: "  push:\n    branches: ['master']",
     wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:",
@@ -130,4 +131,13 @@ test('rejects documentation-site work from release workflows', () => {
       'publishing CI must not build, test, publish, or otherwise reference rxjs.dev.',
     ]
   );
+});
+
+test('rejects removal of the clean-workspace release-package build', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace(
+    '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
+    ''
+  );
+  assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
 });
