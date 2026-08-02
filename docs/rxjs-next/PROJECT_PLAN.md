@@ -78,8 +78,9 @@ source subscriptions through the D-049 helper and recorded the resulting
 bundle-size reduction. P6.7 then removed the remaining derived-construction
 wrappers in favor of direct D-037 `[create]` calls and recorded a further
 bundle-size reduction. P6.8 completed durable pull-request and `master` CI
-ownership for every accepted RxJS 9 test and release check. The execution queue
-is complete with no `NEXT` item.
+ownership for every accepted RxJS 9 test and release check. The user has now
+prioritized P6.9: publish truthful README status signals and add the repository
+security automation needed to support an attested OpenSSF Scorecard badge.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1564,6 +1565,41 @@ names.
 | `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
 | `DONE` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
 | `DONE` | P6.8 | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
+| `NEXT` | P6.9 | Add truthful README badges, Scorecard analysis, and dependency review                 |
+
+#### P6.9 completion bar
+
+- The root README exposes authoritative `master` CI, release-readiness, WPT,
+  npm channel, download, license, and OpenSSF Scorecard signals plus factual
+  native-Observable and Symbol-extension badges.
+- Prepublication wording does not claim that `9.0.0-beta.0` is already on npm
+  or direct readers to install the older prerelease currently under `next`.
+- A SHA-pinned Scorecard workflow publishes attested results and SARIF from
+  `master` on push and a weekly schedule; a SHA-pinned pull-request dependency
+  review blocks new moderate-or-higher runtime and development vulnerabilities.
+- Active-workflow formatting, release coherence, documentation links, badge
+  targets, and the no-runtime/no-`rxjs.dev` scope boundary are verified. The
+  first default-branch Scorecard publication and required-check repository rule
+  remain explicit post-merge administrative follow-ups.
+
+#### P6.9 implementation evidence
+
+- Added ten source-linked README badges: three `master` workflow signals,
+  OpenSSF Scorecard, npm `latest` and `next`, monthly downloads, license, and
+  two architecture-backed native/Symbol claims. All ten image endpoints
+  returned HTTP 200; workflow and Scorecard destinations resolved, while npm's
+  canonical web pages returned their expected automated-client 403 response.
+- Corrected the unpublished-beta wording, removed the unsafe `rxjs@next`
+  installation command, and retained the planned API example without claiming
+  that `9.0.0-beta.0` is already available.
+- Added full-SHA-pinned Scorecard v2.4.4 and dependency-review v5.0.0 workflows.
+  Local YAML parsing, active-workflow formatting, documentation links, all 24
+  release-check tests, release coherence, and diff checks pass; `apps/rxjs.dev`
+  and runtime/package source are unchanged.
+- P6.9 remains `NEXT` until dependency review runs on the implementation PR.
+  After merge, the first `master` Scorecard publication, code-scanning result,
+  live badge population, and required dependency-review repository rule remain
+  administrative verification steps.
 
 #### P6.1 completion bar
 
@@ -3443,3 +3479,18 @@ conformance implementation depends on a runnable harness.
 - Classified and corrected CI configuration failures separately from product
   behavior; no product-test failure was found. Marked P6.8 `DONE` and returned
   the completed queue to no `NEXT` item.
+
+### 2026-08-02 — P6.9 README status and security automation
+
+- Reopened the completed queue at the user's direction and added authoritative
+  CI, release-readiness, WPT, Scorecard, npm-channel, download, license, and
+  architecture badges without adding unsupported coverage or size claims.
+- Corrected prepublication copy so npm `next` can truthfully display the older
+  prerelease without implying that RxJS 9 is published or installable there.
+- Added SHA-pinned Scorecard publication/SARIF and pull-request dependency
+  review, with only the required narrow permissions and no license enforcement
+  or automated PR comments.
+- Passed YAML parsing, active-workflow and Markdown formatting, all 24 release
+  checks, documentation links, release coherence, badge image/target probes,
+  and diff hygiene. P6.9 remains `NEXT` for PR and post-merge live validation;
+  no runtime, package API, publication artifact, or `apps/rxjs.dev` file changed.

@@ -1,12 +1,26 @@
 # RxJS
 
+[![CI](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/ci_main.yml?branch=master&style=flat-square&label=CI)](https://github.com/ReactiveX/rxjs/actions/workflows/ci_main.yml?query=branch%3Amaster)
+[![Release readiness](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/release-readiness.yml?branch=master&style=flat-square&label=release%20readiness)](https://github.com/ReactiveX/rxjs/actions/workflows/release-readiness.yml?query=branch%3Amaster)
+[![Observable WPT](https://img.shields.io/github/actions/workflow/status/ReactiveX/rxjs/observable-wpt.yml?branch=master&style=flat-square&label=Observable%20WPT)](https://github.com/ReactiveX/rxjs/actions/workflows/observable-wpt.yml?query=branch%3Amaster)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ReactiveX/rxjs/badge)](https://scorecard.dev/viewer/?uri=github.com/ReactiveX/rxjs)
+
+[![npm stable](https://img.shields.io/npm/v/rxjs/latest?style=flat-square&label=npm%20stable)](https://www.npmjs.com/package/rxjs?activeTab=versions)
+[![npm next](https://img.shields.io/npm/v/rxjs/next?style=flat-square&label=npm%20next)](https://www.npmjs.com/package/rxjs?activeTab=versions)
+[![npm downloads](https://img.shields.io/npm/dm/rxjs?style=flat-square&label=downloads)](https://www.npmjs.com/package/rxjs)
+[![Apache 2.0](https://img.shields.io/npm/l/rxjs?style=flat-square&label=license)](LICENSE.txt)
+
+[![Observable: platform native](https://img.shields.io/badge/Observable-platform--native-2563eb?style=flat-square)](docs/rxjs-next/ARCHITECTURE.md#native-selection-and-polyfill-boundary)
+[![Extensions: Symbol keyed](https://img.shields.io/badge/extensions-Symbol--keyed-db2777?style=flat-square)](docs/rxjs-next/ARCHITECTURE.md#symbol-extension-model)
+
 RxJS is a library for composing asynchronous and event-based programs with
 Observable values. This repository contains the platform-based next generation
 of RxJS, planned for release as **RxJS 9**.
 
-> RxJS 9 is currently prerelease software. The first beta is
-> `9.0.0-beta.0`, published under npm's `next` tag. RxJS 7 remains the
-> production `latest` line and continues to be maintained.
+> RxJS 9 is prerelease work in development. The planned first beta is
+> `9.0.0-beta.0`, but it has not been published to npm yet. The `next` tag still
+> points to the earlier RxJS 8 prerelease, while RxJS 7 remains the production
+> `latest` line and continues to be maintained.
 
 ## Why RxJS 9? What happened to RxJS 8?
 
@@ -30,11 +44,10 @@ product.
 - Published JavaScript is ESM-only. Current Node can bridge `require()` to the
   same ESM files; there is no duplicate CommonJS build.
 
-## Try the beta
+## Preview the RxJS 9 API
 
-```sh
-npm install rxjs@next
-```
+The following example shows the planned beta API. Until `9.0.0-beta.0` is
+published, do not use npm's `next` tag to install RxJS 9.
 
 ```ts
 import { ColdObservable } from 'rxjs';
@@ -68,11 +81,11 @@ records live in [`docs/rxjs-next`](docs/rxjs-next/PROJECT_CHARTER.md).
 
 ## Supported environments
 
-The beta supports Node 22.13+ and Node 24 as blocking lanes, with Node 26 in an
-advisory lane. Current Chrome, Firefox, desktop Safari, Mobile Safari, Deno, Bun,
-and Webpack 5 are blocking. Every supported consumer receives the same ESM
-implementation, so Deno and Bun support adds no runtime-specific package or
-application-bundle code.
+The planned beta supports Node 22.13+ and Node 24 as blocking lanes, with Node
+26 in an advisory lane. Current Chrome, Firefox, desktop Safari, Mobile Safari,
+Deno, Bun, and Webpack 5 are blocking. Every supported consumer receives the
+same ESM implementation, so Deno and Bun support adds no runtime-specific
+package or application-bundle code.
 
 ## Contributing
 

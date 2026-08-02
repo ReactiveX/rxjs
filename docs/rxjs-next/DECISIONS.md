@@ -1416,3 +1416,28 @@ Status meanings:
   removal of those commands or their `master` triggers. This decision changes
   no runtime API, export, type, distribution artifact, or `apps/rxjs.dev`
   boundary.
+
+## D-056 — Publish truthful status signals and automate supply-chain review
+
+- **Status:** Accepted
+- **Decision:** The root README reports `master` CI, release readiness, pinned
+  Observable WPT, npm `latest` and `next`, downloads, license, and attested
+  OpenSSF Scorecard status through source-linked badges. It distinguishes the
+  planned `9.0.0-beta.0` from the older prerelease currently on npm `next` and
+  does not instruct users to install RxJS 9 from that tag before publication.
+- **Security automation:** A weekly and `master`-push Scorecard workflow
+  publishes authenticated results and SARIF. Pull requests receive dependency
+  review that rejects newly introduced moderate-or-higher vulnerabilities in
+  runtime and development scopes. External actions are pinned to full commit
+  SHAs; analysis permissions are read-only except for the narrow OIDC and code
+  scanning writes required to publish results.
+- **Rationale:** Badges are useful only when their claims are current and
+  inspectable. The existing release and conformance workflows already provide
+  authoritative health signals; Scorecard and dependency review add bounded
+  supply-chain evidence without inventing coverage, package-size, or stable
+  RxJS 9 claims that the repository cannot yet support.
+- **Consequence:** The Scorecard badge remains empty until the first successful
+  default-branch publication. Making dependency review a required status check
+  is a repository-rules administration step after its first run. This decision
+  changes no runtime API, export, type, package artifact, or `apps/rxjs.dev`
+  boundary.

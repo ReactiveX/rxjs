@@ -11,7 +11,7 @@
     "release": "node scripts/release.js",
     "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
-    "test:workflows": "prettier --check .github/workflows/ci_main.yml .github/workflows/ci_ts_latest.yml .github/workflows/observable-wpt.yml .github/workflows/release-readiness.yml .github/workflows/publish.yml",
+    "test:workflows": "prettier --check .github/workflows/ci_main.yml .github/workflows/ci_ts_latest.yml .github/workflows/dependency-review.yml .github/workflows/observable-wpt.yml .github/workflows/release-readiness.yml .github/workflows/scorecard.yml .github/workflows/publish.yml",
     "test:kernel": "pnpm --filter rxjs run test:kernel",
     "test:lifecycle": "pnpm --filter @rxjs/observable-polyfill run test:lifecycle",
     "test:release:runtime": "pnpm --filter rxjs run test:release:runtime",
