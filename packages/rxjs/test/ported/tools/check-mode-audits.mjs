@@ -66,5 +66,12 @@ function runAudit(mode, migrationEntries, file, pool) {
         `${result.stderr || result.stdout}`
     );
   }
-  return reportFromVerboseOutput({ migrationEntries, output: `${result.stdout}\n${result.stderr}`, packageDirectory });
+  const output = `${result.stdout}\n${result.stderr}`;
+  const report = reportFromVerboseOutput({ migrationEntries, output, packageDirectory });
+  if (migrationEntries.length > 0 && report.numTotalTests === 0) {
+    throw new Error(
+      `${mode} audit produced no parseable per-case results. Captured output sample: ${JSON.stringify(output.slice(0, 4000))}`
+    );
+  }
+  return report;
 }

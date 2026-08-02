@@ -8,7 +8,7 @@ const statusByMarker = new Map([
 
 export function reportFromVerboseOutput({ migrationEntries, output, packageDirectory }) {
   const resultsByFile = new Map(migrationEntries.map((entry) => [entry.file, []]));
-  for (const rawLine of output.split(/\r?\n/)) {
+  for (const rawLine of output.split(/[\r\n]+/)) {
     const line = stripAnsi(rawLine);
     const match = /^\s*([✓×↓])\s+(\S*test\/ported\/\S+\.spec\.ts)\s+>/.exec(line);
     if (!match) continue;

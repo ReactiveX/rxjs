@@ -24,6 +24,15 @@ test('collects verbose Vitest outcomes in declaration order', () => {
   assert.deepEqual(report.testResults[0].assertionResults, [{ status: 'passed' }, { status: 'failed' }]);
 });
 
+test('collects progress records separated by bare carriage returns', () => {
+  const report = reportFromVerboseOutput({
+    migrationEntries: [migrationEntries[0]],
+    packageDirectory: '/workspace/packages/rxjs',
+    output: ' ✓ test/ported/cold/a.spec.ts > suite > first\r × test/ported/cold/a.spec.ts > suite > second\r',
+  });
+  assert.deepEqual(report.testResults[0].assertionResults, [{ status: 'passed' }, { status: 'failed' }]);
+});
+
 test('retains incomplete files and unhandled errors for the baseline validator', () => {
   const report = reportFromVerboseOutput({ migrationEntries, packageDirectory: '/workspace/packages/rxjs', output: 'Unhandled Error' });
   assert.equal(report.numTotalTests, 0);
