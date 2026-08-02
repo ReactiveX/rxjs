@@ -1403,10 +1403,7 @@ Status meanings:
   run unconditionally on every `master` push. Node 26 and scheduled
   latest-Chrome drift remain explicitly advisory; all accepted Node 22.13/24,
   browser, Safari, Webpack, Deno, Bun, package, and conformance lanes remain
-  blocking. The exact migration-evidence audit is pinned to the reviewed Node
-  `24.12.0` runtime because Vitest 1.2's built-in JSON reporter can omit every
-  assertion result on later Node 24 hosted runners; the ordinary package lane
-  continues to track maintained Node 24 releases.
+  blocking.
 - **Rationale:** The completed RxJS 9 work had durable local evidence that was
   not uniformly represented in CI. Exact baseline comparison preserves the
   visibility required by D-013 without either making intentional RxJS 7

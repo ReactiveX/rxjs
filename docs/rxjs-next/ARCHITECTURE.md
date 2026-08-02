@@ -1066,9 +1066,6 @@ CI has four durable ownership layers. Main CI runs focused package behavior,
 lint, builds, declarations, imports, publication fixtures, runtime contracts,
 the exact migration-evidence audits, bundle-analysis tests, SafariDriver unit
 tests, and active-workflow validation on pull requests and `master`.
-The exact audit uses the reviewed Node `24.12.0` runtime so Vitest's JSON
-collection remains deterministic; the separate blocking package lane continues
-to track maintained Node 24 releases.
 TypeScript-latest also runs in both contexts. Pinned Observable WPT and the full
 browser, Webpack, performance, adoption, Deno, Bun, desktop Safari, and Mobile
 Safari release-readiness matrix are path-aware on pull requests and

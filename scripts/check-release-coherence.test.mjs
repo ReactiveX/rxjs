@@ -24,7 +24,6 @@ function validInput() {
     ),
     ciWorkflowSource: [
       "  push:\n    branches: ['master']",
-      "name: RxJS 9 migration evidence and repository checks (Node 24)\nnode-version: '24.12.0'",
       "node: '22.13.0'",
       "node: '24'",
       "node: '26'",
@@ -152,12 +151,6 @@ test('rejects removal of the clean-workspace release-package build', () => {
     ''
   );
   assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
-});
-
-test('rejects drift from the reviewed migration-evidence Node 24 runtime', () => {
-  const input = validInput();
-  input.ciWorkflowSource = input.ciWorkflowSource.replace("node-version: '24.12.0'", "node-version: '24'");
-  assert.match(auditReleaseCoherence(input).join('\n'), /reviewed Node 24\.12\.0 runtime/);
 });
 
 test('rejects removal of the TypeScript-latest build command', () => {
