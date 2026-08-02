@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertAuditBaseline, baselineFromAuditReport } from './mode-audit-baseline.mjs';
-import { reportFromVerboseOutput } from './mode-audit-verbose.mjs';
+import { findIncompleteAuditEntries, replaceAuditReportResults, reportFromVerboseOutput } from './mode-audit-verbose.mjs';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const packageDirectory = resolve(toolDirectory, '../../..');
@@ -14,10 +14,22 @@ const migrationReport = await readJson(resolve(toolDirectory, '../migration-repo
 
 for (const mode of ['cold', 'polyfill']) {
   const suiteMode = mode === 'cold' ? 'cold' : 'platform';
-  const [report, expected] = await Promise.all([
+  let [report, expected] = await Promise.all([
     runAudit(mode, migrationReport.modes[suiteMode]),
     readJson(resolve(toolDirectory, `../verified-${mode}-passes.json`)),
   ]);
+  const incompleteEntries = findIncompleteAuditEntries({ migrationEntries: migrationReport.modes[suiteMode], report });
+  if (incompleteEntries.length > 0) {
+    process.stdout.write(`Re-running ${incompleteEntries.length} incomplete ${mode} audit file(s) in isolation.\n`);
+    const replacements = incompleteEntries.map((entry) => {
+      let replacement = runAudit(mode, [entry], entry.file);
+      if (findIncompleteAuditEntries({ migrationEntries: [entry], report: replacement }).length > 0) {
+        replacement = runAudit(mode, [entry], entry.file, 'threads');
+      }
+      return replacement;
+    });
+    report = replaceAuditReportResults({ report, replacements });
+  }
   const actual = baselineFromAuditReport({ manifest, migrationReport, mode, packageDirectory, report });
   assertAuditBaseline(actual, expected);
   process.stdout.write(
@@ -29,15 +41,17 @@ async function readJson(path) {
   return JSON.parse(await readFile(path, 'utf8'));
 }
 
-function runAudit(mode, migrationEntries) {
+function runAudit(mode, migrationEntries, file, pool) {
   const result = spawnSync(
     process.execPath,
     [
       resolve(packageDirectory, '../../node_modules/vitest/vitest.mjs'),
       '--run',
+      ...(file ? [file] : []),
       '--config',
       'vitest.ported.config.ts',
       '--reporter=verbose',
+      ...(pool ? [`--pool=${pool}`] : []),
     ],
     {
       cwd: packageDirectory,

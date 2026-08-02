@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { reportFromVerboseOutput } from './mode-audit-verbose.mjs';
+import { findIncompleteAuditEntries, replaceAuditReportResults, reportFromVerboseOutput } from './mode-audit-verbose.mjs';
 
 const migrationEntries = [
   { file: 'test/ported/cold/a.spec.ts', caseIds: ['A', 'B'] },
@@ -32,6 +32,19 @@ test('retains incomplete files and unhandled errors for the baseline validator',
     report.testResults.map((result) => result.assertionResults),
     [[], []]
   );
+  assert.deepEqual(findIncompleteAuditEntries({ migrationEntries, report }), migrationEntries);
+});
+
+test('replaces isolated file results and recalculates totals', () => {
+  const report = reportFromVerboseOutput({ migrationEntries, packageDirectory: '/workspace/packages/rxjs', output: '' });
+  const replacement = reportFromVerboseOutput({
+    migrationEntries: [migrationEntries[0]],
+    packageDirectory: '/workspace/packages/rxjs',
+    output: [' ✓ test/ported/cold/a.spec.ts > suite > first', ' × test/ported/cold/a.spec.ts > suite > second'].join('\n'),
+  });
+  const repaired = replaceAuditReportResults({ report, replacements: [replacement] });
+  assert.deepEqual([repaired.numTotalTests, repaired.numPassedTests, repaired.numFailedTests], [2, 1, 1]);
+  assert.deepEqual(findIncompleteAuditEntries({ migrationEntries, report: repaired }), [migrationEntries[1]]);
 });
 
 test('rejects results from an unexpected test file', () => {

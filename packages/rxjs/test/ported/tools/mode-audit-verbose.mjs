@@ -22,6 +22,21 @@ export function reportFromVerboseOutput({ migrationEntries, output, packageDirec
     name: resolve(packageDirectory, entry.file),
     assertionResults: resultsByFile.get(entry.file),
   }));
+  return reportFromTestResults(testResults, /Unhandled Errors?/.test(stripAnsi(output)) ? 1 : 0);
+}
+
+export function findIncompleteAuditEntries({ migrationEntries, report }) {
+  return migrationEntries.filter((entry, index) => report.testResults[index]?.assertionResults.length !== entry.caseIds.length);
+}
+
+export function replaceAuditReportResults({ report, replacements }) {
+  const replacementsByName = new Map(replacements.flatMap((replacement) => replacement.testResults.map((result) => [result.name, result])));
+  const testResults = report.testResults.map((result) => replacementsByName.get(result.name) ?? result);
+  const unhandledErrors = report.unhandledErrors + replacements.reduce((total, replacement) => total + replacement.unhandledErrors, 0);
+  return reportFromTestResults(testResults, unhandledErrors);
+}
+
+function reportFromTestResults(testResults, unhandledErrors) {
   const assertions = testResults.flatMap((result) => result.assertionResults);
   return {
     numTotalTests: assertions.length,
@@ -29,7 +44,7 @@ export function reportFromVerboseOutput({ migrationEntries, output, packageDirec
     numFailedTests: countStatus(assertions, 'failed'),
     numPendingTests: countStatus(assertions, 'pending'),
     numTodoTests: 0,
-    unhandledErrors: /Unhandled Errors?/.test(stripAnsi(output)) ? 1 : 0,
+    unhandledErrors,
     testResults,
   };
 }
