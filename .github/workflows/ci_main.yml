@@ -27,6 +27,9 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Build migration-audit runtime dependency
+        run: pnpm --filter @rxjs/observable-polyfill run build
+
       - name: Run exact cold and polyfill audit baselines
         run: pnpm --filter rxjs run test:unit:audit:check
 

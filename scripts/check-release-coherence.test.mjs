@@ -28,6 +28,7 @@ function validInput() {
       "node: '24'",
       "node: '26'",
       'continue-on-error: ${{ matrix.advisory }}',
+      'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
       'test:unit:audit:check',
       'test:bundle-analysis',
       'test:release:safari',
@@ -151,6 +152,15 @@ test('rejects removal of the clean-workspace release-package build', () => {
     ''
   );
   assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
+});
+
+test('rejects removal of the clean-workspace migration-audit build', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace(
+    'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
+    ''
+  );
+  assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace migration-audit runtime build/);
 });
 
 test('rejects removal of the TypeScript-latest build command', () => {

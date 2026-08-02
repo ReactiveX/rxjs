@@ -647,8 +647,11 @@ rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.
 The audit commands retain ordinary Vitest failure semantics. The CI-only
 `test:unit:audit:check` command captures the verbose per-case result stream and
 requires the exact reviewed cold and polyfill passing case-ID sets. It fails for
-incomplete collection, unknown or duplicate IDs, new failures, and unexpected passes;
-updating a baseline therefore remains an explicit evidence-review action.
+incomplete collection, unknown or duplicate IDs, new failures, and unexpected
+passes; updating a baseline therefore remains an explicit evidence-review
+action. Clean CI builds the observable-polyfill runtime dependency before the
+audit so source imports resolve through the same package boundary contributors
+use locally.
 
 Reusable authoring support lives in the independently publishable
 `@rxjs/migrate` package. Its semantic transform is independent of test-runner

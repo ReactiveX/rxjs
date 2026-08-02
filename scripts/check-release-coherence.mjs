@@ -82,6 +82,10 @@ function auditReleaseMatrix(input, errors) {
     errors.push('The Node 26 lane must remain explicitly advisory.');
   }
   for (const [command, label] of [
+    [
+      'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
+      'the clean-workspace migration-audit runtime build',
+    ],
     ['test:unit:audit:check', 'the exact RxJS 7 migration-evidence baselines'],
     ['test:bundle-analysis', 'bundle-analysis tooling tests'],
     ['test:release:safari', 'SafariDriver contract tests'],
