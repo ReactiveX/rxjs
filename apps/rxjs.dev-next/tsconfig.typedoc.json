@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": ["node"],
+    "paths": {
+      "@rxjs/observable-polyfill": ["packages/observable-polyfill/src/index.ts"],
+      "rxjs": ["packages/rxjs/src/index.ts"],
+      "rxjs/*": ["packages/rxjs/src/*.ts"]
+    }
+  },
+  "include": [
+    "../../packages/rxjs/src/**/*.ts",
+    "../../packages/observable-polyfill/src/**/*.ts",
+    "../../packages/test/src/**/*.ts",
+    "../../packages/migrate/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "../../packages/**/*.spec.ts",
+    "../../packages/**/*.test.ts"
+  ]
+}
