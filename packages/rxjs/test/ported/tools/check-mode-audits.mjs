@@ -69,8 +69,9 @@ function runAudit(mode, migrationEntries, file, pool) {
   const output = `${result.stdout}\n${result.stderr}`;
   const report = reportFromVerboseOutput({ migrationEntries, output, packageDirectory });
   if (migrationEntries.length > 0 && report.numTotalTests === 0) {
+    const sample = `${output.slice(0, 1000)}\n... captured output tail ...\n${output.slice(-12000)}`;
     throw new Error(
-      `${mode} audit produced no parseable per-case results. Captured output sample: ${JSON.stringify(output.slice(0, 4000))}`
+      `${mode} audit produced no parseable per-case results. Captured output sample: ${JSON.stringify(sample)}`
     );
   }
   return report;
