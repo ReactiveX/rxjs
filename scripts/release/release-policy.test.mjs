@@ -60,4 +60,13 @@ test('ignores the empty pull-request template breaking-change placeholder', () =
     classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGE:** changes cancellation ownership').level,
     'breaking'
   );
+  assert.equal(
+    classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGE:** <!--\nadd description or remove entirely\n-->').level,
+    'fix'
+  );
+  assert.equal(
+    classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGE:** <!-- placeholder --> changes cancellation ownership')
+      .level,
+    'breaking'
+  );
 });

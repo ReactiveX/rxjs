@@ -17,10 +17,8 @@ export function parseVersion(version) {
 export function classifyConventionalCommit(subject, body = '') {
   const match = conventionalTitle.exec(subject);
   if (!match?.groups) return { level: 'invalid', subject, reason: 'title is not a supported Conventional Commit' };
-  const breakingFooter = body
-    .match(/(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?\s*([^\n]*)/i)?.[1]
-    ?.replace(/<!--.*?-->/g, '')
-    .trim();
+  const breakingDescription = body.match(/(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?[^\S\r\n]*([^\r\n]*)/i)?.[1];
+  const breakingFooter = breakingDescription !== undefined && hasTextOutsideHtmlComments(breakingDescription);
   const breaking = match.groups.breaking === '!' || Boolean(breakingFooter);
   const level = breaking
     ? 'breaking'
@@ -30,6 +28,22 @@ export function classifyConventionalCommit(subject, body = '') {
     ? 'fix'
     : 'none';
   return { description: match.groups.description, level, subject, type: match.groups.type };
+}
+
+function hasTextOutsideHtmlComments(value) {
+  let index = 0;
+  while (index < value.length) {
+    if (value.startsWith('<!--', index)) {
+      const commentEnd = value.indexOf('-->', index + 4);
+      if (commentEnd === -1) return false;
+      index = commentEnd + 3;
+    } else if (/\S/.test(value[index])) {
+      return true;
+    } else {
+      index += 1;
+    }
+  }
+  return false;
 }
 
 export function selectRelease({ currentTag, manifestVersion = firstReleaseVersion, commits, mode = 'auto' }) {

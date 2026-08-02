@@ -132,6 +132,7 @@ function auditReleaseMatrix(input, errors) {
     errors.push('Publishing must verify release policy before building and packing one candidate.');
   }
   for (const requirement of [
+    'RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}',
     'release-candidate.mjs verify',
     'release-candidate.mjs hydrate',
     'stage-release.mjs publish',

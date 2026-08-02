@@ -14,13 +14,14 @@ const root = fileURLToPath(new URL('../..', import.meta.url));
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   const [command, directory = '.release/candidate'] = process.argv.slice(2);
   const candidateRoot = path.resolve(root, directory);
-  if (command === 'build') await buildCandidate(candidateRoot);
-  else if (command === 'verify') await verifyCandidate(candidateRoot);
-  else if (command === 'hydrate') await hydrateCandidate(candidateRoot);
+  const expectedSourceCommit = process.env.RELEASE_EXPECTED_SOURCE_COMMIT;
+  if (command === 'build') await buildCandidate(candidateRoot, { expectedSourceCommit });
+  else if (command === 'verify') await verifyCandidate(candidateRoot, { expectedSourceCommit });
+  else if (command === 'hydrate') await hydrateCandidate(candidateRoot, { expectedSourceCommit });
   else throw new Error('Usage: release-candidate.mjs <build|verify|hydrate> [candidate-directory]');
 }
 
-async function buildCandidate(outputRoot) {
+async function buildCandidate(outputRoot, { expectedSourceCommit } = {}) {
   await rm(outputRoot, { recursive: true, force: true });
   await mkdir(outputRoot, { recursive: true });
   const budgets = JSON.parse(await readFile(path.join(root, 'packages/rxjs/test/release/budgets.json'), 'utf8'));
@@ -58,21 +59,21 @@ async function buildCandidate(outputRoot) {
   const [version] = versions;
   const manifest = {
     schemaVersion: 1,
-    sourceCommit: process.env.GITHUB_SHA ?? run('git', ['rev-parse', 'HEAD'], root).stdout.trim(),
+    sourceCommit: run('git', ['rev-parse', 'HEAD'], root).stdout.trim(),
     version,
     channel: channelForVersion(version),
     generatedAt: new Date().toISOString(),
     packages,
   };
   await writeFile(path.join(outputRoot, 'release-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  await verifyCandidate(outputRoot);
+  await verifyCandidate(outputRoot, { expectedSourceCommit });
   process.stdout.write(`${JSON.stringify({ version, channel: manifest.channel, packages: packages.length })}\n`);
 }
 
-export async function verifyCandidate(outputRoot) {
+export async function verifyCandidate(outputRoot, { expectedSourceCommit } = {}) {
   const manifest = JSON.parse(await readFile(path.join(outputRoot, 'release-manifest.json'), 'utf8'));
   assert.equal(manifest.schemaVersion, 1);
-  if (process.env.GITHUB_SHA) assert.equal(manifest.sourceCommit, process.env.GITHUB_SHA, 'Candidate source commit changed.');
+  if (expectedSourceCommit) assert.equal(manifest.sourceCommit, expectedSourceCommit, 'Candidate source commit changed.');
   assert.equal(manifest.packages.length, releasePackages.length);
   assert.deepEqual(
     manifest.packages.map(({ name }) => name),
@@ -94,8 +95,8 @@ export async function verifyCandidate(outputRoot) {
   return manifest;
 }
 
-async function hydrateCandidate(outputRoot) {
-  const manifest = await verifyCandidate(outputRoot);
+async function hydrateCandidate(outputRoot, { expectedSourceCommit } = {}) {
+  const manifest = await verifyCandidate(outputRoot, { expectedSourceCommit });
   const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'rxjs-release-hydrate-'));
   try {
     for (const entry of manifest.packages) {

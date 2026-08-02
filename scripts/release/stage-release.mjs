@@ -20,7 +20,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
 }
 
 async function stageCandidate(candidateRoot, outputPath) {
-  const manifest = await verifyCandidate(candidateRoot);
+  const manifest = await verifyCandidate(candidateRoot, {
+    expectedSourceCommit: process.env.RELEASE_EXPECTED_SOURCE_COMMIT,
+  });
   const state = {
     schemaVersion: 1,
     version: manifest.version,

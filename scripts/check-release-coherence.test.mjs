@@ -59,6 +59,7 @@ function validInput() {
       'Verify release policy and repository configuration',
       'Build release packages',
       'Pack, inventory, and hash',
+      'RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}',
       'release-candidate.mjs verify',
       'release-candidate.mjs hydrate',
       'stage-release.mjs publish',
