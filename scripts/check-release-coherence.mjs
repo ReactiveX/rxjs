@@ -29,6 +29,7 @@ export function auditReleaseCoherence(input) {
   } else {
     requireDependency(input.manifests.rxjs, '@rxjs/observable-polyfill', workspaceVersion, errors);
     requireDependency(input.manifests['@rxjs/test'], 'rxjs', workspaceVersion, errors, 'peerDependencies');
+    requireDependency(input.manifests['@rxjs/migrate'], '@types/node', '20.11.0', errors, 'devDependencies');
 
     for (const runtime of input.runtimeVersions) {
       if (runtime.version !== workspaceVersion) {
@@ -86,7 +87,7 @@ function auditReleaseMatrix(input, errors) {
     ['test:release:safari', 'SafariDriver contract tests'],
     ['test:workflows', 'active-workflow parsing and formatting'],
     [
-      '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
+      'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
       'the clean-workspace release-package build before consumer tests',
     ],
   ]) {
@@ -126,7 +127,7 @@ function auditReleaseMatrix(input, errors) {
 
   requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
   requireMasterPush(input.tsWorkflowSource, 'TypeScript-latest CI', errors);
-  for (const command of ['typescript@latest', '@types/node@latest', 'pnpm --filter rxjs run build']) {
+  for (const command of ['typescript@latest', 'pnpm --filter @rxjs/observable-polyfill run build', 'pnpm --filter rxjs run build']) {
     if (!input.tsWorkflowSource.includes(command)) {
       errors.push(`TypeScript-latest CI must retain ${command}.`);
     }

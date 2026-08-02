@@ -11,16 +11,6 @@ test('accepts a complete report and exact reviewed pass set', () => {
   assert.doesNotThrow(() => assertAuditBaseline(actual, actual));
 });
 
-test('accepts a fully passing file when the JSON reporter omits its assertion rows', () => {
-  const input = fixture();
-  input.report.testResults[0].status = 'passed';
-  input.report.testResults[0].assertionResults = [];
-  input.report.numPassedTests = 2;
-  input.report.numFailedTests = 0;
-  const actual = baselineFromAuditReport(input);
-  assert.deepEqual(actual.caseIds, ['RX7-A', 'RX7-B']);
-});
-
 test('rejects incomplete execution', () => {
   const input = fixture();
   input.report.numTotalTests = 1;
@@ -86,10 +76,10 @@ function fixture() {
       testResults: [
         {
           name: join(packageDirectory, file),
-          status: 'failed',
           assertionResults: [{ status: 'passed' }, { status: 'failed' }],
         },
       ],
+      unhandledErrors: 0,
     },
   };
 }

@@ -23,12 +23,11 @@ try {
         '--run',
         '--config',
         'vitest.ported.config.ts',
-        '--reporter=json',
-        `--outputFile=${reportPath}`,
+        '--reporter=./test/ported/tools/mode-audit-reporter.mjs',
       ],
       {
         cwd: packageDirectory,
-        env: { ...process.env, RXJS_NEXT_AUDIT_ONLY: '1', RXJS_NEXT_TEST_MODE: mode },
+        env: { ...process.env, RXJS_NEXT_AUDIT_ONLY: '1', RXJS_NEXT_AUDIT_REPORT: reportPath, RXJS_NEXT_TEST_MODE: mode },
         stdio: 'inherit',
       }
     );

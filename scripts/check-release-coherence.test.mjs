@@ -7,7 +7,7 @@ function validInput() {
   return {
     manifests: {
       '@rxjs/observable-polyfill': releaseManifest('@rxjs/observable-polyfill', version, true),
-      '@rxjs/migrate': releaseManifest('@rxjs/migrate', version, false),
+      '@rxjs/migrate': { ...releaseManifest('@rxjs/migrate', version, false), devDependencies: { '@types/node': '20.11.0' } },
       '@rxjs/test': { ...releaseManifest('@rxjs/test', version, true), peerDependencies: { rxjs: version } },
       rxjs: { ...releaseManifest('rxjs', version, true), dependencies: { '@rxjs/observable-polyfill': version } },
     },
@@ -32,12 +32,12 @@ function validInput() {
       'test:bundle-analysis',
       'test:release:safari',
       'test:workflows',
-      '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
+      'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
     ].join('\n'),
     tsWorkflowSource: [
       "  push:\n    branches: ['master']",
       'typescript@latest',
-      '@types/node@latest',
+      'pnpm --filter @rxjs/observable-polyfill run build',
       'pnpm --filter rxjs run build',
     ].join('\n'),
     wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:",
@@ -141,7 +141,7 @@ test('rejects documentation-site work from release workflows', () => {
 test('rejects removal of the clean-workspace release-package build', () => {
   const input = validInput();
   input.ciWorkflowSource = input.ciWorkflowSource.replace(
-    '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
+    'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
     ''
   );
   assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
@@ -151,4 +151,10 @@ test('rejects removal of the TypeScript-latest build command', () => {
   const input = validInput();
   input.tsWorkflowSource = input.tsWorkflowSource.replace('pnpm --filter rxjs run build', 'pnpm nx compile rxjs');
   assert.match(auditReleaseCoherence(input).join('\n'), /TypeScript-latest CI must retain pnpm --filter rxjs run build/);
+});
+
+test('rejects removal of the migration package Node declarations', () => {
+  const input = validInput();
+  delete input.manifests['@rxjs/migrate'].devDependencies['@types/node'];
+  assert.match(auditReleaseCoherence(input).join('\n'), /@rxjs\/migrate must declare @types\/node@20\.11\.0/);
 });

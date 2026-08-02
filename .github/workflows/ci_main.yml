@@ -69,7 +69,10 @@ jobs:
         run: pnpm --filter rxjs --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run lint
 
       - name: Build release packages
-        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build
+        run: |
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs run build
+          pnpm --filter @rxjs/test --filter @rxjs/migrate run build
 
       - name: Test release packages
         run: |
