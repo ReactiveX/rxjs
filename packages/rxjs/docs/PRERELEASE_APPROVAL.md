@@ -67,7 +67,9 @@ conditions of publication, not waived evidence.
 
 ## Publication boundary
 
-The release workflow checks version identity, package-local documentation,
-ESM-only exports, runtime lanes, adoption evidence, and protected npm channel
-mapping before preparing artifacts. Publication remains an explicit maintainer
-action. No documentation application is part of this approval or release path.
+The [secure release workflow](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md) checks version
+identity, package-local documentation, ESM-only exports, runtime lanes,
+adoption evidence, and the protected npm channel before packing once. The exact
+attested tarballs are staged through stage-only OIDC and require a release
+maintainer's npm TFA approval for each package, with `rxjs` last. No
+documentation application is part of this approval or release path.

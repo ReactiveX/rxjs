@@ -1,0 +1,24 @@
+# Create this organization team before enabling the release-boundary ruleset.
+# Release authority and supply-chain boundaries require explicit review.
+/.github/CODEOWNERS @ReactiveX/release-maintainers
+/.github/actions/ @ReactiveX/release-maintainers
+/.github/workflows/ @ReactiveX/release-maintainers
+/.github/dependabot.yml @ReactiveX/release-maintainers
+/CHANGELOG.md @ReactiveX/release-maintainers
+/package.json @ReactiveX/release-maintainers
+/pnpm-lock.yaml @ReactiveX/release-maintainers
+/nx.json @ReactiveX/release-maintainers
+/packages/*/package.json @ReactiveX/release-maintainers
+/packages/migrate/src/version.ts @ReactiveX/release-maintainers
+/packages/observable-polyfill/src/index.ts @ReactiveX/release-maintainers
+/packages/observable-polyfill/test/import/commonjs.cjs @ReactiveX/release-maintainers
+/packages/observable-polyfill/test/import/esm.mjs @ReactiveX/release-maintainers
+/packages/rxjs/test/import/fixture-scenario.mjs @ReactiveX/release-maintainers
+/.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json @ReactiveX/release-maintainers
+/docs/RELEASE_PROCESS.md @ReactiveX/release-maintainers
+/docs/release/ @ReactiveX/release-maintainers
+/scripts/release/ @ReactiveX/release-maintainers
+/scripts/check-release-coherence.mjs @ReactiveX/release-maintainers
+/scripts/check-release-coherence.test.mjs @ReactiveX/release-maintainers
+/scripts/prerelease-adoption-lib.mjs @ReactiveX/release-maintainers
+/scripts/qualify-prerelease.mjs @ReactiveX/release-maintainers

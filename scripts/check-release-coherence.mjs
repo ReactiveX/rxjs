@@ -51,20 +51,14 @@ export function auditReleaseCoherence(input) {
     auditEsmDistribution(name, manifest, errors);
   }
 
-  if (input.nxReleaseProjects.length !== 1 || input.nxReleaseProjects[0] !== 'packages/*') {
-    errors.push(`Nx release projects must be exactly ["packages/*"]; got ${JSON.stringify(input.nxReleaseProjects)}.`);
+  if (input.nxReleaseConfigured) {
+    errors.push('Nx release configuration must remain removed; RxJS uses the repository-owned secure release policy.');
   }
   if (!input.preparePackagesCommand.includes('--exclude rxjs.dev')) {
     errors.push('Package preparation must explicitly exclude rxjs.dev.');
   }
-  if (!input.publishSource.includes("'refs/heads/7.x': 'latest'")) {
-    errors.push('The 7.x branch must retain the npm latest channel before RxJS 9 stable.');
-  }
-  if (!input.publishSource.includes("'refs/heads/master': 'next'")) {
-    errors.push('The master branch must publish prerelease work to the npm next channel.');
-  }
-  if (!/if \(isPrerelease\(tag\)\)[\s\S]*?npmDistTag = 'next'/.test(input.publishSource)) {
-    errors.push('Tagged prereleases must publish to the npm next channel.');
+  if (!input.publishSource.includes("version.includes('-') ? 'next' : 'latest'")) {
+    errors.push('Release policy must map prereleases to next and stable versions to latest.');
   }
 
   auditReleaseMatrix(input, errors);
@@ -127,11 +121,23 @@ function auditReleaseMatrix(input, errors) {
   ]) {
     if (source.includes('rxjs.dev')) errors.push(`${label} must not build, test, publish, or otherwise reference rxjs.dev.`);
   }
-  if (!/node-version:\s*24/.test(input.publishWorkflowSource)) {
+  if (!/node-version:\s*['"]24['"]/.test(input.publishWorkflowSource)) {
     errors.push('Publishing must use the supported Node 24 lane.');
   }
-  if (!/Verify release identity and distribution[\s\S]*?Prepare packages for publishing/.test(input.publishWorkflowSource)) {
-    errors.push('Publishing must verify release coherence before preparing artifacts.');
+  if (
+    !/Verify release policy and repository configuration[\s\S]*?Build release packages[\s\S]*?Pack, inventory, and hash/.test(
+      input.publishWorkflowSource
+    )
+  ) {
+    errors.push('Publishing must verify release policy before building and packing one candidate.');
+  }
+  for (const requirement of [
+    'release-candidate.mjs verify',
+    'release-candidate.mjs hydrate',
+    'stage-release.mjs publish',
+    'id-token: write',
+  ]) {
+    if (!input.publishWorkflowSource.includes(requirement)) errors.push(`Publishing must retain ${requirement}.`);
   }
 
   requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
@@ -218,12 +224,12 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     readFile(resolve(root, 'package.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'nx.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, '.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json'), 'utf8').then(JSON.parse),
-    readFile(resolve(root, 'scripts/publish.js'), 'utf8'),
+    readFile(resolve(root, 'scripts/release/release-config.mjs'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_main.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/observable-wpt.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/release-readiness.yml'), 'utf8'),
-    readFile(resolve(root, '.github/workflows/publish.yml'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/release-stage.yml'), 'utf8'),
     readFile(resolve(root, 'packages/rxjs/test/release/safari-driver.mjs'), 'utf8'),
     readFile(resolve(root, 'packages/observable-polyfill/test/wpt/lib/runner.mjs'), 'utf8'),
   ]);
@@ -248,7 +254,7 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     runtimeVersions: runtimeSources.flat(),
     skillProvenance,
     rootNodeEngine: rootManifest.engines?.node,
-    nxReleaseProjects: nxConfig.release?.projects ?? [],
+    nxReleaseConfigured: nxConfig.release !== undefined,
     preparePackagesCommand: rootManifest.scripts?.['prepare-packages'] ?? '',
     publishSource,
     ciWorkflowSource,

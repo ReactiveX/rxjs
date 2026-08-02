@@ -1,4 +1,4 @@
-on: 
+on:
   issue_comment:
     types: [created]
 permissions:
@@ -7,19 +7,19 @@ name: Automatic Rebase
 jobs:
   rebase:
     permissions:
-      contents: write  # for cirrus-actions/rebase to push code to rebase
-      pull-requests: read  # for cirrus-actions/rebase to get info about PR
+      contents: write # for cirrus-actions/rebase to push code to rebase
+      pull-requests: read # for cirrus-actions/rebase to get info about PR
     name: Rebase
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Automatic Rebase
-      uses: cirrus-actions/rebase@1.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@cf2ad5908b365d40882ef06dab959717ec1aaf71 # 1.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # https://github.community/t5/GitHub-Actions/Workflow-is-failing-if-no-job-can-be-ran-due-to-condition/m-p/38186#M3250
   always_job:
     name: Always run job
