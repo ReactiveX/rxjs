@@ -86,3 +86,14 @@ test('selects beta versions monotonically for arbitrary counters and releasable 
     { numRuns: 200 }
   );
 });
+
+test('classifies an indented multi-line breaking-change footer as breaking', () => {
+  assert.equal(
+    classifyConventionalCommit('fix(core): correct teardown', 'BREAKING CHANGE:\n  changes cancellation ownership').level,
+    'breaking'
+  );
+  assert.equal(
+    classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGES:**\n\tchanges cancellation ownership').level,
+    'breaking'
+  );
+});

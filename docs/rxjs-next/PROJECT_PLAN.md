@@ -1645,6 +1645,10 @@ names.
 - Added the sole-maintainer public runbook and security-assurance document. npm routes
   are never guessed: setup records a manually verified URL, rendering validates
   its origin, and comments retain stage-ID CLI fallbacks.
+- Copilot review follow-up recognizes indented multi-line `BREAKING CHANGE`
+  footers and makes the release doctor verify the exact GitHub-hosted runner on
+  every release-PR, qualification, authorization, and staging job individually,
+  with regression tests for both security-sensitive cases.
 - Local verification is recorded in the P6.10 session entry. Live App,
   ruleset, trusted-publisher, disposable-package, TFA, rejection, staged digest,
   tag, and immutable-release evidence remain required before `DONE`.
@@ -3603,3 +3607,15 @@ conformance implementation depends on a runnable harness.
   so regeneration cannot restore duplicate, unused exceptions. The configured
   root scan has no unreviewed findings or unused exceptions, while P6.10
   remains the sole `NEXT` item.
+
+### 2026-08-02 — P6.10 Copilot review follow-up
+
+- Classified indented multi-line `BREAKING CHANGE` and `BREAKING CHANGES`
+  footers as breaking while retaining the non-rendering pull-request-template
+  placeholder behavior.
+- Replaced the release doctor's workflow-wide runner substrings with exact
+  release-PR, qualification, authorization, and staging job runner validation,
+  including a false-positive test where an unrelated job still uses the
+  expected runner.
+- Kept P6.10 as the sole `NEXT` item; these local review fixes do not satisfy
+  the remaining administrator setup or disposable-package rehearsal gates.
