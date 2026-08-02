@@ -7,9 +7,17 @@ export const releasePackages = [
 
 export const releaseBranch = 'master';
 export const releasePullRequestBranch = 'release/rxjs-9';
+export const releaseOperatorLogin = 'benlesh';
 export const firstReleaseVersion = '9.0.0-beta.0';
 export const stagedPackagesVariable = 'NPM_STAGED_PACKAGES_URL';
 export const npmWebOrigin = 'https://www.npmjs.com';
+export const releaseToolchain = Object.freeze({
+  runner: 'ubuntu-24.04',
+  node: '24.12.0',
+  pnpm: '10.34.5',
+  npm: '11.18.0',
+  npmIntegrity: 'sha512-T67M4L5wNm0cZ7EBLErcEkY1SmzEW/WJ+SADBzsFUY1UdAPfFHXFQtZ6SEXiK0+vzXysCvAsepbMaBTwnrAD+w==',
+});
 
 export const versionedFiles = [
   'packages/observable-polyfill/src/index.ts',

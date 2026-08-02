@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fc from 'fast-check';
 import test from 'node:test';
 import { classifyConventionalCommit, selectRelease, validatePullRequestTitle } from './release-policy.mjs';
 
@@ -68,5 +69,20 @@ test('ignores the empty pull-request template breaking-change placeholder', () =
     classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGE:** <!-- placeholder --> changes cancellation ownership')
       .level,
     'breaking'
+  );
+});
+
+test('selects beta versions monotonically for arbitrary counters and releasable titles', () => {
+  fc.assert(
+    fc.property(
+      fc.nat({ max: 1_000_000 }),
+      fc.constantFrom('fix(core): repair lifecycle', 'feat(core): add operator', 'feat(core)!: change contract'),
+      (beta, subject) => {
+        const result = selectRelease({ currentTag: `9.0.0-beta.${beta}`, commits: [commit(subject)] });
+        assert.equal(result.version, `9.0.0-beta.${beta + 1}`);
+        assert.equal(result.channel, 'next');
+      }
+    ),
+    { numRuns: 200 }
   );
 });

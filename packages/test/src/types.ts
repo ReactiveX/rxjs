@@ -86,7 +86,7 @@ export interface TestIdleOptions {
 export type TestNotification<T> = MarbleNotification<T>;
 
 /** An Observable notification and its absolute virtual timestamp. */
-export interface TestMessage<T = unknown> extends MarbleMessage<T> {}
+export type TestMessage<T = unknown> = MarbleMessage<T>;
 
 /**
  * A producer or observer lifetime. Legacy field names are retained, but each

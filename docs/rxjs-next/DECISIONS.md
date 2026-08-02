@@ -1421,8 +1421,10 @@ Status meanings:
 
 - **Status:** Accepted
 - **Decision:** The root README reports `master` CI, release readiness, pinned
-  Observable WPT, npm `latest` and `next`, downloads, license, and attested
-  OpenSSF Scorecard status through source-linked badges. It distinguishes the
+  Observable WPT, npm `latest` and `next`, downloads, and license through
+  source-linked badges. The security-assurance document presents OpenSSF
+  Scorecard as a contextual repository-hygiene signal rather than a headline
+  release claim. It distinguishes the
   planned `9.0.0-beta.0` from the older prerelease currently on npm `next` and
   does not instruct users to install RxJS 9 from that tag before publication.
 - **Security automation:** A weekly and `master`-push Scorecard workflow
@@ -1442,37 +1444,50 @@ Status meanings:
   changes no runtime API, export, type, package artifact, or `apps/rxjs.dev`
   boundary.
 
-## D-057 — Use release PRs, exact-tarball qualification, and npm staged approval
+## D-057 — Use a single-maintainer, reproducible, manually authorized staged release
 
 - **Status:** Accepted
-- **Decision:** RxJS 9 releases from `master` use one generated release PR as
-  their GitHub-side authorization. Conventional Commit titles select the
+- **Decision:** Ben Lesh is the sole required author, reviewer, merger, release
+  operator, and security responder. RxJS 9 releases from `master` use a
+  generated release PR as a reviewable version/changelog/policy diff, not as
+  evidence of independent approval. Ordinary successful merges automatically
+  create or refresh it. Conventional Commit titles select the
   version: beta work increments only `beta.N`; stable fixes increment patch;
   stable features increment minor; and stable breaking changes block the 9.x
   train. Stable promotion is an explicit mode. All four packages retain one
   synchronized version.
-- **Publication boundary:** Merging the release PR starts a trusted workflow
-  that builds and packs once, records SHA-512 and contents, attests the
-  tarballs, and qualifies those exact files in every blocking environment.
-  The same filenames go through an npm trusted publisher limited to
-  `npm stage publish`. CI has no long-lived npm token and cannot call direct
-  `npm publish`. A release maintainer approves every stage with TFA and
-  approves `rxjs` last.
+- **Publication boundary:** Self-merging the release PR starts read-only
+  qualification. Two independent fresh Ubuntu 24.04 jobs use exact Node
+  24.12.0 and pnpm 10.34.5, and the candidate continues only when filenames,
+  inventories, contents, and SHA-512 values match. Every blocking environment,
+  the release-only OSV scan, SBOM generation, and attestations operate on those
+  exact files, then stop. A later manual dispatch by `benlesh` must type the
+  qualification run ID, exact version, and manifest SHA-512. It rejects wrong,
+  failed, stale, changed, non-current, unauthorized, expired, or replayed
+  candidates before the same filenames reach an npm trusted publisher limited
+  to `npm stage publish`. CI has no long-lived npm token and cannot call direct
+  `npm publish`. Ben approves every stage with npm WebAuthn and approves `rxjs`
+  last.
 - **Irreversibility:** npm publication is a pre-approval safety boundary for
   RxJS. Post-publication registry checks only finalize the immutable GitHub
   Release. Any changed byte invalidates a candidate, and partial staging
   requires rejection plus a fresh fully qualified version.
-- **Security:** Only protected merged commits run privileged workflows on fresh
-  GitHub-hosted runners with a frozen lockfile and no restored caches. Actions
-  use reviewed full commit SHAs. Code ownership covers workflows, release
-  scripts, manifests, lockfile, changelog, and CODEOWNERS. SemVer tags and final
-  GitHub Releases require repository rules and release immutability.
-- **Operations:** The authenticated npm Staged Packages URL is a manually
-  verified repository variable with the exact npm web origin. Comments also
-  contain stage IDs and CLI fallbacks. The public role-based runbook contains
-  no secret steps; the private successor packet contains no credentials or TFA
-  recovery material.
-- **Consequence:** Private Nx release imports and the token-based publisher are
-  removed. Repository-owned policy, candidate, staging, doctor, and finalizer
-  scripts implement the accepted flow. npm/GitHub account setup and the
-  disposable-package rehearsal remain administrator gates before publication.
+- **Security:** `master` requires pull requests but zero approvals. Required
+  automation, verified squash commits, and branch/tag protections replace a
+  nonexistent reviewer team. Privileged workflows reject any initiating login
+  other than `benlesh`, run on fresh GitHub-hosted runners with frozen installs
+  and no restored caches, use SHA-pinned actions, and verify the checked npm
+  11.18.0 registry SHA-512 before staging. GitHub and npm use WebAuthn; reusable
+  publish-capable npm tokens are prohibited. Compromise of both maintainer
+  accounts remains a documented residual risk.
+- **Evidence and signal:** Stable release assets include the manifest, exact
+  tarballs, CycloneDX SBOM, clean isolated OSV report, and portable attestation
+  bundle. Finalization requires registry integrity, `npm audit signatures`, and
+  GitHub attestation verification. OpenSSF remains secondary; Code-Review `0`
+  is accepted rather than manufacturing approvals.
+- **Consequence:** Private Nx release imports, the token-based publisher,
+  reviewer requests, release-team ownership, and succession-role assumptions
+  are removed. Repository-owned policy, reproducibility, evidence, staging,
+  doctor, and finalizer scripts implement the accepted flow. GitHub/npm
+  WebAuthn, ruleset/environment/trusted-publisher setup, and the sole-account
+  disposable-package rehearsal remain external gates before publication.

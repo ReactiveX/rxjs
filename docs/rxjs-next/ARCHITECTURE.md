@@ -62,6 +62,31 @@ flowchart LR
     Tooling -.-> Legacy
 ```
 
+## Single-maintainer release boundary
+
+RxJS 9 explicitly assumes one human author, reviewer, merger, release operator,
+and security responder. Pull requests expose changes and run required checks;
+they are not evidence of independent approval. An ordinary successful merge to
+`master` automatically creates or refreshes a generated release PR. Self-merging
+that PR starts read-only qualification only.
+
+Qualification uses two independent fresh Ubuntu 24.04 jobs with exact Node
+24.12.0 and pnpm 10.34.5. The release continues only when package filenames,
+inventories, contents, and SHA-512 values are byte-identical. All package,
+runtime, browser, Safari, alternate-runtime, Webpack, performance, WPT, SBOM,
+OSV, and attestation evidence is bound to the canonical tarballs. The workflow
+then stops and exposes its run ID, version, source commit, and manifest SHA-512.
+
+A separate manual dispatch by `benlesh` must reproduce the run ID, version, and
+digest. It revalidates the protected branch/current commit, generated release
+PR, retained bytes, run success/age, and replay state before the `npm-stage`
+environment receives OIDC authority limited to `npm stage publish`. npm WebAuthn
+approval is a second account boundary. Final GitHub Release publication has no
+npm authority and requires registry integrity, npm signature/provenance, and
+GitHub attestation verification. This architecture reduces accidental and
+single-account release compromise; it cannot eliminate compromise of both the
+maintainer's GitHub and npm authentication.
+
 Useful producer-per-subscription values and Subjects remain intentional APIs
 inside `rxjs`; they do not form a separate compatibility layer or package.
 Migration tooling is not a runtime dependency.

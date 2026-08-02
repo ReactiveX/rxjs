@@ -9,7 +9,7 @@
     "analyze:bundles": "node scripts/analyze-bundles.mjs",
     "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release": "node scripts/release/release-doctor.mjs",
-    "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs scripts/release/authorize-release-commit.test.mjs scripts/release/release-policy.test.mjs scripts/release/release-candidate.test.mjs scripts/release/stage-release.test.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs && node scripts/release/release-doctor.mjs",
+    "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs scripts/release/authorize-release-commit.test.mjs scripts/release/authorize-stage.test.mjs scripts/release/install-pinned-npm.test.mjs scripts/release/release-policy.test.mjs scripts/release/release-candidate.test.mjs scripts/release/stage-release.test.mjs scripts/security/check-osv-exceptions.test.mjs && node scripts/security/check-osv-exceptions.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs && node scripts/release/release-doctor.mjs",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
     "test:workflows": "prettier --check .github/workflows/*.yml .github/actions/install-dependencies/action.yml .github/dependabot.yml",
     "test:kernel": "pnpm --filter rxjs run test:kernel",
@@ -30,22 +30,22 @@
     "wpt:update-expectations": "node packages/observable-polyfill/test/wpt/cli.mjs update-expectations"
   },
   "devDependencies": {
-    "@nx/eslint-plugin": "17.3.2",
-    "@nx/js": "17.3.2",
+    "@nx/eslint-plugin": "23.1.1",
+    "@nx/js": "23.1.1",
     "@playwright/test": "1.62.1",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
+    "@typescript-eslint/eslint-plugin": "8.65.0",
+    "@typescript-eslint/parser": "8.65.0",
     "cz-conventional-changelog": "1.2.0",
-    "esbuild": "0.19.11",
-    "eslint": "^8.56.0",
+    "esbuild": "0.25.12",
+    "eslint": "8.57.1",
+    "fast-check": "4.9.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
-    "nx": "17.3.2",
+    "nx": "23.1.1",
     "prettier": "2.8.8",
     "ts-node": "^10.9.2",
     "tshy": "^1.11.0",
     "typescript": "~5.7.3",
-    "validate-commit-msg": "2.14.0",
     "vite": "6.4.3",
     "vitest": "^4.1.10",
     "webpack": "5.106.2",
@@ -54,12 +54,44 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "commit-msg": "validate-commit-msg"
+      "commit-msg": "node scripts/release/validate-commit-message.mjs \"$HUSKY_GIT_PARAMS\""
     }
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
+    }
+  },
+  "pnpm": {
+    "overrides": {
+      "@babel/core": "7.29.7",
+      "@babel/helpers": "7.29.7",
+      "@babel/plugin-transform-modules-systemjs": "7.29.8",
+      "@babel/runtime": "7.29.7",
+      "ajv@6": "6.14.0",
+      "ajv@8": "8.18.0",
+      "axios": "1.18.0",
+      "brace-expansion@1": "1.1.17",
+      "brace-expansion@2": "2.1.3",
+      "braces": "3.0.3",
+      "cross-spawn": "7.0.6",
+      "diff@4": "4.0.4",
+      "ejs": "3.1.10",
+      "flatted": "3.4.2",
+      "follow-redirects": "1.16.0",
+      "form-data": "4.0.6",
+      "glob@10": "10.5.0",
+      "immutable@4": "4.3.9",
+      "js-yaml@3": "3.15.0",
+      "js-yaml@4": "4.3.0",
+      "micromatch": "4.0.8",
+      "minimatch@3": "3.1.4",
+      "minimatch@5": "5.1.8",
+      "minimatch@9": "9.0.7",
+      "picomatch@2": "2.3.2",
+      "rollup": "4.59.0",
+      "tmp": "0.2.7",
+      "yaml@1": "1.10.3"
     }
   },
   "lint-staged": {

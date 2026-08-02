@@ -6,7 +6,7 @@ repository documentation application.
 
 The repository's [secure release runbook](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md)
 defines version selection, exact-tarball qualification, npm staged approval,
-TFA order, failure recovery, and succession. These gates qualify a candidate;
+WebAuthn order and failure recovery. These gates qualify a candidate;
 they never authorize direct publication.
 
 ## Runtime matrix

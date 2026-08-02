@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import fc from 'fast-check';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { parseStageOutput, renderStagingComment, verifyDownloadedStage } from './stage-release.mjs';
 import { releasePackages } from './release-config.mjs';
+import { assertNpmWebUrl } from './release-config.mjs';
 
 test('extracts supported stage IDs and validates returned npm links', () => {
   const stageId = '123e4567-e89b-42d3-a456-426614174000';
@@ -17,6 +19,18 @@ test('extracts supported stage IDs and validates returned npm links', () => {
     stageId,
   });
   assert.throws(() => parseStageOutput('{"ok":true}'), /supported stage ID/);
+});
+
+test('parses arbitrary supported UUID stage output and never renders a foreign npm origin', () => {
+  fc.assert(
+    fc.property(fc.uuid(), fc.string({ maxLength: 100 }), (stageId, suffix) => {
+      const parsed = parseStageOutput(JSON.stringify({ stageId, url: `https://evil.example/${encodeURIComponent(suffix)}` }));
+      assert.equal(parsed.stageId, stageId);
+      assert.equal(parsed.url, undefined);
+      assert.throws(() => assertNpmWebUrl(`https://npmjs.com/${encodeURIComponent(suffix)}`), /exact https:\/\/www\.npmjs\.com/);
+    }),
+    { numRuns: 200 }
+  );
 });
 
 test('requires the downloaded npm stage to match the qualified bytes', async () => {
