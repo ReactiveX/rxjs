@@ -49,7 +49,7 @@
     "test:migration-contracts": "pnpm run test:unit:report && pnpm run test:unit:parity:check && pnpm run test:unit:ledger:check && pnpm run test:unit:unsupported:check",
     "test:release:runtime": "node test/release/runtime-contract.mjs",
     "test:release:browsers": "node test/release/browser-matrix.mjs",
-    "test:release:safari": "node --test test/release/safari-driver.test.mjs",
+    "test:release:safari": "node --test test/release/safari-driver.test.mjs test/release/boot-ios-simulator.test.mjs",
     "test:release:safari:desktop": "node test/release/safari.mjs desktop",
     "test:release:safari:ios": "node test/release/safari.mjs ios",
     "test:release:webpack": "node test/release/webpack.mjs",

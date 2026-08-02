@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createAuditReport } from './mode-audit-reporter.mjs';
+import { applyTaskUpdates, createAuditReport, createCollectedSnapshot } from './mode-audit-reporter.mjs';
 
 test('serializes nested Vitest task results in declaration order', () => {
   const report = createAuditReport([
@@ -46,4 +46,17 @@ test('leaves missing task states incomplete and records unhandled errors', () =>
   );
   assert.equal(report.unhandledErrors, 1);
   assert.deepEqual(report.testResults[0].assertionResults, [{ status: 'incomplete' }]);
+});
+
+test('preserves collected tasks when Vitest only supplies later result packs', () => {
+  const snapshot = createCollectedSnapshot([
+    {
+      id: 'file',
+      type: 'suite',
+      filepath: '/workspace/notification.spec.ts',
+      tasks: [{ id: 'test', type: 'test', mode: 'run' }],
+    },
+  ]);
+  applyTaskUpdates(snapshot.tasksById, [['test', { state: 'pass' }, {}]]);
+  assert.deepEqual(createAuditReport(snapshot.files).testResults[0].assertionResults, [{ status: 'passed' }]);
 });

@@ -40,7 +40,7 @@ function validInput() {
       'pnpm --filter @rxjs/observable-polyfill run build',
       'pnpm --filter rxjs run build',
     ].join('\n'),
-    wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:",
+    wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:\nlibatspi2.0-dev libcairo2-dev libgirepository1.0-dev pkg-config",
     readinessWorkflowSource: [
       "  push:\n    branches: ['master']\n  workflow_dispatch:",
       'pnpm exec playwright install --with-deps chromium firefox webkit',
@@ -50,6 +50,9 @@ function validInput() {
       'version: 2.8.0',
       'version: 1.3.14',
       'target: [desktop, ios]',
+      'boot-ios-simulator.mjs',
+      'pnpm --filter @rxjs/test run build',
+      'pnpm --filter @rxjs/migrate run build',
     ].join('\n'),
     publishWorkflowSource: ['node-version: 24', 'Verify release identity and distribution', 'Prepare packages for publishing'].join('\n'),
     safariDriverSource: "'safari:useSimulator': true",
@@ -157,4 +160,17 @@ test('rejects removal of the migration package Node declarations', () => {
   const input = validInput();
   delete input.manifests['@rxjs/migrate'].devDependencies['@types/node'];
   assert.match(auditReleaseCoherence(input).join('\n'), /@rxjs\/migrate must declare @types\/node@20\.11\.0/);
+});
+
+test('rejects removal of WPT and release-readiness runner prerequisites', () => {
+  const input = validInput();
+  input.wptWorkflowSource = input.wptWorkflowSource.replace('libcairo2-dev', '');
+  input.readinessWorkflowSource = input.readinessWorkflowSource
+    .replace('boot-ios-simulator.mjs', '')
+    .replace('pnpm --filter @rxjs/test run build', '');
+
+  const errors = auditReleaseCoherence(input).join('\n');
+  assert.match(errors, /must install libcairo2-dev/);
+  assert.match(errors, /explicit iOS simulator startup/);
+  assert.match(errors, /packed test-helper adoption prerequisite/);
 });

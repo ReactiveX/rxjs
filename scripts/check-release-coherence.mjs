@@ -104,7 +104,10 @@ function auditReleaseMatrix(input, errors) {
     ['version: 2.8.0', 'Deno 2.8.0'],
     ['version: 1.3.14', 'Bun 1.3.14'],
     ['target: [desktop, ios]', 'desktop and Mobile Safari'],
+    ['boot-ios-simulator.mjs', 'explicit iOS simulator startup'],
     ["'safari:useSimulator': true", 'an actual Mobile Safari simulator'],
+    ['pnpm --filter @rxjs/test run build', 'the packed test-helper adoption prerequisite'],
+    ['pnpm --filter @rxjs/migrate run build', 'the packed migration-tool adoption prerequisite'],
   ];
   const releaseMatrixSource = `${input.readinessWorkflowSource}\n${input.safariDriverSource}`;
   for (const [needle, label] of readinessClaims) {
@@ -133,6 +136,11 @@ function auditReleaseMatrix(input, errors) {
     }
   }
   requireUnfilteredMasterPush(input.wptWorkflowSource, 'Observable WPT', 'schedule', errors);
+  for (const dependency of ['libatspi2.0-dev', 'libcairo2-dev', 'libgirepository1.0-dev', 'pkg-config']) {
+    if (!input.wptWorkflowSource.includes(dependency)) {
+      errors.push(`Observable WPT must install ${dependency} for the pinned Python runner.`);
+    }
+  }
   requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
 }
 
