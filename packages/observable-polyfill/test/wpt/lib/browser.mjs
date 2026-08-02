@@ -359,7 +359,7 @@ export async function runBrowserAsyncScript({ binaries, script, args = [], label
             browserName: 'chrome',
             'goog:chromeOptions': {
               binary: binaries.chrome,
-              args: ['--headless=new', '--disable-dev-shm-usage', ...browserIsolationArgs],
+              args: ['--headless=new', '--disable-dev-shm-usage', ...(process.platform === 'linux' ? ['--no-sandbox'] : []), ...browserIsolationArgs],
             },
           },
         },

@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
 
-export function safariCapabilities(target) {
+export function safariCapabilities(target, { deviceUdid = process.env.RXJS_SAFARI_DEVICE_UDID } = {}) {
   if (target === 'desktop') {
     return { alwaysMatch: { browserName: 'Safari' } };
   }
@@ -11,6 +11,7 @@ export function safariCapabilities(target) {
         browserName: 'Safari',
         platformName: 'iOS',
         'safari:useSimulator': true,
+        ...(deviceUdid ? { 'safari:deviceUDID': deviceUdid } : {}),
       },
     };
   }
@@ -36,13 +37,30 @@ export async function withSafariDriver(run, { port = 4444 } = {}) {
 }
 
 export async function createSafariSession(baseUrl, target) {
-  const response = await request(baseUrl, '/session', {
-    method: 'POST',
-    body: JSON.stringify({ capabilities: safariCapabilities(target) }),
-  });
+  const response = await retrySafariSession(
+    () =>
+      request(baseUrl, '/session', {
+        method: 'POST',
+        body: JSON.stringify({ capabilities: safariCapabilities(target) }),
+      }),
+    { attempts: target === 'ios' ? 2 : 1 }
+  );
   const sessionId = response.value?.sessionId ?? response.sessionId;
   if (!sessionId) throw new Error(`SafariDriver did not return a session ID: ${JSON.stringify(response)}`);
   return { capabilities: response.value?.capabilities ?? {}, sessionId };
+}
+
+export async function retrySafariSession(create, { attempts, retryDelayMs = 5_000, wait = delay }) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      return await create();
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) await wait(retryDelayMs);
+    }
+  }
+  throw lastError;
 }
 
 export async function executeSafariScript(baseUrl, sessionId, script, args = [], { asynchronous = false } = {}) {

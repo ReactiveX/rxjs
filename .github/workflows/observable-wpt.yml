@@ -13,14 +13,6 @@ on:
       - 'packages/rxjs/**'
   push:
     branches: ['master']
-    paths:
-      - '.github/actions/install-dependencies/**'
-      - '.github/workflows/observable-wpt.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'packages/observable-polyfill/**'
-      - 'packages/rxjs/**'
   schedule:
     - cron: '23 9 * * 2'
   workflow_dispatch:
@@ -55,6 +47,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.WPT_PYTHON }}
+
+      - name: Install WPT native build dependencies
+        run: sudo apt-get update && sudo apt-get install --yes libatspi2.0-dev libcairo2-dev libgirepository1.0-dev pkg-config
 
       - name: Restore pinned WPT runner
         uses: actions/cache@v4
@@ -115,6 +110,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.WPT_PYTHON }}
+
+      - name: Install WPT native build dependencies
+        run: sudo apt-get update && sudo apt-get install --yes libatspi2.0-dev libcairo2-dev libgirepository1.0-dev pkg-config
 
       - name: Restore pinned WPT runner
         uses: actions/cache@v4

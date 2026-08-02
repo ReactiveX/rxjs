@@ -6,23 +6,22 @@ on:
     paths:
       - '.github/actions/install-dependencies/**'
       - '.github/workflows/release-readiness.yml'
+      - '.npmrc'
+      - 'nx.json'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'packages/migrate/**'
       - 'packages/observable-polyfill/**'
       - 'packages/rxjs/**'
+      - 'packages/test/**'
+      - 'scripts/check-package-docs.mjs'
       - 'scripts/check-release-coherence.mjs'
       - 'scripts/finalize-esm-package.mjs'
+      - 'scripts/prerelease-adoption-lib.mjs'
+      - 'scripts/qualify-prerelease.mjs'
   push:
     branches: ['master']
-    paths:
-      - '.github/actions/install-dependencies/**'
-      - '.github/workflows/release-readiness.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'packages/observable-polyfill/**'
-      - 'packages/rxjs/**'
-      - 'scripts/check-release-coherence.mjs'
-      - 'scripts/finalize-esm-package.mjs'
   workflow_dispatch:
 
 permissions:
@@ -45,7 +44,11 @@ jobs:
         with:
           node-version: '24'
       - name: Build browser packages
-        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+        run: |
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs run build
+          pnpm --filter @rxjs/test run build
+          pnpm --filter @rxjs/migrate run build
       - name: Install pinned browser engines
         run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Run browser contract
@@ -113,8 +116,8 @@ jobs:
         run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
       - name: Enable SafariDriver on the ephemeral runner
         run: sudo safaridriver --enable
-      - name: Show available iOS simulators
+      - name: Boot an available iOS simulator
         if: matrix.target == 'ios'
-        run: xcrun simctl list devices available
+        run: node packages/rxjs/test/release/boot-ios-simulator.mjs
       - name: Run Safari contract
         run: pnpm run test:release:safari:${{ matrix.target }}

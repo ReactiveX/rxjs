@@ -743,15 +743,19 @@ cold and polyfill modes: a converted-program failure, missing API, unsupported
 harness dependency, source-skipped case, or exact duplicate fails the command
 instead of being quarantined or inverted with an expected-failure wrapper.
 Vitest's unmodified built-in default reporter provides human output and real
-clickable locations. Complete evidence runs use Vitest's built-in JSON
-reporter; the static migration report maps declaration order back to manifest
+clickable locations. The CI verifier captures Vitest's verbose per-case result
+stream; the static migration report maps declaration order back to manifest
 case IDs without putting machine identifiers in test names. Tests use ordinary
 Vitest assertions and spies without a compatibility assertion layer. Dedicated
 platform cases assert the
 shared/ref-counted lifecycle directly. Native loading also verifies that the
 ambient constructor was not replaced. The recorded mode baselines remain
-diagnostic evidence and do not change default test outcomes. See
-`RXJS_7_MARBLE_TEST_PORT_NOTES.md` and D-013.
+diagnostic evidence and do not change default test outcomes. Under D-055, a
+separate CI verifier executes the complete per-case audits and requires
+their exact case-ID pass sets to match the reviewed 2,299/39 cold and 2,316/22
+polyfill baselines. Both regressions and unexpected passes block CI so evidence
+and classifications cannot drift silently. See `RXJS_7_MARBLE_TEST_PORT_NOTES.md`,
+D-013, and D-055.
 
 RxJS 7 helper inputs that expose only a lowercase `subscribe` method or legacy
 interop protocol remain unchanged in the checked-in migration evidence. They
@@ -1057,6 +1061,17 @@ in particular, RxJS tests declare Chai and the release helper declares Yargs
 instead of depending on a flat installation layout. A version-pinned patch
 changes Husky 4's generated pnpm hook runner from the obsolete
 `pnpx --no-install` form to `pnpm exec`.
+
+CI has four durable ownership layers. Main CI runs focused package behavior,
+lint, builds, declarations, imports, publication fixtures, runtime contracts,
+the exact migration-evidence audits, bundle-analysis tests, SafariDriver unit
+tests, and active-workflow validation on pull requests and `master`.
+TypeScript-latest also runs in both contexts. Pinned Observable WPT and the full
+browser, Webpack, performance, adoption, Deno, Bun, desktop Safari, and Mobile
+Safari release-readiness matrix are path-aware on pull requests and
+unconditional on `master`. The latest-Chrome drift lane and Node 26 remain
+advisory; other accepted release lanes are blocking. Release coherence guards
+the commands, environment matrix, and `master` triggers.
 
 ## Build and test baseline
 

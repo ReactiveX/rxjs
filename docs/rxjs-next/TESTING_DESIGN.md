@@ -615,8 +615,8 @@ lifecycle cases separately assert sharing and ref counting.
 
 The normal commands use Vitest's public built-in `default` reporter unchanged.
 Failures therefore print the real checked-in filename and line number, which
-editors and terminals can open directly. Audit commands use Vitest's built-in
-JSON reporter. The audit tools associate those results with manifest case IDs
+editors and terminals can open directly. The CI audit uses Vitest's built-in
+verbose reporter. The audit tools associate those results with manifest case IDs
 through the static migration report and declaration order, keeping machine IDs
 out of human test names while still validating complete, non-duplicated
 coverage.
@@ -636,12 +636,22 @@ pnpm --filter rxjs run test:unit
 pnpm --filter rxjs run test:unit:native
 pnpm --filter rxjs run test:unit:audit
 pnpm --filter rxjs run test:unit:audit:polyfill
+pnpm --filter rxjs run test:unit:audit:check
 pnpm --filter rxjs run test:unit:report
 pnpm --filter rxjs run test:unit:parity:check
 ```
 
 Detailed counts, duplicates, missing capabilities, and unsupported-case
 rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.
+
+The audit commands retain ordinary Vitest failure semantics. The CI-only
+`test:unit:audit:check` command captures the verbose per-case result stream and
+requires the exact reviewed cold and polyfill passing case-ID sets. It fails for
+incomplete collection, unknown or duplicate IDs, new failures, and unexpected
+passes; updating a baseline therefore remains an explicit evidence-review
+action. Clean CI builds the observable-polyfill runtime dependency before the
+audit so source imports resolve through the same package boundary contributors
+use locally.
 
 Reusable authoring support lives in the independently publishable
 `@rxjs/migrate` package. Its semantic transform is independent of test-runner

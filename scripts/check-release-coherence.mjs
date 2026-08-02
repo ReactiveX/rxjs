@@ -29,6 +29,7 @@ export function auditReleaseCoherence(input) {
   } else {
     requireDependency(input.manifests.rxjs, '@rxjs/observable-polyfill', workspaceVersion, errors);
     requireDependency(input.manifests['@rxjs/test'], 'rxjs', workspaceVersion, errors, 'peerDependencies');
+    requireDependency(input.manifests['@rxjs/migrate'], '@types/node', '20.11.0', errors, 'devDependencies');
 
     for (const runtime of input.runtimeVersions) {
       if (runtime.version !== workspaceVersion) {
@@ -80,6 +81,25 @@ function auditReleaseMatrix(input, errors) {
   if (!input.ciWorkflowSource.includes('continue-on-error: ${{ matrix.advisory }}')) {
     errors.push('The Node 26 lane must remain explicitly advisory.');
   }
+  for (const [command, label] of [
+    [
+      'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
+      'the clean-workspace migration-audit runtime build',
+    ],
+    ['test:unit:audit:check', 'the exact RxJS 7 migration-evidence baselines'],
+    ['test:bundle-analysis', 'bundle-analysis tooling tests'],
+    ['test:release:safari', 'SafariDriver contract tests'],
+    ['test:workflows', 'active-workflow parsing and formatting'],
+    ['git fetch --no-tags --depth=1 origin 7.x:7.x', 'the RxJS 7 source ref required by migration-evidence freshness checks'],
+    [
+      'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
+      'the clean-workspace release-package build before consumer tests',
+    ],
+  ]) {
+    if (!input.ciWorkflowSource.includes(command)) {
+      errors.push(`Package CI must retain ${label}.`);
+    }
+  }
 
   const readinessClaims = [
     ['chromium firefox webkit', 'Chrome, Firefox, and WebKit'],
@@ -89,7 +109,11 @@ function auditReleaseMatrix(input, errors) {
     ['version: 2.8.0', 'Deno 2.8.0'],
     ['version: 1.3.14', 'Bun 1.3.14'],
     ['target: [desktop, ios]', 'desktop and Mobile Safari'],
+    ['boot-ios-simulator.mjs', 'explicit iOS simulator startup'],
     ["'safari:useSimulator': true", 'an actual Mobile Safari simulator'],
+    ["'safari:deviceUDID'", 'the explicitly booted Mobile Safari simulator'],
+    ['pnpm --filter @rxjs/test run build', 'the packed test-helper adoption prerequisite'],
+    ['pnpm --filter @rxjs/migrate run build', 'the packed migration-tool adoption prerequisite'],
   ];
   const releaseMatrixSource = `${input.readinessWorkflowSource}\n${input.safariDriverSource}`;
   for (const [needle, label] of readinessClaims) {
@@ -108,6 +132,36 @@ function auditReleaseMatrix(input, errors) {
   }
   if (!/Verify release identity and distribution[\s\S]*?Prepare packages for publishing/.test(input.publishWorkflowSource)) {
     errors.push('Publishing must verify release coherence before preparing artifacts.');
+  }
+
+  requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
+  requireMasterPush(input.tsWorkflowSource, 'TypeScript-latest CI', errors);
+  for (const command of ['typescript@latest', 'pnpm --filter @rxjs/observable-polyfill run build', 'pnpm --filter rxjs run build']) {
+    if (!input.tsWorkflowSource.includes(command)) {
+      errors.push(`TypeScript-latest CI must retain ${command}.`);
+    }
+  }
+  requireUnfilteredMasterPush(input.wptWorkflowSource, 'Observable WPT', 'schedule', errors);
+  if (!input.wptRunnerSource.includes("'--binary-arg=--no-sandbox'")) {
+    errors.push('Observable WPT must retain the Linux Chrome sandbox argument required by hosted runners.');
+  }
+  for (const dependency of ['libatspi2.0-dev', 'libcairo2-dev', 'libgirepository1.0-dev', 'pkg-config']) {
+    if (!input.wptWorkflowSource.includes(dependency)) {
+      errors.push(`Observable WPT must install ${dependency} for the pinned Python runner.`);
+    }
+  }
+  requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
+}
+
+function requireMasterPush(source, label, errors) {
+  if (!source.includes("  push:\n    branches: ['master']")) {
+    errors.push(`${label} must run on pushes to master.`);
+  }
+}
+
+function requireUnfilteredMasterPush(source, label, nextEvent, errors) {
+  if (!source.includes(`  push:\n    branches: ['master']\n  ${nextEvent}:`)) {
+    errors.push(`${label} must run unconditionally on pushes to master.`);
   }
 }
 
@@ -154,18 +208,24 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     skillProvenance,
     publishSource,
     ciWorkflowSource,
+    tsWorkflowSource,
+    wptWorkflowSource,
     readinessWorkflowSource,
     publishWorkflowSource,
     safariDriverSource,
+    wptRunnerSource,
   ] = await Promise.all([
     readFile(resolve(root, 'package.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'nx.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, '.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'scripts/publish.js'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_main.yml'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/observable-wpt.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/release-readiness.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/publish.yml'), 'utf8'),
     readFile(resolve(root, 'packages/rxjs/test/release/safari-driver.mjs'), 'utf8'),
+    readFile(resolve(root, 'packages/observable-polyfill/test/wpt/lib/runner.mjs'), 'utf8'),
   ]);
 
   const runtimeSources = await Promise.all([
@@ -192,9 +252,12 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     preparePackagesCommand: rootManifest.scripts?.['prepare-packages'] ?? '',
     publishSource,
     ciWorkflowSource,
+    tsWorkflowSource,
+    wptWorkflowSource,
     readinessWorkflowSource,
     publishWorkflowSource,
     safariDriverSource,
+    wptRunnerSource,
   };
 }
 

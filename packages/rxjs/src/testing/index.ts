@@ -40,7 +40,7 @@ export class FakeTimers {
 
       if (this.#shouldUseNodeTimeout) {
         let ref = false;
-        const nodeTimeout: ReturnType<typeof globalThis.setTimeout> = {
+        const nodeTimeout = {
           ref: () => {
             ref = true;
             return nodeTimeout;
@@ -60,7 +60,7 @@ export class FakeTimers {
           [Symbol.dispose]: () => {
             this.#removeTimer(id);
           },
-        };
+        } as any;
 
         return nodeTimeout;
       }
@@ -77,7 +77,7 @@ export class FakeTimers {
     return patched;
   })();
 
-  #clearTimeout: typeof globalThis.clearTimeout = (id: NodeJS.Timeout | string | number | undefined) => {
+  #clearTimeout: typeof globalThis.clearTimeout = (id: Parameters<typeof originalClearTimeout>[0]) => {
     if (id === undefined) return;
     this.#removeTimer(+id);
   };
@@ -94,7 +94,7 @@ export class FakeTimers {
 
       if (this.#shouldUseNodeTimeout) {
         let ref = false;
-        const nodeTimeout: ReturnType<typeof globalThis.setInterval> = {
+        const nodeTimeout = {
           ref: () => {
             ref = true;
             return nodeTimeout;
@@ -114,7 +114,7 @@ export class FakeTimers {
           [Symbol.dispose]: () => {
             this.#removeTimer(id);
           },
-        };
+        } as any;
 
         return nodeTimeout;
       }
@@ -136,7 +136,7 @@ export class FakeTimers {
     return patched;
   })();
 
-  #clearInterval: typeof globalThis.clearInterval = (id: NodeJS.Timeout | string | number | undefined) => {
+  #clearInterval: typeof globalThis.clearInterval = (id: Parameters<typeof originalClearInterval>[0]) => {
     if (id === undefined) return;
     this.#removeTimer(+id);
   };

@@ -3,6 +3,8 @@ name: CI (ts@latest)
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read
@@ -26,5 +28,6 @@ jobs:
 
       - name: build
         run: |
-          pnpm --filter rxjs add --save-dev --lockfile=false typescript@latest @types/node@latest
-          pnpm nx compile rxjs
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs add --save-dev --lockfile=false typescript@latest
+          pnpm --filter rxjs run build

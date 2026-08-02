@@ -226,6 +226,8 @@ Status meanings:
 ## D-013 — Port RxJS 7 marble evidence through an explicit mode-aware registry
 
 - **Status:** Accepted
+- **CI qualification:** D-055 keeps the ordinary nonzero test behavior but
+  makes exact reviewed mode baselines a separate blocking CI gate.
 - **Decision:** Preserve the RxJS 7 marble corpus in a source-pinned generated
   manifest with one migration classification and one execution disposition
   per case. Establish producer-per-subscription behavior against
@@ -1384,3 +1386,33 @@ Status meanings:
   correct way to gather ecosystem evidence that cannot be manufactured inside
   the repository while keeping the stable channel protected.
 - **Details:** `packages/rxjs/docs/PRERELEASE_APPROVAL.md`.
+
+## D-055 — Require exact migration-evidence baselines and complete `master` CI
+
+- **Status:** Accepted
+- **Decision:** Pull-request and `master` CI execute all 2,338 source-pinned
+  registrations in cold and polyfill modes. A CI-specific verifier requires
+  exact equality with the reviewed 2,299/39 cold and 2,316/22 polyfill
+  pass/failure case-ID sets. Incomplete collection, a new failure, or an
+  unexpected pass is blocking until the evidence and classification are
+  reviewed together. The ordinary `test:unit` command remains unchanged and
+  nonzero while reviewed divergences remain ordinary failing tests.
+- **Cadence:** Fast package, evidence, workflow, and TypeScript-latest gates run
+  for pull requests and pushes to `master`. Pinned WPT and the full
+  release-readiness environment matrix remain path-aware on pull requests but
+  run unconditionally on every `master` push. Node 26 and scheduled
+  latest-Chrome drift remain explicitly advisory; all accepted Node 22.13/24,
+  browser, Safari, Webpack, Deno, Bun, package, and conformance lanes remain
+  blocking.
+- **Rationale:** The completed RxJS 9 work had durable local evidence that was
+  not uniformly represented in CI. Exact baseline comparison preserves the
+  visibility required by D-013 without either making intentional RxJS 7
+  divergences release blockers or allowing the reviewed evidence set to drift
+  silently. Unconditional `master` coverage ensures the releasable branch is
+  always qualified even when a pull-request path filter was incomplete.
+- **Consequence:** CI owns the complete mode audits, bundle-analysis and
+  SafariDriver unit tests, generated migration-evidence freshness, active
+  workflow parsing, and the accepted release matrix. Release coherence rejects
+  removal of those commands or their `master` triggers. This decision changes
+  no runtime API, export, type, distribution artifact, or `apps/rxjs.dev`
+  boundary.

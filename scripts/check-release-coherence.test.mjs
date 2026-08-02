@@ -7,7 +7,7 @@ function validInput() {
   return {
     manifests: {
       '@rxjs/observable-polyfill': releaseManifest('@rxjs/observable-polyfill', version, true),
-      '@rxjs/migrate': releaseManifest('@rxjs/migrate', version, false),
+      '@rxjs/migrate': { ...releaseManifest('@rxjs/migrate', version, false), devDependencies: { '@types/node': '20.11.0' } },
       '@rxjs/test': { ...releaseManifest('@rxjs/test', version, true), peerDependencies: { rxjs: version } },
       rxjs: { ...releaseManifest('rxjs', version, true), dependencies: { '@rxjs/observable-polyfill': version } },
     },
@@ -22,8 +22,29 @@ function validInput() {
     publishSource: ["'refs/heads/7.x': 'latest'", "'refs/heads/master': 'next'", "if (isPrerelease(tag)) { npmDistTag = 'next'; }"].join(
       '\n'
     ),
-    ciWorkflowSource: ["node: '22.13.0'", "node: '24'", "node: '26'", 'continue-on-error: ${{ matrix.advisory }}'].join('\n'),
+    ciWorkflowSource: [
+      "  push:\n    branches: ['master']",
+      "node: '22.13.0'",
+      "node: '24'",
+      "node: '26'",
+      'continue-on-error: ${{ matrix.advisory }}',
+      'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
+      'test:unit:audit:check',
+      'test:bundle-analysis',
+      'test:release:safari',
+      'test:workflows',
+      'git fetch --no-tags --depth=1 origin 7.x:7.x',
+      'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
+    ].join('\n'),
+    tsWorkflowSource: [
+      "  push:\n    branches: ['master']",
+      'typescript@latest',
+      'pnpm --filter @rxjs/observable-polyfill run build',
+      'pnpm --filter rxjs run build',
+    ].join('\n'),
+    wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:\nlibatspi2.0-dev libcairo2-dev libgirepository1.0-dev pkg-config",
     readinessWorkflowSource: [
+      "  push:\n    branches: ['master']\n  workflow_dispatch:",
       'pnpm exec playwright install --with-deps chromium firefox webkit',
       'test:release:webpack',
       'test:release:performance',
@@ -31,9 +52,13 @@ function validInput() {
       'version: 2.8.0',
       'version: 1.3.14',
       'target: [desktop, ios]',
+      'boot-ios-simulator.mjs',
+      'pnpm --filter @rxjs/test run build',
+      'pnpm --filter @rxjs/migrate run build',
     ].join('\n'),
     publishWorkflowSource: ['node-version: 24', 'Verify release identity and distribution', 'Prepare packages for publishing'].join('\n'),
-    safariDriverSource: "'safari:useSimulator': true",
+    safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",
+    wptRunnerSource: "'--binary-arg=--no-sandbox'",
   };
 }
 
@@ -74,13 +99,16 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   input.preparePackagesCommand = 'pnpm nx run-many -t build';
   input.publishSource = '';
   input.ciWorkflowSource = '';
+  input.tsWorkflowSource = '';
+  input.wptWorkflowSource = '';
   input.readinessWorkflowSource = '';
   input.publishWorkflowSource = '';
   input.safariDriverSource = '';
+  input.wptRunnerSource = '';
 
   const errors = auditReleaseCoherence(input);
 
-  assert.equal(errors.length, 26);
+  assert.ok(errors.length >= 26);
   assert.match(errors.join('\n'), /Release package versions differ/);
   assert.match(errors.join('\n'), /must declare rxjs/);
   assert.match(errors.join('\n'), /polyfill metadata reports/);
@@ -95,6 +123,10 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   assert.match(errors.join('\n'), /Node 22\.13\.0/);
   assert.match(errors.join('\n'), /Node 26 lane/);
   assert.match(errors.join('\n'), /Mobile Safari/);
+  assert.match(errors.join('\n'), /exact RxJS 7 migration-evidence baselines/);
+  assert.match(errors.join('\n'), /TypeScript-latest CI must run on pushes to master/);
+  assert.match(errors.join('\n'), /Observable WPT must run unconditionally/);
+  assert.match(errors.join('\n'), /Release-readiness CI must run unconditionally/);
 });
 
 test('rejects documentation-site work from release workflows', () => {
@@ -111,4 +143,57 @@ test('rejects documentation-site work from release workflows', () => {
       'publishing CI must not build, test, publish, or otherwise reference rxjs.dev.',
     ]
   );
+});
+
+test('rejects removal of the clean-workspace release-package build', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace(
+    'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
+    ''
+  );
+  assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
+});
+
+test('rejects removal of the clean-workspace migration-audit build', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace(
+    'Build migration-audit runtime dependency\n        run: pnpm --filter @rxjs/observable-polyfill run build',
+    ''
+  );
+  assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace migration-audit runtime build/);
+});
+
+test('rejects removal of the TypeScript-latest build command', () => {
+  const input = validInput();
+  input.tsWorkflowSource = input.tsWorkflowSource.replace('pnpm --filter rxjs run build', 'pnpm nx compile rxjs');
+  assert.match(auditReleaseCoherence(input).join('\n'), /TypeScript-latest CI must retain pnpm --filter rxjs run build/);
+});
+
+test('rejects removal of the migration package Node declarations', () => {
+  const input = validInput();
+  delete input.manifests['@rxjs/migrate'].devDependencies['@types/node'];
+  assert.match(auditReleaseCoherence(input).join('\n'), /@rxjs\/migrate must declare @types\/node@20\.11\.0/);
+});
+
+test('rejects removal of WPT and release-readiness runner prerequisites', () => {
+  const input = validInput();
+  input.wptWorkflowSource = input.wptWorkflowSource.replace('libcairo2-dev', '');
+  input.readinessWorkflowSource = input.readinessWorkflowSource
+    .replace('boot-ios-simulator.mjs', '')
+    .replace('pnpm --filter @rxjs/test run build', '');
+
+  const errors = auditReleaseCoherence(input).join('\n');
+  assert.match(errors, /must install libcairo2-dev/);
+  assert.match(errors, /explicit iOS simulator startup/);
+  assert.match(errors, /packed test-helper adoption prerequisite/);
+});
+
+test('rejects shallow migration-evidence CI and sandboxed hosted WPT Chrome', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace('git fetch --no-tags --depth=1 origin 7.x:7.x', '');
+  input.wptRunnerSource = '';
+
+  const errors = auditReleaseCoherence(input).join('\n');
+  assert.match(errors, /RxJS 7 source ref/);
+  assert.match(errors, /Linux Chrome sandbox argument/);
 });
