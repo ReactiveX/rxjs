@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertAuditBaseline, baselineFromAuditReport } from './mode-audit-baseline.mjs';
+import { findIncompleteAuditFiles, repairAuditReport } from './mode-audit-repair.mjs';
 
 const toolDirectory = dirname(fileURLToPath(import.meta.url));
 const packageDirectory = resolve(toolDirectory, '../../..');
@@ -18,10 +19,23 @@ try {
     const reportPath = join(temporaryDirectory, `${mode}.json`);
     runAudit(mode, reportPath);
 
-    const [report, expected] = await Promise.all([
-      readJson(reportPath),
-      readJson(resolve(toolDirectory, `../verified-${mode}-passes.json`)),
-    ]);
+    let [report, expected] = await Promise.all([readJson(reportPath), readJson(resolve(toolDirectory, `../verified-${mode}-passes.json`))]);
+    const suiteMode = mode === 'cold' ? 'cold' : 'platform';
+    const incompleteFiles = findIncompleteAuditFiles({
+      migrationEntries: migrationReport.modes[suiteMode],
+      packageDirectory,
+      report,
+    });
+    if (incompleteFiles.length > 0) {
+      process.stdout.write(`Re-running ${incompleteFiles.length} incomplete ${mode} audit file(s) with Vitest's JSON reporter.\n`);
+      const replacementReports = [];
+      for (const [index, file] of incompleteFiles.entries()) {
+        const supplementalPath = join(temporaryDirectory, `${mode}-supplemental-${index}.json`);
+        runAudit(mode, supplementalPath, file);
+        replacementReports.push(await readJson(supplementalPath));
+      }
+      report = repairAuditReport({ packageDirectory, report, replacementReports });
+    }
     const actual = baselineFromAuditReport({ manifest, migrationReport, mode, packageDirectory, report });
     assertAuditBaseline(actual, expected);
     process.stdout.write(
@@ -36,12 +50,13 @@ async function readJson(path) {
   return JSON.parse(await readFile(path, 'utf8'));
 }
 
-function runAudit(mode, reportPath) {
+function runAudit(mode, reportPath, file) {
   const result = spawnSync(
     process.execPath,
     [
       resolve(packageDirectory, '../../node_modules/vitest/vitest.mjs'),
       '--run',
+      ...(file ? [file] : []),
       '--config',
       'vitest.ported.config.ts',
       '--reporter=json',

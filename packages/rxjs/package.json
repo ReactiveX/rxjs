@@ -30,7 +30,7 @@
     "test:unit:polyfill": "RXJS_NEXT_TEST_MODE=polyfill vitest --run --config vitest.ported.config.ts",
     "test:unit:native": "RXJS_NEXT_TEST_MODE=native vitest --run --config vitest.ported.config.ts",
     "test:unit:audit": "RXJS_NEXT_AUDIT_ONLY=1 RXJS_NEXT_TEST_MODE=cold vitest --run --config vitest.ported.config.ts",
-    "test:unit:audit:check": "node --test test/ported/tools/mode-audit-baseline.test.mjs && node test/ported/tools/check-mode-audits.mjs",
+    "test:unit:audit:check": "node --test test/ported/tools/mode-audit-baseline.test.mjs test/ported/tools/mode-audit-repair.test.mjs && node test/ported/tools/check-mode-audits.mjs",
     "test:unit:audit:polyfill": "RXJS_NEXT_AUDIT_ONLY=1 RXJS_NEXT_TEST_MODE=polyfill vitest --run --config vitest.ported.config.ts",
     "test:unit:audit:record": "node test/ported/tools/record-mode-audit.mjs",
     "test:unit:report": "node test/ported/report.mjs",
