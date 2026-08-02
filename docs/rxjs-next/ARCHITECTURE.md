@@ -743,15 +743,15 @@ cold and polyfill modes: a converted-program failure, missing API, unsupported
 harness dependency, source-skipped case, or exact duplicate fails the command
 instead of being quarantined or inverted with an expected-failure wrapper.
 Vitest's unmodified built-in default reporter provides human output and real
-clickable locations. Complete evidence runs use Vitest's built-in JSON
-reporter; the static migration report maps declaration order back to manifest
+clickable locations. The CI verifier captures Vitest's verbose per-case result
+stream; the static migration report maps declaration order back to manifest
 case IDs without putting machine identifiers in test names. Tests use ordinary
 Vitest assertions and spies without a compatibility assertion layer. Dedicated
 platform cases assert the
 shared/ref-counted lifecycle directly. Native loading also verifies that the
 ambient constructor was not replaced. The recorded mode baselines remain
 diagnostic evidence and do not change default test outcomes. Under D-055, a
-separate CI verifier executes the complete JSON-reported audits and requires
+separate CI verifier executes the complete per-case audits and requires
 their exact case-ID pass sets to match the reviewed 2,299/39 cold and 2,316/22
 polyfill baselines. Both regressions and unexpected passes block CI so evidence
 and classifications cannot drift silently. See `RXJS_7_MARBLE_TEST_PORT_NOTES.md`,
