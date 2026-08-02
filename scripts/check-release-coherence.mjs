@@ -80,6 +80,16 @@ function auditReleaseMatrix(input, errors) {
   if (!input.ciWorkflowSource.includes('continue-on-error: ${{ matrix.advisory }}')) {
     errors.push('The Node 26 lane must remain explicitly advisory.');
   }
+  for (const [command, label] of [
+    ['test:unit:audit:check', 'the exact RxJS 7 migration-evidence baselines'],
+    ['test:bundle-analysis', 'bundle-analysis tooling tests'],
+    ['test:release:safari', 'SafariDriver contract tests'],
+    ['test:workflows', 'active-workflow parsing and formatting'],
+  ]) {
+    if (!input.ciWorkflowSource.includes(command)) {
+      errors.push(`Package CI must retain ${label}.`);
+    }
+  }
 
   const readinessClaims = [
     ['chromium firefox webkit', 'Chrome, Firefox, and WebKit'],
@@ -108,6 +118,23 @@ function auditReleaseMatrix(input, errors) {
   }
   if (!/Verify release identity and distribution[\s\S]*?Prepare packages for publishing/.test(input.publishWorkflowSource)) {
     errors.push('Publishing must verify release coherence before preparing artifacts.');
+  }
+
+  requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
+  requireMasterPush(input.tsWorkflowSource, 'TypeScript-latest CI', errors);
+  requireUnfilteredMasterPush(input.wptWorkflowSource, 'Observable WPT', 'schedule', errors);
+  requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
+}
+
+function requireMasterPush(source, label, errors) {
+  if (!source.includes("  push:\n    branches: ['master']")) {
+    errors.push(`${label} must run on pushes to master.`);
+  }
+}
+
+function requireUnfilteredMasterPush(source, label, nextEvent, errors) {
+  if (!source.includes(`  push:\n    branches: ['master']\n  ${nextEvent}:`)) {
+    errors.push(`${label} must run unconditionally on pushes to master.`);
   }
 }
 
@@ -154,6 +181,8 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     skillProvenance,
     publishSource,
     ciWorkflowSource,
+    tsWorkflowSource,
+    wptWorkflowSource,
     readinessWorkflowSource,
     publishWorkflowSource,
     safariDriverSource,
@@ -163,6 +192,8 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     readFile(resolve(root, '.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'scripts/publish.js'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_main.yml'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/observable-wpt.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/release-readiness.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/publish.yml'), 'utf8'),
     readFile(resolve(root, 'packages/rxjs/test/release/safari-driver.mjs'), 'utf8'),
@@ -192,6 +223,8 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     preparePackagesCommand: rootManifest.scripts?.['prepare-packages'] ?? '',
     publishSource,
     ciWorkflowSource,
+    tsWorkflowSource,
+    wptWorkflowSource,
     readinessWorkflowSource,
     publishWorkflowSource,
     safariDriverSource,

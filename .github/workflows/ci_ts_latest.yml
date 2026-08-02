@@ -3,6 +3,8 @@ name: CI (ts@latest)
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read

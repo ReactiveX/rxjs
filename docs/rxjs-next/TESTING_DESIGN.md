@@ -636,12 +636,19 @@ pnpm --filter rxjs run test:unit
 pnpm --filter rxjs run test:unit:native
 pnpm --filter rxjs run test:unit:audit
 pnpm --filter rxjs run test:unit:audit:polyfill
+pnpm --filter rxjs run test:unit:audit:check
 pnpm --filter rxjs run test:unit:report
 pnpm --filter rxjs run test:unit:parity:check
 ```
 
 Detailed counts, duplicates, missing capabilities, and unsupported-case
 rationales are in `RXJS_7_MARBLE_TEST_PORT_NOTES.md`.
+
+The audit commands retain ordinary Vitest failure semantics. The CI-only
+`test:unit:audit:check` command captures complete JSON reports and requires the
+exact reviewed cold and polyfill passing case-ID sets. It fails for incomplete
+collection, unknown or duplicate IDs, new failures, and unexpected passes;
+updating a baseline therefore remains an explicit evidence-review action.
 
 Reusable authoring support lives in the independently publishable
 `@rxjs/migrate` package. Its semantic transform is independent of test-runner

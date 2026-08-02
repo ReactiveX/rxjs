@@ -77,7 +77,8 @@ approval. P6.5 closed the terminal audit. P6.6 then centralized eligible RxJS
 source subscriptions through the D-049 helper and recorded the resulting
 bundle-size reduction. P6.7 then removed the remaining derived-construction
 wrappers in favor of direct D-037 `[create]` calls and recorded a further
-bundle-size reduction. The execution queue is complete.
+bundle-size reduction. P6.8 is now the sole active step: make every accepted
+RxJS 9 test and release check durable in pull-request and `master` CI.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1561,6 +1562,7 @@ names.
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
 | `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
 | `DONE` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
+| `NEXT` | P6.8 | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
 
 #### P6.1 completion bar
 
@@ -1841,6 +1843,21 @@ names.
 | Complete runtime catalog       | 64,368 → 64,231 (-137 B, -0.21%) | 17,606 → 17,542 (-64 B, -0.36%) | 15,591 → 15,508 (-83 B, -0.53%) |
 
 - Marked P6.7 `DONE`; the completed execution queue has no `NEXT` marker.
+
+#### P6.8 completion bar
+
+- Every accepted source, package, type, import, migration-evidence, workflow,
+  runtime, browser, bundle, performance, adoption, and WPT gate is owned by a
+  pull-request or `master` workflow.
+- The complete 2,338-case cold and polyfill audits run in CI and require exact
+  equality with the reviewed 2,299/39 and 2,316/22 pass/failure baselines;
+  incomplete execution and both unexpected failures and passes are blocking.
+- Blocking Node 22.13/24, TypeScript-latest, WPT, release-readiness, Deno, Bun,
+  Webpack, desktop Safari, and Mobile Safari jobs start on the validation PR;
+  Node 26 and latest-Chrome drift remain explicitly advisory.
+- Release coherence rejects removal of required commands, lanes, or `master`
+  triggers, and package-local release documentation describes the durable CI
+  policy without changing runtime APIs or `apps/rxjs.dev`.
 
 ## Dependencies
 

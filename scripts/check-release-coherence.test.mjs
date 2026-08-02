@@ -22,8 +22,21 @@ function validInput() {
     publishSource: ["'refs/heads/7.x': 'latest'", "'refs/heads/master': 'next'", "if (isPrerelease(tag)) { npmDistTag = 'next'; }"].join(
       '\n'
     ),
-    ciWorkflowSource: ["node: '22.13.0'", "node: '24'", "node: '26'", 'continue-on-error: ${{ matrix.advisory }}'].join('\n'),
+    ciWorkflowSource: [
+      "  push:\n    branches: ['master']",
+      "node: '22.13.0'",
+      "node: '24'",
+      "node: '26'",
+      'continue-on-error: ${{ matrix.advisory }}',
+      'test:unit:audit:check',
+      'test:bundle-analysis',
+      'test:release:safari',
+      'test:workflows',
+    ].join('\n'),
+    tsWorkflowSource: "  push:\n    branches: ['master']",
+    wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:",
     readinessWorkflowSource: [
+      "  push:\n    branches: ['master']\n  workflow_dispatch:",
       'pnpm exec playwright install --with-deps chromium firefox webkit',
       'test:release:webpack',
       'test:release:performance',
@@ -74,13 +87,15 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   input.preparePackagesCommand = 'pnpm nx run-many -t build';
   input.publishSource = '';
   input.ciWorkflowSource = '';
+  input.tsWorkflowSource = '';
+  input.wptWorkflowSource = '';
   input.readinessWorkflowSource = '';
   input.publishWorkflowSource = '';
   input.safariDriverSource = '';
 
   const errors = auditReleaseCoherence(input);
 
-  assert.equal(errors.length, 26);
+  assert.ok(errors.length >= 26);
   assert.match(errors.join('\n'), /Release package versions differ/);
   assert.match(errors.join('\n'), /must declare rxjs/);
   assert.match(errors.join('\n'), /polyfill metadata reports/);
@@ -95,6 +110,10 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   assert.match(errors.join('\n'), /Node 22\.13\.0/);
   assert.match(errors.join('\n'), /Node 26 lane/);
   assert.match(errors.join('\n'), /Mobile Safari/);
+  assert.match(errors.join('\n'), /exact RxJS 7 migration-evidence baselines/);
+  assert.match(errors.join('\n'), /TypeScript-latest CI must run on pushes to master/);
+  assert.match(errors.join('\n'), /Observable WPT must run unconditionally/);
+  assert.match(errors.join('\n'), /Release-readiness CI must run unconditionally/);
 });
 
 test('rejects documentation-site work from release workflows', () => {

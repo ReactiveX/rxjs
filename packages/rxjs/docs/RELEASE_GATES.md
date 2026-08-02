@@ -23,6 +23,25 @@ The release-coherence checker pins the concrete Deno, Bun, Webpack, browser,
 Node, and Safari CI lanes. Updating a current-runtime version is therefore a
 reviewed release change rather than silent drift.
 
+## CI ownership
+
+| Workflow          | Pull requests                                             | `master` pushes                                    |
+| ----------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| Main CI           | Package matrix plus exact migration evidence and tooling  | Same blocking gates on every push                  |
+| TypeScript latest | RxJS compilation against the latest TypeScript            | Same compatibility signal on every push            |
+| Observable WPT    | Blocking when platform, package, or harness paths change  | Blocking pinned conformance on every push          |
+| Release readiness | Blocking when release packages, scripts, or config change | Complete blocking environment matrix on every push |
+
+Main CI executes all 2,338 source-pinned RxJS 7 evidence cases in cold and
+polyfill modes and requires exact equality with the reviewed 2,299/39 and
+2,316/22 pass/failure case-ID sets. The raw audit commands still report the
+intentional divergences as ordinary failures; the CI verifier blocks any added
+failure, unexpected pass, incomplete collection, or identity drift until the
+evidence is reviewed. Main CI also owns generated evidence freshness,
+bundle-analysis tests, SafariDriver unit tests, and active-workflow validation.
+Release coherence rejects removal of required commands, lanes, or `master`
+triggers.
+
 ## Distribution contract
 
 Every supported consumer receives the same `dist/esm` JavaScript. Browser,
@@ -63,6 +82,10 @@ From the repository root:
 
 ```sh
 pnpm run release:check
+pnpm --filter rxjs run test:unit:audit:check
+pnpm run test:bundle-analysis
+pnpm run test:release:safari
+pnpm run test:workflows
 pnpm run test:release:runtime
 pnpm run test:release:browsers
 pnpm run test:release:safari

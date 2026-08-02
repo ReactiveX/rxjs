@@ -6,23 +6,22 @@ on:
     paths:
       - '.github/actions/install-dependencies/**'
       - '.github/workflows/release-readiness.yml'
+      - '.npmrc'
+      - 'nx.json'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'packages/migrate/**'
       - 'packages/observable-polyfill/**'
       - 'packages/rxjs/**'
+      - 'packages/test/**'
+      - 'scripts/check-package-docs.mjs'
       - 'scripts/check-release-coherence.mjs'
       - 'scripts/finalize-esm-package.mjs'
+      - 'scripts/prerelease-adoption-lib.mjs'
+      - 'scripts/qualify-prerelease.mjs'
   push:
     branches: ['master']
-    paths:
-      - '.github/actions/install-dependencies/**'
-      - '.github/workflows/release-readiness.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'packages/observable-polyfill/**'
-      - 'packages/rxjs/**'
-      - 'scripts/check-release-coherence.mjs'
-      - 'scripts/finalize-esm-package.mjs'
   workflow_dispatch:
 
 permissions:

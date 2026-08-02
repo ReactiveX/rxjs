@@ -13,14 +13,6 @@ on:
       - 'packages/rxjs/**'
   push:
     branches: ['master']
-    paths:
-      - '.github/actions/install-dependencies/**'
-      - '.github/workflows/observable-wpt.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'packages/observable-polyfill/**'
-      - 'packages/rxjs/**'
   schedule:
     - cron: '23 9 * * 2'
   workflow_dispatch:

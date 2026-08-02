@@ -14,6 +14,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  evidence:
+    name: RxJS 9 migration evidence and repository checks (Node 24)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+
+      - name: Run exact cold and polyfill audit baselines
+        run: pnpm --filter rxjs run test:unit:audit:check
+
+      - name: Test bundle-analysis tooling
+        run: pnpm run test:bundle-analysis
+
+      - name: Test SafariDriver contracts
+        run: pnpm run test:release:safari
+
+      - name: Parse and format-check active workflows
+        run: pnpm run test:workflows
+
   packages:
     name: Node ${{ matrix.node }} package gates${{ matrix.advisory && ' (advisory)' || '' }}
     runs-on: ubuntu-latest
