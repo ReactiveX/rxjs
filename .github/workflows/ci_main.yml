@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -58,7 +58,7 @@ jobs:
             advisory: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Fetch the RxJS 7 migration-evidence source
         run: git fetch --no-tags --depth=1 origin 7.x:7.x

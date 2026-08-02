@@ -38,22 +38,5 @@
         "runtime": "pnpm --version"
       }
     ]
-  },
-  "release": {
-    "projects": ["packages/*"],
-    "releaseTagPattern": "{version}",
-    "changelog": {
-      "workspaceChangelog": {
-        "createRelease": "github",
-        "file": false
-      },
-      "projectChangelogs": true
-    },
-    "version": {
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
-    }
   }
 }

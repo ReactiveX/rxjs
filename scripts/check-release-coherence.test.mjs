@@ -17,11 +17,9 @@ function validInput() {
     ],
     skillProvenance: { packageName: '@rxjs/migrate', packageVersion: version },
     rootNodeEngine: '>=22.13.0',
-    nxReleaseProjects: ['packages/*'],
+    nxReleaseConfigured: false,
     preparePackagesCommand: 'pnpm nx run-many -t build --exclude rxjs.dev',
-    publishSource: ["'refs/heads/7.x': 'latest'", "'refs/heads/master': 'next'", "if (isPrerelease(tag)) { npmDistTag = 'next'; }"].join(
-      '\n'
-    ),
+    publishSource: "version.includes('-') ? 'next' : 'latest'",
     ciWorkflowSource: [
       "  push:\n    branches: ['master']",
       "node: '22.13.0'",
@@ -56,7 +54,16 @@ function validInput() {
       'pnpm --filter @rxjs/test run build',
       'pnpm --filter @rxjs/migrate run build',
     ].join('\n'),
-    publishWorkflowSource: ['node-version: 24', 'Verify release identity and distribution', 'Prepare packages for publishing'].join('\n'),
+    publishWorkflowSource: [
+      "node-version: '24'",
+      'Verify release policy and repository configuration',
+      'Build release packages',
+      'Pack, inventory, and hash',
+      'release-candidate.mjs verify',
+      'release-candidate.mjs hydrate',
+      'stage-release.mjs publish',
+      'id-token: write',
+    ].join('\n'),
     safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",
     wptRunnerSource: "'--binary-arg=--no-sandbox'",
   };
@@ -95,7 +102,7 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
     types: './dist/commonjs/index.d.ts',
     default: './dist/commonjs/index.js',
   };
-  input.nxReleaseProjects = ['packages/rxjs'];
+  input.nxReleaseConfigured = true;
   input.preparePackagesCommand = 'pnpm nx run-many -t build';
   input.publishSource = '';
   input.ciWorkflowSource = '';
@@ -108,7 +115,7 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
 
   const errors = auditReleaseCoherence(input);
 
-  assert.ok(errors.length >= 26);
+  assert.ok(errors.length >= 24);
   assert.match(errors.join('\n'), /Release package versions differ/);
   assert.match(errors.join('\n'), /must declare rxjs/);
   assert.match(errors.join('\n'), /polyfill metadata reports/);
@@ -116,10 +123,9 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   assert.match(errors.join('\n'), /repository Node engine/);
   assert.match(errors.join('\n'), /legacy or target-specific/);
   assert.match(errors.join('\n'), /same dist\/esm files/);
+  assert.match(errors.join('\n'), /Nx release configuration must remain removed/);
   assert.match(errors.join('\n'), /must explicitly exclude rxjs\.dev/);
-  assert.match(errors.join('\n'), /7\.x branch/);
-  assert.match(errors.join('\n'), /master branch/);
-  assert.match(errors.join('\n'), /Tagged prereleases/);
+  assert.match(errors.join('\n'), /prereleases to next/);
   assert.match(errors.join('\n'), /Node 22\.13\.0/);
   assert.match(errors.join('\n'), /Node 26 lane/);
   assert.match(errors.join('\n'), /Mobile Safari/);

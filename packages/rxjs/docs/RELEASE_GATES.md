@@ -4,6 +4,11 @@ This document describes the executable environment and package gates for the
 RxJS 9 prerelease line. It is package documentation; it does not depend on the
 repository documentation application.
 
+The repository's [secure release runbook](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md)
+defines version selection, exact-tarball qualification, npm staged approval,
+TFA order, failure recovery, and succession. These gates qualify a candidate;
+they never authorize direct publication.
+
 ## Runtime matrix
 
 | Environment                | Release role         | Executable evidence                                                         |

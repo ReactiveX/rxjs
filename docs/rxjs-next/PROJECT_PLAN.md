@@ -78,9 +78,11 @@ source subscriptions through the D-049 helper and recorded the resulting
 bundle-size reduction. P6.7 then removed the remaining derived-construction
 wrappers in favor of direct D-037 `[create]` calls and recorded a further
 bundle-size reduction. P6.8 completed durable pull-request and `master` CI
-ownership for every accepted RxJS 9 test and release check. The user has now
-prioritized P6.9: publish truthful README status signals and add the repository
-security automation needed to support an attested OpenSSF Scorecard badge.
+ownership for every accepted RxJS 9 test and release check. P6.9 implemented
+truthful status signals and security automation; its first live GitHub results
+remain external validation. The user has now prioritized P6.10: the secure
+release-PR, exact-tarball qualification, npm staged-approval, succession, and
+maintenance process.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1555,17 +1557,18 @@ names.
 
 ### Phase 6 — Release readiness
 
-| Status | ID   | Outcome                                                                               |
-| ------ | ---- | ------------------------------------------------------------------------------------- |
-| `DONE` | P6.1 | Finalize version naming, supported environments, support policy, and release channels |
-| `DONE` | P6.2 | Complete package, type, bundle, performance, and conformance gates                    |
-| `DONE` | P6.3 | Publish package-local API, migration, and contributor documentation                   |
-| `DONE` | P6.4 | Run pre-release adoption, resolve blockers, and approve the major release             |
-| `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
-| `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
-| `DONE` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
-| `DONE` | P6.8 | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
-| `NEXT` | P6.9 | Add truthful README badges, Scorecard analysis, and dependency review                 |
+| Status    | ID    | Outcome                                                                               |
+| --------- | ----- | ------------------------------------------------------------------------------------- |
+| `DONE`    | P6.1  | Finalize version naming, supported environments, support policy, and release channels |
+| `DONE`    | P6.2  | Complete package, type, bundle, performance, and conformance gates                    |
+| `DONE`    | P6.3  | Publish package-local API, migration, and contributor documentation                   |
+| `DONE`    | P6.4  | Run pre-release adoption, resolve blockers, and approve the major release             |
+| `DONE`    | P6.5  | Complete the terminal plan, verification, and documentation-site exclusion audit      |
+| `DONE`    | P6.6  | Centralize eligible source subscriptions and record bundle-size evidence              |
+| `DONE`    | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
+| `DONE`    | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
+| `BLOCKED` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
+| `NEXT`    | P6.10 | Implement the secure release-PR and npm staged-approval process                       |
 
 #### P6.9 completion bar
 
@@ -1596,10 +1599,47 @@ names.
   Local YAML parsing, active-workflow formatting, documentation links, all 24
   release-check tests, release coherence, and diff checks pass; `apps/rxjs.dev`
   and runtime/package source are unchanged.
-- P6.9 remains `NEXT` until dependency review runs on the implementation PR.
+- P6.9 is `BLOCKED` until dependency review runs on the implementation PR.
   After merge, the first `master` Scorecard publication, code-scanning result,
   live badge population, and required dependency-review repository rule remain
   administrative verification steps.
+
+#### P6.10 completion bar
+
+- A public role-based runbook begins with the accepted steps and security
+  considerations, documents each version scenario consistently, and separates
+  public operations from the credential-free private succession inventory.
+- Deterministic tests cover beta, promotion, patch, minor, accumulated,
+  documentation-only, stable-breaking, link, order, stage-ID, digest, and
+  byte-integrity behavior.
+- A narrowly scoped organization-owned GitHub App refreshes one allowlisted
+  release PR after configured `master` checks pass. Merging it is the only
+  authorization for the privileged workflow.
+- Fresh GitHub-hosted jobs build and pack once, attest and qualify the exact
+  tarballs across every blocking environment, create the protected tag, and
+  submit the same filenames through stage-only npm OIDC. No direct-publish
+  command or long-lived npm publishing token remains.
+- Administrator setup, disposable-package rehearsal, staged eligibility,
+  tag/release protection, and the annual private reminder remain explicit
+  pre-publication gates. P6.10 remains active until they are verified.
+
+#### P6.10 implementation evidence
+
+- Added repository-owned release policy, release-PR generation, synchronized
+  version/provenance updates, changelog generation, release-bot allowlisting,
+  exact candidate manifests, hash verification, exact-artifact hydration,
+  staged comments, public-integrity finalization, and a read-only doctor.
+- Replaced private Nx release imports and token publishing with GitHub-App
+  release PRs, exact-tarball qualification, artifact attestations, stage-only
+  OIDC, TFA approval order, draft evidence releases, and no-npm-authority
+  finalization. Added CodeQL, action-pin enforcement, Dependabot, and release
+  CODEOWNERS.
+- Added the public runbook and credential-free succession template. npm routes
+  are never guessed: setup records a manually verified URL, rendering validates
+  its origin, and comments retain stage-ID CLI fallbacks.
+- Local verification is recorded in the P6.10 session entry. Live App,
+  ruleset, trusted-publisher, disposable-package, TFA, rejection, staged digest,
+  tag, and immutable-release evidence remain required before `DONE`.
 
 #### P6.1 completion bar
 
@@ -3494,3 +3534,19 @@ conformance implementation depends on a runnable harness.
   checks, documentation links, release coherence, badge image/target probes,
   and diff hygiene. P6.9 remains `NEXT` for PR and post-merge live validation;
   no runtime, package API, publication artifact, or `apps/rxjs.dev` file changed.
+
+### 2026-08-02 — P6.10 secure staged release implementation
+
+- Accepted D-057 and added the irreversible-publication runbook, deterministic
+  scenarios, exact-tarball boundary, npm-link validation, recovery, bootstrap,
+  and credential-free succession template.
+- Replaced private Nx release APIs and `NPM_TOKEN` publishing with a GitHub-App
+  release PR, protected-commit qualification, artifact attestations,
+  exact-tarball environment gates, stage-only npm OIDC, TFA approval order, and
+  registry-integrity-driven GitHub Release finalization.
+- Added release policy/candidate/staging tests, the read-only doctor, CodeQL,
+  full action pin enforcement, action Dependabot, and release CODEOWNERS. No
+  npm, tag, release, or external-account mutation was performed locally.
+- P6.9 is blocked only on its first GitHub-side security runs. P6.10 is the
+  sole `NEXT` item until administrator setup and the disposable-package
+  rehearsal prove the external npm/GitHub controls.

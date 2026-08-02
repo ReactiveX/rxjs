@@ -1441,3 +1441,38 @@ Status meanings:
   is a repository-rules administration step after its first run. This decision
   changes no runtime API, export, type, package artifact, or `apps/rxjs.dev`
   boundary.
+
+## D-057 — Use release PRs, exact-tarball qualification, and npm staged approval
+
+- **Status:** Accepted
+- **Decision:** RxJS 9 releases from `master` use one generated release PR as
+  their GitHub-side authorization. Conventional Commit titles select the
+  version: beta work increments only `beta.N`; stable fixes increment patch;
+  stable features increment minor; and stable breaking changes block the 9.x
+  train. Stable promotion is an explicit mode. All four packages retain one
+  synchronized version.
+- **Publication boundary:** Merging the release PR starts a trusted workflow
+  that builds and packs once, records SHA-512 and contents, attests the
+  tarballs, and qualifies those exact files in every blocking environment.
+  The same filenames go through an npm trusted publisher limited to
+  `npm stage publish`. CI has no long-lived npm token and cannot call direct
+  `npm publish`. A release maintainer approves every stage with TFA and
+  approves `rxjs` last.
+- **Irreversibility:** npm publication is a pre-approval safety boundary for
+  RxJS. Post-publication registry checks only finalize the immutable GitHub
+  Release. Any changed byte invalidates a candidate, and partial staging
+  requires rejection plus a fresh fully qualified version.
+- **Security:** Only protected merged commits run privileged workflows on fresh
+  GitHub-hosted runners with a frozen lockfile and no restored caches. Actions
+  use reviewed full commit SHAs. Code ownership covers workflows, release
+  scripts, manifests, lockfile, changelog, and CODEOWNERS. SemVer tags and final
+  GitHub Releases require repository rules and release immutability.
+- **Operations:** The authenticated npm Staged Packages URL is a manually
+  verified repository variable with the exact npm web origin. Comments also
+  contain stage IDs and CLI fallbacks. The public role-based runbook contains
+  no secret steps; the private successor packet contains no credentials or TFA
+  recovery material.
+- **Consequence:** Private Nx release imports and the token-based publisher are
+  removed. Repository-owned policy, candidate, staging, doctor, and finalizer
+  scripts implement the accepted flow. npm/GitHub account setup and the
+  disposable-package rehearsal remain administrator gates before publication.

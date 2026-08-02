@@ -76,8 +76,10 @@ Import the Symbol and call it with bracket syntax. A platform method such as
 | `@rxjs/migrate`             | Deterministic migration engine and canonical agent Skill | [Package guide](packages/migrate/README.md)                                                                                  |
 
 Release support, budgets, and exact environment gates are documented in the
-[`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). Repository-wide design
-records live in [`docs/rxjs-next`](docs/rxjs-next/PROJECT_CHARTER.md).
+[`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). The irreversible npm
+publication process is the public [secure release runbook](docs/RELEASE_PROCESS.md).
+Repository-wide design records live in
+[`docs/rxjs-next`](docs/rxjs-next/PROJECT_CHARTER.md).
 
 ## Supported environments
 
