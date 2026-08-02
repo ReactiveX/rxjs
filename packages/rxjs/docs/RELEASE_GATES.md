@@ -39,6 +39,9 @@ intentional divergences as ordinary failures; the CI verifier blocks any added
 failure, unexpected pass, incomplete collection, or identity drift until the
 evidence is reviewed. Main CI also owns generated evidence freshness,
 bundle-analysis tests, SafariDriver unit tests, and active-workflow validation.
+The exact audit is pinned to the reviewed Node 24.12.0 runtime because later
+Node 24 hosted runners can cause Vitest 1.2's JSON reporter to omit collected
+assertion results; the blocking package matrix still tracks maintained Node 24.
 Release coherence rejects removal of required commands, lanes, or `master`
 triggers.
 

@@ -73,6 +73,9 @@ export function auditReleaseCoherence(input) {
 }
 
 function auditReleaseMatrix(input, errors) {
+  if (!/name: RxJS 9 migration evidence and repository checks \(Node 24\)[\s\S]*?node-version:\s*'24\.12\.0'/.test(input.ciWorkflowSource)) {
+    errors.push('The exact migration-evidence lane must use the reviewed Node 24.12.0 runtime.');
+  }
   for (const version of ["'22.13.0'", "'24'", "'26'"]) {
     if (!input.ciWorkflowSource.includes(`node: ${version}`)) {
       errors.push(`The package CI matrix must include Node ${version.slice(1, -1)}.`);
