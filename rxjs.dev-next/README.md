@@ -5,17 +5,17 @@ This is the next-generation documentation site for RxJS, built with VitePress.
 ## Development
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 ## Build
 
 ```bash
-yarn build
+npm run build
 ```
 
 ## Preview
 
 ```bash
-yarn preview
+npm run preview
 ```

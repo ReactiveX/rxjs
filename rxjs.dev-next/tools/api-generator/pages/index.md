@@ -11,20 +11,19 @@ const allKinds = computed(() => {
 const selectedKind = ref(allKinds.value[0].value);
 const query = ref('');
 
-const observableItems = computed(() => filterItems(sidebar, '@rxjs/observable'))
-const ajaxItems = computed(() => filterItems(sidebar, 'ajax'))
-const fetchItems = computed(() => filterItems(sidebar, 'fetch'))
-const operatorsItems = computed(() => filterItems(sidebar, 'operators'))
-const rxjsItems = computed(() => filterItems(sidebar, 'rxjs'))
-const testingItems = computed(() => filterItems(sidebar, 'testing'))
-const webSocketItems = computed(() => filterItems(sidebar, 'webSocket'))
+const flattenItems = (items = []) => items.flatMap(item => item.items?.length ? flattenItems(item.items) : item.link ? [item] : []);
 
-const filterItems = (_sidebar, text) => {
+const sections = computed(() => sidebar
+  .filter(section => section.items?.length)
+  .map(section => ({ text: section.text, items: filterItems(flattenItems(section.items)) }))
+  .filter(section => section.items.length));
+
+const filterItems = (items) => {
   const q = query.value.toLowerCase().trim();
   const shouldFilterByKind = selectedKind.value !== 'all';
   const shouldFilterByQuery = q !== '';
 
-  let _items = _sidebar.find(section => section.text === text)?.items ?? [];
+  let _items = items;
 
   _items = shouldFilterByKind ?
     _items.filter(item => kindForUrl(item.link) === selectedKind.value) :
@@ -40,44 +39,11 @@ const filterItems = (_sidebar, text) => {
 
 # RxJS API Explorer
 
-## All Modules
-
-- [@rxjs/observable](@rxjs/observable/index.md)
-- [ajax](ajax/index.md)
-- [fetch](fetch/index.md)
-- [operators](operators/index.md)
-- [rxjs](rxjs/index.md)
-- [testing](testing/index.md)
-- [webSocket](webSocket/index.md)
-
 ## Explorer
 
 <Search v-model:query="query" v-model:selected="selectedKind" :selectOptions="allKinds" />
 
-### RxJS (index)
-
-<ApiSection :items="rxjsItems" />
-
-### @rxjs/observable
-
-<ApiSection :items="observableItems" />
-
-### Ajax
-
-<ApiSection :items="ajaxItems" />
-
-### Fetch
-
-<ApiSection :items="fetchItems" />
-
-### Operators
-
-<ApiSection :items="operatorsItems" />
-
-### Testing
-
-<ApiSection :items="testingItems" />
-
-### Web Socket
-
-<ApiSection :items="webSocketItems" />
+<template v-for="section in sections" :key="section.text">
+  <h3>{{ section.text }}</h3>
+  <ApiSection :items="section.items" />
+</template>

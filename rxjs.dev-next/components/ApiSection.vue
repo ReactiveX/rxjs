@@ -68,17 +68,46 @@ const makePageLinks = (items: any[]) => {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8" v-show="items.length > 0">
-    <UButton v-for="item in makePageLinks(items)" :key="item.label" :to="item.to" :color="item.color" variant="soft"
-      :icon="item.icon" class="w-full min-w-0 justify-start" :ui="{ base: 'min-w-0', leadingIcon: 'shrink-0' }">
-      <span class="min-w-0 flex-1 truncate">
-        {{ item.label }}
-      </span>
-    </UButton>
+  <div class="api-grid" v-show="items.length > 0">
+    <a v-for="item in makePageLinks(items)" :key="item.label" :href="item.to" class="api-card">
+      <span>{{ item.label }}</span>
+    </a>
   </div>
 </template>
 
 <style scoped>
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.api-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600;
+  text-decoration: none !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.api-card:hover {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+}
+
+@media (min-width: 768px) {
+  .api-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 :deep(ul) {
   list-style: none !important;
   margin-left: 0 !important;
@@ -87,8 +116,4 @@ const makePageLinks = (items: any[]) => {
   padding-right: 0 !important;
 }
 
-:deep(a) {
-  color: revert-layer !important;
-  text-decoration: none !important;
-}
 </style>

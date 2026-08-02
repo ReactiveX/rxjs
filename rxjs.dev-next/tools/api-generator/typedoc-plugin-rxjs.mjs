@@ -5,6 +5,51 @@ import { existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+function formatInlineTypeReferences(content) {
+  return content
+    .split(/(`[^`]*`)/g)
+    .map((segment) => segment.startsWith('`')
+      ? segment
+      : segment.replace(
+          /\b([A-Za-z_$][\w.$]*)<([A-Za-z_$][\w.$]*(?:\s*,\s*[A-Za-z_$][\w.$]*)*)>/g,
+          '$1&lt;$2&gt;'
+        ))
+    .join('');
+}
+
+function formatStandaloneTypeReferences(content) {
+  return content.replace(
+    /^([A-Za-z_$][\w.$]*)<([^>\n]+)>$/gm,
+    (_match, typeName, typeParameters) => `\`${typeName}<${typeParameters}>\``
+  );
+}
+
+function formatInformalBlocks(content) {
+  return content.replace(/<span class="informal">([\s\S]*?)<\/span>/g, (_match, informal) => {
+    const lines = informal.replace(/`/g, '').trim().split('\n');
+    return lines.map((line) => `> ${line}`).join('\n');
+  });
+}
+
+function escapeGenericMarkup(content) {
+  let inFence = false;
+  return content.split('\n').map((line) => {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      return line;
+    }
+    if (inFence) {
+      return line;
+    }
+    return line
+      .split(/(`[^`]*`)/g)
+      .map((segment) => segment.startsWith('`')
+        ? segment
+        : segment.replace(/\b([A-Za-z_$][\w.$]*)<(?!\/)([^>\n]+)>/g, '$1&lt;$2&gt;'))
+      .join('');
+  }).join('\n');
+}
+
 /**
  * Formats the description section by extracting the first paragraph and rendering it under a Description header.
  * Also removes the first paragraph from the TypeDoc model to prevent duplication.
@@ -21,7 +66,7 @@ function formatDescriptionSection(model, context) {
   }
 
   // Get the full comment summary as markdown
-  const fullSummary = context.helpers.getCommentParts(model.comment.summary);
+  const fullSummary = formatInlineTypeReferences(context.helpers.getCommentParts(model.comment.summary));
 
   if (!fullSummary || !fullSummary.trim()) {
     return '';
@@ -324,6 +369,13 @@ function processMarbleDiagrams(content, marbleDiagramsPath) {
     return null;
   };
 
+  content = content.replace(
+    /!\[([^\]]*)\]\((?:\.\/)?([^/)]+\.(?:png|svg))\)/g,
+    (match, altText, fileName) => existsSync(resolve(marbleDiagramsPath, fileName))
+      ? `![${altText}](/images/marble-diagrams/${fileName})`
+      : ''
+  );
+
   // Process markdown images: ![alt text](/images/marble-diagrams/operatorName.svg)
   return content.replace(
     /!\[([^\]]*)\]\s*\(([^)]*\/images\/marble-diagrams\/([^/)\-]+)(\.svg))\)/g,
@@ -363,13 +415,6 @@ function removeTypeParameters(reflection, app) {
 function filterCallSignatureOverloads(declReflection, app) {
   if (!Array.isArray(declReflection.signatures)) {
     return;
-  }
-
-  // Remove typeParameters from each signature
-  for (const signature of declReflection.signatures) {
-    if (signature && 'typeParameters' in signature && Array.isArray(signature.typeParameters)) {
-      signature.typeParameters = [];
-    }
   }
 
   const originalLength = declReflection.signatures.length;
@@ -450,21 +495,17 @@ function filterTypeParameterChildren(declReflection, app) {
  * @param {import('typedoc').Application} app - The TypeDoc application instance
  */
 function filterReflections(reflection, app) {
-  // Remove typeParameters from declarations and signatures
-  removeTypeParameters(reflection, app);
-
   // Check if this is a DeclarationReflection with signatures
   if (reflection && 'signatures' in reflection) {
     const declReflection = /** @type {import('typedoc').DeclarationReflection} */ (reflection);
     filterCallSignatureOverloads(declReflection, app);
   }
 
-  // Filter out type parameters from children
   if (reflection && 'children' in reflection) {
     const declReflection = /** @type {import('typedoc').DeclarationReflection} */ (reflection);
-    filterTypeParameterChildren(declReflection, app);
 
-    // Recursively process remaining children
+    // Recursively process children. Generic type parameters remain visible so
+    // generated signatures never collapse to invalid empty `<>` lists.
     if (Array.isArray(declReflection.children)) {
       for (const child of declReflection.children) {
         filterReflections(child, app);
@@ -517,6 +558,12 @@ export function load(app) {
   app.renderer.on(MarkdownPageEvent.END, (page) => {
     // Remove HTML <hr> tags and markdown horizontal rules
     page.contents = removeHorizontalRules(page.contents);
+
+    // Vue treats standalone generic type prose as an HTML element. Keep it as
+    // inline code without disturbing intentional HTML used by the theme.
+    page.contents = formatStandaloneTypeReferences(page.contents);
+    page.contents = formatInformalBlocks(page.contents);
+    page.contents = escapeGenericMarkup(page.contents);
 
     // Remove empty Type Parameters sections
     page.contents = removeEmptyTypeParameters(page.contents);

@@ -36,7 +36,8 @@ export default {
   excludeProtected: true,
   excludeInternal: true,
   excludeExternals: false, // Need to include externals to resolve @rxjs/observable
-  gitRevision: 'master',
+  gitRevision: '7.x',
+  hostedBaseUrl: 'https://github.com/ReactiveX/rxjs/blob/7.x/',
   // Don't include source file paths in output
   // TypeDoc-specific options
   categorizeByGroup: false,
@@ -80,4 +81,3 @@ export default {
   out: './docs/api',
   docsRoot: './docs'
 };
-

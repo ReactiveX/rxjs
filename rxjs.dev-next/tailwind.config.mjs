@@ -7,7 +7,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export default {
   // content: [
   // './**/*.{js,ts,vue,md,mdx}',
-  // join(__dirname, '../../node_modules/@nuxt/ui/**/*.{js,ts,vue,md,mdx}'),
   // ],
   theme: {
     extend: {},

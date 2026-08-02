@@ -1,13 +1,20 @@
 import { defineConfig, type UserConfig } from 'vitepress'
 import type { DefaultTheme, Outline } from 'vitepress/theme'
 import typedocSidebar from '../docs/api/typedoc-sidebar.json';
-import ui from '@nuxt/ui/vite'
 
 
 export default defineConfig({
   title: 'RxJS',
   description: 'Reactive Extensions Library for JavaScript',
   srcDir: 'docs',
+
+  // Migrated guides still use the Angular site's API URL scheme. Keep every
+  // non-API link checked while versioned API redirects are designed.
+  ignoreDeadLinks: [
+    /^\/api(?:\/|$)/,
+    /^\.\.?\/api\//,
+    /^\.\/\.\.\/\.\.\/\.\.\/(?:CODE_OF_CONDUCT|CONTRIBUTING)$/,
+  ],
 
   // Markdown configuration
   markdown: {
@@ -27,20 +34,6 @@ export default defineConfig({
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/images/favicons/apple-touch-icon.png' }],
     ['link', { rel: 'manifest', href: '/site.webmanifest' }]
   ],
-
-  vite: {
-    plugins: [
-      ui({
-        router: false,
-        ui: {
-          colors: {
-            primary: 'brand',
-            neutral: 'zinc'
-          }
-        }
-      }),
-    ],
-  },
 
   // Theme configuration
   themeConfig: {
