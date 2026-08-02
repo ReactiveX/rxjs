@@ -40,3 +40,15 @@ integration/import/**/operators.json
 # The check-side-effects package generates and deletes this file.
 # If the process is killed, it will be left behind.
 check-side-effects.tmp-input.js
+
+# VitePress
+.cache
+.vitepress/dist
+**/.vitepress/cache/
+rxjs.dev-next/docs/api/
+rxjs.dev-next/tsconfig.typedoc.tsbuildinfo
+rxjs.dev-next/.vitepress/cache/
+rxjs.dev-next/.vitepress/dist/
+
+**/components.d.ts
+**/auto-imports.d.ts
