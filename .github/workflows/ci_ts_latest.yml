@@ -29,4 +29,4 @@ jobs:
       - name: build
         run: |
           pnpm --filter rxjs add --save-dev --lockfile=false typescript@latest @types/node@latest
-          pnpm nx compile rxjs
+          pnpm --filter rxjs run build

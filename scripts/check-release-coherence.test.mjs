@@ -34,7 +34,12 @@ function validInput() {
       'test:workflows',
       '--filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run build',
     ].join('\n'),
-    tsWorkflowSource: "  push:\n    branches: ['master']",
+    tsWorkflowSource: [
+      "  push:\n    branches: ['master']",
+      'typescript@latest',
+      '@types/node@latest',
+      'pnpm --filter rxjs run build',
+    ].join('\n'),
     wptWorkflowSource: "  push:\n    branches: ['master']\n  schedule:",
     readinessWorkflowSource: [
       "  push:\n    branches: ['master']\n  workflow_dispatch:",
@@ -140,4 +145,10 @@ test('rejects removal of the clean-workspace release-package build', () => {
     ''
   );
   assert.match(auditReleaseCoherence(input).join('\n'), /clean-workspace release-package build/);
+});
+
+test('rejects removal of the TypeScript-latest build command', () => {
+  const input = validInput();
+  input.tsWorkflowSource = input.tsWorkflowSource.replace('pnpm --filter rxjs run build', 'pnpm nx compile rxjs');
+  assert.match(auditReleaseCoherence(input).join('\n'), /TypeScript-latest CI must retain pnpm --filter rxjs run build/);
 });

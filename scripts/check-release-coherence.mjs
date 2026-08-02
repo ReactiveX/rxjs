@@ -126,6 +126,11 @@ function auditReleaseMatrix(input, errors) {
 
   requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
   requireMasterPush(input.tsWorkflowSource, 'TypeScript-latest CI', errors);
+  for (const command of ['typescript@latest', '@types/node@latest', 'pnpm --filter rxjs run build']) {
+    if (!input.tsWorkflowSource.includes(command)) {
+      errors.push(`TypeScript-latest CI must retain ${command}.`);
+    }
+  }
   requireUnfilteredMasterPush(input.wptWorkflowSource, 'Observable WPT', 'schedule', errors);
   requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
 }
