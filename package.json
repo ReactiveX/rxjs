@@ -7,7 +7,9 @@
   "packageManager": "pnpm@10.34.5",
   "scripts": {
     "analyze:bundles": "node scripts/analyze-bundles.mjs",
-    "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
+    "docs:build": "pnpm --filter rxjs.dev-next build",
+    "docs:dev": "pnpm --filter rxjs.dev-next dev",
+    "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev,rxjs.dev-next",
     "release": "node scripts/release.js",
     "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
