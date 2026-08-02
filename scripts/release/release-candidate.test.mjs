@@ -30,7 +30,16 @@ test('verifies every byte and the fixed approval order', async () => {
       path.join(root, 'release-manifest.json'),
       JSON.stringify({ schemaVersion: 1, sourceCommit: 'a'.repeat(40), version: '9.0.0-beta.2', channel: 'next', packages })
     );
-    await verifyCandidate(root);
+    const ambientGitHubSha = process.env.GITHUB_SHA;
+    process.env.GITHUB_SHA = 'b'.repeat(40);
+    try {
+      await verifyCandidate(root);
+    } finally {
+      if (ambientGitHubSha === undefined) delete process.env.GITHUB_SHA;
+      else process.env.GITHUB_SHA = ambientGitHubSha;
+    }
+    await verifyCandidate(root, { expectedSourceCommit: 'a'.repeat(40) });
+    await assert.rejects(() => verifyCandidate(root, { expectedSourceCommit: 'b'.repeat(40) }), /Candidate source commit changed/);
     await writeFile(path.join(root, packages[0].filename), 'changed');
     await assert.rejects(() => verifyCandidate(root), /size changed|SHA-256 changed/);
   } finally {

@@ -19,6 +19,7 @@ concurrency:
 
 env:
   CANDIDATE_ARTIFACT: rxjs-release-candidate-${{ github.run_id }}
+  RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}
 
 jobs:
   build:

@@ -3547,6 +3547,9 @@ conformance implementation depends on a runnable harness.
 - Added release policy/candidate/staging tests, the read-only doctor, CodeQL,
   full action pin enforcement, action Dependabot, and release CODEOWNERS. No
   npm, tag, release, or external-account mutation was performed locally.
+- Corrected the first PR CI findings by making source-commit binding explicit
+  only at the privileged release boundary and replacing incomplete HTML-comment
+  sanitization with non-rendering placeholder detection covered by edge tests.
 - P6.9 is blocked only on its first GitHub-side security runs. P6.10 is the
   sole `NEXT` item until administrator setup and the disposable-package
   rehearsal prove the external npm/GitHub controls.
