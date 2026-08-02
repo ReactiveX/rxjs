@@ -77,8 +77,9 @@ approval. P6.5 closed the terminal audit. P6.6 then centralized eligible RxJS
 source subscriptions through the D-049 helper and recorded the resulting
 bundle-size reduction. P6.7 then removed the remaining derived-construction
 wrappers in favor of direct D-037 `[create]` calls and recorded a further
-bundle-size reduction. P6.8 is now the sole active step: make every accepted
-RxJS 9 test and release check durable in pull-request and `master` CI.
+bundle-size reduction. P6.8 completed durable pull-request and `master` CI
+ownership for every accepted RxJS 9 test and release check. The execution queue
+is complete with no `NEXT` item.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1562,7 +1563,7 @@ names.
 | `DONE` | P6.5 | Complete the terminal plan, verification, and documentation-site exclusion audit      |
 | `DONE` | P6.6 | Centralize eligible source subscriptions and record bundle-size evidence              |
 | `DONE` | P6.7 | Use direct `[create]` construction and record bundle-size evidence                    |
-| `NEXT` | P6.8 | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
+| `DONE` | P6.8 | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
 
 #### P6.1 completion bar
 
@@ -1858,6 +1859,33 @@ names.
 - Release coherence rejects removal of required commands, lanes, or `master`
   triggers, and package-local release documentation describes the durable CI
   policy without changing runtime APIs or `apps/rxjs.dev`.
+
+#### P6.8 completion evidence
+
+- Opened draft PR [#7611](https://github.com/ReactiveX/rxjs/pull/7611) from
+  `benlesh:codex/ci-master-coverage` into `ReactiveX/rxjs:master`. At code SHA
+  `829170c439`, main CI passed the exact Node 24 migration-evidence job plus the
+  blocking Node 22.13 and maintained Node 24 package gates; advisory Node 26
+  also passed.
+- The CI verifier executed all 2,338 registrations in each mode and retained
+  exactly 2,299/39 cold and 2,316/22 polyfill outcomes. Its negative tests
+  reject incomplete reports, unknown or duplicate IDs, new failures, and
+  unexpected passes. Clean runners build the polyfill package boundary before
+  collecting the corpus.
+- TypeScript-latest and pinned Chrome 150 WPT passed. The scheduled
+  latest-Chrome lane remained advisory and was skipped on the pull request, as
+  designed.
+- Release readiness passed Chrome, Firefox, WebKit, Webpack, performance,
+  packed adoption, Deno 2.8.0, Bun 1.3.14, desktop Safari, and Mobile Safari in
+  an explicitly booted iOS simulator.
+- Configuration failures found during PR validation covered clean-workspace
+  build order, hosted WPT prerequisites, shallow migration-source checkout,
+  current TypeScript compilation, adoption prerequisites, and Safari simulator
+  selection. Each was corrected and guarded. No product-test failure was
+  found.
+- Marked P6.8 `DONE`; the completed execution queue has no `NEXT` marker. No
+  runtime API, export, package format, type contract, publication, or
+  `apps/rxjs.dev` change was made.
 
 ## Dependencies
 
@@ -3394,3 +3422,24 @@ conformance implementation depends on a runnable harness.
 - Recorded a byte-identical root control and reductions in every encoding for
   `map`, the representative operator set, and the complete runtime catalog.
   Marked P6.7 `DONE` with no remaining `NEXT` item.
+
+### 2026-08-01 — P6.8 complete CI ownership
+
+- Added D-055 and made exact cold/polyfill pass-set comparison, migration
+  manifest and document freshness, Symbol-installation inventory,
+  bundle-analysis, SafariDriver, and active-workflow checks blocking in main
+  CI without changing ordinary `test:unit` semantics.
+- Retained blocking Node 22.13 and maintained Node 24 package gates, made Node
+  26 advisory, ran TypeScript-latest for pull requests and `master`, and made
+  pinned WPT and release readiness unconditional on `master` with complete
+  pull-request path coverage.
+- Extended release coherence to guard commands, runtime lanes, clean build
+  prerequisites, Safari simulator selection, advisory status, and unfiltered
+  `master` triggers.
+- Validated draft PR #7611: all blocking main CI, TypeScript-latest, pinned WPT,
+  browser, bundle, performance, adoption, Deno, Bun, desktop Safari, and Mobile
+  Safari jobs passed. Node 26 passed as advisory and scheduled latest-Chrome
+  remained advisory.
+- Classified and corrected CI configuration failures separately from product
+  behavior; no product-test failure was found. Marked P6.8 `DONE` and returned
+  the completed queue to no `NEXT` item.
