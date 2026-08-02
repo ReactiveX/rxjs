@@ -17,7 +17,7 @@ export function parseVersion(version) {
 export function classifyConventionalCommit(subject, body = '') {
   const match = conventionalTitle.exec(subject);
   if (!match?.groups) return { level: 'invalid', subject, reason: 'title is not a supported Conventional Commit' };
-  const breakingDescription = body.match(/(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?[^\S\r\n]*([^\r\n]*)/i)?.[1];
+  const breakingDescription = body.match(/(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?[^\S\r\n]*([^\r\n]*(?:\r?\n[ \t]+[^\r\n]*)*)/i)?.[1];
   const breakingFooter = breakingDescription !== undefined && hasTextOutsideHtmlComments(breakingDescription);
   const breaking = match.groups.breaking === '!' || Boolean(breakingFooter);
   const level = breaking

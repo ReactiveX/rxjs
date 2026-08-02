@@ -4,6 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertNpmWebUrl, releaseOperatorLogin, releasePackages, releaseToolchain, stagedPackagesVariable } from './release-config.mjs';
+import { requireWorkflowJobRunners } from './release-doctor-policy.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const strict = process.argv.includes('--strict');
@@ -52,15 +53,19 @@ for (const requirement of [
   'authorize-release-commit.mjs',
   'stage-release.mjs publish',
   'release-candidate.mjs verify',
-  'runs-on: ubuntu-24.04',
 ]) {
   if (!stageWorkflow.includes(requirement)) errors.push(`release-stage.yml is missing ${requirement}.`);
 }
+errors.push(
+  ...requireWorkflowJobRunners(stageWorkflow, 'release-stage.yml', {
+    authorize: 'ubuntu-24.04',
+    stage: 'ubuntu-24.04',
+  })
+);
 for (const requirement of [
   'matrix: { build: [a, b] }',
   'compare-release-candidates.mjs',
   'Exact tarballs / package, type, import, and migration gates',
-  'ubuntu-24.04',
   "node-version: '24.12.0'",
   'generate-release-evidence.mjs',
   'osv-scanner-action@',
@@ -68,6 +73,19 @@ for (const requirement of [
 ]) {
   if (!qualificationWorkflow.includes(requirement)) errors.push(`release-qualify.yml is missing ${requirement}.`);
 }
+errors.push(
+  ...requireWorkflowJobRunners(qualificationWorkflow, 'release-qualify.yml', {
+    build: 'ubuntu-24.04',
+    compare: 'ubuntu-24.04',
+    package: 'ubuntu-24.04',
+    node: 'ubuntu-24.04',
+    browser: 'ubuntu-24.04',
+    'alternate-runtime': 'ubuntu-24.04',
+    safari: 'macos-15',
+    wpt: 'ubuntu-24.04',
+    evidence: 'ubuntu-24.04',
+  })
+);
 if (!stageWorkflow.includes('install-pinned-npm.mjs')) {
   errors.push('release-stage.yml must install the checked npm CLI through install-pinned-npm.mjs.');
 }
@@ -89,9 +107,7 @@ if (!stageScript.includes("['stage', 'download', stageId]")) {
 }
 
 const releasePullRequestWorkflow = await readFile(path.join(root, '.github/workflows/release-pr.yml'), 'utf8').catch(() => '');
-if (!releasePullRequestWorkflow.includes('runs-on: ubuntu-24.04')) {
-  errors.push('release-pr.yml must use the checked Ubuntu 24.04 runner.');
-}
+errors.push(...requireWorkflowJobRunners(releasePullRequestWorkflow, 'release-pr.yml', { 'release-pr': 'ubuntu-24.04' }));
 if (!releasePullRequestWorkflow.includes("node-version: '24.12.0'")) {
   errors.push('release-pr.yml must use exact Node 24.12.0.');
 }
