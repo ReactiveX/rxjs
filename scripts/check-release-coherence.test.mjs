@@ -32,6 +32,7 @@ function validInput() {
       'test:bundle-analysis',
       'test:release:safari',
       'test:workflows',
+      'fetch-depth: 0',
       'pnpm --filter @rxjs/observable-polyfill run build\n          pnpm --filter rxjs run build',
     ].join('\n'),
     tsWorkflowSource: [
@@ -55,7 +56,8 @@ function validInput() {
       'pnpm --filter @rxjs/migrate run build',
     ].join('\n'),
     publishWorkflowSource: ['node-version: 24', 'Verify release identity and distribution', 'Prepare packages for publishing'].join('\n'),
-    safariDriverSource: "'safari:useSimulator': true",
+    safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",
+    wptRunnerSource: "'--binary-arg=--no-sandbox'",
   };
 }
 
@@ -101,6 +103,7 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   input.readinessWorkflowSource = '';
   input.publishWorkflowSource = '';
   input.safariDriverSource = '';
+  input.wptRunnerSource = '';
 
   const errors = auditReleaseCoherence(input);
 
@@ -173,4 +176,14 @@ test('rejects removal of WPT and release-readiness runner prerequisites', () => 
   assert.match(errors, /must install libcairo2-dev/);
   assert.match(errors, /explicit iOS simulator startup/);
   assert.match(errors, /packed test-helper adoption prerequisite/);
+});
+
+test('rejects shallow migration-evidence CI and sandboxed hosted WPT Chrome', () => {
+  const input = validInput();
+  input.ciWorkflowSource = input.ciWorkflowSource.replace('fetch-depth: 0', 'fetch-depth: 1');
+  input.wptRunnerSource = '';
+
+  const errors = auditReleaseCoherence(input).join('\n');
+  assert.match(errors, /RxJS 7 source history/);
+  assert.match(errors, /Linux Chrome sandbox argument/);
 });

@@ -7,7 +7,8 @@ export default class ModeAuditReporter {
   onCollected(files = []) {
     const snapshot = createCollectedSnapshot(files);
     for (const file of snapshot.files) {
-      this.#filesByPath.set(file.filepath, file);
+      const existing = this.#filesByPath.get(file.filepath);
+      this.#filesByPath.set(file.filepath, preferMoreCompleteTaskTree(existing, file));
     }
     for (const [id, task] of snapshot.tasksById) {
       this.#tasksById.set(id, task);
@@ -42,6 +43,10 @@ export function applyTaskUpdates(tasksById, packs) {
     const task = tasksById.get(id);
     if (task) task.result = result;
   }
+}
+
+export function preferMoreCompleteTaskTree(existing, candidate) {
+  return existing && collectTests(existing).length > collectTests(candidate).length ? existing : candidate;
 }
 
 export function createAuditReport(files, errors = []) {

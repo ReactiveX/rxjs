@@ -340,6 +340,7 @@ export async function runWpt({
     '0',
     '--binary-arg=--js-flags=--expose-gc',
     '--binary-arg=--disable-dev-shm-usage',
+    ...(process.platform === 'linux' ? ['--binary-arg=--no-sandbox'] : []),
     ...browserIsolationArgs.map((argument) => `--binary-arg=${argument}`),
     '--no-fail-on-unexpected',
     '--log-wptreport',

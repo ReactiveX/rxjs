@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
+import { appendFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 export function selectIosSimulator(devicesByRuntime) {
@@ -25,7 +26,7 @@ export function selectIosSimulator(devicesByRuntime) {
   return candidates[0];
 }
 
-export function bootIosSimulator(run = execFileSync) {
+export function bootIosSimulator(run = execFileSync, recordEnvironment = recordGitHubEnvironment) {
   const listing = JSON.parse(run('xcrun', ['simctl', 'list', '--json', 'devices', 'available'], { encoding: 'utf8' }));
   const simulator = selectIosSimulator(listing.devices ?? {});
 
@@ -34,8 +35,14 @@ export function bootIosSimulator(run = execFileSync) {
   }
   run('open', ['-a', 'Simulator', '--args', '-CurrentDeviceUDID', simulator.udid], { stdio: 'inherit' });
   run('xcrun', ['simctl', 'bootstatus', simulator.udid, '-b'], { stdio: 'inherit' });
+  run('xcrun', ['simctl', 'launch', simulator.udid, 'com.apple.mobilesafari'], { stdio: 'inherit' });
+  recordEnvironment('RXJS_SAFARI_DEVICE_UDID', simulator.udid);
   process.stdout.write(`Booted ${simulator.name} (${simulator.runtime}, ${simulator.udid}).\n`);
   return simulator;
+}
+
+function recordGitHubEnvironment(name, value) {
+  if (process.env.GITHUB_ENV) appendFileSync(process.env.GITHUB_ENV, `${name}=${value}\n`);
 }
 
 function compareRuntimeVersions(left, right) {

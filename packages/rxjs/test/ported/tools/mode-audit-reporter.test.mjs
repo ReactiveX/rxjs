@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { applyTaskUpdates, createAuditReport, createCollectedSnapshot } from './mode-audit-reporter.mjs';
+import { applyTaskUpdates, createAuditReport, createCollectedSnapshot, preferMoreCompleteTaskTree } from './mode-audit-reporter.mjs';
 
 test('serializes nested Vitest task results in declaration order', () => {
   const report = createAuditReport([
@@ -59,4 +59,9 @@ test('preserves collected tasks when Vitest only supplies later result packs', (
   ]);
   applyTaskUpdates(snapshot.tasksById, [['test', { state: 'pass' }, {}]]);
   assert.deepEqual(createAuditReport(snapshot.files).testResults[0].assertionResults, [{ status: 'passed' }]);
+});
+
+test('keeps a complete collection snapshot when Vitest later reports an empty file shell', () => {
+  const complete = { type: 'suite', tasks: [{ type: 'test', result: { state: 'pass' } }] };
+  assert.equal(preferMoreCompleteTaskTree(complete, { type: 'suite', tasks: [] }), complete);
 });
