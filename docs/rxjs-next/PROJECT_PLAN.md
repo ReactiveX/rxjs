@@ -3619,5 +3619,8 @@ conformance implementation depends on a runnable harness.
   release-PR, qualification, authorization, and staging job runner validation,
   including a false-positive test where an unrelated job still uses the
   expected runner.
+- Scoped privileged runner discovery to the workflow's `jobs` mapping and
+  rejected duplicate privileged job definitions so top-level lookalikes cannot
+  satisfy the audit.
 - Kept P6.10 as the sole `NEXT` item; these local review fixes do not satisfy
   the remaining administrator setup or disposable-package rehearsal gates.
