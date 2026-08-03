@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { classifyAuditPaths, isCompleteAudit, validateOsvExceptions } from './check-osv-exceptions.mjs';
+import { canonicalGithubAdvisoryId, classifyAuditPaths, isCompleteAudit, validateOsvExceptions } from './check-osv-exceptions.mjs';
 
 const valid = `[[IgnoredVulns]]
 id = "GHSA-aaaa-bbbb-cccc"
@@ -25,6 +25,14 @@ test('separates the excluded docs app from every release-reachable path', () => 
   const result = classifyAuditPaths(audit);
   assert.equal(result.legacyDocs.length, 1);
   assert.equal(result.unreviewed.length, 1);
+});
+
+test('uses one stable GitHub advisory ID for aliased OSV records', () => {
+  assert.equal(
+    canonicalGithubAdvisoryId({ id: 'GHSA-r5fr-rjxr-66jc', aliases: ['CVE-2026-4800', 'GHSA-35jh-r3h4-6jhm'] }),
+    'GHSA-35jh-r3h4-6jhm'
+  );
+  assert.equal(canonicalGithubAdvisoryId({ id: 'GHSA-jhpw-976m-542j', aliases: ['CVE-2026-0001'] }), 'GHSA-jhpw-976m-542j');
 });
 
 test('fails closed when npm audit did not return a complete dependency result', () => {

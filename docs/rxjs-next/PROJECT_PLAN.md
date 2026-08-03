@@ -3578,8 +3578,8 @@ conformance implementation depends on a runnable harness.
   consumer verification documentation. Moved Scorecard into that contextual
   assurance document and accepted Code-Review `0`.
 - Upgraded or overrode every dependency path reachable from release, build, or
-  test tooling. The remaining 253 npm advisory paths are isolated to excluded
-  `apps/rxjs.dev`, represented by 176 reviewed OSV IDs expiring 2026-10-31, and
+  test tooling. The remaining 260 npm advisory paths are isolated to excluded
+  `apps/rxjs.dev`, represented by 177 reviewed OSV IDs expiring 2026-10-31, and
   guarded by a path-aware checker. Added bounded PR and scheduled extended
   fast-check properties for release controls and Observable lifecycle.
 - Local rehearsal produced two byte-identical four-package candidates, hydrated
@@ -3591,3 +3591,15 @@ conformance implementation depends on a runnable harness.
 - P6.10 remains the sole `NEXT` item because WebAuthn, GitHub/npm rules and
   trusted-publisher configuration, live workflow evidence, and the sole-account
   disposable-package rehearsal are external and have not yet been verified.
+
+### 2026-08-03 — P6.10 dependency-advisory response
+
+- Responded to GHSA-rgw5-rvv9-x895 by overriding every affected
+  `brace-expansion` major in the workspace to its patched release: 1.1.18,
+  2.1.4, and 5.0.9. The frozen lockfile contains no affected version.
+- Re-ran OSV Scanner 2.3.8 and the npm path classifier. Four newly reported
+  advisory IDs were confined to excluded `apps/rxjs.dev`; three obsolete IDs
+  were removed. The baseline generator now canonicalizes linked GHSA aliases
+  so regeneration cannot restore duplicate, unused exceptions. The configured
+  root scan has no unreviewed findings or unused exceptions, while P6.10
+  remains the sole `NEXT` item.
