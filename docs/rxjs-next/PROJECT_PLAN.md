@@ -3613,6 +3613,8 @@ conformance implementation depends on a runnable harness.
 - Classified indented multi-line `BREAKING CHANGE` and `BREAKING CHANGES`
   footers as breaking while retaining the non-rendering pull-request-template
   placeholder behavior.
+- Ensured that an unchanged template placeholder cannot mask a later populated
+  breaking footer in the same squash-commit body.
 - Replaced the release doctor's workflow-wide runner substrings with exact
   release-PR, qualification, authorization, and staging job runner validation,
   including a false-positive test where an unrelated job still uses the

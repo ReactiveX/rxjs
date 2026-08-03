@@ -96,4 +96,11 @@ test('classifies an indented multi-line breaking-change footer as breaking', () 
     classifyConventionalCommit('fix(core): correct teardown', '**BREAKING CHANGES:**\n\tchanges cancellation ownership').level,
     'breaking'
   );
+  assert.equal(
+    classifyConventionalCommit(
+      'fix(core): correct teardown',
+      '**BREAKING CHANGE:** <!-- add description or remove entirely -->\n\nBREAKING CHANGE:\n  changes cancellation ownership'
+    ).level,
+    'breaking'
+  );
 });
