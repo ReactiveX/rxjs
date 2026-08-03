@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile, writeFile } from 'node:fs/promises';
-import { classifyAuditPaths } from './check-osv-exceptions.mjs';
+import { canonicalGithubAdvisoryId, classifyAuditPaths } from './check-osv-exceptions.mjs';
 
 const [osvPath, auditPath, outputPath = 'osv-scanner.toml'] = process.argv.slice(2);
 if (!osvPath || !auditPath) throw new Error('Usage: generate-osv-baseline.mjs <osv-json> <pnpm-audit-json> [output]');
@@ -18,14 +18,14 @@ for (const result of osv.results ?? []) {
       // The OSV input may predate a remediation. Only the post-remediation,
       // path-classified docs inventory is eligible for the generated baseline.
       if (!docsPackages.has(key)) continue;
-      ids.add(vulnerability.id);
+      ids.add(canonicalGithubAdvisoryId(vulnerability));
     }
   }
 }
 const reason =
-  'workspace=apps/rxjs.dev; owner=benlesh; tracking=docs/security/LEGACY_DOCS_VULNERABILITIES.md; reviewed=2026-08-02; unreachable=apps/rxjs.dev is excluded from RxJS 9 build, test, qualification, and publication';
+  'workspace=apps/rxjs.dev; owner=benlesh; tracking=docs/security/LEGACY_DOCS_VULNERABILITIES.md; reviewed=2026-08-03; unreachable=apps/rxjs.dev is excluded from RxJS 9 build, test, qualification, and publication';
 const source =
-  '# Generated from the reviewed 2026-08-02 OSV/npm path audit. Do not hand-edit.\n' +
+  '# Generated from the reviewed 2026-08-03 OSV/npm path audit. Do not hand-edit.\n' +
   '# Regenerate only after scripts/security/check-osv-exceptions.mjs proves every path remains isolated.\n\n' +
   [...ids]
     .sort()

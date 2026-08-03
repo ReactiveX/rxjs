@@ -55,6 +55,11 @@ export function classifyAuditPaths(audit) {
   return { unreviewed, legacyDocs };
 }
 
+export function canonicalGithubAdvisoryId(vulnerability) {
+  const githubIds = [vulnerability.id, ...(vulnerability.aliases ?? [])].filter((id) => /^GHSA-[a-z0-9-]+$/i.test(id));
+  return githubIds.sort()[0] ?? vulnerability.id;
+}
+
 export function isCompleteAudit(audit) {
   return Boolean(
     audit &&
