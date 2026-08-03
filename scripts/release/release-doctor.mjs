@@ -89,6 +89,12 @@ if (!stageScript.includes("['stage', 'download', stageId]")) {
 }
 
 const releasePullRequestWorkflow = await readFile(path.join(root, '.github/workflows/release-pr.yml'), 'utf8').catch(() => '');
+if (!releasePullRequestWorkflow.includes('runs-on: ubuntu-24.04')) {
+  errors.push('release-pr.yml must use the checked Ubuntu 24.04 runner.');
+}
+if (!releasePullRequestWorkflow.includes("node-version: '24.12.0'")) {
+  errors.push('release-pr.yml must use exact Node 24.12.0.');
+}
 for (const trustCheck of [
   "github.event.workflow_run.event == 'push'",
   "github.event.workflow_run.head_branch == 'master'",
