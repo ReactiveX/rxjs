@@ -18,7 +18,9 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * ![](range.png)
  *
  * `range` operator emits a range of sequential integers, in order, where you
- * select the `start` of the range and its `length`. By default, uses no
+ * select the `start` of the range and its `length`. If only one argument is
+ * provided, it is treated as the `count` and the range starts at `0`. For
+ * example, `range(5)` is equivalent to `range(0, 5)`. By default, uses no
  * {@link SchedulerLike} and just delivers the notifications synchronously, but may use
  * an optional {@link SchedulerLike} to regulate those deliveries.
  *
@@ -46,11 +48,13 @@ export function range(start: number, count: number | undefined, scheduler: Sched
  * @see {@link timer}
  * @see {@link interval}
  *
- * @param start The value of the first integer in the sequence.
- * @param count The number of sequential integers to generate.
+ * @param start The value of the first integer in the sequence, or the number of
+ * sequential integers to generate if no `count` is provided.
+ * @param count The number of sequential integers to generate. Passing `Infinity`
+ * emits an unbounded sequence.
  * @param scheduler A {@link SchedulerLike} to use for scheduling the emissions
  * of the notifications.
- * @return An Observable of numbers that emits a finite range of sequential integers.
+ * @return An Observable of numbers that emits a range of sequential integers.
  */
 export function range(start: number, count?: number, scheduler?: SchedulerLike): Observable<number> {
   if (count == null) {
