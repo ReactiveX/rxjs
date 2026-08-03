@@ -4,12 +4,13 @@ import { spawnSync } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { npmRegistryVersionUrl } from './release-config.mjs';
 import { verifyCandidate } from './release-candidate.mjs';
 
 const candidateRoot = path.resolve(process.argv[2]);
 const manifest = await verifyCandidate(candidateRoot);
 for (const entry of manifest.packages) {
-  const url = `https://registry.npmjs.org/${encodeURIComponent(entry.name)}/${encodeURIComponent(entry.version)}`;
+  const url = npmRegistryVersionUrl(entry.name, entry.version);
   const response = await fetch(url, { headers: { accept: 'application/json' } });
   if (response.status === 404) {
     process.stdout.write(`${entry.name}@${entry.version} is not public yet.\n`);

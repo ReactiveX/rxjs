@@ -86,7 +86,8 @@ export interface TestIdleOptions {
 export type TestNotification<T> = MarbleNotification<T>;
 
 /** An Observable notification and its absolute virtual timestamp. */
-export type TestMessage<T = unknown> = MarbleMessage<T>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Keep this public interface augmentable for downstream test adapters.
+export interface TestMessage<T = unknown> extends MarbleMessage<T> {}
 
 /**
  * A producer or observer lifetime. Legacy field names are retained, but each

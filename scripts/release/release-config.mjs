@@ -39,6 +39,11 @@ export function channelForVersion(version) {
   return version.includes('-') ? 'next' : 'latest';
 }
 
+export function npmRegistryVersionUrl(packageName, version) {
+  const encodedName = encodeURIComponent(packageName).replace(/^%40/, '@');
+  return `https://registry.npmjs.org/${encodedName}/${encodeURIComponent(version)}`;
+}
+
 export function assertNpmWebUrl(value, label = stagedPackagesVariable) {
   let url;
   try {
