@@ -17,9 +17,7 @@ export function parseVersion(version) {
 export function classifyConventionalCommit(subject, body = '') {
   const match = conventionalTitle.exec(subject);
   if (!match?.groups) return { level: 'invalid', subject, reason: 'title is not a supported Conventional Commit' };
-  const breakingDescription = body.match(/(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?[^\S\r\n]*([^\r\n]*(?:\r?\n[ \t]+[^\r\n]*)*)/i)?.[1];
-  const breakingFooter = breakingDescription !== undefined && hasTextOutsideHtmlComments(breakingDescription);
-  const breaking = match.groups.breaking === '!' || Boolean(breakingFooter);
+  const breaking = match.groups.breaking === '!' || hasPopulatedBreakingFooter(body);
   const level = breaking
     ? 'breaking'
     : match.groups.type === 'feat'
@@ -28,6 +26,14 @@ export function classifyConventionalCommit(subject, body = '') {
     ? 'fix'
     : 'none';
   return { description: match.groups.description, level, subject, type: match.groups.type };
+}
+
+function hasPopulatedBreakingFooter(body) {
+  const footerPattern = /(?:^|\n)(?:\*\*)?BREAKING CHANGES?:(?:\*\*)?[^\S\r\n]*([^\r\n]*(?:\r?\n[ \t]+[^\r\n]*)*)/gi;
+  for (const match of body.matchAll(footerPattern)) {
+    if (hasTextOutsideHtmlComments(match[1])) return true;
+  }
+  return false;
 }
 
 function hasTextOutsideHtmlComments(value) {
