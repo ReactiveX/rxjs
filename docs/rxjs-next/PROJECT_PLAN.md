@@ -1557,18 +1557,18 @@ names.
 
 ### Phase 6 — Release readiness
 
-| Status    | ID    | Outcome                                                                               |
-| --------- | ----- | ------------------------------------------------------------------------------------- |
-| `DONE`    | P6.1  | Finalize version naming, supported environments, support policy, and release channels |
-| `DONE`    | P6.2  | Complete package, type, bundle, performance, and conformance gates                    |
-| `DONE`    | P6.3  | Publish package-local API, migration, and contributor documentation                   |
-| `DONE`    | P6.4  | Run pre-release adoption, resolve blockers, and approve the major release             |
-| `DONE`    | P6.5  | Complete the terminal plan, verification, and documentation-site exclusion audit      |
-| `DONE`    | P6.6  | Centralize eligible source subscriptions and record bundle-size evidence              |
-| `DONE`    | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
-| `DONE`    | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
-| `BLOCKED` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
-| `NEXT`    | P6.10 | Implement the secure release-PR and npm staged-approval process                       |
+| Status | ID    | Outcome                                                                               |
+| ------ | ----- | ------------------------------------------------------------------------------------- |
+| `DONE` | P6.1  | Finalize version naming, supported environments, support policy, and release channels |
+| `DONE` | P6.2  | Complete package, type, bundle, performance, and conformance gates                    |
+| `DONE` | P6.3  | Publish package-local API, migration, and contributor documentation                   |
+| `DONE` | P6.4  | Run pre-release adoption, resolve blockers, and approve the major release             |
+| `DONE` | P6.5  | Complete the terminal plan, verification, and documentation-site exclusion audit      |
+| `DONE` | P6.6  | Centralize eligible source subscriptions and record bundle-size evidence              |
+| `DONE` | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
+| `DONE` | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
+| `DONE` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
+| `NEXT` | P6.10 | Implement the secure release-PR and npm staged-approval process                       |
 
 #### P6.9 completion bar
 
@@ -1583,8 +1583,8 @@ names.
   review blocks new moderate-or-higher runtime and development vulnerabilities.
 - Active-workflow formatting, release coherence, documentation links, badge
   targets, and the no-runtime/no-`rxjs.dev` scope boundary are verified. The
-  first default-branch Scorecard publication and required-check repository rule
-  remain explicit post-merge administrative follow-ups.
+  first default-branch Scorecard publication, code-scanning result, and
+  dependency-review required-check rule are verified live.
 
 #### P6.9 implementation evidence
 
@@ -1601,10 +1601,11 @@ names.
   Local YAML parsing, active-workflow formatting, documentation links, all 24
   release-check tests, release coherence, and diff checks pass; `apps/rxjs.dev`
   and runtime/package source are unchanged.
-- P6.9 is `BLOCKED` until dependency review runs on the implementation PR.
-  After merge, the first `master` Scorecard publication, code-scanning result,
-  live badge population, and required dependency-review repository rule remain
-  administrative verification steps.
+- Dependency review passed on merged PR #7613. After merge, `master` run
+  30919216705 published the first successful Scorecard result, CodeQL passed,
+  and the repository's protected-branch status list included `Dependency
+review`. This completes P6.9; the later P6.10 ruleset migration must preserve
+  that required check rather than moving it into the master-only wait list.
 
 #### P6.10 completion bar
 
@@ -1627,9 +1628,11 @@ names.
   exceptions remain, while the isolated release train has no exceptions.
   Bounded and scheduled properties cover release parsing/authorization and the
   Observable lifecycle state machine.
-- GitHub/npm WebAuthn, protected-branch/tag/environment/trusted-publisher setup,
-  and the sole-account disposable-package rehearsal remain explicit external
-  pre-publication gates. P6.10 remains active until they are verified.
+- GitHub/npm WebAuthn and protected-branch/tag/environment/trusted-publisher
+  setup remain explicit external pre-publication gates. Exact npm pack,
+  publish, and staged-publish dry runs run before registry access; private
+  staging of the first real beta is the live OIDC proof. P6.10 remains active
+  through WebAuthn approval and public verification.
 
 #### P6.10 implementation evidence
 
@@ -1650,8 +1653,8 @@ names.
   every release-PR, qualification, authorization, and staging job individually,
   with regression tests for both security-sensitive cases.
 - Local verification is recorded in the P6.10 session entry. Live App,
-  ruleset, trusted-publisher, disposable-package, TFA, rejection, staged digest,
-  tag, and immutable-release evidence remain required before `DONE`.
+  ruleset, trusted-publisher, WebAuthn, staged-digest, tag, provenance, and
+  immutable-release evidence remain required before `DONE`.
 
 #### P6.1 completion bar
 
@@ -3636,3 +3639,24 @@ conformance implementation depends on a runnable harness.
 - Passed all 53 release/security tests, 177 OSV exception validations, release
   coherence and doctor checks, workflow formatting, and diff hygiene. P6.10
   remains the sole `NEXT` item pending its external setup and rehearsal gates.
+
+### 2026-08-04 — P6.10 first-beta staging policy and dry-run evidence
+
+- Replaced the public disposable-package rehearsal with exact-tarball
+  `npm pack --dry-run`, `npm publish --dry-run`, and
+  `npm stage publish --dry-run` checks. All twelve dry runs passed over a local
+  four-package `9.0.0-beta.0` candidate with the pinned npm 11.18.0 CLI and no
+  registry credentials. The local manifest SHA-512 was
+  `d8977e21abb704df0c72ed2ba5663e282f81b6e4be24d3ff6a87f9922eadfc22c09de1b04adf998e4c8817f37ce15e669cb714b82c2f983400d9417430526585`;
+  it is diagnostic evidence, not the future canonical Ubuntu qualification
+  digest.
+- Split the exact release policy into blocking `master` checks,
+  pull-request-only branch-protection checks, and advisory checks. Added
+  regression coverage that rejects PR-only or advisory checks in
+  `RELEASE_REQUIRED_CHECKS`, malformed or duplicate configuration, weak branch
+  protection, and drift from the exact check set.
+- Verified PR #7613's successful Dependency review and the successful
+  post-merge Scorecard run 30919216705, completing P6.9. P6.10 remains the sole
+  `NEXT` item: GitHub App/ruleset/environment administration, npm trusted
+  publishing, canonical Ubuntu qualification, private staging, Ben's WebAuthn
+  approvals, and public registry verification still have to succeed.

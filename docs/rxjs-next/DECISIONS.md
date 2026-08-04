@@ -1485,9 +1485,16 @@ Status meanings:
   bundle. Finalization requires registry integrity, `npm audit signatures`, and
   GitHub attestation verification. OpenSSF remains secondary; Code-Review `0`
   is accepted rather than manufacturing approvals.
+- **Dry-run and first live proof:** The checked npm CLI runs pack, publish, and
+  staged-publish dry runs over the exact candidate tarballs. Those commands do
+  not contact the registry or prove trusted-publisher authorization. Rather
+  than create a public rehearsal package, private staging of the first real
+  beta supplies the live OIDC proof; publication still requires Ben's separate
+  WebAuthn approval after the staged bytes are downloaded and matched.
 - **Consequence:** Private Nx release imports, the token-based publisher,
   reviewer requests, release-team ownership, and succession-role assumptions
   are removed. Repository-owned policy, reproducibility, evidence, staging,
   doctor, and finalizer scripts implement the accepted flow. GitHub/npm
-  WebAuthn, ruleset/environment/trusted-publisher setup, and the sole-account
-  disposable-package rehearsal remain external gates before publication.
+  WebAuthn and ruleset/environment/trusted-publisher setup remain external
+  gates before publication. P6.10 closes only after the first real beta is
+  privately staged, approved, and verified publicly.

@@ -139,6 +139,7 @@ function auditReleaseMatrix(input, errors) {
     'run test:imports',
     'release-candidate.mjs verify',
     'release-candidate.mjs hydrate',
+    'verify-npm-dry-runs.mjs',
     'authorize-stage.mjs',
     'stage-release.mjs publish',
     'id-token: write',

@@ -11,6 +11,26 @@ export const releaseOperatorLogin = 'benlesh';
 export const firstReleaseVersion = '9.0.0-beta.0';
 export const stagedPackagesVariable = 'NPM_STAGED_PACKAGES_URL';
 export const npmWebOrigin = 'https://www.npmjs.com';
+export const releaseRequiredMasterChecks = Object.freeze([
+  'RxJS 9 migration evidence and repository checks (Node 24)',
+  'Node 22.13.0 package gates',
+  'Node 24 package gates',
+  'ts@latest (24)',
+  'No unreviewed release-reachable vulnerabilities',
+  'CodeQL JavaScript and TypeScript',
+  'Pinned Chrome 150 Observable WPT (Node 24)',
+  'Chrome, Firefox, WebKit, Webpack, and performance',
+  'Deno 2.8.0',
+  'Bun 1.3.14',
+  'Desktop Safari',
+  'Mobile Safari (iOS simulator)',
+]);
+export const releaseRequiredPullRequestChecks = Object.freeze(['Conventional Commit title', 'Dependency review']);
+export const releaseAdvisoryChecks = Object.freeze([
+  'Node 26 package gates (advisory)',
+  'Latest stable Chrome Observable WPT (Node 24, advisory)',
+  'Scorecard analysis',
+]);
 export const releaseToolchain = Object.freeze({
   runner: 'ubuntu-24.04',
   node: '24.12.0',

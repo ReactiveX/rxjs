@@ -106,6 +106,10 @@ jobs:
       - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with: { name: '${{ env.CORE_ARTIFACT }}', path: .release/candidate }
       - run: node scripts/release/release-candidate.mjs verify .release/candidate && node scripts/release/release-candidate.mjs hydrate .release/candidate
+      - name: Dry-run npm pack, publish, and staged publish over the exact tarballs
+        run: |
+          npm_bin=$(node scripts/release/install-pinned-npm.mjs "$RUNNER_TEMP/npm-cli-dry-run")
+          NPM_DRY_RUN_BIN="$npm_bin" node scripts/release/verify-npm-dry-runs.mjs .release/candidate
       - name: Run package source and lifecycle properties
         run: |
           pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test
