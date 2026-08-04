@@ -4,10 +4,10 @@ This document describes the executable environment and package gates for the
 RxJS 9 prerelease line. It is package documentation; it does not depend on the
 repository documentation application.
 
-The repository's [secure release runbook](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md)
-defines version selection, exact-tarball qualification, npm staged approval,
-WebAuthn order and failure recovery. These gates qualify a candidate;
-they never authorize direct publication.
+The repository's [release runbook](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md)
+defines the clean-checkout requirement, interactive npm publication order,
+integrity verification, and failure recovery. CI qualifies the source; only a
+maintainer running the local release command can authorize publication.
 
 ## Runtime matrix
 

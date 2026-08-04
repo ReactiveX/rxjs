@@ -79,10 +79,10 @@ bundle-size reduction. P6.7 then removed the remaining derived-construction
 wrappers in favor of direct D-037 `[create]` calls and recorded a further
 bundle-size reduction. P6.8 completed durable pull-request and `master` CI
 ownership for every accepted RxJS 9 test and release check. P6.9 implemented
-truthful status signals and security automation; its first live GitHub results
-remain external validation. The user has now prioritized P6.10: the secure
-single-maintainer release-PR, reproducible qualification, and manually authorized npm staged-approval
-maintenance process.
+truthful status signals and security automation and validated their first live
+GitHub results. The user has now prioritized P6.10: one understandable,
+interactive single-maintainer beta publication command with npm two-factor
+authentication and no CI publishing credential.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1568,7 +1568,7 @@ names.
 | `DONE` | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
 | `DONE` | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
 | `DONE` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
-| `NEXT` | P6.10 | Implement the secure release-PR and npm staged-approval process                       |
+| `NEXT` | P6.10 | Publish and verify the first beta with the interactive release command                |
 
 #### P6.9 completion bar
 
@@ -1613,48 +1613,39 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
   author, reviewer, merger, release operator, and security responder. No team,
   approving review, CODEOWNER, environment reviewer, or succession role is
   required or implied.
-- A narrowly scoped release App automatically refreshes one allowlisted release
-  PR after an ordinary successful `master` merge. Self-merging that PR starts
-  read-only qualification, not npm staging.
-- Two fresh exact-toolchain builds must be byte-identical. Every blocking gate,
-  the exception-free release OSV scan, SBOM generation, and attestations use the
-  canonical tarballs. Qualification publishes the run ID, version, and manifest
-  SHA-512 and then stops.
-- Only `benlesh` can manually authorize stage-only npm OIDC by typing all three
-  values. Tests reject wrong, failed, stale, expired, changed, unauthorized,
-  non-current, or replayed candidates. npm 11.18.0 is registry-hash verified;
-  no direct publish command or reusable publishing token remains.
+- `pnpm release:beta <9.0.0-beta.N>` is the sole publication entry. It refuses
+  live operation outside a clean, remote-synchronized `master`, in CI, without
+  an interactive terminal, or with `NPM_TOKEN`/`NODE_AUTH_TOKEN` present.
+- The command requires synchronized package metadata, runs release and package
+  gates, packs all four packages, prints SHA-512 integrities, runs npm publish
+  dry runs, and requires the exact version as confirmation before publication.
+- npm interactive OTP/WebAuthn authorizes each public package. The three scoped
+  packages publish before `rxjs`; every registry integrity and `next` tag must
+  match, and `rxjs@latest` must remain on RxJS 7.
+- A partial retry skips an immutable package version only when the registry
+  integrity equals the newly packed tarball. Any byte change requires a fresh
+  beta version.
 - Root vulnerability paths are classified; only time-bounded `apps/rxjs.dev`
-  exceptions remain, while the isolated release train has no exceptions.
-  Bounded and scheduled properties cover release parsing/authorization and the
-  Observable lifecycle state machine.
-- GitHub/npm WebAuthn and protected-branch/tag/environment/trusted-publisher
-  setup remain explicit external pre-publication gates. Exact npm pack,
-  publish, and staged-publish dry runs run before registry access; private
-  staging of the first real beta is the live OIDC proof. P6.10 remains active
-  through WebAuthn approval and public verification.
+  exceptions remain. Package publishing access disallows automation tokens
+  after the three new package records are initialized.
+- P6.10 remains active through the interactive publication, registry integrity
+  verification, npm channel verification, and immutable GitHub Release.
 
 #### P6.10 implementation evidence
 
-- Added repository-owned release policy, automatic release-PR generation, synchronized
-  version/provenance updates, changelog generation, release-bot allowlisting,
-  exact candidate manifests, hash verification, exact-artifact hydration,
-  staged comments, public-integrity finalization, and a read-only doctor.
-- Replaced private Nx release imports and token publishing with GitHub-App
-  release PRs, two-build exact-tarball qualification, artifact attestations,
-  typed manual staging authorization, stage-only OIDC, WebAuthn approval order,
-  draft evidence releases, and no-npm-authority finalization. Added CodeQL,
-  action-pin enforcement, Dependabot, and OSV/property gates.
-- Added the sole-maintainer public runbook and security-assurance document. npm routes
-  are never guessed: setup records a manually verified URL, rendering validates
-  its origin, and comments retain stage-ID CLI fallbacks.
-- Copilot review follow-up recognizes indented multi-line `BREAKING CHANGE`
-  footers and makes the release doctor verify the exact GitHub-hosted runner on
-  every release-PR, qualification, authorization, and staging job individually,
-  with regression tests for both security-sensitive cases.
-- Local verification is recorded in the P6.10 session entry. Live App,
-  ruleset, trusted-publisher, WebAuthn, staged-digest, tag, provenance, and
-  immutable-release evidence remain required before `DONE`.
+- D-057 records the abandoned staged design and its unsupported new-package
+  bootstrap assumption; D-058 accepts the simpler local boundary. The release
+  App was deleted before any npm stage or publication.
+- Removed the release App, automated release PR, two-build candidate,
+  qualification, OIDC staging, typed authorization, doctor, staged-comment,
+  and automated-finalizer workflows and scripts.
+- Added the tested interactive beta command, exact publish order, clean-master
+  and no-token guards, dry runs, resumable integrity checks, channel checks, and
+  an operator-focused runbook. Existing CI, CodeQL, dependency review, OSV,
+  package gates, and release-readiness coverage remain.
+- Local verification is recorded in the P6.10 session entry. Live npm
+  OTP/WebAuthn publication, package-access hardening, registry verification,
+  and the immutable GitHub Release remain required before `DONE`.
 
 #### P6.1 completion bar
 
@@ -3661,3 +3652,31 @@ conformance implementation depends on a runnable harness.
   `NEXT` item: GitHub App/ruleset/environment administration, npm trusted
   publishing, canonical Ubuntu qualification, private staging, Ben's WebAuthn
   approvals, and public registry verification still have to succeed.
+
+### 2026-08-04 — P6.10 interactive release simplification
+
+- Rejected the staged design after confirming npm's initial-publication
+  prerequisite: `rxjs` has a public registry record, while
+  `@rxjs/observable-polyfill`, `@rxjs/test`, and `@rxjs/migrate` return 404 and
+  therefore cannot use npm staged publishing or trusted-publisher configuration
+  for their first version. The earlier dry runs did not contact the registry
+  and did not reveal that blocker.
+- Superseded D-057 with D-058. Deleted the GitHub App before any stage or
+  publication, then removed its repository private-key secret and App-ID
+  variable plus the obsolete `NPM_TOKEN`. The unrelated Firebase and Nx Cloud
+  secrets remain unchanged; no ReactiveX organization setting was changed.
+- Removed five privileged release workflows and the App, release-PR,
+  two-builder, candidate, OIDC, staging, typed-authorization, doctor, and
+  finalizer scripts. Retained ordinary CI, release readiness, CodeQL,
+  dependency review, OSV, Conventional Commit validation, and package gates.
+- Added `pnpm release:beta <9.0.0-beta.N>` with clean synchronized-`master`,
+  interactive-terminal, and no-environment-token guards; synchronized package
+  checks; local package gates; exact tarball SHA-512 display; npm publish dry
+  runs; exact-version confirmation; supporting-package-first/`rxjs`-last
+  publication; resumable integrity matching; and `next`/`latest` verification.
+- Passed 37 release, documentation, coherence, Conventional Commit, and OSV
+  tests; all four package build/type/import gates; workflow formatting; and
+  four exact-tarball npm publication dry runs. Nothing was published. P6.10
+  remains the sole `NEXT` item until the command publishes and verifies
+  `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
+  GitHub Release is recorded.
