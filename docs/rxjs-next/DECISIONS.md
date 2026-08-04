@@ -1486,8 +1486,10 @@ Status meanings:
   GitHub attestation verification. OpenSSF remains secondary; Code-Review `0`
   is accepted rather than manufacturing approvals.
 - **Dry-run and first live proof:** The checked npm CLI runs pack, publish, and
-  staged-publish dry runs over the exact candidate tarballs. Those commands do
-  not contact the registry or prove trusted-publisher authorization. Rather
+  staged-publish dry runs over the exact candidate tarballs. It also previews
+  stage-only GitHub trust configurations with the exact repository, workflow,
+  and environment inputs. Those commands do not contact the registry or prove
+  trusted-publisher authorization. Rather
   than create a public rehearsal package, private staging of the first real
   beta supplies the live OIDC proof; publication still requires Ben's separate
   WebAuthn approval after the staged bytes are downloaded and matched.

@@ -3644,8 +3644,9 @@ conformance implementation depends on a runnable harness.
 
 - Replaced the public disposable-package rehearsal with exact-tarball
   `npm pack --dry-run`, `npm publish --dry-run`, and
-  `npm stage publish --dry-run` checks. All twelve dry runs passed over a local
-  four-package `9.0.0-beta.0` candidate with the pinned npm 11.18.0 CLI and no
+  `npm stage publish --dry-run` checks plus stage-only GitHub trusted-publisher
+  previews. All sixteen dry runs passed over a local four-package
+  `9.0.0-beta.0` candidate with the pinned npm 11.18.0 CLI and no
   registry credentials. The local manifest SHA-512 was
   `d8977e21abb704df0c72ed2ba5663e282f81b6e4be24d3ff6a87f9922eadfc22c09de1b04adf998e4c8817f37ce15e669cb714b82c2f983400d9417430526585`;
   it is diagnostic evidence, not the future canonical Ubuntu qualification
