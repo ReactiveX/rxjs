@@ -4,6 +4,9 @@ import { releaseAdvisoryChecks, releaseRequiredMasterChecks, releaseRequiredPull
 import {
   auditBranchRuleset,
   auditConfiguredMasterChecks,
+  auditReleaseAppRepositories,
+  auditStageEnvironment,
+  auditTagRuleset,
   parseConfiguredChecks,
   requireWorkflowJobRunners,
 } from './release-doctor-policy.mjs';
@@ -14,6 +17,7 @@ function validBranchRuleset() {
   return {
     target: 'branch',
     enforcement: 'active',
+    bypass_actors: [],
     conditions: { ref_name: { include: ['refs/heads/master'], exclude: [] } },
     rules: [
       { type: 'deletion' },
@@ -31,6 +35,16 @@ function validBranchRuleset() {
         },
       },
     ],
+  };
+}
+
+function validTagRuleset() {
+  return {
+    target: 'tag',
+    enforcement: 'active',
+    bypass_actors: [{ actor_id: 1234, actor_type: 'Integration', bypass_mode: 'always' }],
+    conditions: { ref_name: { include: ['refs/tags/9.*'], exclude: [] } },
+    rules: [{ type: 'creation' }, { type: 'update' }, { type: 'deletion' }, { type: 'non_fast_forward' }],
   };
 }
 
@@ -85,6 +99,68 @@ test('rejects a non-strict or weak branch ruleset', () => {
   const errors = auditBranchRuleset(ruleset).join('\n');
   assert.match(errors, /zero approving reviews/);
   assert.match(errors, /up to date before merging/);
+});
+
+test('rejects branch ruleset scope or bypass drift', () => {
+  const ruleset = validBranchRuleset();
+  ruleset.conditions.ref_name.include.push('refs/heads/release/*');
+  ruleset.bypass_actors.push({ actor_id: 1, actor_type: 'RepositoryRole', bypass_mode: 'always' });
+  const errors = auditBranchRuleset(ruleset).join('\n');
+  assert.match(errors, /target only refs\/heads\/master/);
+  assert.match(errors, /must not allow bypass actors/);
+});
+
+test('accepts only release App bypass for the exact RxJS 9 tag contract', () => {
+  assert.deepEqual(auditTagRuleset(validTagRuleset(), '1234'), []);
+});
+
+test('rejects uninspectable or broadened tag protection', () => {
+  const ruleset = validTagRuleset();
+  ruleset.conditions.ref_name.include.push('refs/tags/10.*');
+  ruleset.rules.push({ type: 'required_signatures' });
+  delete ruleset.bypass_actors;
+  const errors = auditTagRuleset(ruleset, '1234').join('\n');
+  assert.match(errors, /target only refs\/tags\/9/);
+  assert.match(errors, /contain exactly/);
+  assert.match(errors, /cannot inspect bypass actors/);
+});
+
+test('rejects a tag bypass actor other than the release App', () => {
+  const ruleset = validTagRuleset();
+  ruleset.bypass_actors[0].actor_id = 5678;
+  assert.match(auditTagRuleset(ruleset, '1234').join('\n'), /allow only the release App integration/);
+});
+
+test('accepts the protected npm-stage environment without reviewers', () => {
+  assert.deepEqual(
+    auditStageEnvironment({
+      name: 'npm-stage',
+      protection_rules: [{ type: 'branch_policy' }],
+      deployment_branch_policy: { protected_branches: true, custom_branch_policies: false },
+    }),
+    []
+  );
+});
+
+test('rejects npm-stage reviewers and unprotected branches', () => {
+  const errors = auditStageEnvironment({
+    name: 'npm-stage',
+    protection_rules: [{ type: 'required_reviewers' }],
+    deployment_branch_policy: { protected_branches: false, custom_branch_policies: true },
+  }).join('\n');
+  assert.match(errors, /must not require reviewers/);
+  assert.match(errors, /only protected branches/);
+});
+
+test('accepts a release App installation limited to ReactiveX/rxjs', () => {
+  assert.deepEqual(auditReleaseAppRepositories({ total_count: 1, repositories: [{ full_name: 'ReactiveX/rxjs' }] }), []);
+  assert.match(
+    auditReleaseAppRepositories({
+      total_count: 2,
+      repositories: [{ full_name: 'ReactiveX/rxjs' }, { full_name: 'ReactiveX/other' }],
+    }).join('\n'),
+    /only to ReactiveX\/rxjs/
+  );
 });
 
 test('accepts the required runner on each privileged release job', () => {

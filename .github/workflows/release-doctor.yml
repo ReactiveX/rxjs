@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -17,11 +18,22 @@ jobs:
         with: { persist-credentials: false, fetch-depth: 0 }
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with: { node-version: '24.12.0', package-manager-cache: false }
+      - name: Mint an all-installation release App audit token
+        id: release-app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-checks: read
+          permission-contents: write
+          permission-pull-requests: write
       - env:
           GH_TOKEN: ${{ github.token }}
           NPM_STAGED_PACKAGES_URL: ${{ vars.NPM_STAGED_PACKAGES_URL }}
           RELEASE_APP_ID: ${{ vars.RELEASE_APP_ID }}
           RELEASE_APP_PRIVATE_KEY_PRESENT: ${{ secrets.RELEASE_APP_PRIVATE_KEY != '' }}
+          RELEASE_APP_TOKEN: ${{ steps.release-app-token.outputs.token }}
           RELEASE_REQUIRED_CHECKS: ${{ vars.RELEASE_REQUIRED_CHECKS }}
           RELEASE_BRANCH_RULESET_ID: ${{ vars.RELEASE_BRANCH_RULESET_ID }}
           RELEASE_TAG_RULESET_ID: ${{ vars.RELEASE_TAG_RULESET_ID }}
