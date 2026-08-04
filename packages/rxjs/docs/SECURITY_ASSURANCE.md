@@ -24,6 +24,8 @@ free of vulnerabilities.
   packages and confirms that `rxjs@latest` remains on RxJS 7.
 - An interrupted command can skip an already-published package only when the
   registry integrity equals the freshly packed tarball.
+- Post-publication verification revalidates online and tolerates npm metadata
+  propagation without weakening the exact SHA-512 comparison.
 
 ## One-maintainer reality
 

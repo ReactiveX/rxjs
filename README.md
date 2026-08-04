@@ -15,10 +15,9 @@ RxJS is a library for composing asynchronous and event-based programs with
 Observable values. This repository contains the platform-based next generation
 of RxJS, planned for release as **RxJS 9**.
 
-> RxJS 9 is prerelease work in development. The planned first beta is
-> `9.0.0-beta.0`, but it has not been published to npm yet. The `next` tag still
-> points to the earlier RxJS 8 prerelease, while RxJS 7 remains the production
-> `latest` line and continues to be maintained.
+> RxJS 9 is prerelease software. `9.0.0-beta.0` is available under npm's `next`
+> tag, while RxJS 7 remains the production `latest` line and continues to be
+> maintained.
 
 ## Why RxJS 9? What happened to RxJS 8?
 
@@ -44,8 +43,8 @@ product.
 
 ## Preview the RxJS 9 API
 
-The following example shows the planned beta API. Until `9.0.0-beta.0` is
-published, do not use npm's `next` tag to install RxJS 9.
+Install the beta with `npm install rxjs@next`. The following example shows the
+RxJS 9 beta API.
 
 ```ts
 import { ColdObservable } from 'rxjs';
@@ -84,7 +83,7 @@ Repository-wide design records live in
 
 ## Supported environments
 
-The planned beta supports Node 22.13+ and Node 24 as blocking lanes, with Node
+The RxJS 9 beta supports Node 22.13+ and Node 24 as blocking lanes, with Node
 26 in an advisory lane. Current Chrome, Firefox, desktop Safari, Mobile Safari,
 Deno, Bun, and Webpack 5 are blocking. Every supported consumer receives the
 same ESM implementation, so Deno and Bun support adds no runtime-specific

@@ -7,6 +7,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createInterface } from 'node:readline/promises';
+import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
@@ -90,7 +91,11 @@ export async function main(argv, options = {}) {
 
       process.stdout.write(`\nPublishing ${candidate.name}@${version}. npm may request OTP/WebAuthn.\n`);
       interactiveCommand('npm', publishArguments(candidate.tarballPath, { cache: npmCache }), { cwd: root });
-      const publishedIntegrity = registryIntegrity(candidate.name, version, { cache: npmCache, command, root });
+      const publishedIntegrity = await waitForRegistryIntegrity(candidate.name, version, {
+        cache: npmCache,
+        command,
+        root,
+      });
       assert.equal(
         publishedIntegrity,
         candidate.integrity,
@@ -191,8 +196,32 @@ export function publishArguments(tarballPath, { cache, dryRun = false } = {}) {
 function registryIntegrity(name, version, options) {
   const result = npmViewResult(`${name}@${version}`, 'dist.integrity', options);
   if (result.status === 0) return parseNpmView(result.stdout);
-  if (/E404|404 Not Found|is not in this registry/i.test(`${result.stdout}\n${result.stderr}`)) return null;
+  if (
+    /E404|ETARGET|404 Not Found|is not in this registry|No matching version found|version not found/i.test(
+      `${result.stdout}\n${result.stderr}`
+    )
+  ) {
+    return null;
+  }
   throw new Error(`Could not determine whether ${name}@${version} already exists.\n${result.stdout}${result.stderr}`);
+}
+
+export async function waitForRegistryIntegrity(
+  name,
+  version,
+  options,
+  { attempts = 121, retryDelayMs = 5_000, wait = delay, output = process.stdout } = {}
+) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const integrity = registryIntegrity(name, version, options);
+    if (integrity !== null) return integrity;
+    if (attempt === attempts) return null;
+    if (attempt === 1 || attempt % 6 === 0) {
+      output.write(`Waiting for npm metadata to expose ${name}@${version} (${attempt}/${attempts})...\n`);
+    }
+    await wait(retryDelayMs);
+  }
+  return null;
 }
 
 function npmView(specifier, field, options) {
@@ -202,7 +231,7 @@ function npmView(specifier, field, options) {
 }
 
 function npmViewResult(specifier, field, { cache, command, root }) {
-  return command('npm', ['view', specifier, field, '--json', ...(cache ? ['--cache', cache] : [])], {
+  return command('npm', ['view', specifier, field, '--json', '--prefer-online', ...(cache ? ['--cache', cache] : [])], {
     cwd: root,
     encoding: 'utf8',
     allowFailure: true,

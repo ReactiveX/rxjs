@@ -75,7 +75,10 @@ the packages, prints their SHA-512 integrities, and runs npm publication dry
 runs. Ben must then type the exact version before npm's own OTP/WebAuthn flow
 publishes each tarball under `next`. The supporting packages publish first and
 `rxjs` publishes last. Registry integrity and dist-tags are verified before the
-command reports success.
+command reports success. npm may accept a brand-new immutable version before
+its ordinary package metadata has replaced a cached pre-publication 404, so
+post-publication verification revalidates online and retries that read path for
+up to ten minutes.
 
 CI has no npm publishing credential and no workflow can publish. The design
 deliberately trusts Ben's local machine and npm account at the publication
