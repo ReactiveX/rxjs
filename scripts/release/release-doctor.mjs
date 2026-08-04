@@ -4,7 +4,14 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertNpmWebUrl, releaseOperatorLogin, releasePackages, releaseToolchain, stagedPackagesVariable } from './release-config.mjs';
-import { auditBranchRuleset, auditConfiguredMasterChecks, requireWorkflowJobRunners } from './release-doctor-policy.mjs';
+import {
+  auditBranchRuleset,
+  auditConfiguredMasterChecks,
+  auditReleaseAppRepositories,
+  auditStageEnvironment,
+  auditTagRuleset,
+  requireWorkflowJobRunners,
+} from './release-doctor-policy.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const strict = process.argv.includes('--strict');
@@ -53,12 +60,18 @@ for (const requirement of [
   'authorize-release-commit.mjs',
   'stage-release.mjs publish',
   'release-candidate.mjs verify',
+  'environment: npm-stage',
   'id: release-app-token',
   'permission-contents: write',
   'permission-pull-requests: write',
   'token: ${{ steps.release-app-token.outputs.token }}',
 ]) {
   if (!stageWorkflow.includes(requirement)) errors.push(`release-stage.yml is missing ${requirement}.`);
+}
+for (const match of stageWorkflow.matchAll(/secrets\.([A-Z0-9_]+)/g)) {
+  if (match[1] !== 'RELEASE_APP_PRIVATE_KEY') {
+    errors.push(`release-stage.yml must not consume the ${match[1]} secret; npm-stage has no environment secrets.`);
+  }
 }
 errors.push(
   ...requireWorkflowJobRunners(stageWorkflow, 'release-stage.yml', {
@@ -109,6 +122,21 @@ if (stageWorkflow.includes('registry-url:')) {
 const stageScript = await readFile(path.join(root, 'scripts/release/stage-release.mjs'), 'utf8').catch(() => '');
 if (!stageScript.includes("['stage', 'download', stageId]")) {
   errors.push('stage-release.mjs must download each private npm stage before approval.');
+}
+const npmDryRunScript = await readFile(path.join(root, 'scripts/release/verify-npm-dry-runs.mjs'), 'utf8').catch(() => '');
+for (const trustInput of [
+  "'trust'",
+  "'github'",
+  "'release-stage.yml'",
+  "'ReactiveX/rxjs'",
+  "'npm-stage'",
+  "'--allow-stage-publish'",
+  "'--dry-run'",
+]) {
+  if (!npmDryRunScript.includes(trustInput)) errors.push(`verify-npm-dry-runs.mjs is missing trusted-publisher input ${trustInput}.`);
+}
+if (/['"]--allow-publish['"]/.test(npmDryRunScript)) {
+  errors.push('The trusted-publisher preview must not grant direct npm publish authority.');
 }
 
 const releasePullRequestWorkflow = await readFile(path.join(root, '.github/workflows/release-pr.yml'), 'utf8').catch(() => '');
@@ -190,6 +218,8 @@ if (strict) {
     errors.push('RELEASE_APP_PRIVATE_KEY must be configured without exposing its value to the release doctor.');
   }
   errors.push(...auditConfiguredMasterChecks(process.env.RELEASE_REQUIRED_CHECKS));
+  await validateReleaseAppInstallation();
+  await validateStageEnvironment();
   await validateBranchRuleset();
   await validateTagRuleset();
 }
@@ -219,18 +249,40 @@ async function validateTagRuleset() {
     });
     if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
     const ruleset = await response.json();
-    if (ruleset.target !== 'tag' || ruleset.enforcement !== 'active') {
-      errors.push(`Ruleset ${rulesetId} must be an active tag ruleset.`);
-    }
-    if (!ruleset.conditions?.ref_name?.include?.includes('refs/tags/9.*')) {
-      errors.push(`Ruleset ${rulesetId} must include refs/tags/9.*.`);
-    }
-    const rules = new Set((ruleset.rules ?? []).map(({ type }) => type));
-    for (const requiredRule of ['creation', 'update', 'deletion', 'non_fast_forward']) {
-      if (!rules.has(requiredRule)) errors.push(`Ruleset ${rulesetId} is missing the ${requiredRule} rule.`);
-    }
+    errors.push(...auditTagRuleset(ruleset, process.env.RELEASE_APP_ID).map((error) => `Ruleset ${rulesetId}: ${error}`));
   } catch (error) {
     errors.push(`Could not audit release tag ruleset ${rulesetId}: ${error.message}`);
+  }
+}
+
+async function validateReleaseAppInstallation() {
+  const token = process.env.RELEASE_APP_TOKEN;
+  if (!token) {
+    errors.push('RELEASE_APP_TOKEN is required to audit the release App installation.');
+    return;
+  }
+  try {
+    const response = await githubFetch('https://api.github.com/installation/repositories?per_page=100', token);
+    if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
+    errors.push(...auditReleaseAppRepositories(await response.json()));
+  } catch (error) {
+    errors.push(`Could not audit the release App installation: ${error.message}`);
+  }
+}
+
+async function validateStageEnvironment() {
+  const repository = process.env.GITHUB_REPOSITORY;
+  const token = process.env.GH_TOKEN;
+  if (!repository || !token) {
+    errors.push('GITHUB_REPOSITORY and GH_TOKEN are required to audit npm-stage.');
+    return;
+  }
+  try {
+    const response = await githubFetch(`https://api.github.com/repos/${repository}/environments/${encodeURIComponent('npm-stage')}`, token);
+    if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
+    errors.push(...auditStageEnvironment(await response.json()));
+  } catch (error) {
+    errors.push(`Could not audit the npm-stage environment: ${error.message}`);
   }
 }
 
@@ -252,13 +304,17 @@ async function readRuleset(rulesetId) {
   const repository = process.env.GITHUB_REPOSITORY;
   const token = process.env.GH_TOKEN;
   if (!repository || !token) throw new Error('GITHUB_REPOSITORY and GH_TOKEN are required.');
-  const response = await fetch(`https://api.github.com/repos/${repository}/rulesets/${encodeURIComponent(rulesetId)}`, {
+  const response = await githubFetch(`https://api.github.com/repos/${repository}/rulesets/${encodeURIComponent(rulesetId)}`, token);
+  if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
+  return response.json();
+}
+
+function githubFetch(url, token) {
+  return fetch(url, {
     headers: {
       accept: 'application/vnd.github+json',
       authorization: `Bearer ${token}`,
       'x-github-api-version': '2022-11-28',
     },
   });
-  if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
-  return response.json();
 }

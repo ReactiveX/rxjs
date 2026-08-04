@@ -44,8 +44,11 @@ export function auditBranchRuleset(ruleset) {
   if (ruleset.target !== 'branch' || ruleset.enforcement !== 'active') {
     errors.push('The release branch ruleset must be an active branch ruleset.');
   }
-  if (!ruleset.conditions?.ref_name?.include?.includes('refs/heads/master')) {
-    errors.push('The release branch ruleset must include refs/heads/master.');
+  if (JSON.stringify(ruleset.conditions?.ref_name) !== JSON.stringify({ include: ['refs/heads/master'], exclude: [] })) {
+    errors.push('The release branch ruleset must target only refs/heads/master.');
+  }
+  if ((ruleset.bypass_actors ?? []).length !== 0) {
+    errors.push('The release branch ruleset must not allow bypass actors.');
   }
 
   const rules = new Map((ruleset.rules ?? []).map((rule) => [rule.type, rule]));
@@ -76,6 +79,53 @@ export function auditBranchRuleset(ruleset) {
   if (missing.length > 0) errors.push(`The release branch ruleset is missing required checks: ${missing.join(', ')}.`);
   if (unexpected.length > 0) errors.push(`The release branch ruleset contains unexpected blocking checks: ${unexpected.join(', ')}.`);
   return errors;
+}
+
+export function auditTagRuleset(ruleset, releaseAppId) {
+  const errors = [];
+  if (ruleset.target !== 'tag' || ruleset.enforcement !== 'active') {
+    errors.push('The release tag ruleset must be an active tag ruleset.');
+  }
+  if (JSON.stringify(ruleset.conditions?.ref_name) !== JSON.stringify({ include: ['refs/tags/9.*'], exclude: [] })) {
+    errors.push('The release tag ruleset must target only refs/tags/9.*.');
+  }
+
+  const configuredRules = (ruleset.rules ?? []).map(({ type }) => type).sort();
+  const requiredRules = ['creation', 'deletion', 'non_fast_forward', 'update'];
+  if (JSON.stringify(configuredRules) !== JSON.stringify(requiredRules)) {
+    errors.push(`The release tag ruleset must contain exactly: ${requiredRules.join(', ')}.`);
+  }
+
+  const expectedBypass = [{ actor_id: Number(releaseAppId), actor_type: 'Integration', bypass_mode: 'always' }];
+  if (!Array.isArray(ruleset.bypass_actors)) {
+    errors.push('The release tag ruleset audit token cannot inspect bypass actors.');
+  } else if (JSON.stringify(ruleset.bypass_actors) !== JSON.stringify(expectedBypass)) {
+    errors.push('The release tag ruleset must allow only the release App integration to create protected tags.');
+  }
+  return errors;
+}
+
+export function auditStageEnvironment(environment) {
+  const errors = [];
+  if (environment.name !== 'npm-stage') errors.push('The protected release environment must be named npm-stage.');
+  const protectionTypes = (environment.protection_rules ?? []).map(({ type }) => type);
+  if (protectionTypes.some((type) => type !== 'branch_policy')) {
+    errors.push('The npm-stage environment must not require reviewers, wait timers, or custom protection gates.');
+  }
+  if (
+    JSON.stringify(environment.deployment_branch_policy) !== JSON.stringify({ protected_branches: true, custom_branch_policies: false })
+  ) {
+    errors.push('The npm-stage environment must allow only protected branches.');
+  }
+  return errors;
+}
+
+export function auditReleaseAppRepositories(payload) {
+  const repositories = (payload.repositories ?? []).map(({ full_name }) => full_name);
+  if (payload.total_count !== 1 || repositories.length !== 1 || repositories[0] !== 'ReactiveX/rxjs') {
+    return ['The release App installation must have access only to ReactiveX/rxjs.'];
+  }
+  return [];
 }
 
 export function requireWorkflowJobRunners(source, workflowName, expectedRunners) {
