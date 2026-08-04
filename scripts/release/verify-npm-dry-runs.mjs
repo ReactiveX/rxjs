@@ -24,6 +24,25 @@ export function buildNpmDryRunCommands(manifest, candidateRoot) {
         operation: 'stage publish',
         args: ['stage', 'publish', tarball, '--dry-run', '--json', '--ignore-scripts', '--tag', manifest.channel],
       },
+      {
+        packageName: entry.name,
+        operation: 'trust github',
+        args: [
+          'trust',
+          'github',
+          entry.name,
+          '--file',
+          'release-stage.yml',
+          '--repository',
+          'ReactiveX/rxjs',
+          '--environment',
+          'npm-stage',
+          '--allow-stage-publish',
+          '--dry-run',
+          '--json',
+          '--yes',
+        ],
+      },
     ];
   });
 }

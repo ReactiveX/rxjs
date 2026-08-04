@@ -36,7 +36,7 @@ Self-merging the generated PR starts **Qualify RxJS 9 release**. Two separate fr
 
 The canonical first build then passes every blocking Node, browser, Safari, Deno, Bun, Webpack, performance, package, and pinned Observable WPT gate. A scripts-disabled local installation of the exact tarballs produces a CycloneDX SBOM and release-only lockfile. A SHA-pinned OSV scan uses no monorepo exceptions. GitHub attests the exact tarballs.
 
-The checked npm 11.18.0 CLI also runs `npm pack --dry-run`, `npm publish --dry-run`, and `npm stage publish --dry-run` over every exact tarball. These commands prove packaging and lifecycle behavior without changing the registry. They do not prove npm OIDC or trusted-publisher authorization because dry-run does not submit a stage. The private staging of the first real beta is the live authorization proof; no public rehearsal package is created.
+The checked npm 11.18.0 CLI also runs `npm pack --dry-run`, `npm publish --dry-run`, and `npm stage publish --dry-run` over every exact tarball. It previews each trusted publisher with `npm trust github --allow-stage-publish --dry-run`, bound to `ReactiveX/rxjs`, `release-stage.yml`, and `npm-stage`, without granting direct-publish authority. These commands prove packaging, lifecycle, and trusted-configuration inputs without changing the registry. They do not prove npm OIDC or trusted-publisher authorization because dry-run does not submit a stage. The private staging of the first real beta is the live authorization proof; no public rehearsal package is created.
 
 The retained 30-day artifact contains:
 
