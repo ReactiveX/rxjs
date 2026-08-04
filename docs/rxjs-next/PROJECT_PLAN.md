@@ -3624,3 +3624,15 @@ conformance implementation depends on a runnable harness.
   satisfy the audit.
 - Kept P6.10 as the sole `NEXT` item; these local review fixes do not satisfy
   the remaining administrator setup or disposable-package rehearsal gates.
+
+### 2026-08-04 — P6.10 review-branch conflict resolution
+
+- Rebased the Copilot follow-up onto the merged single-maintainer hardening and
+  dependency-advisory work, dropping the two release commits already present on
+  `master` instead of replaying or reverting them.
+- Adapted runner validation to the split release-PR, qualification,
+  authorization, and staging workflows while preserving exact Ubuntu 24.04,
+  macOS 15, Node 24.12.0, OSV, property-test, and checked-toolchain controls.
+- Passed all 53 release/security tests, 177 OSV exception validations, release
+  coherence and doctor checks, workflow formatting, and diff hygiene. P6.10
+  remains the sole `NEXT` item pending its external setup and rehearsal gates.
