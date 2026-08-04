@@ -20,6 +20,8 @@ jobs:
       - env:
           GH_TOKEN: ${{ github.token }}
           NPM_STAGED_PACKAGES_URL: ${{ vars.NPM_STAGED_PACKAGES_URL }}
+          RELEASE_APP_ID: ${{ vars.RELEASE_APP_ID }}
+          RELEASE_APP_PRIVATE_KEY_PRESENT: ${{ secrets.RELEASE_APP_PRIVATE_KEY != '' }}
           RELEASE_REQUIRED_CHECKS: ${{ vars.RELEASE_REQUIRED_CHECKS }}
           RELEASE_BRANCH_RULESET_ID: ${{ vars.RELEASE_BRANCH_RULESET_ID }}
           RELEASE_TAG_RULESET_ID: ${{ vars.RELEASE_TAG_RULESET_ID }}

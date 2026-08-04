@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
+import { auditConfiguredMasterChecks, parseConfiguredChecks } from './release-doctor-policy.mjs';
+
 const [repository, commit] = process.argv.slice(2);
 const token = process.env.GH_TOKEN;
-const required = (process.env.RELEASE_REQUIRED_CHECKS ?? '')
-  .split(',')
-  .map((value) => value.trim())
-  .filter(Boolean);
-if (!repository || !commit || !token || required.length === 0) {
-  throw new Error('Repository, commit, GH_TOKEN, and comma-separated RELEASE_REQUIRED_CHECKS are required.');
+const requiredCheckErrors = auditConfiguredMasterChecks(process.env.RELEASE_REQUIRED_CHECKS);
+if (!repository || !commit || !token) {
+  throw new Error('Repository, commit, GH_TOKEN, and JSON-array RELEASE_REQUIRED_CHECKS are required.');
 }
+if (requiredCheckErrors.length > 0) throw new Error(`Invalid RELEASE_REQUIRED_CHECKS:\n- ${requiredCheckErrors.join('\n- ')}`);
+const required = parseConfiguredChecks(process.env.RELEASE_REQUIRED_CHECKS);
 
 const deadline = Date.now() + 30 * 60_000;
 while (true) {

@@ -4,7 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertNpmWebUrl, releaseOperatorLogin, releasePackages, releaseToolchain, stagedPackagesVariable } from './release-config.mjs';
-import { requireWorkflowJobRunners } from './release-doctor-policy.mjs';
+import { auditBranchRuleset, auditConfiguredMasterChecks, requireWorkflowJobRunners } from './release-doctor-policy.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const strict = process.argv.includes('--strict');
@@ -66,6 +66,7 @@ for (const requirement of [
   'matrix: { build: [a, b] }',
   'compare-release-candidates.mjs',
   'Exact tarballs / package, type, import, and migration gates',
+  'verify-npm-dry-runs.mjs',
   "node-version: '24.12.0'",
   'generate-release-evidence.mjs',
   'osv-scanner-action@',
@@ -180,17 +181,11 @@ if (strict || process.env[stagedPackagesVariable]) {
 }
 
 if (strict) {
-  const requiredChecks = (process.env.RELEASE_REQUIRED_CHECKS ?? '')
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean);
-  if (requiredChecks.length === 0) errors.push('RELEASE_REQUIRED_CHECKS must list the protected master checks.');
-  if (new Set(requiredChecks).size !== requiredChecks.length) errors.push('RELEASE_REQUIRED_CHECKS contains duplicate check names.');
-  for (const requiredSignal of ['codeql', 'dependency', 'osv', 'migration evidence', 'package gates', 'wpt', 'release readiness']) {
-    if (!requiredChecks.some((check) => check.toLowerCase().includes(requiredSignal))) {
-      errors.push(`RELEASE_REQUIRED_CHECKS does not include the ${requiredSignal} gate.`);
-    }
+  if (!/^\d+$/.test(process.env.RELEASE_APP_ID ?? '')) errors.push('RELEASE_APP_ID must be configured as a numeric GitHub App ID.');
+  if (process.env.RELEASE_APP_PRIVATE_KEY_PRESENT !== 'true') {
+    errors.push('RELEASE_APP_PRIVATE_KEY must be configured without exposing its value to the release doctor.');
   }
+  errors.push(...auditConfiguredMasterChecks(process.env.RELEASE_REQUIRED_CHECKS));
   await validateBranchRuleset();
   await validateTagRuleset();
 }
@@ -243,21 +238,7 @@ async function validateBranchRuleset() {
   }
   try {
     const ruleset = await readRuleset(rulesetId);
-    if (ruleset.target !== 'branch' || ruleset.enforcement !== 'active') {
-      errors.push(`Ruleset ${rulesetId} must be an active branch ruleset.`);
-    }
-    if (!ruleset.conditions?.ref_name?.include?.includes('refs/heads/master')) {
-      errors.push(`Ruleset ${rulesetId} must include refs/heads/master.`);
-    }
-    const rules = new Map((ruleset.rules ?? []).map((rule) => [rule.type, rule]));
-    for (const requiredRule of ['deletion', 'non_fast_forward', 'pull_request', 'required_status_checks', 'required_signatures']) {
-      if (!rules.has(requiredRule)) errors.push(`Ruleset ${rulesetId} is missing the ${requiredRule} rule.`);
-    }
-    const pullRequest = rules.get('pull_request')?.parameters ?? {};
-    if (pullRequest.required_approving_review_count !== 0) errors.push(`Ruleset ${rulesetId} must require zero approving reviews.`);
-    if (JSON.stringify(pullRequest.allowed_merge_methods) !== JSON.stringify(['squash'])) {
-      errors.push(`Ruleset ${rulesetId} must allow only squash merges.`);
-    }
+    errors.push(...auditBranchRuleset(ruleset).map((error) => `Ruleset ${rulesetId}: ${error}`));
   } catch (error) {
     errors.push(`Could not audit release branch ruleset ${rulesetId}: ${error.message}`);
   }

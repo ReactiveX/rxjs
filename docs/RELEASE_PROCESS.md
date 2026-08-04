@@ -36,6 +36,8 @@ Self-merging the generated PR starts **Qualify RxJS 9 release**. Two separate fr
 
 The canonical first build then passes every blocking Node, browser, Safari, Deno, Bun, Webpack, performance, package, and pinned Observable WPT gate. A scripts-disabled local installation of the exact tarballs produces a CycloneDX SBOM and release-only lockfile. A SHA-pinned OSV scan uses no monorepo exceptions. GitHub attests the exact tarballs.
 
+The checked npm 11.18.0 CLI also runs `npm pack --dry-run`, `npm publish --dry-run`, and `npm stage publish --dry-run` over every exact tarball. These commands prove packaging and lifecycle behavior without changing the registry. They do not prove npm OIDC or trusted-publisher authorization because dry-run does not submit a stage. The private staging of the first real beta is the live authorization proof; no public rehearsal package is created.
+
 The retained 30-day artifact contains:
 
 - `release-manifest.json`;
@@ -69,14 +71,14 @@ The finalizer has no npm credentials or publishing authority. It waits for all f
 ## One-time setup before beta
 
 1. Protect `master`: require pull requests with zero approvals, require CI, CodeQL, dependency review, OSV, workflow validation, release coherence, WPT, and release readiness; require verified squash commits; prevent force-push and deletion.
-2. Configure the release App with only checks read plus contents and pull-request write access. Store `RELEASE_APP_ID`, `RELEASE_APP_PRIVATE_KEY`, and the exact `RELEASE_REQUIRED_CHECKS` list.
+2. Configure the release App with only checks read plus contents and pull-request write access. Store `RELEASE_APP_ID`, `RELEASE_APP_PRIVATE_KEY`, and `RELEASE_REQUIRED_CHECKS` as the repository-defined JSON array of exact master check names. Pull-request-only dependency review and Conventional Commit checks belong in branch protection, not this master wait list.
 3. Restrict `release/rxjs-9` updates to the release App's guarded force-with-lease refresh.
 4. Restrict the `npm-stage` environment to protected `master` with no reviewer and no secret.
 5. Configure all four npm trusted publishers for the stage workflow and environment. Require WebAuthn and disallow publish-capable tokens; delete any reusable publication credential.
 6. Verify the authenticated npm Staged Packages URL and store it as `NPM_STAGED_PACKAGES_URL`.
 7. Protect `refs/tags/9.*` from update, deletion, and force-push; allow only the staging workflow to create a tag. Enable GitHub Release immutability.
-8. Run the release doctor and rehearse qualification, typed digest authorization, stage inspection, rejection, restaging, WebAuthn approval, provenance, attestations, and finalization using existing disposable packages controlled only by Ben.
+8. Run the release doctor and the complete local/CI dry-run ladder. Use private staging of `9.0.0-beta.0` as the first live OIDC proof, download and compare every stage, and pause before WebAuthn approval. A partial or mismatched stage is rejected in full and requires a freshly qualified version.
 
-The repository cannot configure GitHub/npm account WebAuthn, rulesets, environments, trusted publishers, or perform the disposable npm rehearsal from source code. P6.10 remains active until that external evidence exists.
+The repository cannot configure GitHub/npm account WebAuthn, rulesets, environments, or trusted publishers from source code. P6.10 remains active until those controls and the first real private stage are verified. Nothing becomes publicly installable until Ben separately approves the matching stages with WebAuthn.
 
 Last reviewed: 2026-08-02.

@@ -76,6 +76,11 @@ inventories, contents, and SHA-512 values are byte-identical. All package,
 runtime, browser, Safari, alternate-runtime, Webpack, performance, WPT, SBOM,
 OSV, and attestation evidence is bound to the canonical tarballs. The workflow
 then stops and exposes its run ID, version, source commit, and manifest SHA-512.
+The checked npm 11.18.0 CLI runs pack, publish, and staged-publish dry runs over
+those exact tarballs. Dry-run does not submit to the registry and therefore
+does not prove OIDC authorization. Private staging of the first real beta is
+the live trusted-publisher proof; RxJS does not create a public rehearsal
+package.
 
 A separate manual dispatch by `benlesh` must reproduce the run ID, version, and
 digest. It revalidates the protected branch/current commit, generated release

@@ -7,6 +7,7 @@ RxJS 9 releases are designed to be hardened, transparent, and independently veri
 - The `rxjs` runtime depends only on the RxJS-owned `@rxjs/observable-polyfill`; that package has no runtime dependencies. The core runtime chain therefore contains no third-party package.
 - A candidate is built twice in separate fresh Ubuntu 24.04 jobs with Node 24.12.0 and pnpm 10.34.5, frozen installs, and no restored caches. Filenames, inventories, contents, and SHA-512 values must match.
 - The exact tarballs that pass package, runtime, browser, Safari, Web Platform Test, bundler, and performance gates are the files sent to npm staging.
+- Before registry access, the checked npm CLI runs pack, publish, and staged-publish dry runs over every exact tarball. Dry-run proves packaging behavior, not OIDC authorization; private staging of the first real beta supplies that live proof without creating a public test package.
 - Every release includes `release-manifest.json`, a CycloneDX SBOM, an OSV report for the isolated release train, a GitHub attestation bundle, and the exact npm tarballs.
 - npm staging uses trusted publishing bound to `ReactiveX/rxjs`, `.github/workflows/release-stage.yml`, the protected `master` branch, and the `npm-stage` environment. CI has no reusable npm publication token and cannot call direct `npm publish`.
 - Staged packages require a separate npm WebAuthn approval. `rxjs` is approved last.
