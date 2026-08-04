@@ -67,9 +67,10 @@ conditions of publication, not waived evidence.
 
 ## Publication boundary
 
-The [secure release workflow](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md) checks version
-identity, package-local documentation, ESM-only exports, runtime lanes,
-adoption evidence, and the protected npm channel before packing once. The exact
-attested tarballs are staged through stage-only OIDC and require a release
-maintainer's npm TFA approval for each package, with `rxjs` last. No
-documentation application is part of this approval or release path.
+The [release process](https://github.com/ReactiveX/rxjs/blob/master/docs/RELEASE_PROCESS.md)
+requires a clean, synchronized `master` checkout and one interactive
+`pnpm release:beta 9.0.0-beta.0` command. It checks version identity,
+package-local documentation, ESM-only exports, package gates, and npm dry runs;
+prints the exact tarball integrities; and then uses npm's OTP/WebAuthn flow for
+each public package. The supporting packages publish first and `rxjs` publishes
+last. No CI credential or documentation application is part of publication.

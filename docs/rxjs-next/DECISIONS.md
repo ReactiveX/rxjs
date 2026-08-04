@@ -1446,57 +1446,48 @@ Status meanings:
 
 ## D-057 — Use a single-maintainer, reproducible, manually authorized staged release
 
+- **Status:** Superseded by D-058
+- **Decision:** The repository briefly implemented generated release PRs,
+  two-build qualification, stage-only npm OIDC, private npm staging, typed
+  digest authorization, and automated finalization.
+- **Reason superseded:** The mechanism optimized for maximum assurance without
+  meeting the maintainer's primary usability requirement. More importantly,
+  npm cannot configure trusted publishing or staged publishing for a package
+  that does not already exist. Three first-release packages do not yet have
+  public registry records, so the proposed four-package private staging flow
+  could not perform the initial beta release it was designed for. Dry runs did
+  not expose that registry prerequisite.
+- **Consequence:** The GitHub App was deleted before publication. No package was
+  staged or published by this design. Its App, OIDC, staging, qualification,
+  doctor, and finalizer implementation is removed rather than retained as an
+  inactive alternate release path.
+
+## D-058 — Publish betas with one local interactive command
+
 - **Status:** Accepted
-- **Decision:** Ben Lesh is the sole required author, reviewer, merger, release
-  operator, and security responder. RxJS 9 releases from `master` use a
-  generated release PR as a reviewable version/changelog/policy diff, not as
-  evidence of independent approval. Ordinary successful merges automatically
-  create or refresh it. Conventional Commit titles select the
-  version: beta work increments only `beta.N`; stable fixes increment patch;
-  stable features increment minor; and stable breaking changes block the 9.x
-  train. Stable promotion is an explicit mode. All four packages retain one
-  synchronized version.
-- **Publication boundary:** Self-merging the release PR starts read-only
-  qualification. Two independent fresh Ubuntu 24.04 jobs use exact Node
-  24.12.0 and pnpm 10.34.5, and the candidate continues only when filenames,
-  inventories, contents, and SHA-512 values match. Every blocking environment,
-  the release-only OSV scan, SBOM generation, and attestations operate on those
-  exact files, then stop. A later manual dispatch by `benlesh` must type the
-  qualification run ID, exact version, and manifest SHA-512. It rejects wrong,
-  failed, stale, changed, non-current, unauthorized, expired, or replayed
-  candidates before the same filenames reach an npm trusted publisher limited
-  to `npm stage publish`. CI has no long-lived npm token and cannot call direct
-  `npm publish`. Ben approves every stage with npm WebAuthn and approves `rxjs`
-  last.
-- **Irreversibility:** npm publication is a pre-approval safety boundary for
-  RxJS. Post-publication registry checks only finalize the immutable GitHub
-  Release. Any changed byte invalidates a candidate, and partial staging
-  requires rejection plus a fresh fully qualified version.
-- **Security:** `master` requires pull requests but zero approvals. Required
-  automation, verified squash commits, and branch/tag protections replace a
-  nonexistent reviewer team. Privileged workflows reject any initiating login
-  other than `benlesh`, run on fresh GitHub-hosted runners with frozen installs
-  and no restored caches, use SHA-pinned actions, and verify the checked npm
-  11.18.0 registry SHA-512 before staging. GitHub and npm use WebAuthn; reusable
-  publish-capable npm tokens are prohibited. Compromise of both maintainer
-  accounts remains a documented residual risk.
-- **Evidence and signal:** Stable release assets include the manifest, exact
-  tarballs, CycloneDX SBOM, clean isolated OSV report, and portable attestation
-  bundle. Finalization requires registry integrity, `npm audit signatures`, and
-  GitHub attestation verification. OpenSSF remains secondary; Code-Review `0`
-  is accepted rather than manufacturing approvals.
-- **Dry-run and first live proof:** The checked npm CLI runs pack, publish, and
-  staged-publish dry runs over the exact candidate tarballs. It also previews
-  stage-only GitHub trust configurations with the exact repository, workflow,
-  and environment inputs. Those commands do not contact the registry or prove
-  trusted-publisher authorization. Rather
-  than create a public rehearsal package, private staging of the first real
-  beta supplies the live OIDC proof; publication still requires Ben's separate
-  WebAuthn approval after the staged bytes are downloaded and matched.
-- **Consequence:** Private Nx release imports, the token-based publisher,
-  reviewer requests, release-team ownership, and succession-role assumptions
-  are removed. Repository-owned policy, reproducibility, evidence, staging,
-  doctor, and finalizer scripts implement the accepted flow. GitHub/npm
-  WebAuthn and ruleset/environment/trusted-publisher setup remain external
-  gates before publication. P6.10 closes only after the first real beta is
-  privately staged, approved, and verified publicly.
+- **Decision:** Ben Lesh remains the sole required author, reviewer, merger,
+  release operator, and security responder. All four packages keep one exact
+  synchronized version. From a clean local `master` checkout that exactly
+  matches its remote, Ben runs `pnpm release:beta <9.0.0-beta.N>`.
+- **Publication boundary:** The command validates versions and repository
+  state, runs release and package gates, packs all four packages, prints their
+  SHA-512 integrities, and runs `npm publish --dry-run`. It then requires the
+  exact version as confirmation and calls interactive `npm publish` under
+  `next`, allowing npm to request OTP/WebAuthn for each package. Supporting
+  packages publish first and `rxjs` publishes last.
+- **Credentials:** CI has no npm publishing credential. The command refuses CI,
+  non-interactive terminals, and `NPM_TOKEN` or `NODE_AUTH_TOKEN` environment
+  credentials. Package publishing access requires two-factor authentication
+  and disallows automation tokens after the three new scoped packages have
+  been initialized.
+- **Recovery and verification:** A rerun skips an already-published package only
+  when npm's registry integrity matches the freshly packed tarball. Any byte
+  mismatch stops. Success requires all four `next` tags to resolve to the exact
+  version while `rxjs@latest` remains on RxJS 7.
+- **Tradeoff:** The process trusts the maintainer's local machine and npm
+  authentication and does not provide private staging or automatic npm
+  provenance. That explicit, understandable boundary is accepted over a more
+  complicated workflow whose incremental protection does not justify its
+  operational and bootstrap costs for the current sole-maintainer release.
+- **Scope:** Stable `9.0.0`, promotion to `latest`, and future reconsideration
+  of registry-supported trusted publishing remain separate decisions.

@@ -66,31 +66,25 @@ flowchart LR
 
 RxJS 9 explicitly assumes one human author, reviewer, merger, release operator,
 and security responder. Pull requests expose changes and run required checks;
-they are not evidence of independent approval. An ordinary successful merge to
-`master` automatically creates or refreshes a generated release PR. Self-merging
-that PR starts read-only qualification only.
+they are not evidence of independent approval.
 
-Qualification uses two independent fresh Ubuntu 24.04 jobs with exact Node
-24.12.0 and pnpm 10.34.5. The release continues only when package filenames,
-inventories, contents, and SHA-512 values are byte-identical. All package,
-runtime, browser, Safari, alternate-runtime, Webpack, performance, WPT, SBOM,
-OSV, and attestation evidence is bound to the canonical tarballs. The workflow
-then stops and exposes its run ID, version, source commit, and manifest SHA-512.
-The checked npm 11.18.0 CLI runs pack, publish, and staged-publish dry runs over
-those exact tarballs. Dry-run does not submit to the registry and therefore
-does not prove OIDC authorization. Private staging of the first real beta is
-the live trusted-publisher proof; RxJS does not create a public rehearsal
-package.
+Beta publication is a local, interactive operation from a clean `master`
+checkout that exactly matches its remote. `pnpm release:beta <version>` validates
+the synchronized four-package version, runs repository and package gates, packs
+the packages, prints their SHA-512 integrities, and runs npm publication dry
+runs. Ben must then type the exact version before npm's own OTP/WebAuthn flow
+publishes each tarball under `next`. The supporting packages publish first and
+`rxjs` publishes last. Registry integrity and dist-tags are verified before the
+command reports success.
 
-A separate manual dispatch by `benlesh` must reproduce the run ID, version, and
-digest. It revalidates the protected branch/current commit, generated release
-PR, retained bytes, run success/age, and replay state before the `npm-stage`
-environment receives OIDC authority limited to `npm stage publish`. npm WebAuthn
-approval is a second account boundary. Final GitHub Release publication has no
-npm authority and requires registry integrity, npm signature/provenance, and
-GitHub attestation verification. This architecture reduces accidental and
-single-account release compromise; it cannot eliminate compromise of both the
-maintainer's GitHub and npm authentication.
+CI has no npm publishing credential and no workflow can publish. The design
+deliberately trusts Ben's local machine and npm account at the publication
+boundary instead of adding a GitHub App, trusted publisher, private staging,
+release environment, or automated release-PR system. This keeps the process
+understandable and makes the residual risk explicit: a compromised maintainer
+machine or npm authentication can still compromise a release. Required CI,
+interactive WebAuthn, exact package ordering, dry runs, and registry-integrity
+verification reduce mistakes without pretending to remove that trust.
 
 Useful producer-per-subscription values and Subjects remain intentional APIs
 inside `rxjs`; they do not form a separate compatibility layer or package.

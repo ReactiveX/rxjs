@@ -57,8 +57,8 @@ export function auditReleaseCoherence(input) {
   if (!input.preparePackagesCommand.includes('--exclude rxjs.dev')) {
     errors.push('Package preparation must explicitly exclude rxjs.dev.');
   }
-  if (!input.publishSource.includes("version.includes('-') ? 'next' : 'latest'")) {
-    errors.push('Release policy must map prereleases to next and stable versions to latest.');
+  if (input.betaCommand !== 'node scripts/release/beta.mjs') {
+    errors.push('The beta release command must remain node scripts/release/beta.mjs.');
   }
 
   auditReleaseMatrix(input, errors);
@@ -117,34 +117,24 @@ function auditReleaseMatrix(input, errors) {
   for (const [label, source] of [
     ['package CI', input.ciWorkflowSource],
     ['release-readiness CI', input.readinessWorkflowSource],
-    ['publishing CI', input.publishWorkflowSource],
+    ['interactive beta release', input.betaSource],
   ]) {
     if (source.includes('rxjs.dev')) errors.push(`${label} must not build, test, publish, or otherwise reference rxjs.dev.`);
   }
-  if (!/node-version:\s*['"]24\.12\.0['"]/.test(input.publishWorkflowSource)) {
-    errors.push('Publishing must use exact Node 24.12.0.');
-  }
-  if (
-    !/Verify release policy and repository configuration[\s\S]*?Build release packages[\s\S]*?Pack, inventory, and hash/.test(
-      input.publishWorkflowSource
-    )
-  ) {
-    errors.push('Qualification must verify release policy before building and packing each independent candidate.');
-  }
   for (const requirement of [
-    'RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}',
-    'compare-release-candidates.mjs',
-    'Exact tarballs / package, type, import, and migration gates',
-    'pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test',
-    'run test:imports',
-    'release-candidate.mjs verify',
-    'release-candidate.mjs hydrate',
-    'verify-npm-dry-runs.mjs',
-    'authorize-stage.mjs',
-    'stage-release.mjs publish',
-    'id-token: write',
+    "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
+    "{ name: '@rxjs/test', directory: 'packages/test' }",
+    "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
+    "{ name: 'rxjs', directory: 'packages/rxjs' }",
+    "    '--tag',\n    'next',\n    '--access',\n    'public',",
+    "assert.equal(branch, 'master'",
+    'The release checkout must be clean.',
+    'Unset NPM_TOKEN and NODE_AUTH_TOKEN',
+    'npm publish dry runs',
+    'registry integrity did not match the local tarball',
+    'rxjs@latest unexpectedly resolves',
   ]) {
-    if (!input.publishWorkflowSource.includes(requirement)) errors.push(`Publishing must retain ${requirement}.`);
+    if (!input.betaSource.includes(requirement)) errors.push(`Interactive beta publishing must retain ${requirement}.`);
   }
 
   requireMasterPush(input.ciWorkflowSource, 'Package CI', errors);
@@ -219,27 +209,22 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     rootManifest,
     nxConfig,
     skillProvenance,
-    publishSource,
+    betaSource,
     ciWorkflowSource,
     tsWorkflowSource,
     wptWorkflowSource,
     readinessWorkflowSource,
-    publishWorkflowSource,
     safariDriverSource,
     wptRunnerSource,
   ] = await Promise.all([
     readFile(resolve(root, 'package.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'nx.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, '.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json'), 'utf8').then(JSON.parse),
-    readFile(resolve(root, 'scripts/release/release-config.mjs'), 'utf8'),
+    readFile(resolve(root, 'scripts/release/beta.mjs'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_main.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/observable-wpt.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/release-readiness.yml'), 'utf8'),
-    Promise.all([
-      readFile(resolve(root, '.github/workflows/release-qualify.yml'), 'utf8'),
-      readFile(resolve(root, '.github/workflows/release-stage.yml'), 'utf8'),
-    ]).then((sources) => sources.join('\n')),
     readFile(resolve(root, 'packages/rxjs/test/release/safari-driver.mjs'), 'utf8'),
     readFile(resolve(root, 'packages/observable-polyfill/test/wpt/lib/runner.mjs'), 'utf8'),
   ]);
@@ -266,12 +251,12 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
     rootNodeEngine: rootManifest.engines?.node,
     nxReleaseConfigured: nxConfig.release !== undefined,
     preparePackagesCommand: rootManifest.scripts?.['prepare-packages'] ?? '',
-    publishSource,
+    betaCommand: rootManifest.scripts?.['release:beta'] ?? '',
+    betaSource,
     ciWorkflowSource,
     tsWorkflowSource,
     wptWorkflowSource,
     readinessWorkflowSource,
-    publishWorkflowSource,
     safariDriverSource,
     wptRunnerSource,
   };

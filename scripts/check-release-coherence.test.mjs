@@ -19,7 +19,20 @@ function validInput() {
     rootNodeEngine: '>=22.13.0',
     nxReleaseConfigured: false,
     preparePackagesCommand: 'pnpm nx run-many -t build --exclude rxjs.dev',
-    publishSource: "version.includes('-') ? 'next' : 'latest'",
+    betaCommand: 'node scripts/release/beta.mjs',
+    betaSource: [
+      "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
+      "{ name: '@rxjs/test', directory: 'packages/test' }",
+      "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
+      "{ name: 'rxjs', directory: 'packages/rxjs' }",
+      "    '--tag',\n    'next',\n    '--access',\n    'public',",
+      "assert.equal(branch, 'master'",
+      'The release checkout must be clean.',
+      'Unset NPM_TOKEN and NODE_AUTH_TOKEN',
+      'npm publish dry runs',
+      'registry integrity did not match the local tarball',
+      'rxjs@latest unexpectedly resolves',
+    ].join('\n'),
     ciWorkflowSource: [
       "  push:\n    branches: ['master']",
       "node: '22.13.0'",
@@ -53,23 +66,6 @@ function validInput() {
       'boot-ios-simulator.mjs',
       'pnpm --filter @rxjs/test run build',
       'pnpm --filter @rxjs/migrate run build',
-    ].join('\n'),
-    publishWorkflowSource: [
-      "node-version: '24.12.0'",
-      'Verify release policy and repository configuration',
-      'Build release packages',
-      'Pack, inventory, and hash',
-      'RELEASE_EXPECTED_SOURCE_COMMIT: ${{ github.sha }}',
-      'compare-release-candidates.mjs',
-      'Exact tarballs / package, type, import, and migration gates',
-      'pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test',
-      'run test:imports',
-      'release-candidate.mjs verify',
-      'release-candidate.mjs hydrate',
-      'verify-npm-dry-runs.mjs',
-      'authorize-stage.mjs',
-      'stage-release.mjs publish',
-      'id-token: write',
     ].join('\n'),
     safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",
     wptRunnerSource: "'--binary-arg=--no-sandbox'",
@@ -111,12 +107,12 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   };
   input.nxReleaseConfigured = true;
   input.preparePackagesCommand = 'pnpm nx run-many -t build';
-  input.publishSource = '';
+  input.betaCommand = '';
+  input.betaSource = '';
   input.ciWorkflowSource = '';
   input.tsWorkflowSource = '';
   input.wptWorkflowSource = '';
   input.readinessWorkflowSource = '';
-  input.publishWorkflowSource = '';
   input.safariDriverSource = '';
   input.wptRunnerSource = '';
 
@@ -132,7 +128,7 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
   assert.match(errors.join('\n'), /same dist\/esm files/);
   assert.match(errors.join('\n'), /Nx release configuration must remain removed/);
   assert.match(errors.join('\n'), /must explicitly exclude rxjs\.dev/);
-  assert.match(errors.join('\n'), /prereleases to next/);
+  assert.match(errors.join('\n'), /beta release command/);
   assert.match(errors.join('\n'), /Node 22\.13\.0/);
   assert.match(errors.join('\n'), /Node 26 lane/);
   assert.match(errors.join('\n'), /Mobile Safari/);
@@ -146,16 +142,31 @@ test('rejects documentation-site work from release workflows', () => {
   const input = validInput();
   input.ciWorkflowSource += '\npnpm --filter rxjs.dev run test';
   input.readinessWorkflowSource += '\npnpm --filter rxjs.dev run build';
-  input.publishWorkflowSource += '\npnpm --filter rxjs.dev run publish';
+  input.betaSource += '\npnpm --filter rxjs.dev run publish';
 
   assert.deepEqual(
     auditReleaseCoherence(input).filter((error) => error.includes('must not build, test, publish')),
     [
       'package CI must not build, test, publish, or otherwise reference rxjs.dev.',
       'release-readiness CI must not build, test, publish, or otherwise reference rxjs.dev.',
-      'publishing CI must not build, test, publish, or otherwise reference rxjs.dev.',
+      'interactive beta release must not build, test, publish, or otherwise reference rxjs.dev.',
     ]
   );
+});
+
+test('rejects removal of interactive beta release safeguards', () => {
+  const input = validInput();
+  input.betaSource = input.betaSource
+    .replace("{ name: 'rxjs', directory: 'packages/rxjs' }", '')
+    .replace("    '--tag',\n    'next',\n    '--access',\n    'public',", '')
+    .replace('Unset NPM_TOKEN and NODE_AUTH_TOKEN', '')
+    .replace('registry integrity did not match the local tarball', '');
+
+  const errors = auditReleaseCoherence(input).join('\n');
+  assert.match(errors, /interactive beta publishing.*rxjs/is);
+  assert.match(errors, /interactive beta publishing.*--tag.*next/is);
+  assert.match(errors, /interactive beta publishing.*NPM_TOKEN/is);
+  assert.match(errors, /interactive beta publishing.*registry integrity/is);
 });
 
 test('rejects removal of the clean-workspace release-package build', () => {
