@@ -53,6 +53,10 @@ for (const requirement of [
   'authorize-release-commit.mjs',
   'stage-release.mjs publish',
   'release-candidate.mjs verify',
+  'id: release-app-token',
+  'permission-contents: write',
+  'permission-pull-requests: write',
+  'token: ${{ steps.release-app-token.outputs.token }}',
 ]) {
   if (!stageWorkflow.includes(requirement)) errors.push(`release-stage.yml is missing ${requirement}.`);
 }
