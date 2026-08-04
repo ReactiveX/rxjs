@@ -29,7 +29,7 @@ export async function withSafariDriver(run, { port = 4444 } = {}) {
 
   try {
     const baseUrl = `http://127.0.0.1:${port}`;
-    await waitForDriver(baseUrl, diagnostics);
+    await waitForDriver(baseUrl, { getDiagnostics: () => diagnostics });
     return await run(baseUrl);
   } finally {
     driver.kill('SIGTERM');
@@ -76,15 +76,19 @@ export async function deleteSafariSession(baseUrl, sessionId) {
   await request(baseUrl, `/session/${sessionId}`, { method: 'DELETE' });
 }
 
-async function waitForDriver(baseUrl, diagnostics) {
-  for (let attempt = 0; attempt < 100; attempt++) {
+export async function waitForDriver(
+  baseUrl,
+  { attempts = 240, retryDelayMs = 250, requestStatus = fetch, wait = delay, getDiagnostics = () => '' } = {}
+) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      const response = await fetch(`${baseUrl}/status`);
+      const response = await requestStatus(`${baseUrl}/status`);
       if (response.ok) return;
     } catch {}
-    await delay(100);
+    if (attempt + 1 < attempts) await wait(retryDelayMs);
   }
-  throw new Error(`SafariDriver did not become ready.\n${diagnostics}`);
+  const diagnostics = getDiagnostics().trim();
+  throw new Error(`SafariDriver did not become ready.${diagnostics ? `\n${diagnostics}` : ''}`);
 }
 
 async function request(baseUrl, pathname, init) {
