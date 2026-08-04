@@ -80,9 +80,10 @@ wrappers in favor of direct D-037 `[create]` calls and recorded a further
 bundle-size reduction. P6.8 completed durable pull-request and `master` CI
 ownership for every accepted RxJS 9 test and release check. P6.9 implemented
 truthful status signals and security automation and validated their first live
-GitHub results. The user has now prioritized P6.10: one understandable,
-interactive single-maintainer beta publication command with npm two-factor
-authentication and no CI publishing credential.
+GitHub results. P6.10 then delivered one understandable, interactive
+single-maintainer publication command with npm two-factor authentication and no
+CI publishing credential, and used it to publish and verify the first RxJS 9
+beta. The planned execution queue is complete.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1568,7 +1569,7 @@ names.
 | `DONE` | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
 | `DONE` | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
 | `DONE` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
-| `NEXT` | P6.10 | Publish and verify the first beta with the interactive release command                |
+| `DONE` | P6.10 | Publish and verify the first beta with the interactive release command                |
 
 #### P6.9 completion bar
 
@@ -1644,8 +1645,22 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
   an operator-focused runbook. Existing CI, CodeQL, dependency review, OSV,
   package gates, and release-readiness coverage remain.
 - Local verification is recorded in the P6.10 session entry. Live npm
-  OTP/WebAuthn publication, package-access hardening, registry verification,
-  and the immutable GitHub Release remain required before `DONE`.
+  OTP/WebAuthn publication completed for all four packages from verified commit
+  `11d931645c03cc4b67eb70ee3a1122a53f8e0bc9`. The exact registry SHA-512 values
+  match the rehearsed tarballs, all four `next` tags resolve to
+  `9.0.0-beta.0`, and `rxjs@latest` remains `7.8.2`.
+- npm accepted each new scoped package before its ordinary package metadata
+  replaced a cached pre-publication 404. Duplicate publication attempts were
+  rejected immutably. The command now revalidates online and waits up to ten
+  minutes for post-publication metadata instead of reporting that propagation
+  interval as an integrity failure.
+- `npm access set mfa=publish` completed through browser authentication for
+  `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/migrate`, and `rxjs`,
+  requiring interactive 2FA and disallowing automation-token publication.
+- Annotated tag `9.0.0-beta.0` targets the verified commit. The public
+  prerelease is
+  `https://github.com/ReactiveX/rxjs/releases/tag/9.0.0-beta.0`. P6.10 is
+  complete and the completed execution queue has no `NEXT` item.
 
 #### P6.1 completion bar
 
@@ -3680,3 +3695,32 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+
+### 2026-08-04 — P6.10 first RxJS 9 beta publication
+
+- Published `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/migrate`, and
+  `rxjs` at `9.0.0-beta.0` under npm `next` from verified commit
+  `11d931645c03cc4b67eb70ee3a1122a53f8e0bc9`. Master qualification run
+  `30940527701` and its browser, Safari, Deno, Bun, package, WPT, OSV, CodeQL,
+  and TypeScript companion workflows passed before publication.
+- Verified registry SHA-512 values:
+  `@rxjs/observable-polyfill` =
+  `sha512-G2o17zDOxYgCPzM8+//WlDdViovC7NNkGBtlN57YwcVdbt9eMY/UkN1jJWC5j0s+f8Zuiqog1Mf5wFkef8wuAA==`;
+  `@rxjs/test` =
+  `sha512-wLBKwkYVHeMLqyJkdz9Yfcex+2/K9lvidOmtrkWWeCZTT+uwNdSgxKlkYbUTFFGjE8PhJsZtCZUmbgBp3tDXQA==`;
+  `@rxjs/migrate` =
+  `sha512-a7qOj3mPMOaif0CKVONDvciX6KCe7Pi7TdX/VUgxhLq62le6KikTB+d3n2Ei1pYEU/ngqZj2JIMu/90pZxvgQw==`;
+  `rxjs` =
+  `sha512-X7Bpak4JzO/cLamwHfxhtlFtQHpfIjvowcyNErrvHywcdlI+krkbNJc0vQsXKbVOTLrBipCJcIhuawhwsJfWwg==`.
+- npm's new-package write path became visible before its ordinary metadata read
+  path, causing safe partial exits and immutable duplicate rejections during
+  recovery. Added online revalidation, ETARGET handling, and a bounded
+  post-publication wait so later betas tolerate the observed propagation lag
+  without weakening exact-integrity verification.
+- Confirmed `rxjs@next` resolves to `9.0.0-beta.0` and `rxjs@latest` remains
+  `7.8.2`. Applied interactive-only `mfa=publish` access to all four packages.
+  Created annotated tag `9.0.0-beta.0` and published
+  `https://github.com/ReactiveX/rxjs/releases/tag/9.0.0-beta.0` as a GitHub
+  prerelease.
+- Marked P6.10 `DONE`. All planned phases are complete, so the execution queue
+  intentionally has no `NEXT` item.

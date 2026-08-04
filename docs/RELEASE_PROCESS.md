@@ -52,6 +52,12 @@ The command performs these steps in order:
 8. compares each registry integrity with the local tarball;
 9. verifies every package's `next` tag and confirms `rxjs@latest` remains RxJS 7.
 
+For a newly created package, npm may accept the immutable version before its
+ordinary package metadata stops returning the pre-publication 404. The command
+revalidates online and waits up to ten minutes for that metadata to expose the
+published SHA-512 instead of treating normal registry propagation as an
+integrity failure.
+
 npm may request OTP/WebAuthn once per package. That repetition is deliberate:
 the four packages are independent registry publications. Nothing attempts to
 bypass npm's proof-of-presence requirement.
@@ -67,6 +73,12 @@ It skips the package only when the registry's SHA-512 integrity equals the
 freshly packed tarball; a mismatch stops the release. Because `rxjs` is last,
 the main consumer entry remains unpublished until the three supporting packages
 are present and verified.
+
+If a successful first publication is followed by a metadata 404, do not attempt
+an immediate duplicate publish. Wait until `npm view <name>@<version>
+dist.integrity --prefer-online` exposes the expected SHA-512, then rerun the
+same command. The post-publication retry makes this manual recovery unnecessary
+for later betas, but the rule remains safe for an interrupted older client.
 
 If a package was published correctly but a later package cannot be published,
 fix only the operational problem and rerun the same command from the same clean

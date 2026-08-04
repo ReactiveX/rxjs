@@ -12,6 +12,7 @@ import {
   publishArguments,
   releasePackages,
   validateBetaVersion,
+  waitForRegistryIntegrity,
 } from './beta.mjs';
 
 test('accepts one explicit RxJS 9 beta and an optional dry run', () => {
@@ -108,4 +109,44 @@ test('live publication refuses CI, environment tokens, and non-interactive termi
   assert.doesNotThrow(() =>
     assertInteractivePublishingEnvironment({ dryRun: true, env: { CI: 'true', NPM_TOKEN: 'secret' }, stdin: {}, stdout: {} })
   );
+});
+
+test('waits for npm metadata propagation after a successful publication', async () => {
+  let lookups = 0;
+  const waits = [];
+  const output = [];
+  const command = (_command, args) => {
+    assert.ok(args.includes('--prefer-online'));
+    lookups++;
+    if (lookups < 3) return { status: 1, stdout: '', stderr: 'npm error code E404' };
+    return { status: 0, stdout: '"sha512-published"\n', stderr: '' };
+  };
+
+  const integrity = await waitForRegistryIntegrity(
+    '@rxjs/new-package',
+    '9.0.0-beta.0',
+    { cache: '/tmp/cache', command, root: '/repo' },
+    {
+      attempts: 3,
+      retryDelayMs: 10,
+      wait: async (milliseconds) => waits.push(milliseconds),
+      output: { write: (message) => output.push(message) },
+    }
+  );
+
+  assert.equal(integrity, 'sha512-published');
+  assert.equal(lookups, 3);
+  assert.deepEqual(waits, [10, 10]);
+  assert.match(output.join(''), /Waiting for npm metadata/);
+});
+
+test('treats an existing package with an unpropagated version as temporarily missing', async () => {
+  const command = () => ({ status: 1, stdout: '', stderr: 'npm error code ETARGET\nNo matching version found' });
+  const integrity = await waitForRegistryIntegrity(
+    'rxjs',
+    '9.0.0-beta.1',
+    { cache: '/tmp/cache', command, root: '/repo' },
+    { attempts: 1, wait: async () => {}, output: { write: () => {} } }
+  );
+  assert.equal(integrity, null);
 });

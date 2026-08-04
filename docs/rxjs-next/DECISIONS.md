@@ -1482,8 +1482,10 @@ Status meanings:
   been initialized.
 - **Recovery and verification:** A rerun skips an already-published package only
   when npm's registry integrity matches the freshly packed tarball. Any byte
-  mismatch stops. Success requires all four `next` tags to resolve to the exact
-  version while `rxjs@latest` remains on RxJS 7.
+  mismatch stops. After a successful publish, the command revalidates online
+  and waits for npm's eventually consistent package metadata to expose the
+  immutable version and SHA-512. Success requires all four `next` tags to
+  resolve to the exact version while `rxjs@latest` remains on RxJS 7.
 - **Tradeoff:** The process trusts the maintainer's local machine and npm
   authentication and does not provide private staging or automatic npm
   provenance. That explicit, understandable boundary is accepted over a more
