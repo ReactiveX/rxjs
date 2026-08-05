@@ -88,7 +88,11 @@ closure or bind the callback explicitly:
 ```ts
 const offset = 10;
 const closedOver = source[map]((value) => value + offset);
-const bound = source[map](project.bind(context));
+
+const context = { offset: 10 };
+const bound = source[map](function (value) {
+  return value + this.offset;
+}.bind(context));
 ```
 
 Use the exact `pipe` Symbol only when deliberate multi-step composition is
