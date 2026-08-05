@@ -9,25 +9,16 @@ declare global {
   interface Observable<T> {
     [every]: {
       (predicate: BooleanConstructor): Observable<Exclude<T, Falsy> extends never ? false : boolean>;
-      (predicate: BooleanConstructor, thisArg: unknown): Observable<Exclude<T, Falsy> extends never ? false : boolean>;
-      <A>(predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean, thisArg: A): Observable<boolean>;
       (predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<boolean>;
     };
   }
 }
 
 function everyOperator<T>(this: Observable<T>, predicate: BooleanConstructor): Observable<boolean>;
-function everyOperator<T>(this: Observable<T>, predicate: BooleanConstructor, thisArg: unknown): Observable<boolean>;
-function everyOperator<T, A>(
-  this: Observable<T>,
-  predicate: (this: A, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg: A
-): Observable<boolean>;
 function everyOperator<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<boolean>;
 function everyOperator<T>(
   this: Observable<T>,
-  predicate: (this: unknown, value: T, index: number, source: Observable<T>) => boolean,
-  thisArg?: unknown
+  predicate: (value: T, index: number, source: Observable<T>) => boolean
 ): Observable<boolean> {
   const source = this;
 
@@ -46,7 +37,7 @@ function everyOperator<T>(
       subscriber,
       {
         next: (value) => {
-          if (!predicate.call(thisArg, value, index++, source)) {
+          if (!predicate(value, index++, source)) {
             conclude(false);
           }
         },

@@ -663,6 +663,30 @@ const harnessRewritesReplacingUnavailableImports = new Set([
 ]);
 const intentionalDivergenceReasons = new Map([
   [
+    'spec/observables/partition-spec.ts:77:partition > should partition an observable into two using a predicate and thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec binds the predicate explicitly.',
+  ],
+  [
+    'spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec uses closed-over predicates.',
+  ],
+  [
+    'spec/operators/find-spec.ts:89:find > should work with a custom thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec binds the predicate explicitly.',
+  ],
+  [
+    'spec/operators/findIndex-spec.ts:89:findIndex > should work with a custom thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec binds the predicate explicitly.',
+  ],
+  [
+    'spec/operators/map-spec.ts:216:map > should map using a custom thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec binds the projector explicitly.',
+  ],
+  [
+    'spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg',
+    'Intentional RxJS Next divergence: the callback receiver argument is removed; the active migrated spec uses closed-over projectors.',
+  ],
+  [
     'spec/operators/delay-spec.ts:227:delay > should unsubscribe scheduled actions after execution',
     'Intentional RxJS Next divergence: the executable replacement asserts AbortSignal cancellation and virtual host-timer cleanup instead of removed RxJS 7 source and Subscription._finalizers internals.',
   ],
@@ -7033,7 +7057,7 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
     ? `await rxTest(async (${manualContext}) => {\n${rewriteManualHelperCalls(callbackBody)}\n});`
     : callbackBody;
   const input = `async function migrated(runtime) {\n${helperPrelude}\n${supportSource}\n${migratedBody}\n}`;
-  return transpileMigratedProgram(
+  const program = transpileMigratedProgram(
     input,
     imports,
     [],
@@ -7043,6 +7067,43 @@ function buildMigratedProgram({ caseId, callback, imports, sourceFile, support, 
     modeAwareSubscriptionExpectations.get(caseId),
     expectedValueDictionaries.get(caseId)
   );
+  return rewriteRemovedCallbackReceiver(caseId, program);
+}
+
+function rewriteRemovedCallbackReceiver(caseId, program) {
+  switch (caseId) {
+    case 'spec/observables/partition-spec.ts:77:partition > should partition an observable into two using a predicate and thisArg':
+      return replaceRemovedCallbackReceiver(
+        caseId,
+        program,
+        "partition(e1, predicate, { value: 'a' })",
+        "partition(e1, predicate.bind({ value: 'a' }))"
+      );
+    case 'spec/operators/filter-spec.ts:235:filter > should be able to accept and use a thisArg':
+    case 'spec/operators/map-spec.ts:269:map > should do multiple maps using a custom thisArg':
+      return replaceRemovedCallbackReceiver(caseId, program, '}, filterer)', '}.bind(filterer))', 3);
+    case 'spec/operators/find-spec.ts:89:find > should work with a custom thisArg':
+      return replaceRemovedCallbackReceiver(caseId, program, 'find(predicate, finder)', 'find(predicate.bind(finder))');
+    case 'spec/operators/findIndex-spec.ts:89:findIndex > should work with a custom thisArg':
+      return replaceRemovedCallbackReceiver(
+        caseId,
+        program,
+        'findIndex(predicate, sourceValues)',
+        'findIndex(predicate.bind(sourceValues))'
+      );
+    case 'spec/operators/map-spec.ts:216:map > should map using a custom thisArg':
+      return replaceRemovedCallbackReceiver(caseId, program, '}, foo)', '}.bind(foo))');
+    default:
+      return program;
+  }
+}
+
+function replaceRemovedCallbackReceiver(caseId, program, receiverArgument, boundCallback, expectedCount = 1) {
+  const actualCount = program.split(receiverArgument).length - 1;
+  if (actualCount !== expectedCount) {
+    throw new Error(`Expected ${expectedCount} callback receiver rewrite(s) for ${caseId}; found ${actualCount}.`);
+  }
+  return program.replaceAll(receiverArgument, boundCallback);
 }
 
 function getPortedSchedulerAdapterReason({ imports, source }) {

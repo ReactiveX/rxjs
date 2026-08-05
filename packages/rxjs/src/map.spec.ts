@@ -43,20 +43,6 @@ describe('map', () => {
     expect(results).toEqual(['0:20', '1:40', '2:60', 'complete']);
   });
 
-  it('supports the RxJS 7 thisArg projection contract', () => {
-    const context = { offset: 10 };
-    const results: number[] = [];
-
-    fromValues(1, 2)
-      [map](function (this: typeof context, value, index) {
-        expect(this).toBe(context);
-        return this.offset + value + index;
-      }, context)
-      .subscribe((value) => results.push(value));
-
-    expect(results).toEqual([11, 13]);
-  });
-
   it('does not invoke the projector for an empty source and forwards completion', () => {
     const project = () => {
       throw new Error('project should not run');

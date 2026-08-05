@@ -229,7 +229,7 @@
       "symbol": "every",
       "module": "every",
       "adapter": "identity",
-      "mapping": "source[every](predicate, thisArg?)",
+      "mapping": "source[every](predicate)",
       "status": "Present; parity unverified",
       "note": "Evaluates value, index, and source and cancels upstream before emitting the first false result."
     },
@@ -285,25 +285,25 @@
       "symbol": "filter",
       "module": "filter",
       "adapter": "identity",
-      "mapping": "source[filter](predicate, thisArg?)",
+      "mapping": "source[filter](predicate)",
       "status": "Present; parity unverified",
-      "note": "The RxJS Symbol form preserves predicate index, thisArg, type guards, errors, and cancellation without replacing the platform string method."
+      "note": "The RxJS Symbol form preserves predicate index, type guards, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
     },
     "find": {
       "symbol": "find",
       "module": "find",
       "adapter": "identity",
-      "mapping": "source[find](predicate, thisArg?)",
+      "mapping": "source[find](predicate)",
       "status": "Present; parity unverified",
-      "note": "Emits the first matching value or undefined with predicate index, source identity, thisArg, early cancellation, and no replacement of the platform find() Promise consumer."
+      "note": "Emits the first matching value or undefined with predicate index, source identity, and early cancellation, without replacing the platform find() Promise consumer; callback receivers must use closures or Function.prototype.bind."
     },
     "findIndex": {
       "symbol": "findIndex",
       "module": "find-index",
       "adapter": "identity",
-      "mapping": "source[findIndex](predicate, thisArg?)",
+      "mapping": "source[findIndex](predicate)",
       "status": "Present; parity unverified",
-      "note": "Emits the first matching index or -1 with predicate source identity, thisArg, errors, and early cancellation."
+      "note": "Emits the first matching index or -1 with predicate source identity, errors, and early cancellation; callback receivers must use closures or Function.prototype.bind."
     },
     "flatMap": {
       "symbol": "mergeMap",
@@ -357,9 +357,9 @@
       "symbol": "map",
       "module": "map",
       "adapter": "identity",
-      "mapping": "source[map](project, thisArg?)",
+      "mapping": "source[map](project)",
       "status": "Present; parity unverified",
-      "note": "The RxJS Symbol form preserves projection index, thisArg, errors, and cancellation without replacing the platform string method."
+      "note": "The RxJS Symbol form preserves projection index, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
     },
     "mapTo": {
       "symbol": "mergeMap",
@@ -1028,7 +1028,7 @@
       "symbol": "partition",
       "module": "partition",
       "adapter": "identity",
-      "mapping": "Observable[partition](source, predicate, thisArg?)",
+      "mapping": "Observable[partition](source, predicate)",
       "status": "Present; parity unverified",
       "note": "Returns matching and rejected branches with independent predicate state over the platform source's shared, ref-counted activation."
     },

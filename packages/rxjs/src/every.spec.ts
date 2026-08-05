@@ -17,10 +17,12 @@ describe('every', () => {
     const emptyResults: Array<boolean | 'complete'> = [];
     const matchingResults: Array<boolean | 'complete'> = [];
 
-    new Observable<number>((subscriber) => subscriber.complete())[every]((value) => value > 0).subscribe({
-      next: (value) => emptyResults.push(value),
-      complete: () => emptyResults.push('complete'),
-    });
+    new Observable<number>((subscriber) => subscriber.complete())
+      [every]((value) => value > 0)
+      .subscribe({
+        next: (value) => emptyResults.push(value),
+        complete: () => emptyResults.push('complete'),
+      });
 
     fromValues(2, 4, 6)
       [every]((value) => value % 2 === 0)
@@ -33,17 +35,16 @@ describe('every', () => {
     expect(matchingResults).toEqual([true, 'complete']);
   });
 
-  it('passes the value, zero-based index, source, and optional thisArg to the predicate', () => {
-    const context = { maximum: 10 };
+  it('passes the value, zero-based index, and source to the predicate', () => {
+    const maximum = 10;
     const source = fromValues(2, 4, 6);
     const calls: Array<[number, number, Observable<number>]> = [];
     const results: boolean[] = [];
 
-    source[every](function (value, index, predicateSource) {
-      expect(this).toBe(context);
+    source[every]((value, index, predicateSource) => {
       calls.push([value, index, predicateSource]);
-      return value < this.maximum;
-    }, context).subscribe((value) => results.push(value));
+      return value < maximum;
+    }).subscribe((value) => results.push(value));
 
     expect(calls).toEqual([
       [2, 0, source],

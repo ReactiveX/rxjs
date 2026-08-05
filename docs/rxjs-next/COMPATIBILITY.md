@@ -400,10 +400,12 @@ whether the RxJS form delegates, which additional functionality it supplies,
 and which behavior or types intentionally differ. It must also prove that
 installing the Symbol does not alter the platform method.
 
-The P2.4 `map` pilot is the first recorded overlap. `observable[map](project,
-thisArg?)` owns an RxJS projection index and optional callback receiver,
-constructs through the RxJS `[create]` protocol, and participates in the
-platform layer's shared activation lifecycle. It does not delegate to
+The P2.4 `map` pilot is the first recorded overlap. `observable[map](project)`
+owns an RxJS projection index, constructs through the RxJS `[create]` protocol,
+and participates in the platform layer's shared activation lifecycle. D-059
+removes the inherited RxJS 7 callback-receiver argument from this and every
+other RxJS Next callback API; migration uses a closure or
+`Function.prototype.bind`. The Symbol form does not delegate to
 `observable.map(project)`, and installing it leaves that platform-owned string
 method unchanged. Focused and native/fallback kernel tests cover both the
 additional Symbol behavior and non-interference.

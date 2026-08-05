@@ -476,7 +476,7 @@ Status meanings:
 
 ## D-023 — Keep RxJS map and filter overloads on exact Symbol keys
 
-- **Status:** Accepted
+- **Status:** Superseded by D-059
 - **Decision:** The RxJS `map` and `filter` contracts are installed only under
   their exported exact Symbol keys. Their RxJS forms preserve the projection
   or predicate index and optional `thisArg`; `filter` also preserves Boolean
@@ -492,6 +492,10 @@ Status meanings:
   distinction for `filter`. Projection and predicate errors terminate the
   shared operator activation. Concurrent observers share one upstream
   activation and one index sequence under the platform lifecycle.
+- **Reason superseded:** RxJS Next removes callback `thisArg` parameters rather
+  than carrying this RxJS 7 convenience into the new API. Closures and
+  `Function.prototype.bind` express the same receiver capture without forcing
+  every operator notification through `Function.prototype.call`.
 
 ## D-024 — Let finite take cancel synchronous upstream work before its limit
 
@@ -1491,3 +1495,21 @@ Status meanings:
   operational and bootstrap costs for the current sole-maintainer release.
 - **Scope:** Stable `9.0.0`, promotion to `latest`, and future reconsideration
   of registry-supported trusted publishing remain separate decisions.
+
+## D-059 — Remove callback `thisArg` parameters from RxJS Next
+
+- **Status:** Accepted
+- **Decision:** RxJS Next callback APIs do not accept a separate `thisArg`.
+  Remove the parameter and receiver-aware overloads from Symbol-keyed `every`,
+  `filter`, `find`, `findIndex`, `map`, and static `partition`. Invoke their
+  predicates and projectors directly.
+- **Rationale:** A closure or `Function.prototype.bind` expresses an intentional
+  receiver at the call site. Retaining `thisArg` forces RxJS to dispatch every
+  value through `.call`, adding API and hot-path implementation cost for a
+  redundant convenience inherited from RxJS 7.
+- **Consequence:** Migration must rewrite a second callback-receiver argument
+  to a closure or bound function. The callback value/index/source arguments,
+  type-guard and Boolean-constructor overloads, cancellation, result
+  construction, and platform string-named methods are unchanged. Historical
+  RxJS 7 evidence retains its source identity, while active migrated specs use
+  closures or bound functions instead of asserting the removed overload.
