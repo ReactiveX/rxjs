@@ -364,7 +364,7 @@ describe('filter (cold)', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  it('should be able to accept and use a thisArg', async () => {
+  it('should be able to use closed-over predicates', async () => {
     function oddFilter(x) {
       return +x % 2 === 1;
     }
@@ -389,15 +389,7 @@ describe('filter (cold)', () => {
         filter2 = (x) => +x % 3 === 0;
       }
       const filterer = new Filterer();
-      const result = e1[filter](function (x) {
-        return this.filter1(x);
-      }, filterer)
-        [filter](function (x) {
-          return this.filter2(x);
-        }, filterer)
-        [filter](function (x) {
-          return this.filter1(x);
-        }, filterer);
+      const result = e1[filter](filterer.filter1)[filter](filterer.filter2)[filter](filterer.filter1);
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });

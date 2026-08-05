@@ -1872,6 +1872,7 @@
         "localEvidence": [],
         "testClassifications": [
           "harness-rewrite",
+          "intentional-divergence",
           "portable"
         ],
         "modeResults": {
@@ -1892,7 +1893,7 @@
       "next": {
         "surface": "static-symbol",
         "module": "partition",
-        "mapping": "Observable[partition](source, predicate, thisArg?)",
+        "mapping": "Observable[partition](source, predicate)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -4592,7 +4593,7 @@
       "next": {
         "surface": "instance-symbol",
         "module": "every",
-        "mapping": "source[every](predicate, thisArg?)",
+        "mapping": "source[every](predicate)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -4938,6 +4939,7 @@
         ],
         "localEvidence": [],
         "testClassifications": [
+          "intentional-divergence",
           "portable"
         ],
         "modeResults": {
@@ -4958,7 +4960,7 @@
       "next": {
         "surface": "instance-symbol",
         "module": "filter",
-        "mapping": "source[filter](predicate, thisArg?)",
+        "mapping": "source[filter](predicate)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -4968,7 +4970,7 @@
         "action": "mechanical-change",
         "semanticReviewRequired": true,
         "adapter": "identity",
-        "note": "The RxJS Symbol form preserves predicate index, thisArg, type guards, errors, and cancellation without replacing the platform string method."
+        "note": "The RxJS Symbol form preserves predicate index, type guards, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
       },
       "decisions": [
         "D-003",
@@ -5069,6 +5071,7 @@
         ],
         "localEvidence": [],
         "testClassifications": [
+          "intentional-divergence",
           "portable"
         ],
         "modeResults": {
@@ -5089,7 +5092,7 @@
       "next": {
         "surface": "instance-symbol",
         "module": "find",
-        "mapping": "source[find](predicate, thisArg?)",
+        "mapping": "source[find](predicate)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -5099,7 +5102,7 @@
         "action": "mechanical-change",
         "semanticReviewRequired": true,
         "adapter": "identity",
-        "note": "Emits the first matching value or undefined with predicate index, source identity, thisArg, early cancellation, and no replacement of the platform find() Promise consumer."
+        "note": "Emits the first matching value or undefined with predicate index, source identity, and early cancellation, without replacing the platform find() Promise consumer; callback receivers must use closures or Function.prototype.bind."
       },
       "decisions": [
         "D-003",
@@ -5136,6 +5139,7 @@
         ],
         "localEvidence": [],
         "testClassifications": [
+          "intentional-divergence",
           "portable"
         ],
         "modeResults": {
@@ -5156,7 +5160,7 @@
       "next": {
         "surface": "instance-symbol",
         "module": "find-index",
-        "mapping": "source[findIndex](predicate, thisArg?)",
+        "mapping": "source[findIndex](predicate)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -5166,7 +5170,7 @@
         "action": "mechanical-change",
         "semanticReviewRequired": true,
         "adapter": "identity",
-        "note": "Emits the first matching index or -1 with predicate source identity, thisArg, errors, and early cancellation."
+        "note": "Emits the first matching index or -1 with predicate source identity, errors, and early cancellation; callback receivers must use closures or Function.prototype.bind."
       },
       "decisions": [
         "D-003",
@@ -6010,7 +6014,7 @@
       "next": {
         "surface": "instance-symbol",
         "module": "map",
-        "mapping": "source[map](project, thisArg?)",
+        "mapping": "source[map](project)",
         "status": "Present; parity unverified",
         "sharingModel": "shared-active-platform",
         "cancellationModel": "AbortSignal",
@@ -6020,7 +6024,7 @@
         "action": "mechanical-change",
         "semanticReviewRequired": true,
         "adapter": "identity",
-        "note": "The RxJS Symbol form preserves projection index, thisArg, errors, and cancellation without replacing the platform string method."
+        "note": "The RxJS Symbol form preserves projection index, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
       },
       "decisions": [
         "D-003",

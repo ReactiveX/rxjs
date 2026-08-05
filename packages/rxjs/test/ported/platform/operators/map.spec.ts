@@ -169,7 +169,7 @@ describe('map (platform)', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  it('should map using a custom thisArg', async () => {
+  it('should map using a bound projector', async () => {
     const addDrama = (x) => x + '!';
     await rxTest(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('-5-^-4--3---2----1--|');
@@ -179,10 +179,12 @@ describe('map (platform)', () => {
       const foo = {
         value: 42,
       };
-      const result = e1[map](function (x, index) {
-        expect(this).toBe(foo);
-        return parseInt(x) + foo.value + index * 10;
-      }, foo);
+      const result = e1[map](
+        function (x, index) {
+          expect(this).toBe(foo);
+          return parseInt(x) + foo.value + index * 10;
+        }.bind(foo)
+      );
       expectObservable(result).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -214,7 +216,7 @@ describe('map (platform)', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  it('should do multiple maps using a custom thisArg', async () => {
+  it('should do multiple maps using closed-over projectors', async () => {
     const addDrama = (x) => x + '!';
     await rxTest(({ hot, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  --1--2--3--4--|');
@@ -226,15 +228,7 @@ describe('map (platform)', () => {
         selector2 = (x) => parseInt(x) * 3;
       }
       const filterer = new Filterer();
-      const result = e1[map](function (x) {
-        return this.selector1(x);
-      }, filterer)
-        [map](function (x) {
-          return this.selector2(x);
-        }, filterer)
-        [map](function (x) {
-          return this.selector1(x);
-        }, filterer);
+      const result = e1[map](filterer.selector1)[map](filterer.selector2)[map](filterer.selector1);
       expectObservable(result).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });

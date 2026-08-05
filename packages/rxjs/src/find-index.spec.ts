@@ -58,7 +58,9 @@ describe('findIndex', () => {
     const emptyValues: number[] = [];
     const nonmatchingValues: number[] = [];
 
-    Observable.from([] as number[])[findIndex](() => true).subscribe((value) => emptyValues.push(value));
+    Observable.from([] as number[])
+      [findIndex](() => true)
+      .subscribe((value) => emptyValues.push(value));
     Observable.from([1, 2, 3])
       [findIndex]((value) => value > 10)
       .subscribe((value) => nonmatchingValues.push(value));
@@ -67,21 +69,21 @@ describe('findIndex', () => {
     expect(nonmatchingValues).toEqual([-1]);
   });
 
-  it('passes value, index, and the exact source and supports thisArg', () => {
+  it('passes value, index, and the exact source', () => {
     const source = Observable.from(['a', 'bb', 'ccc']);
-    const context = { length: 2 };
-    const calls: Array<[string, number, Observable<string>, unknown]> = [];
+    const length = 2;
+    const calls: Array<[string, number, Observable<string>]> = [];
     const values: number[] = [];
 
-    source[findIndex](function (value, index, receivedSource) {
-      calls.push([value, index, receivedSource, this]);
-      return value.length === this.length;
-    }, context).subscribe((value) => values.push(value));
+    source[findIndex]((value, index, receivedSource) => {
+      calls.push([value, index, receivedSource]);
+      return value.length === length;
+    }).subscribe((value) => values.push(value));
 
     expect(values).toEqual([1]);
     expect(calls).toEqual([
-      ['a', 0, source, context],
-      ['bb', 1, source, context],
+      ['a', 0, source],
+      ['bb', 1, source],
     ]);
   });
 
@@ -92,9 +94,11 @@ describe('findIndex', () => {
     const predicateErrors: unknown[] = [];
     const produced: number[] = [];
 
-    new Observable<number>((subscriber) => subscriber.error(sourceFailure))[findIndex](() => true).subscribe({
-      error: (error) => sourceErrors.push(error),
-    });
+    new Observable<number>((subscriber) => subscriber.error(sourceFailure))
+      [findIndex](() => true)
+      .subscribe({
+        error: (error) => sourceErrors.push(error),
+      });
     new Observable<number>((subscriber) => {
       for (const value of [1, 2, 3]) {
         if (!subscriber.active) {

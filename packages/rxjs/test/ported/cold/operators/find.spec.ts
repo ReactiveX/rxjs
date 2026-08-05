@@ -78,7 +78,7 @@ describe('find (cold)', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  it('should work with a custom thisArg', async () => {
+  it('should work with a bound predicate', async () => {
     function truePredicate(x) {
       return true;
     }
@@ -92,7 +92,7 @@ describe('find (cold)', () => {
       const predicate = function (value) {
         return value === this.target;
       };
-      expectObservable(e1[find](predicate, finder)).toBe(expected);
+      expectObservable(e1[find](predicate.bind(finder))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });

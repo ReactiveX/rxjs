@@ -108,13 +108,14 @@ Decide per overlapping operator:
 - documentation that prevents false parity claims;
 - native and fallback evidence that the platform method remains untouched.
 
-P2.4 settles the pilot `map` case. The exact RxJS Symbol form supplies the
-RxJS projection index and optional `thisArg`, constructs through `[create]`,
-and follows the platform layer's shared activation contract. It does not
-delegate to or replace the string-named platform `map`; native and fallback
-kernel evidence verifies that the original method and descriptor remain
-unchanged. Other overlapping operators still require the same per-capability
-record before they are restored.
+P2.4 settled the pilot `map` overlap and D-059 later removed its inherited
+RxJS 7 callback-receiver argument. The exact RxJS Symbol form supplies the
+RxJS projection index, constructs through `[create]`, and follows the platform
+layer's shared activation contract. It does not delegate to or replace the
+string-named platform `map`; native and fallback kernel evidence verifies that
+the original method and descriptor remain unchanged. Other overlapping
+operators still require the same per-capability record before they are
+restored.
 
 ### 6. What is the canonical extension implementation pattern?
 

@@ -77,7 +77,7 @@ describe('findIndex (platform)', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
   });
-  it('should work with a custom thisArg', async () => {
+  it('should work with a bound predicate', async () => {
     function truePredicate(x) {
       return true;
     }
@@ -89,7 +89,7 @@ describe('findIndex (platform)', () => {
       const predicate = function (value) {
         return value === this.b;
       };
-      const result = e1[findIndex](predicate, sourceValues);
+      const result = e1[findIndex](predicate.bind(sourceValues));
       expectObservable(result).toBe(expected, { x: 1 });
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });

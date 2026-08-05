@@ -24,15 +24,11 @@ describe('partition', () => {
 
   it('splits an ObservableValue and gives each branch an independent index', () => {
     const calls: Array<[string, number]> = [];
-    const context = { minimumLength: 2 };
-    const [matching, rejected] = Observable[partition](
-      ['a', 'bb', 'ccc'],
-      function (value, index) {
-        calls.push([value, index]);
-        return value.length >= this.minimumLength;
-      },
-      context
-    );
+    const minimumLength = 2;
+    const [matching, rejected] = Observable[partition](['a', 'bb', 'ccc'], (value, index) => {
+      calls.push([value, index]);
+      return value.length >= minimumLength;
+    });
     const matchingEvents: Array<string | 'complete'> = [];
     const rejectedEvents: Array<string | 'complete'> = [];
 

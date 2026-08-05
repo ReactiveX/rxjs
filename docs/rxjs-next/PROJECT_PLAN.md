@@ -80,9 +80,11 @@ wrappers in favor of direct D-037 `[create]` calls and recorded a further
 bundle-size reduction. P6.8 completed durable pull-request and `master` CI
 ownership for every accepted RxJS 9 test and release check. P6.9 implemented
 truthful status signals and security automation and validated their first live
-GitHub results. The user has now prioritized P6.10: one understandable,
-interactive single-maintainer beta publication command with npm two-factor
-authentication and no CI publishing credential.
+GitHub results. The user then explicitly prioritized P6.11, which removed
+inherited callback `thisArg` parameters and their hot-path dispatch cost. P6.10
+remains the sole `NEXT` item: one understandable, interactive single-maintainer
+beta publication command with npm two-factor authentication and no CI
+publishing credential.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1569,6 +1571,7 @@ names.
 | `DONE` | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
 | `DONE` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
 | `NEXT` | P6.10 | Publish and verify the first beta with the interactive release command                |
+| `DONE` | P6.11 | Remove inherited callback `thisArg` parameters and direct-call callback hot paths     |
 
 #### P6.9 completion bar
 
@@ -1646,6 +1649,41 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
 - Local verification is recorded in the P6.10 session entry. Live npm
   OTP/WebAuthn publication, package-access hardening, registry verification,
   and the immutable GitHub Release remain required before `DONE`.
+
+#### P6.11 completion bar
+
+- Every RxJS Next callback API is audited for a separate `thisArg`; the exact
+  affected API inventory is recorded.
+- Receiver-aware overloads, implementation parameters, and `.call` dispatch
+  are removed from all affected APIs without changing platform-polyfill
+  receiver binding required by Web IDL and iterator protocols.
+- Focused and migrated tests no longer assert library-provided callback
+  receivers; source-pinned RxJS 7 identifiers remain historical evidence, and
+  active replacements demonstrate closures or `Function.prototype.bind`.
+- Focused source, migrated cold/polyfill, public type, package, kernel,
+  migration-document freshness, lint, and diff gates pass.
+
+#### P6.11 completion evidence
+
+- Audited RxJS production source and found exactly six APIs with a separate
+  callback receiver argument: Symbol-keyed `every`, `filter`, `find`,
+  `findIndex`, and `map`, plus static Symbol-keyed `partition`. Removed every
+  receiver-aware overload, implementation parameter, and callback `.call`.
+- Replaced active receiver assertions with ordinary value/index/source tests,
+  closures, or explicitly bound callbacks. Added public declaration checks
+  that reject the removed second or third arguments. Classified all six
+  source-pinned RxJS 7 cases as intentional divergences and made their
+  executable migrated programs bind callbacks instead of exercising the
+  removed overload.
+- Passed all 750 RxJS source tests, the 76 affected cold and 76 affected
+  polyfill migrated tests, lint with zero errors, public types, package build,
+  migration-document freshness, 97-Symbol installation, and all package import
+  fixtures. Exact complete audits retained the reviewed 2,299/39 cold and
+  2,316/22 polyfill outcomes.
+- Passed the eight-case packaged fallback/native Chrome 150 kernel contract.
+  The release performance gate measured approximately 63.0 million map values
+  and 140,627 cancellations per second. Marked P6.11 `DONE`; the completed
+  execution queue has no `NEXT` marker.
 
 #### P6.1 completion bar
 
@@ -3680,3 +3718,19 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+### 2026-08-05 — P6.11 callback receiver removal
+
+- Audited the complete RxJS production source and removed callback `thisArg`
+  overloads and `.call` dispatch from `every`, `filter`, `find`, `findIndex`,
+  `map`, and `partition`; no platform-polyfill protocol receiver binding was
+  changed.
+- Reworked focused and migrated tests to use ordinary closures or bound
+  callbacks, added negative public-type assertions, and classified the six
+  source-pinned RxJS 7 receiver cases as intentional divergences while
+  preserving their historical IDs.
+- Passed 750 source tests, both 76-test affected migrated suites, exact complete
+  cold/polyfill audit baselines, public types, lint, package/build/import and
+  migration freshness gates, the packaged fallback/native Chrome kernel, and
+  the release performance floor.
+- Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
+  item.

@@ -78,8 +78,18 @@ const names = users[filter]((user) => user.active)[map]((user) => user.name);
 
 The platform and RxJS forms can coexist. For example,
 `source.map(project)` is the platform contract while
-`source[map](project, thisArg)` is the RxJS contract. Importing the RxJS Symbol
-must not replace the platform string-named method.
+`source[map](project)` is the RxJS contract. Importing the RxJS Symbol must not
+replace the platform string-named method.
+
+RxJS 9 does not accept the RxJS 7 callback `thisArg` parameter on `every`,
+`filter`, `find`, `findIndex`, `map`, or `partition`. Capture state with a
+closure or bind the callback explicitly:
+
+```ts
+const offset = 10;
+const closedOver = source[map]((value) => value + offset);
+const bound = source[map](project.bind(context));
+```
 
 Use the exact `pipe` Symbol only when deliberate multi-step composition is
 clearer than direct Symbol chaining:

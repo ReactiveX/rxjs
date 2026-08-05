@@ -63,7 +63,7 @@ describe('partition (platform)', () => {
       expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
     });
   });
-  it('should partition an observable into two using a predicate and thisArg', async () => {
+  it('should partition an observable into two using a bound predicate', async () => {
     await rxTest(({ hot, expectSubscriptions, expectObservable }) => {
       const e1 = hot('   --a-b---a------d--a---c--|');
       const e1subs = '   ^------------------------!';
@@ -79,7 +79,7 @@ describe('partition (platform)', () => {
         for (let index_1 = 0; index_1 < result_1.length; index_1++) {
           expectObservable(result_1[index_1]).toBe(expected_1[index_1]);
         }
-      })(Observable[partition](e1, predicate, { value: 'a' }), expected);
+      })(Observable[partition](e1, predicate.bind({ value: 'a' })), expected);
       expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
     });
   });

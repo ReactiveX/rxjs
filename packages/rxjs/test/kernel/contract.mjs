@@ -98,13 +98,9 @@ export async function runExtensionKernelContract({ ObservableCtor, platformMap, 
   assert(!Object.hasOwn(ObservableCtor, 'timer'), 'RxJS installed string-named timer');
   completeCase('installation and platform overlap');
 
-  const context = { offset: 10 };
-  const mapped = await collect(
-    fromValues(1, 2, 3)[symbols.map](function (value, index) {
-      return this.offset + value + index;
-    }, context)
-  );
-  assertDeepEqual(mapped, [11, 13, 15], 'RxJS map index/thisArg behavior changed');
+  const offset = 10;
+  const mapped = await collect(fromValues(1, 2, 3)[symbols.map]((value, index) => offset + value + index));
+  assertDeepEqual(mapped, [11, 13, 15], 'RxJS map index behavior changed');
   const scanned = await collect(fromValues(1, 2, 3)[symbols.scan]((total, value) => total + value, 0));
   assertDeepEqual(scanned, [1, 3, 6], 'RxJS scan behavior changed');
   completeCase('map and scan semantics');

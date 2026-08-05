@@ -3,8 +3,8 @@ import '@rxjs/observable-polyfill';
 import { filter } from './filter.js';
 
 describe('filter', () => {
-  it('emits accepted values and supplies a zero-based index and thisArg', () => {
-    const context = { minimum: 2 };
+  it('emits accepted values and supplies a zero-based index', () => {
+    const minimum = 2;
     const calls: Array<[number, number]> = [];
     const results: Array<number | 'complete'> = [];
     const source = new Observable<number>((subscriber) => {
@@ -14,10 +14,10 @@ describe('filter', () => {
       subscriber.complete();
     });
 
-    source[filter](function (value, index) {
+    source[filter]((value, index) => {
       calls.push([value, index]);
-      return value >= this.minimum;
-    }, context).subscribe({
+      return value >= minimum;
+    }).subscribe({
       next: (value) => results.push(value),
       complete: () => results.push('complete'),
     });

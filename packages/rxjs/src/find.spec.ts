@@ -56,7 +56,9 @@ describe('find', () => {
     const emptyValues: Array<number | undefined> = [];
     const nonmatchingValues: Array<number | undefined> = [];
 
-    Observable.from([] as number[])[find](() => true).subscribe((value) => emptyValues.push(value));
+    Observable.from([] as number[])
+      [find](() => true)
+      .subscribe((value) => emptyValues.push(value));
     Observable.from([1, 2, 3])
       [find]((value) => value > 10)
       .subscribe((value) => nonmatchingValues.push(value));
@@ -65,21 +67,21 @@ describe('find', () => {
     expect(nonmatchingValues).toEqual([undefined]);
   });
 
-  it('passes value, index, and the exact source and supports thisArg', () => {
+  it('passes value, index, and the exact source', () => {
     const source = Observable.from([2, 4, 6]);
-    const context = { target: 4 };
-    const calls: Array<[number, number, Observable<number>, unknown]> = [];
+    const target = 4;
+    const calls: Array<[number, number, Observable<number>]> = [];
     const values: Array<number | undefined> = [];
 
-    source[find](function (value, index, receivedSource) {
-      calls.push([value, index, receivedSource, this]);
-      return value === this.target;
-    }, context).subscribe((value) => values.push(value));
+    source[find]((value, index, receivedSource) => {
+      calls.push([value, index, receivedSource]);
+      return value === target;
+    }).subscribe((value) => values.push(value));
 
     expect(values).toEqual([4]);
     expect(calls).toEqual([
-      [2, 0, source, context],
-      [4, 1, source, context],
+      [2, 0, source],
+      [4, 1, source],
     ]);
   });
 
@@ -97,9 +99,11 @@ describe('find', () => {
     const predicateErrors: unknown[] = [];
     const produced: number[] = [];
 
-    new Observable<number>((subscriber) => subscriber.error(sourceFailure))[find](() => true).subscribe({
-      error: (error) => sourceErrors.push(error),
-    });
+    new Observable<number>((subscriber) => subscriber.error(sourceFailure))
+      [find](() => true)
+      .subscribe({
+        error: (error) => sourceErrors.push(error),
+      });
     new Observable<number>((subscriber) => {
       for (const value of [1, 2, 3]) {
         if (!subscriber.active) {
