@@ -45,8 +45,18 @@ if (scenario === 'missing-global-subpath') {
   const prototypeDescriptions = Object.getOwnPropertySymbols(globalThis.Observable.prototype).map((symbol) => symbol.description);
 
   assert.equal(typeof root.Subject, 'function');
-  assert.equal('map' in root, false);
-  assert.equal('filter' in root, false);
+  assert.equal(typeof root.rx, 'function');
+  assert.equal(typeof root.map, 'function');
+  assert.equal(typeof root.filter, 'function');
+  const values = [];
+  root
+    .rx(
+      [1, 2, 3],
+      root.filter((value) => value > 1),
+      root.map((value) => value * 10)
+    )
+    .subscribe((value) => values.push(value));
+  assert.deepEqual(values, [20, 30]);
   assert.deepEqual(constructorDescriptions, ['rxjs.observable.polyfill.info.v1', 'rxjs.kernel.create.v1']);
   assert.deepEqual(prototypeDescriptions, ['Symbol.toStringTag', 'rxjs.kernel.create.v1']);
 } else if (scenario === 'foreign-constructor') {

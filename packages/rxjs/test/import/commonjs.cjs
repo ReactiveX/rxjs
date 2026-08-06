@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
-const { ColdObservable, Subject, TimeoutError } = require('rxjs');
-const { map } = require('rxjs/map');
+const { ColdObservable, Subject, TimeoutError, filter, map, rx } = require('rxjs');
+const { map: mapSymbol } = require('rxjs/map');
 const { pipe } = require('rxjs/pipe');
 const { scan } = require('rxjs/scan');
 const { switchMap } = require('rxjs/switch-map');
@@ -11,12 +11,15 @@ assert.equal(typeof globalThis.Observable, 'function');
 assert.equal(typeof ColdObservable, 'function');
 assert.equal(typeof Subject, 'function');
 assert.equal(typeof TimeoutError, 'function');
-assert.equal(typeof map, 'symbol');
-assert.equal(typeof globalThis.Observable.prototype[map], 'function');
+assert.equal(typeof rx, 'function');
+assert.equal(typeof map, 'function');
+assert.equal(typeof filter, 'function');
+assert.equal(typeof mapSymbol, 'symbol');
+assert.equal(typeof globalThis.Observable.prototype[mapSymbol], 'function');
 for (const symbol of [pipe, scan, switchMap, timeout, timer]) {
   assert.equal(typeof symbol, 'symbol');
 }
-for (const symbol of [map, pipe, scan, switchMap, timeout]) {
+for (const symbol of [mapSymbol, pipe, scan, switchMap, timeout]) {
   assert.equal(typeof globalThis.Observable.prototype[symbol], 'function');
   assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable.prototype, symbol).enumerable, true);
 }

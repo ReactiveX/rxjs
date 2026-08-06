@@ -21,7 +21,11 @@ export {
   type ValueFromNotification,
 } from './notification.js';
 export { PerSubscriptionSubjectBase } from './per-subscription-subject-base.js';
+export { filter } from './pipeable/filter.js';
+export { map } from './pipeable/map.js';
+export type { MonoTypeOperatorFunction, ObservableInput, OperatorFunction, UnaryFunction } from './pipeable/types.js';
 export { replaySubject, type ReplaySubjectConfig } from './replay-subject.js';
+export { rx } from './rx.js';
 export { SequenceError } from './sequence-error.js';
 export { Subject } from './subject.js';
 export { TimeoutError, type TimeoutInfo } from './timeout-error.js';
