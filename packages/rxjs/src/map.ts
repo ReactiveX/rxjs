@@ -1,4 +1,4 @@
-import { mapOperator } from './pipeable/map.js';
+import { mapOperator } from './pipeable/map-operator.js';
 import { operate } from './pipeable/operate.js';
 
 export const map: unique symbol = Symbol('map');

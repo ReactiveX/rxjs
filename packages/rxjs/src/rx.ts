@@ -1,3 +1,4 @@
+import '@rxjs/observable-polyfill';
 import type { UnaryFunction } from './pipeable/types.js';
 
 /**

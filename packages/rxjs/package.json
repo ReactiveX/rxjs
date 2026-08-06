@@ -154,6 +154,11 @@
       "./partition": "./src/partition.ts",
       "./per-subscription-subject-base": "./src/per-subscription-subject-base.ts",
       "./pipe": "./src/pipe.ts",
+      "./pipeable/filter": "./src/pipeable/filter.ts",
+      "./pipeable/map": "./src/pipeable/map.ts",
+      "./pipeable/subscribe": "./src/pipeable/subscribe.ts",
+      "./pipeable/take": "./src/pipeable/take.ts",
+      "./pipeable/to-array": "./src/pipeable/to-array.ts",
       "./pluck": "./src/pluck.ts",
       "./publish": "./src/publish.ts",
       "./publish-behavior": "./src/publish-behavior.ts",
@@ -167,6 +172,7 @@
       "./replay-subject": "./src/replay-subject.ts",
       "./retry": "./src/retry.ts",
       "./retry-when": "./src/retry-when.ts",
+      "./rx": "./src/rx.ts",
       "./sample": "./src/sample.ts",
       "./sample-time": "./src/sample-time.ts",
       "./scan": "./src/scan.ts",
@@ -181,7 +187,11 @@
       "./skip-while": "./src/skip-while.ts",
       "./start-with": "./src/start-with.ts",
       "./subject": "./src/subject.ts",
+      "./subscribe": "./src/pipeable/subscribe.ts",
       "./subscribe-on": "./src/subscribe-on.ts",
+      "./symbol/filter": "./src/filter.ts",
+      "./symbol/map": "./src/map.ts",
+      "./symbol/take": "./src/take.ts",
       "./switch-map": "./src/switch-map.ts",
       "./switch-scan": "./src/switch-scan.ts",
       "./take": "./src/take.ts",
@@ -196,6 +206,7 @@
       "./timeout-error": "./src/timeout-error.ts",
       "./timer": "./src/timer.ts",
       "./timestamp": "./src/timestamp.ts",
+      "./to-array": "./src/pipeable/to-array.ts",
       "./window": "./src/window.ts",
       "./window-count": "./src/window-count.ts",
       "./window-time": "./src/window-time.ts",
@@ -1415,6 +1426,96 @@
         "default": "./dist/esm/pipe.js"
       }
     },
+    "./pipeable/filter": {
+      "browser": {
+        "types": "./dist/esm/pipeable/filter.d.ts",
+        "default": "./dist/esm/pipeable/filter.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/filter.d.ts",
+        "default": "./dist/esm/pipeable/filter.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/filter.d.ts",
+        "default": "./dist/esm/pipeable/filter.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/filter.d.ts",
+        "default": "./dist/esm/pipeable/filter.js"
+      }
+    },
+    "./pipeable/map": {
+      "browser": {
+        "types": "./dist/esm/pipeable/map.d.ts",
+        "default": "./dist/esm/pipeable/map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/map.d.ts",
+        "default": "./dist/esm/pipeable/map.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/map.d.ts",
+        "default": "./dist/esm/pipeable/map.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/map.d.ts",
+        "default": "./dist/esm/pipeable/map.js"
+      }
+    },
+    "./pipeable/subscribe": {
+      "browser": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      }
+    },
+    "./pipeable/take": {
+      "browser": {
+        "types": "./dist/esm/pipeable/take.d.ts",
+        "default": "./dist/esm/pipeable/take.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/take.d.ts",
+        "default": "./dist/esm/pipeable/take.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/take.d.ts",
+        "default": "./dist/esm/pipeable/take.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/take.d.ts",
+        "default": "./dist/esm/pipeable/take.js"
+      }
+    },
+    "./pipeable/to-array": {
+      "browser": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      }
+    },
     "./pluck": {
       "browser": {
         "types": "./dist/esm/pluck.d.ts",
@@ -1647,6 +1748,24 @@
       "require": {
         "types": "./dist/esm/retry-when.d.ts",
         "default": "./dist/esm/retry-when.js"
+      }
+    },
+    "./rx": {
+      "browser": {
+        "types": "./dist/esm/rx.d.ts",
+        "default": "./dist/esm/rx.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/rx.d.ts",
+        "default": "./dist/esm/rx.js"
+      },
+      "import": {
+        "types": "./dist/esm/rx.d.ts",
+        "default": "./dist/esm/rx.js"
+      },
+      "require": {
+        "types": "./dist/esm/rx.d.ts",
+        "default": "./dist/esm/rx.js"
       }
     },
     "./sample": {
@@ -1901,6 +2020,24 @@
         "default": "./dist/esm/subject.js"
       }
     },
+    "./subscribe": {
+      "browser": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/subscribe.d.ts",
+        "default": "./dist/esm/pipeable/subscribe.js"
+      }
+    },
     "./subscribe-on": {
       "browser": {
         "types": "./dist/esm/subscribe-on.d.ts",
@@ -1917,6 +2054,60 @@
       "require": {
         "types": "./dist/esm/subscribe-on.d.ts",
         "default": "./dist/esm/subscribe-on.js"
+      }
+    },
+    "./symbol/filter": {
+      "browser": {
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
+      },
+      "import": {
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
+      },
+      "require": {
+        "types": "./dist/esm/filter.d.ts",
+        "default": "./dist/esm/filter.js"
+      }
+    },
+    "./symbol/map": {
+      "browser": {
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
+      },
+      "import": {
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
+      },
+      "require": {
+        "types": "./dist/esm/map.d.ts",
+        "default": "./dist/esm/map.js"
+      }
+    },
+    "./symbol/take": {
+      "browser": {
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
+      },
+      "import": {
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
+      },
+      "require": {
+        "types": "./dist/esm/take.d.ts",
+        "default": "./dist/esm/take.js"
       }
     },
     "./switch-map": {
@@ -2169,6 +2360,24 @@
       "require": {
         "types": "./dist/esm/timestamp.d.ts",
         "default": "./dist/esm/timestamp.js"
+      }
+    },
+    "./to-array": {
+      "browser": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/to-array.d.ts",
+        "default": "./dist/esm/pipeable/to-array.js"
       }
     },
     "./window": {

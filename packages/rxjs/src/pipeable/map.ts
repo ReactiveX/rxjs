@@ -1,4 +1,4 @@
-import { subscribeToSource } from '../util/observable-helpers.js';
+import { mapOperator } from './map-operator.js';
 import { operate } from './operate.js';
 import type { OperatorFunction } from './types.js';
 
@@ -13,8 +13,8 @@ import type { OperatorFunction } from './types.js';
  * Errors thrown by `project` are delivered to the result Observable and close
  * the active upstream work.
  *
- * @typeParam T The source value type.
- * @typeParam R The projected value type.
+ * @typeParam In The source value type.
+ * @typeParam Out The projected value type.
  * @param project Converts each source value and index into a result value.
  * @returns A unary operator for use with `rx` or another composition helper.
  *
@@ -32,19 +32,4 @@ import type { OperatorFunction } from './types.js';
  */
 export function map<In, Out>(project: (value: In, index: number) => Out): OperatorFunction<In, Out> {
   return operate(mapOperator(project));
-}
-
-/** @internal */
-export function mapOperator<In, Out>(
-  project: (value: In, index: number) => Out
-): (source: Observable<In>, subscriber: Subscriber<Out>) => void {
-  return (source, subscriber) => {
-    let index = 0;
-
-    subscribeToSource(source, subscriber, {
-      next(value) {
-        subscriber.next(project(value, index++));
-      },
-    });
-  };
 }

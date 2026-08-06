@@ -1,6 +1,13 @@
 const assert = require('node:assert/strict');
-const { ColdObservable, Subject, TimeoutError, filter, map, rx } = require('rxjs');
-const { map: mapSymbol } = require('rxjs/map');
+const { ColdObservable, Subject, TimeoutError, filter, map, rx, subscribe, take, toArray } = require('rxjs');
+const deepMapModule = require('rxjs/pipeable/map');
+const deepTakeModule = require('rxjs/pipeable/take');
+const { rx: deepRx } = require('rxjs/rx');
+const { subscribe: deepSubscribe } = require('rxjs/subscribe');
+const { filter: filterSymbol } = require('rxjs/symbol/filter');
+const { map: mapSymbol } = require('rxjs/symbol/map');
+const { take: takeSymbol } = require('rxjs/symbol/take');
+const { toArray: deepToArray } = require('rxjs/to-array');
 const { pipe } = require('rxjs/pipe');
 const { scan } = require('rxjs/scan');
 const { switchMap } = require('rxjs/switch-map');
@@ -14,8 +21,22 @@ assert.equal(typeof TimeoutError, 'function');
 assert.equal(typeof rx, 'function');
 assert.equal(typeof map, 'function');
 assert.equal(typeof filter, 'function');
+assert.equal(typeof take, 'function');
+assert.equal(typeof toArray, 'function');
+assert.equal(typeof subscribe, 'function');
+assert.equal(typeof deepMapModule.map, 'function');
+assert.equal(typeof deepTakeModule.take, 'function');
+assert.equal('mapOperator' in deepMapModule, false);
+assert.equal('takeOperator' in deepTakeModule, false);
+assert.equal(typeof deepRx, 'function');
+assert.equal(typeof deepSubscribe, 'function');
+assert.equal(typeof deepToArray, 'function');
 assert.equal(typeof mapSymbol, 'symbol');
+assert.equal(typeof filterSymbol, 'symbol');
+assert.equal(typeof takeSymbol, 'symbol');
 assert.equal(typeof globalThis.Observable.prototype[mapSymbol], 'function');
+assert.equal(typeof globalThis.Observable.prototype[filterSymbol], 'function');
+assert.equal(typeof globalThis.Observable.prototype[takeSymbol], 'function');
 for (const symbol of [pipe, scan, switchMap, timeout, timer]) {
   assert.equal(typeof symbol, 'symbol');
 }

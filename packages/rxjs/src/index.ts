@@ -23,6 +23,9 @@ export {
 export { PerSubscriptionSubjectBase } from './per-subscription-subject-base.js';
 export { filter } from './pipeable/filter.js';
 export { map } from './pipeable/map.js';
+export { subscribe, type Subscription } from './pipeable/subscribe.js';
+export { take } from './pipeable/take.js';
+export { toArray } from './pipeable/to-array.js';
 export type { OperatorFunction, UnaryFunction } from './pipeable/types.js';
 export { replaySubject, type ReplaySubjectConfig } from './replay-subject.js';
 export { rx } from './rx.js';
