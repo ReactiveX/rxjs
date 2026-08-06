@@ -238,7 +238,7 @@ describe('repeatWhen', () => {
       .subscribe({ error: (error) => factoryErrors.push(error) });
 
     Observable.from([] as number[])
-      [repeatWhen](() => ({}) as ObservableValue<never>)
+      [repeatWhen](() => ({}) as ObservableInput<never>)
       .subscribe({ error: (error) => conversionErrors.push(error) });
 
     expect(factoryErrors).toEqual([factoryFailure]);

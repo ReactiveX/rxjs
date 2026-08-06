@@ -235,8 +235,9 @@ support:
 
 The exact Symbol-addressed `[pipe]` remains an intentional Next API. D-060's
 parallel pilot now adds root `rx`, pipeable `map` and `filter`, plus
-`UnaryFunction`, `OperatorFunction`, and `MonoTypeOperatorFunction`. These are
-new Next contracts and do not imply that RxJS 7 import paths, scheduler
+`UnaryFunction` and `OperatorFunction`. `OperatorFunction<T, T>` replaces the
+redundant `MonoTypeOperatorFunction` alias. These are new Next contracts and do
+not imply that RxJS 7 import paths, scheduler
 overloads, broad `ObservableInput`, or `Subscription` behavior are restored.
 
 The initial `rx` overloads preserve exact types through nine transformations

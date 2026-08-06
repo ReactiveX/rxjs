@@ -37,7 +37,7 @@ describe('publish', () => {
     expect((Observable.prototype as unknown as Record<symbol, unknown>)[otherKey]).toBeUndefined();
 
     if (false) {
-      // @ts-expect-error A selector must return an ObservableValue.
+      // @ts-expect-error A selector must return an ObservableInput.
       source[publish](() => 1);
       // @ts-expect-error The selector receives the source value type.
       source[publish]((shared: Observable<string>) => shared);

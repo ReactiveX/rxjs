@@ -34,7 +34,7 @@ describe('delayWhen', () => {
     if (false) {
       // @ts-expect-error A duration selector is required.
       source[delayWhen]();
-      // @ts-expect-error A duration selector must return an ObservableValue.
+      // @ts-expect-error A duration selector must return an ObservableInput.
       source[delayWhen](() => 1);
       // @ts-expect-error The optional subscription delay is an Observable in RxJS 7.
       source[delayWhen](() => [], Promise.resolve());
@@ -118,7 +118,7 @@ describe('delayWhen', () => {
     const conversionSource = controllable<number>();
     const conversionErrors: unknown[] = [];
 
-    conversionSource.observable[delayWhen](() => ({} as ObservableValue<never>)).subscribe({
+    conversionSource.observable[delayWhen](() => ({} as ObservableInput<never>)).subscribe({
       error: (error) => conversionErrors.push(error),
     });
     conversionSource.subscriber.next(1);

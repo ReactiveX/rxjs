@@ -129,7 +129,7 @@ describe('expand', () => {
     expect(values.at(-1)).toBe(10_000);
   });
 
-  it('converts iterable projections as ObservableValue inputs', () => {
+  it('converts iterable projections as ObservableInput inputs', () => {
     const values: number[] = [];
 
     Observable.from([1])
@@ -171,9 +171,9 @@ describe('expand', () => {
     expect(events).toEqual([1, failure]);
   });
 
-  it('propagates ObservableValue conversion errors after emitting the input value', () => {
+  it('propagates ObservableInput conversion errors after emitting the input value', () => {
     const events: unknown[] = [];
-    const invalidInput = {} as ObservableValue<never>;
+    const invalidInput = {} as ObservableInput<never>;
 
     Observable.from([1])
       [expand](() => invalidInput)

@@ -1,7 +1,7 @@
 import '@rxjs/observable-polyfill';
 
 export interface ConvertObservableValueOptions<T> {
-  value: ObservableValue<T>;
+  value: ObservableInput<T>;
 }
 
 /** Converts inputs at the active realm's platform boundary. */

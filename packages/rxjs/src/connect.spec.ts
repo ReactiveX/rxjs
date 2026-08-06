@@ -47,7 +47,7 @@ describe('connect', () => {
     if (false) {
       // @ts-expect-error A selector is required.
       source[connect]();
-      // @ts-expect-error The selector must return an ObservableValue.
+      // @ts-expect-error The selector must return an ObservableInput.
       source[connect](() => 1);
       // @ts-expect-error The connector must return a SubjectLike.
       source[connect]((shared) => shared, { connector: () => Observable.from([1]) });

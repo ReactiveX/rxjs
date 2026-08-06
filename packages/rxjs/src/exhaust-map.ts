@@ -6,7 +6,7 @@ export const exhaustMap: unique symbol = Symbol('exhaustMap');
 declare global {
   interface Observable<T> {
     [exhaustMap]: <R>(
-      mapper: (value: T, index: number) => ObservableValue<R>,
+      mapper: (value: T, index: number) => ObservableInput<R>,
       options?: {
         concurrent?: number;
       }
@@ -16,7 +16,7 @@ declare global {
 
 Observable.prototype[exhaustMap] = function <T, R>(
   this: Observable<T>,
-  mapper: (value: T, index: number) => ObservableValue<R>,
+  mapper: (value: T, index: number) => ObservableInput<R>,
   options?: { concurrent?: number }
 ): Observable<R> {
   return this[create]((subscriber) => {

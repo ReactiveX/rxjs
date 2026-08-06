@@ -46,13 +46,13 @@ class Connection implements ConnectableConnection {
 }
 
 export class ConnectableObservable<T> extends Observable<T> {
-  readonly source: ObservableValue<T>;
+  readonly source: ObservableInput<T>;
   protected readonly subjectFactory: () => SubjectLike<T>;
   readonly #state: ConnectableState<T>;
 
-  constructor(source: ObservableValue<T>, subjectFactory: () => SubjectLike<T>);
-  constructor(source: ObservableValue<T>, config?: ConnectableConfig<T>);
-  constructor(source: ObservableValue<T>, configOrSubjectFactory?: ConnectableConfig<T> | (() => SubjectLike<T>)) {
+  constructor(source: ObservableInput<T>, subjectFactory: () => SubjectLike<T>);
+  constructor(source: ObservableInput<T>, config?: ConnectableConfig<T>);
+  constructor(source: ObservableInput<T>, configOrSubjectFactory?: ConnectableConfig<T> | (() => SubjectLike<T>)) {
     const connector =
       typeof configOrSubjectFactory === 'function' ? configOrSubjectFactory : configOrSubjectFactory?.connector ?? (() => new Subject<T>());
     const resetOnDisconnect = typeof configOrSubjectFactory === 'function' ? true : configOrSubjectFactory?.resetOnDisconnect ?? true;
@@ -186,7 +186,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-export function connectable<T>(source: ObservableValue<T>, config?: ConnectableConfig<T>): ConnectableObservable<T> {
+export function connectable<T>(source: ObservableInput<T>, config?: ConnectableConfig<T>): ConnectableObservable<T> {
   return new ConnectableObservable(source, config);
 }
 

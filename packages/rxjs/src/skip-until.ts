@@ -5,11 +5,11 @@ export const skipUntil: unique symbol = Symbol('skipUntil');
 
 declare global {
   interface Observable<T> {
-    [skipUntil]: (notifier: ObservableValue<any>) => Observable<T>;
+    [skipUntil]: (notifier: ObservableInput<any>) => Observable<T>;
   }
 }
 
-Observable.prototype[skipUntil] = function <T>(this: Observable<T>, notifier: ObservableValue<any>): Observable<T> {
+Observable.prototype[skipUntil] = function <T>(this: Observable<T>, notifier: ObservableInput<any>): Observable<T> {
   return this[create]((subscriber) => {
     let taking = false;
     const notifierController = new AbortController();

@@ -219,7 +219,7 @@ describe('skipUntil', () => {
     expect(sourceAfterReject.teardowns).toBe(1);
   });
 
-  it('forwards ObservableValue conversion errors without activating the source', () => {
+  it('forwards ObservableInput conversion errors without activating the source', () => {
     const failure = new Error('conversion failed');
     let sourceActivations = 0;
     const errors: unknown[] = [];

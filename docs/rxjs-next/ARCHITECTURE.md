@@ -565,14 +565,20 @@ smaller than the proposed destination:
 
 - `rx(input, ...functions)` converts `input` through the active platform
   `Observable.from` and applies unary functions from left to right;
-- public `ObservableInput`, `UnaryFunction`, `OperatorFunction`, and
-  `MonoTypeOperatorFunction` types describe the initial composition boundary;
+- the ambient `ObservableInput` union names the platform conversion boundary;
+  public `UnaryFunction<In, Out>` and `OperatorFunction<In, Out>` type aliases
+  describe composition without a redundant mono-type alias;
 - pipeable `map` and `filter` are root exports and use an internal `operate`
   helper;
 - `operate` creates through the source's D-037 `[create]` protocol and catches
   synchronous connection failures, while `subscribeToSource` continues to own
   signal propagation and notification-callback safety;
 - all current Symbol modules, imports, installations, and tests remain intact.
+
+The first maintainer review selected a shared internal callback for behavior
+implemented by both public forms. Pipeable `map` and exact-Symbol `[map]` now
+apply the same `mapOperator(project)` callback through `operate`; neither public
+surface delegates through the other.
 
 The pilot does not settle the package layout. In particular, `rxjs/map` and
 `rxjs/filter` still export their existing Symbols even though the root exports
@@ -1037,7 +1043,7 @@ catalog. An operator or factory subpath installs only its exported exact Symbol
 capability and internal kernel dependencies.
 
 The polyfill package owns the ambient TypeScript declarations for
-`Observable`, `Subscriber`, `ObservableValue`, and `EventTarget.when`.
+`Observable`, `Subscriber`, `ObservableInput`, and `EventTarget.when`.
 Individual `rxjs` entry points augment those base declarations only with the
 Symbols they export. `@rxjs/test` imports the public `ColdObservable` entry;
 that entry preserves an existing constructor or conditionally initializes the

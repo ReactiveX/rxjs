@@ -768,7 +768,7 @@ diagrams. No implementation is required for this decision step.
 - Accepted `@rxjs/observable-polyfill`, `rxjs`, and `@rxjs/test` as the three
   target runtime products. Selected `@rxjs/observable` for physical removal in
   P0.3 with no archive, rename, or compatibility reuse.
-- Assigned the base ambient `Observable`, `Subscriber`, `ObservableValue`, and
+- Assigned the base ambient `Observable`, `Subscriber`, `ObservableInput`, and
   `EventTarget.when` declarations to the independently publishable polyfill
   package. `rxjs` owns subpath-scoped Symbol augmentations. At P0.2 acceptance,
   `@rxjs/test` remained implementation-neutral; D-043 later gave its explicit

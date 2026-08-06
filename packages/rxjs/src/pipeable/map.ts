@@ -30,8 +30,15 @@ import type { OperatorFunction } from './types.js';
  * doubled.subscribe(console.log); // 2, 4, 6
  * ```
  */
-export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
-  return operate((source, subscriber) => {
+export function map<In, Out>(project: (value: In, index: number) => Out): OperatorFunction<In, Out> {
+  return operate(mapOperator(project));
+}
+
+/** @internal */
+export function mapOperator<In, Out>(
+  project: (value: In, index: number) => Out
+): (source: Observable<In>, subscriber: Subscriber<Out>) => void {
+  return (source, subscriber) => {
     let index = 0;
 
     subscribeToSource(source, subscriber, {
@@ -39,5 +46,5 @@ export function map<T, R>(project: (value: T, index: number) => R): OperatorFunc
         subscriber.next(project(value, index++));
       },
     });
-  });
+  };
 }

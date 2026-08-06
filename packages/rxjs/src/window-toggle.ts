@@ -7,8 +7,8 @@ export const windowToggle: unique symbol = Symbol('windowToggle');
 declare global {
   interface Observable<T> {
     [windowToggle]<Opening>(
-      openings: ObservableValue<Opening>,
-      closingSelector: (opening: Opening) => ObservableValue<unknown>
+      openings: ObservableInput<Opening>,
+      closingSelector: (opening: Opening) => ObservableInput<unknown>
     ): Observable<Observable<T>>;
   }
 }
@@ -21,8 +21,8 @@ interface WindowContext<T> {
 
 Observable.prototype[windowToggle] = function <T, Opening>(
   this: Observable<T>,
-  openings: ObservableValue<Opening>,
-  closingSelector: (opening: Opening) => ObservableValue<unknown>
+  openings: ObservableInput<Opening>,
+  closingSelector: (opening: Opening) => ObservableInput<unknown>
 ): Observable<Observable<T>> {
   return this[create]((subscriber) => {
     let windows: WindowContext<T>[] = [];
@@ -90,7 +90,7 @@ Observable.prototype[windowToggle] = function <T, Opening>(
       windows.push(context);
       closingControllers.add(context.closingController);
 
-      let closingValue: ObservableValue<unknown>;
+      let closingValue: ObservableInput<unknown>;
       try {
         closingValue = closingSelector(opening);
       } catch (error) {

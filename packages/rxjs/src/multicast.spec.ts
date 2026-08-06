@@ -51,7 +51,7 @@ describe('multicast', () => {
       source[multicast]();
       // @ts-expect-error The first argument must be a SubjectLike or factory.
       source[multicast](source);
-      // @ts-expect-error A selector must return an ObservableValue.
+      // @ts-expect-error A selector must return an ObservableInput.
       source[multicast](subject, () => 1);
       // @ts-expect-error The factory subject value type must match the source.
       source[multicast](() => new Subject<string>());

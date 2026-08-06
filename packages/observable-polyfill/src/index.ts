@@ -541,7 +541,7 @@ function fromAsyncIterable<T>(ObservableCtor: typeof Observable<T>, value: objec
 }
 
 class ObservableImpl<T> implements Subscribable<T> {
-  static from<T>(value: ObservableValue<T>): Observable<T> {
+  static from<T>(value: ObservableInput<T>): Observable<T> {
     if (value instanceof Observable) {
       return value;
     }
@@ -625,7 +625,7 @@ class ObservableImpl<T> implements Subscribable<T> {
     }
   }
 
-  takeUntil(notifier: ObservableValue<any>): Observable<T> {
+  takeUntil(notifier: ObservableInput<any>): Observable<T> {
     const ObservableCtor = instanceCtor<T>(this);
     return new ObservableCtor((subscriber) => {
       Observable.from(notifier).subscribe(
@@ -748,7 +748,7 @@ class ObservableImpl<T> implements Subscribable<T> {
     });
   }
 
-  flatMap<R>(mapper: (value: T, index: number) => ObservableValue<R>): Observable<R> {
+  flatMap<R>(mapper: (value: T, index: number) => ObservableInput<R>): Observable<R> {
     const ObservableCtor = instanceCtor<R>(this);
     return new ObservableCtor((subscriber) => {
       let index = 0;
@@ -811,7 +811,7 @@ class ObservableImpl<T> implements Subscribable<T> {
     });
   }
 
-  switchMap<R>(mapper: (value: T, index: number) => ObservableValue<R>): Observable<R> {
+  switchMap<R>(mapper: (value: T, index: number) => ObservableInput<R>): Observable<R> {
     const ObservableCtor = instanceCtor<R>(this);
     return new ObservableCtor((subscriber) => {
       let innerController: AbortController | null = null;
@@ -926,7 +926,7 @@ class ObservableImpl<T> implements Subscribable<T> {
     });
   }
 
-  catch<R>(handler: (error: any) => ObservableValue<R>): Observable<T | R> {
+  catch<R>(handler: (error: any) => ObservableInput<R>): Observable<T | R> {
     const ObservableCtor = instanceCtor<T | R>(this);
     return new ObservableCtor((subscriber) => {
       this.subscribe(
@@ -1458,7 +1458,21 @@ declare global {
     subscribe(observer?: Partial<Observer<T>> | ((value: T) => void) | null, options?: SubscribeOptions): void;
   }
 
-  type ObservableValue<T> = Observable<T> | AsyncIterable<T> | PromiseLike<T> | Iterable<T>;
+  /**
+   * A value accepted by the active realm's `Observable.from` conversion
+   * boundary.
+   *
+   * @example Convert an iterable before applying RxJS operators
+   * ```ts
+   * import { map, rx } from 'rxjs';
+   *
+   * const input: ObservableInput<number> = [1, 2, 3];
+   * const doubled = rx(input, map((value) => value * 2));
+   *
+   * doubled.subscribe(console.log); // 2, 4, 6
+   * ```
+   */
+  type ObservableInput<T> = Observable<T> | AsyncIterable<T> | PromiseLike<T> | Iterable<T>;
 
   interface SubscribeOptions {
     signal?: AbortSignal;
@@ -1478,7 +1492,7 @@ declare global {
 
   interface ObservableCtor {
     new <T>(init: (subscriber: Subscriber<T>) => void): Observable<T>;
-    from<T>(value: ObservableValue<T>): Observable<T>;
+    from<T>(value: ObservableInput<T>): Observable<T>;
   }
 
   // eslint-disable-next-line no-var

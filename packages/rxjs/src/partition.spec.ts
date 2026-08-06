@@ -22,7 +22,7 @@ describe('partition', () => {
     expect(partition in Observable.prototype).toBe(false);
   });
 
-  it('splits an ObservableValue and gives each branch an independent index', () => {
+  it('splits an ObservableInput and gives each branch an independent index', () => {
     const calls: Array<[string, number]> = [];
     const minimumLength = 2;
     const [matching, rejected] = Observable[partition](['a', 'bb', 'ccc'], (value, index) => {
@@ -65,7 +65,7 @@ describe('partition', () => {
     expectTypeOf(promisedRejected).toEqualTypeOf<Observable<number>>();
   });
 
-  it('throws an ObservableValue conversion error at creation time', () => {
+  it('throws an ObservableInput conversion error at creation time', () => {
     expect(() => Observable[partition](null as any, () => true)).toThrow(TypeError);
   });
 

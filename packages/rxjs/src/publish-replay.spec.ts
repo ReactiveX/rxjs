@@ -58,7 +58,7 @@ describe('publishReplay', () => {
       source[publishReplay]('2');
       // @ts-expect-error windowTime is numeric.
       source[publishReplay](2, '100');
-      // @ts-expect-error A selector must return an ObservableValue.
+      // @ts-expect-error A selector must return an ObservableInput.
       source[publishReplay](2, 100, () => 1);
     }
   });

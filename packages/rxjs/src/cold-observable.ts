@@ -113,7 +113,7 @@ export class ColdObservable<T> extends PlatformObservable<T> {
 
   [create] = <R>(init: (subscriber: Subscriber<R>) => void): ColdObservable<R> => new ColdObservable(init);
 
-  takeUntil(notifier: ObservableValue<any>): Observable<T> {
+  takeUntil(notifier: ObservableInput<any>): Observable<T> {
     return this.#asPlatformObservable().takeUntil(notifier);
   }
 
@@ -133,11 +133,11 @@ export class ColdObservable<T> extends PlatformObservable<T> {
     return this.#asPlatformObservable().drop(amount);
   }
 
-  flatMap<R>(mapper: (value: T, index: number) => ObservableValue<R>): Observable<R> {
+  flatMap<R>(mapper: (value: T, index: number) => ObservableInput<R>): Observable<R> {
     return this.#asPlatformObservable().flatMap(mapper);
   }
 
-  switchMap<R>(mapper: (value: T, index: number) => ObservableValue<R>): Observable<R> {
+  switchMap<R>(mapper: (value: T, index: number) => ObservableInput<R>): Observable<R> {
     return this.#asPlatformObservable().switchMap(mapper);
   }
 
@@ -145,7 +145,7 @@ export class ColdObservable<T> extends PlatformObservable<T> {
     return this.#asPlatformObservable().inspect(inspector);
   }
 
-  catch<R>(handler: (error: any) => ObservableValue<R>): Observable<T | R> {
+  catch<R>(handler: (error: any) => ObservableInput<R>): Observable<T | R> {
     return this.#asPlatformObservable().catch(handler);
   }
 

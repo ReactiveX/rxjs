@@ -8,18 +8,18 @@ declare global {
   interface Observable<T> {
     [multicast](subject: SubjectLike<T>): ConnectableObservable<T>;
     [multicast](subjectFactory: () => SubjectLike<T>): ConnectableObservable<T>;
-    [multicast]<Selected extends ObservableValue<unknown>>(
+    [multicast]<Selected extends ObservableInput<unknown>>(
       subject: SubjectLike<T>,
       selector: (shared: Observable<T>) => Selected
     ): Observable<ObservedValueOf<Selected>>;
-    [multicast]<Selected extends ObservableValue<unknown>>(
+    [multicast]<Selected extends ObservableInput<unknown>>(
       subjectFactory: () => SubjectLike<T>,
       selector: (shared: Observable<T>) => Selected
     ): Observable<ObservedValueOf<Selected>>;
   }
 }
 
-Observable.prototype[multicast] = function <T, Selected extends ObservableValue<unknown>>(
+Observable.prototype[multicast] = function <T, Selected extends ObservableInput<unknown>>(
   this: Observable<T>,
   subjectOrFactory: SubjectLike<T> | (() => SubjectLike<T>),
   selector?: (shared: Observable<T>) => Selected

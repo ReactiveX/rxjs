@@ -6,13 +6,13 @@ export const retryWhen: unique symbol = Symbol('retryWhen');
 
 declare global {
   interface Observable<T> {
-    [retryWhen](notifier: (errors: Observable<any>) => ObservableValue<any>): Observable<T>;
+    [retryWhen](notifier: (errors: Observable<any>) => ObservableInput<any>): Observable<T>;
   }
 }
 
 Observable.prototype[retryWhen] = function <T>(
   this: Observable<T>,
-  notifier: (errors: Observable<any>) => ObservableValue<any>
+  notifier: (errors: Observable<any>) => ObservableInput<any>
 ): Observable<T> {
   const source = this;
 

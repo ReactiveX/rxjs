@@ -606,7 +606,7 @@ Status meanings:
 - **Decision:** The exact Symbol-keyed `catchError` forwards ordinary source
   notifications and, on error, closes the failed source before invoking
   `selector(error, caught)`. A replacement accepts any platform
-  `ObservableValue`. Returning the exact `caught` object restarts the original
+  `ObservableInput`. Returning the exact `caught` object restarts the original
   source inside the current shared activation, using a synchronous trampoline
   instead of recursive stack growth.
 - **Rationale:** Subscribing to `caught` as an ordinary replacement would join
@@ -887,7 +887,7 @@ Status meanings:
   - `@rxjs/observable-polyfill` is independently publishable, has no dependency
     on `rxjs`, supplies the conditional platform fallback, and owns the base
     ambient TypeScript declarations for `Observable`, `Subscriber`,
-    `ObservableValue`, and `EventTarget.when`.
+    `ObservableInput`, and `EventTarget.when`.
   - `rxjs` declares a runtime dependency on
     `@rxjs/observable-polyfill`. Its declarations augment the base platform
     types only for the exact Symbols imported by each entry point.
@@ -1540,5 +1540,31 @@ Status meanings:
 - **Consequence if accepted:** D-003, D-039, D-040, and D-050 require narrow
   supersession rather than deletion. Package exports, documentation, migration
   guidance, bundle gates, and the root operator-isolation contract must be
-  revised together. The final `rxjs/map` versus `rxjs/symbol` layout and
-  implementation sharing model remain open until the pilot review.
+  revised together. The final `rxjs/map` versus `rxjs/symbol` layout remains
+  open after the first pilot review.
+
+### First review outcome
+
+- **Status:** Continue the proposed experiment
+- **Direction:** Keep the direct `UnaryFunction<In, Out>` and
+  `OperatorFunction<In, Out>` aliases, omit `MonoTypeOperatorFunction`, and
+  share internal `operate` callbacks when pipeable and exact-Symbol forms have
+  the same behavior. `mapOperator(project)` is the first such callback.
+- **Remaining proposal:** The package-path move, full-catalog conversion,
+  overload horizon, public-versus-internal `operate`, terminal consumers, and
+  lite subscription facade remain subject to later review.
+
+## D-061 — Name the platform conversion union `ObservableInput`
+
+- **Status:** Accepted
+- **Decision:** Rename the ambient `ObservableValue<T>` union to
+  `ObservableInput<T>` directly. Do not publish a second alias for the same
+  union.
+- **Rationale:** `ObservableInput` is the established RxJS 7 concept name and
+  communicates that the union describes values accepted by
+  `Observable.from`. Keeping both names would preserve an unnecessary new term
+  and make declarations and migration guidance less direct.
+- **Consequence:** This is a breaking rename for exploratory RxJS Next users of
+  `ObservableValue`. The conversion categories remain platform Observable,
+  iterable, async iterable, and Promise-like values; arbitrary subscribables
+  and legacy interop objects are still excluded.

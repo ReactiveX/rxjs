@@ -96,7 +96,7 @@ function validateCatalog(value, sourceManifest, registry) {
     ['rxjs/operators', 'rxjs/testing', 'rxjs/internal/*', 'bindCallback', 'bindNodeCallback', 'scheduled', 'using', 'isObservable'],
     errors
   );
-  requireSurfaces(categorySurfaces, 'types', ['Subscription', 'ObservableInput', 'OperatorFunction', 'SchedulerLike'], errors);
+  requireSurfaces(categorySurfaces, 'types', ['Subscription', 'ObservableInput', 'MonoTypeOperatorFunction', 'SchedulerLike'], errors);
   requireSurfaces(
     categorySurfaces,
     'interop',

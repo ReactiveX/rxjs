@@ -1,8 +1,8 @@
-import { filter, map, rx, type MonoTypeOperatorFunction, type ObservableInput, type OperatorFunction, type UnaryFunction } from 'rxjs';
+import { filter, map, rx, type OperatorFunction, type UnaryFunction } from 'rxjs';
 
 const input: ObservableInput<number> = [1, 2, 3];
 const stringify: OperatorFunction<number, string> = map((value) => String(value));
-const positive: MonoTypeOperatorFunction<number> = filter((value) => value > 0);
+const positive: OperatorFunction<number, number> = filter((value) => value > 0);
 const length: UnaryFunction<string, number> = (value) => value.length;
 
 const strings: Observable<string> = rx(input, positive, stringify);

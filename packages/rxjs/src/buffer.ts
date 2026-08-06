@@ -6,7 +6,7 @@ export const buffer: unique symbol = Symbol('buffer');
 declare global {
   interface Observable<T> {
     [buffer]: (config: {
-      delay?: number | (() => ObservableValue<any>);
+      delay?: number | (() => ObservableInput<any>);
       maxSize?: number;
       startEvery?: number;
       emitEmpty?: boolean;
@@ -20,7 +20,7 @@ declare global {
 Observable.prototype[buffer] = function <T>(
   this: Observable<T>,
   config: {
-    delay?: number | (() => ObservableValue<any>);
+    delay?: number | (() => ObservableInput<any>);
     maxSize?: number;
     startEvery?: number;
     emitEmpty?: boolean;

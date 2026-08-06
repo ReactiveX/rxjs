@@ -16,7 +16,7 @@ describe('retryWhen', () => {
     expect((Observable.prototype as unknown as Record<symbol, unknown>)[otherKey]).toBeUndefined();
 
     if (false) {
-      // @ts-expect-error A notifier must return an ObservableValue.
+      // @ts-expect-error A notifier must return an ObservableInput.
       Observable.from([1])[retryWhen](() => 1);
     }
   });
@@ -101,7 +101,7 @@ describe('retryWhen', () => {
 
     conversionSource.observable[retryWhen](
       // Exercise runtime conversion failure independently of the public type guard.
-      (() => null) as unknown as (errors: Observable<any>) => ObservableValue<any>
+      (() => null) as unknown as (errors: Observable<any>) => ObservableInput<any>
     ).subscribe({ error: (error) => conversionErrors.push(error) });
     conversionSource.subscriber.error(new Error('source failed'));
 

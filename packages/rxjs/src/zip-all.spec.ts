@@ -58,7 +58,7 @@ describe('zipAll', () => {
   it('supports an optional result selector', () => {
     const results: Array<string | 'complete'> = [];
 
-    fromValues<ObservableValue<string | number>>(Observable.from(['a', 'b']), Observable.from([1, 2]))
+    fromValues<ObservableInput<string | number>>(Observable.from(['a', 'b']), Observable.from([1, 2]))
       [zipAll]((letter, number) => `${letter}${number}`)
       .subscribe({
         next: (value) => results.push(value),
@@ -96,7 +96,7 @@ describe('zipAll', () => {
     const right = controllable<string>();
     const errors: unknown[] = [];
 
-    fromValues<ObservableValue<number | string>>(left.observable, right.observable)
+    fromValues<ObservableInput<number | string>>(left.observable, right.observable)
       [zipAll]()
       .subscribe({
         error: (error) => errors.push(error),
@@ -116,7 +116,7 @@ describe('zipAll', () => {
     const right = controllable<number>();
     const errors: unknown[] = [];
 
-    fromValues<ObservableValue<number>>(left.observable, right.observable)
+    fromValues<ObservableInput<number>>(left.observable, right.observable)
       [zipAll](() => {
         throw failure;
       })
@@ -141,7 +141,7 @@ describe('zipAll', () => {
     });
     const observations: string[] = [];
 
-    fromValues<ObservableValue<number>>(active.observable, [], later)
+    fromValues<ObservableInput<number>>(active.observable, [], later)
       [zipAll]()
       .subscribe({
         next: () => observations.push('next'),
@@ -158,7 +158,7 @@ describe('zipAll', () => {
     const left = controllable<number>();
     const observations: Array<number[] | 'complete'> = [];
 
-    fromValues<ObservableValue<number>>(left.observable, [10])
+    fromValues<ObservableInput<number>>(left.observable, [10])
       [zipAll]()
       .subscribe({
         next: (value) => {
@@ -178,8 +178,8 @@ describe('zipAll', () => {
     const left = controllable<number>();
     const right = controllable<string>();
     let outerActivations = 0;
-    let outerSubscriber: Subscriber<ObservableValue<number | string>> | undefined;
-    const outer = new Observable<ObservableValue<number | string>>((subscriber) => {
+    let outerSubscriber: Subscriber<ObservableInput<number | string>> | undefined;
+    const outer = new Observable<ObservableInput<number | string>>((subscriber) => {
       outerActivations++;
       outerSubscriber = subscriber;
     });

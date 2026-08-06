@@ -5,11 +5,11 @@ export const sample: unique symbol = Symbol('sample');
 
 declare global {
   interface Observable<T> {
-    [sample](notifier: ObservableValue<unknown>): Observable<T>;
+    [sample](notifier: ObservableInput<unknown>): Observable<T>;
   }
 }
 
-Observable.prototype[sample] = function <T>(this: Observable<T>, notifier: ObservableValue<unknown>): Observable<T> {
+Observable.prototype[sample] = function <T>(this: Observable<T>, notifier: ObservableInput<unknown>): Observable<T> {
   return this[create]((subscriber) => {
     let hasValue = false;
     let latestValue: T | undefined;

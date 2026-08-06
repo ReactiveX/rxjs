@@ -9,13 +9,13 @@ export interface ExpandOptions {
 
 declare global {
   interface Observable<T> {
-    [expand]<R>(project: (value: T, index: number) => ObservableValue<R>, options?: ExpandOptions): Observable<T | R>;
+    [expand]<R>(project: (value: T, index: number) => ObservableInput<R>, options?: ExpandOptions): Observable<T | R>;
   }
 }
 
 Observable.prototype[expand] = function <T, R>(
   this: Observable<T>,
-  project: (value: T, index: number) => ObservableValue<R>,
+  project: (value: T, index: number) => ObservableInput<R>,
   options?: ExpandOptions
 ): Observable<T | R> {
   if (arguments.length > 2) {

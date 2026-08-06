@@ -5,7 +5,7 @@ export const delayWhen: unique symbol = Symbol('delayWhen');
 
 declare global {
   interface Observable<T> {
-    [delayWhen](durationSelector: (value: T, index: number) => ObservableValue<any>, subscriptionDelay?: Observable<any>): Observable<T>;
+    [delayWhen](durationSelector: (value: T, index: number) => ObservableInput<any>, subscriptionDelay?: Observable<any>): Observable<T>;
   }
 }
 
@@ -16,7 +16,7 @@ interface DelayContext<T> {
 
 Observable.prototype[delayWhen] = function <T>(
   this: Observable<T>,
-  durationSelector: (value: T, index: number) => ObservableValue<any>,
+  durationSelector: (value: T, index: number) => ObservableInput<any>,
   subscriptionDelay?: Observable<any>
 ): Observable<T> {
   const source = this;

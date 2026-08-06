@@ -6,14 +6,14 @@ export const switchScan: unique symbol = Symbol('switchScan');
 
 declare global {
   interface Observable<T> {
-    [switchScan]<R, Input extends ObservableValue<any>>(
+    [switchScan]<R, Input extends ObservableInput<any>>(
       accumulator: (accumulator: R, value: T, index: number) => Input,
       seed: R
     ): Observable<ObservedValueOf<Input>>;
   }
 }
 
-function switchScanOperator<T, R, Input extends ObservableValue<any>>(
+function switchScanOperator<T, R, Input extends ObservableInput<any>>(
   this: Observable<T>,
   accumulator: (accumulator: R, value: T, index: number) => Input,
   seed: R

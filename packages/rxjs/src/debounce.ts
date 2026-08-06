@@ -5,13 +5,13 @@ export const debounce: unique symbol = Symbol('debounce');
 
 declare global {
   interface Observable<T> {
-    [debounce]: (delay: number | ((value: T, index: number) => ObservableValue<any>)) => Observable<T>;
+    [debounce]: (delay: number | ((value: T, index: number) => ObservableInput<any>)) => Observable<T>;
   }
 }
 
 Observable.prototype[debounce] = function <T>(
   this: Observable<T>,
-  delay: number | ((value: T, index: number) => ObservableValue<any>)
+  delay: number | ((value: T, index: number) => ObservableInput<any>)
 ): Observable<T> {
   return this[create]((subscriber) => {
     let innerController: AbortController | null = null;

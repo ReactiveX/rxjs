@@ -6,13 +6,13 @@ export const repeatWhen: unique symbol = Symbol('repeatWhen');
 
 declare global {
   interface Observable<T> {
-    [repeatWhen](notifier: (completions: Observable<void>) => ObservableValue<unknown>): Observable<T>;
+    [repeatWhen](notifier: (completions: Observable<void>) => ObservableInput<unknown>): Observable<T>;
   }
 }
 
 Observable.prototype[repeatWhen] = function <T>(
   this: Observable<T>,
-  notifier: (completions: Observable<void>) => ObservableValue<unknown>
+  notifier: (completions: Observable<void>) => ObservableInput<unknown>
 ): Observable<T> {
   const source = this;
 

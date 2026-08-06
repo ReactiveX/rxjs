@@ -41,7 +41,7 @@ describe('window', () => {
     if (false) {
       // @ts-expect-error A boundary input is required.
       source[window]();
-      // @ts-expect-error A number is not an ObservableValue.
+      // @ts-expect-error A number is not an ObservableInput.
       source[window](1);
     }
 
@@ -230,7 +230,7 @@ describe('window', () => {
       },
     });
 
-    source.observable[window](invalidBoundaries as ObservableValue<never>).subscribe({
+    source.observable[window](invalidBoundaries as ObservableInput<never>).subscribe({
       next: (inner) => {
         events.push('open');
         inner.subscribe({ error: (error) => events.push(['window error', error]) });

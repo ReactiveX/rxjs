@@ -3,11 +3,11 @@ import { subscribeToSource } from './util/observable-helpers.js';
 
 declare const anyCatcher: unique symbol;
 type AnyCatcher = typeof anyCatcher;
-type ObservedValueOf<Input> = Input extends ObservableValue<infer Value> ? Value : never;
-type ForkJoinTuple<Sources extends readonly ObservableValue<any>[]> = {
+type ObservedValueOf<Input> = Input extends ObservableInput<infer Value> ? Value : never;
+type ForkJoinTuple<Sources extends readonly ObservableInput<any>[]> = {
   -readonly [K in keyof Sources]: ObservedValueOf<Sources[K]>;
 };
-type ForkJoinObject<Sources extends Record<string, ObservableValue<any>>> = {
+type ForkJoinObject<Sources extends Record<string, ObservableInput<any>>> = {
   [K in keyof Sources]: ObservedValueOf<Sources[K]>;
 };
 
@@ -15,16 +15,16 @@ interface ForkJoinMethod {
   <T extends AnyCatcher>(arg: T): Observable<unknown>;
   (): Observable<never>;
   (sources: readonly []): Observable<never>;
-  <const Sources extends readonly ObservableValue<any>[]>(sources: Sources): Observable<ForkJoinTuple<Sources>>;
-  <const Sources extends readonly ObservableValue<any>[], Result>(
+  <const Sources extends readonly ObservableInput<any>[]>(sources: Sources): Observable<ForkJoinTuple<Sources>>;
+  <const Sources extends readonly ObservableInput<any>[], Result>(
     sources: Sources,
     resultSelector: (...values: ForkJoinTuple<Sources>) => Result
   ): Observable<Result>;
   (sourcesObject: Record<string, never>): Observable<never>;
-  <Sources extends Record<string, ObservableValue<any>>>(sourcesObject: Sources): Observable<ForkJoinObject<Sources>>;
+  <Sources extends Record<string, ObservableInput<any>>>(sourcesObject: Sources): Observable<ForkJoinObject<Sources>>;
   (source: null | undefined): Observable<never>;
-  <const Sources extends readonly ObservableValue<any>[]>(...sources: Sources): Observable<ForkJoinTuple<Sources>>;
-  <const Sources extends readonly ObservableValue<any>[], Result>(
+  <const Sources extends readonly ObservableInput<any>[]>(...sources: Sources): Observable<ForkJoinTuple<Sources>>;
+  <const Sources extends readonly ObservableInput<any>[], Result>(
     ...sourcesAndResultSelector: [...Sources, (...values: ForkJoinTuple<Sources>) => Result]
   ): Observable<Result>;
 }

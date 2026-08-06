@@ -7,7 +7,7 @@ afterEach(() => {
 });
 
 describe('catchError', () => {
-  it('replaces a failed source with any ObservableValue', () => {
+  it('replaces a failed source with any ObservableInput', () => {
     const failure = new Error('source failed');
     const observations: Array<number | string | 'complete'> = [];
     const source = new Observable<number>((subscriber) => {

@@ -5,13 +5,13 @@ export const mergeMap: unique symbol = Symbol('mergeMap');
 
 declare global {
   interface Observable<T> {
-    [mergeMap]: <R>(mapper: (value: T, index: number) => ObservableValue<R>, options?: { concurrent?: number }) => Observable<R>;
+    [mergeMap]: <R>(mapper: (value: T, index: number) => ObservableInput<R>, options?: { concurrent?: number }) => Observable<R>;
   }
 }
 
 Observable.prototype[mergeMap] = function <T, R>(
   this: Observable<T>,
-  mapper: (value: T, index: number) => ObservableValue<R>,
+  mapper: (value: T, index: number) => ObservableInput<R>,
   options?: { concurrent?: number }
 ): Observable<R> {
   const { concurrent = Infinity } = options ?? {};

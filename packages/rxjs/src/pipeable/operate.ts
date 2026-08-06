@@ -12,7 +12,7 @@ import type { OperatorFunction } from './types.js';
  *
  * @internal
  */
-export function operate<T, R>(init: (source: Observable<T>, subscriber: Subscriber<R>) => void): OperatorFunction<T, R> {
+export function operate<In, Out>(init: (source: Observable<In>, subscriber: Subscriber<Out>) => void): OperatorFunction<In, Out> {
   return (source) =>
     source[create]((subscriber) => {
       try {

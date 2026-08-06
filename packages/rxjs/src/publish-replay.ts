@@ -13,7 +13,7 @@ export interface PublishReplayTimestampProvider {
 
 declare global {
   interface Observable<T> {
-    [publishReplay]<Selected extends ObservableValue<unknown>>(
+    [publishReplay]<Selected extends ObservableInput<unknown>>(
       bufferSize: number | undefined,
       windowTime: number | undefined,
       selector: (shared: Observable<T>) => Selected,
@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-Observable.prototype[publishReplay] = function <T, Selected extends ObservableValue<unknown>>(
+Observable.prototype[publishReplay] = function <T, Selected extends ObservableInput<unknown>>(
   this: Observable<T>,
   bufferSize?: number,
   windowTime?: number,

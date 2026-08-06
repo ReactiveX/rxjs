@@ -11,14 +11,14 @@ export interface ConnectConfig<T> {
 
 declare global {
   interface Observable<T> {
-    [connect]<Selected extends ObservableValue<unknown>>(
+    [connect]<Selected extends ObservableInput<unknown>>(
       selector: (shared: Observable<T>) => Selected,
       config?: ConnectConfig<T>
     ): Observable<ObservedValueOf<Selected>>;
   }
 }
 
-Observable.prototype[connect] = function <T, Selected extends ObservableValue<unknown>>(
+Observable.prototype[connect] = function <T, Selected extends ObservableInput<unknown>>(
   this: Observable<T>,
   selector: (shared: Observable<T>) => Selected,
   config?: ConnectConfig<T>
@@ -61,7 +61,7 @@ Observable.prototype[connect] = function <T, Selected extends ObservableValue<un
 
     let selected: Observable<ObservedValueOf<Selected>>;
     try {
-      selected = Observable.from(selectedValue as ObservableValue<ObservedValueOf<Selected>>);
+      selected = Observable.from(selectedValue as ObservableInput<ObservedValueOf<Selected>>);
     } catch (error) {
       subscriber.error(error);
       return;

@@ -6,13 +6,13 @@ export const windowWhen: unique symbol = Symbol('windowWhen');
 
 declare global {
   interface Observable<T> {
-    [windowWhen](closingSelector: () => ObservableValue<unknown>): Observable<Observable<T>>;
+    [windowWhen](closingSelector: () => ObservableInput<unknown>): Observable<Observable<T>>;
   }
 }
 
 Observable.prototype[windowWhen] = function <T>(
   this: Observable<T>,
-  closingSelector: () => ObservableValue<unknown>
+  closingSelector: () => ObservableInput<unknown>
 ): Observable<Observable<T>> {
   return this[create]((subscriber) => {
     let currentWindow: Subject<T> | null = null;
@@ -79,7 +79,7 @@ Observable.prototype[windowWhen] = function <T>(
             break;
           }
 
-          let closingValue: ObservableValue<unknown>;
+          let closingValue: ObservableInput<unknown>;
           try {
             // Pinned RxJS 7 ordering: the window is observable before its
             // selector is invoked.

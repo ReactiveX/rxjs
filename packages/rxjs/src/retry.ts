@@ -8,7 +8,7 @@ declare global {
   interface Observable<T> {
     [retry](config?: {
       count?: number;
-      delay?: number | ((error: any, retryCount: number) => ObservableValue<any>);
+      delay?: number | ((error: any, retryCount: number) => ObservableInput<any>);
       resetOnSuccess?: boolean;
     }): Observable<T>;
   }
@@ -18,7 +18,7 @@ Observable.prototype[retry] = function <T>(
   this: Observable<T>,
   config?: {
     count?: number;
-    delay?: null | number | ((error: any, retryCount: number) => ObservableValue<any>);
+    delay?: null | number | ((error: any, retryCount: number) => ObservableInput<any>);
     resetOnSuccess?: boolean;
   }
 ) {

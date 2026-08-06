@@ -36,7 +36,7 @@ describe('windowToggle', () => {
     if (false) {
       // @ts-expect-error Both openings and a closing selector are required.
       source[windowToggle]();
-      // @ts-expect-error The selector must return an ObservableValue.
+      // @ts-expect-error The selector must return an ObservableInput.
       source[windowToggle](['open'], () => 1);
       // @ts-expect-error The selector parameter must match the opening value.
       source[windowToggle](['open'], (opening: number) => [opening]);

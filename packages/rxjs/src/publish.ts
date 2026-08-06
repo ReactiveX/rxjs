@@ -8,13 +8,13 @@ export const publish: unique symbol = Symbol('publish');
 declare global {
   interface Observable<T> {
     [publish](): ConnectableObservable<T>;
-    [publish]<Selected extends ObservableValue<unknown>>(
+    [publish]<Selected extends ObservableInput<unknown>>(
       selector: (shared: Observable<T>) => Selected
     ): Observable<ObservedValueOf<Selected>>;
   }
 }
 
-Observable.prototype[publish] = function <T, Selected extends ObservableValue<unknown>>(
+Observable.prototype[publish] = function <T, Selected extends ObservableInput<unknown>>(
   this: Observable<T>,
   selector?: (shared: Observable<T>) => Selected
 ): ConnectableObservable<T> | Observable<ObservedValueOf<Selected>> {

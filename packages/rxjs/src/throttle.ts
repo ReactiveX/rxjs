@@ -5,7 +5,7 @@ export const throttle: unique symbol = Symbol('throttle');
 
 declare global {
   interface Observable<T> {
-    [throttle]: (delay: number | ((value: T, index: number) => ObservableValue<unknown>), config?: ThrottleConfig) => Observable<T>;
+    [throttle]: (delay: number | ((value: T, index: number) => ObservableInput<unknown>), config?: ThrottleConfig) => Observable<T>;
   }
 }
 
@@ -17,7 +17,7 @@ interface ThrottleConfig {
 
 Observable.prototype[throttle] = function <T>(
   this: Observable<T>,
-  delay: number | ((value: T, index: number) => ObservableValue<unknown>),
+  delay: number | ((value: T, index: number) => ObservableInput<unknown>),
   config?: ThrottleConfig
 ): Observable<T> {
   return this[create]((subscriber) => {

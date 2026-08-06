@@ -6,7 +6,7 @@ export const mergeScan: unique symbol = Symbol('mergeScan');
 declare global {
   interface Observable<T> {
     [mergeScan]<R>(
-      accumulator: (accumulator: R, value: T, index: number) => ObservableValue<R>,
+      accumulator: (accumulator: R, value: T, index: number) => ObservableInput<R>,
       seed: R,
       concurrent?: number
     ): Observable<R>;
@@ -15,7 +15,7 @@ declare global {
 
 Observable.prototype[mergeScan] = function <T, R>(
   this: Observable<T>,
-  accumulator: (accumulator: R, value: T, index: number) => ObservableValue<R>,
+  accumulator: (accumulator: R, value: T, index: number) => ObservableInput<R>,
   seed: R,
   concurrent = Infinity
 ): Observable<R> {

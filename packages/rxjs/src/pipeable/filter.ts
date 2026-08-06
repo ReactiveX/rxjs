@@ -1,6 +1,6 @@
 import { subscribeToSource } from '../util/observable-helpers.js';
 import { operate } from './operate.js';
-import type { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from './types.js';
+import type { OperatorFunction, TruthyTypesOf } from './types.js';
 
 /**
  * Emits only source values accepted by a predicate.
@@ -32,8 +32,8 @@ import type { MonoTypeOperatorFunction, OperatorFunction, TruthyTypesOf } from '
  */
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
 export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, TruthyTypesOf<T>>;
-export function filter<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
-export function filter<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T> {
+export function filter<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T>;
+export function filter<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T> {
   return operate((source, subscriber) => {
     let index = 0;
 

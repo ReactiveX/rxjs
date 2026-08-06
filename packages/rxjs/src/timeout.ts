@@ -11,7 +11,7 @@ declare global {
     [timeout]: <M, W>(config: {
       each?: number;
       first?: number | Date;
-      with?: (info: TimeoutInfo<T, M>) => ObservableValue<W>;
+      with?: (info: TimeoutInfo<T, M>) => ObservableInput<W>;
       meta?: M;
     }) => Observable<T | W>;
   }
@@ -22,7 +22,7 @@ function timeoutOperator<T, W, M>(
   config: {
     each?: number;
     first?: number | Date;
-    with?: (info: TimeoutInfo<T, M>) => ObservableValue<W>;
+    with?: (info: TimeoutInfo<T, M>) => ObservableInput<W>;
     meta?: M;
   }
 ): Observable<T | W> {

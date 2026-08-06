@@ -66,11 +66,11 @@
     "types": [
       {
         "id": "types:composition",
-        "surfaces": ["UnaryFunction", "OperatorFunction", "MonoTypeOperatorFunction"],
+        "surfaces": ["MonoTypeOperatorFunction"],
         "disposition": "replace",
-        "replacement": "Use ordinary typed functions with exact Symbol invocation or rxjs/pipe composition.",
-        "rationale": "RxJS Next does not publish the pipeable-operator type family.",
-        "decisions": ["D-039", "D-050"]
+        "replacement": "Use the root OperatorFunction<T, T> type for an operator that preserves its value type.",
+        "rationale": "RxJS Next publishes direct UnaryFunction and OperatorFunction aliases without the redundant mono-type alias.",
+        "decisions": ["D-060"]
       },
       {
         "id": "types:subscription",
@@ -84,7 +84,7 @@
         "id": "types:conversion",
         "surfaces": ["ObservableInput", "ObservableLike", "InteropObservable", "Subscribable", "SubscribableOrPromise", "ReadableStreamLike"],
         "disposition": "replace",
-        "replacement": "Use the ambient ObservableValue/platform Observable.from input contract and review custom inputs manually.",
+        "replacement": "Use the ambient ObservableInput/platform Observable.from input contract and review custom inputs manually.",
         "rationale": "The platform conversion boundary deliberately excludes arbitrary subscribables and legacy observable interop.",
         "decisions": ["D-039", "D-049"]
       },
@@ -144,7 +144,7 @@
         "id": "interop:observable-symbol",
         "surfaces": ["observable", "Symbol.observable", "@@observable", "InteropObservable"],
         "disposition": "unsupported",
-        "replacement": "Expose a platform-supported ObservableValue category or wrap the source explicitly in the active realm.",
+        "replacement": "Expose a platform-supported ObservableInput category or wrap the source explicitly in the active realm.",
         "rationale": "Legacy observable interop is outside the accepted platform Observable.from contract.",
         "decisions": ["D-039", "D-049"]
       },

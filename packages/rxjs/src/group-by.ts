@@ -8,7 +8,7 @@ export interface KeyedGroupObservable<K, T> extends Observable<T> {
 
 export interface GroupByOptions<K, T, E = T> {
   element?: (value: T) => E;
-  duration?: (group: KeyedGroupObservable<K, E>) => ObservableValue<unknown>;
+  duration?: (group: KeyedGroupObservable<K, E>) => ObservableInput<unknown>;
   connector?: () => SubjectLike<E>;
 }
 
@@ -28,13 +28,13 @@ declare global {
       <K, E>(
         keySelector: (value: T) => K,
         element: (value: T) => E,
-        duration?: (group: KeyedGroupObservable<K, E>) => ObservableValue<unknown>,
+        duration?: (group: KeyedGroupObservable<K, E>) => ObservableInput<unknown>,
         connector?: () => SubjectLike<E>
       ): Observable<KeyedGroupObservable<K, E>>;
       <K>(
         keySelector: (value: T) => K,
         element: undefined,
-        duration: (group: KeyedGroupObservable<K, T>) => ObservableValue<unknown>,
+        duration: (group: KeyedGroupObservable<K, T>) => ObservableInput<unknown>,
         connector?: () => SubjectLike<T>
       ): Observable<KeyedGroupObservable<K, T>>;
     };
@@ -67,21 +67,21 @@ function groupByOperator<T, K, E>(
   this: Observable<T>,
   keySelector: (value: T) => K,
   element: (value: T) => E,
-  duration?: (group: KeyedGroupObservable<K, E>) => ObservableValue<unknown>,
+  duration?: (group: KeyedGroupObservable<K, E>) => ObservableInput<unknown>,
   connector?: () => SubjectLike<E>
 ): Observable<KeyedGroupObservable<K, E>>;
 function groupByOperator<T, K>(
   this: Observable<T>,
   keySelector: (value: T) => K,
   element: undefined,
-  duration: (group: KeyedGroupObservable<K, T>) => ObservableValue<unknown>,
+  duration: (group: KeyedGroupObservable<K, T>) => ObservableInput<unknown>,
   connector?: () => SubjectLike<T>
 ): Observable<KeyedGroupObservable<K, T>>;
 function groupByOperator<T, K, E = T>(
   this: Observable<T>,
   keySelector: (value: T) => K,
   elementOrOptions?: ((value: T) => E) | GroupByOptions<K, T, E>,
-  legacyDuration?: (group: KeyedGroupObservable<K, E>) => ObservableValue<unknown>,
+  legacyDuration?: (group: KeyedGroupObservable<K, E>) => ObservableInput<unknown>,
   legacyConnector?: () => SubjectLike<E>
 ): Observable<any> {
   const source = this;
@@ -202,7 +202,7 @@ function groupByOperator<T, K, E = T>(
         return;
       }
 
-      let durationValue: ObservableValue<unknown>;
+      let durationValue: ObservableInput<unknown>;
       try {
         durationValue = duration(entry.durationView);
       } catch (error) {

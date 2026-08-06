@@ -7,8 +7,8 @@ export const withLatestFrom: unique symbol = Symbol('withLatestFrom');
 declare global {
   interface Observable<T> {
     [withLatestFrom]: {
-      <const Sources extends readonly ObservableValue<any>[]>(sources: Sources): Observable<[T, ...ObservableArrayToValueArray<Sources>]>;
-      <const Sources extends readonly ObservableValue<any>[], Result>(
+      <const Sources extends readonly ObservableInput<any>[]>(sources: Sources): Observable<[T, ...ObservableArrayToValueArray<Sources>]>;
+      <const Sources extends readonly ObservableInput<any>[], Result>(
         sources: Sources,
         project: (value: T, ...latestValues: ObservableArrayToValueArray<Sources>) => Result
       ): Observable<Result>;
@@ -18,18 +18,18 @@ declare global {
 
 Observable.prototype[withLatestFrom] = withLatestFromImpl;
 
-function withLatestFromImpl<T, const Sources extends readonly ObservableValue<any>[]>(
+function withLatestFromImpl<T, const Sources extends readonly ObservableInput<any>[]>(
   this: Observable<T>,
   sources: Sources
 ): Observable<[T, ...ObservableArrayToValueArray<Sources>]>;
-function withLatestFromImpl<T, const Sources extends readonly ObservableValue<any>[], Result>(
+function withLatestFromImpl<T, const Sources extends readonly ObservableInput<any>[], Result>(
   this: Observable<T>,
   sources: Sources,
   project: (value: T, ...latestValues: ObservableArrayToValueArray<Sources>) => Result
 ): Observable<Result>;
 function withLatestFromImpl(
   this: Observable<any>,
-  sources: readonly ObservableValue<any>[],
+  sources: readonly ObservableInput<any>[],
   project?: (...values: any[]) => any
 ): Observable<any> {
   return this[create]((subscriber) => {

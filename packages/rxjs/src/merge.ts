@@ -7,14 +7,14 @@ export const merge: unique symbol = Symbol('merge');
 
 declare global {
   interface ObservableCtor {
-    [merge]: <Sources extends readonly ObservableValue<any>[]>(
+    [merge]: <Sources extends readonly ObservableInput<any>[]>(
       sources: Sources,
       config?: { concurrency?: number }
     ) => Observable<ObservableArrayToValueUnion<Sources>>;
   }
 
   interface Observable<T> {
-    [merge]: <Sources extends readonly ObservableValue<any>[]>(
+    [merge]: <Sources extends readonly ObservableInput<any>[]>(
       sources: Sources,
       config?: { concurrency?: number }
     ) => Observable<T | ObservableArrayToValueUnion<Sources>>;
@@ -24,7 +24,7 @@ declare global {
 Observable[merge] = mergeImpl;
 Observable.prototype[merge] = mergeImpl;
 
-function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
+function mergeImpl<T, Sources extends readonly ObservableInput<any>[]>(
   this: Observable<T> | ObservableCtor,
   sources: Sources,
   config?: { concurrency?: number }

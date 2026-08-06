@@ -4,9 +4,9 @@ import type { SubjectLike } from './util/types.js';
 
 export const share: unique symbol = Symbol('share');
 
-type ResetOnError = boolean | ((error: any) => ObservableValue<any>);
-type ResetOnComplete = boolean | (() => ObservableValue<any>);
-type ResetOnRefCountZero = boolean | (() => ObservableValue<any>);
+type ResetOnError = boolean | ((error: any) => ObservableInput<any>);
+type ResetOnComplete = boolean | (() => ObservableInput<any>);
+type ResetOnRefCountZero = boolean | (() => ObservableInput<any>);
 
 export interface ShareConfig<T> {
   connector?: () => SubjectLike<T>;
@@ -54,7 +54,7 @@ Observable.prototype[share] = function <T>(this: Observable<T>, config: ShareCon
 
   const handleReset = <Args extends unknown[]>(
     resetState: () => void,
-    rule: boolean | ((...args: Args) => ObservableValue<any>),
+    rule: boolean | ((...args: Args) => ObservableInput<any>),
     ...args: Args
   ): void => {
     if (rule === true) {

@@ -5,14 +5,14 @@ export const distinct: unique symbol = Symbol('distinct');
 
 declare global {
   interface Observable<T> {
-    [distinct]: <K = T>(keySelector?: (value: T) => K, flushes?: ObservableValue<any>) => Observable<T>;
+    [distinct]: <K = T>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>) => Observable<T>;
   }
 }
 
 Observable.prototype[distinct] = function <T, K = T>(
   this: Observable<T>,
   keySelector?: (value: T) => K,
-  flushes?: ObservableValue<any>
+  flushes?: ObservableInput<any>
 ): Observable<T> {
   return this[create]((subscriber) => {
     const keys = new Set<K | T>();

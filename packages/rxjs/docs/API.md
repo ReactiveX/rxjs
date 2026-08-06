@@ -45,8 +45,9 @@ const result = rx(
 result.subscribe(console.log); // 20, 40
 ```
 
-The root exports `ObservableInput`, `UnaryFunction`, `OperatorFunction`, and
-`MonoTypeOperatorFunction` as supporting types. See the
+The ambient platform declarations expose `ObservableInput`; the root exports
+`UnaryFunction` and `OperatorFunction` as supporting types. Use
+`OperatorFunction<T, T>` when an operator preserves its value type. See the
 [all-pipeable experiment](PIPEABLE_EXPERIMENT.md) for the overload horizon,
 checking-cost tradeoffs, and unresolved import layout.
 

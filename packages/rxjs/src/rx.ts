@@ -1,4 +1,4 @@
-import type { ObservableInput, UnaryFunction } from './pipeable/types.js';
+import type { UnaryFunction } from './pipeable/types.js';
 
 /**
  * Converts an input with the active platform `Observable.from`, then applies

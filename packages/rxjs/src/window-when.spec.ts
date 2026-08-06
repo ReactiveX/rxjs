@@ -38,7 +38,7 @@ describe('windowWhen', () => {
     if (false) {
       // @ts-expect-error A closing selector is required.
       source[windowWhen]();
-      // @ts-expect-error The selector must return an ObservableValue.
+      // @ts-expect-error The selector must return an ObservableInput.
       source[windowWhen](() => 1);
       // @ts-expect-error The closing selector does not receive source values.
       source[windowWhen]((value: number) => [value]);

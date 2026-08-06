@@ -6,11 +6,11 @@ export const window: unique symbol = Symbol('window');
 
 declare global {
   interface Observable<T> {
-    [window](boundaries: ObservableValue<any>): Observable<Observable<T>>;
+    [window](boundaries: ObservableInput<any>): Observable<Observable<T>>;
   }
 }
 
-Observable.prototype[window] = function <T>(this: Observable<T>, boundaries: ObservableValue<any>): Observable<Observable<T>> {
+Observable.prototype[window] = function <T>(this: Observable<T>, boundaries: ObservableInput<any>): Observable<Observable<T>> {
   return this[create]((subscriber) => {
     let currentWindow: Subject<T> | null = null;
 

@@ -130,21 +130,43 @@ events, and turns projector or predicate throws into `subscriber.error`.
 Together these two boundaries cover setup-time and notification-time failures
 without duplicating boilerplate in every operator.
 
+`mapOperator(project)` is the first shared implementation callback. Both the
+pipeable `map(project)` function and the exact-Symbol `[map](project)` method
+pass that callback through `operate`, so the two public forms share lifecycle,
+index, cancellation, and callback-error behavior without making either form
+delegate through the other's public API.
+
+## First maintainer review
+
+The first review approved continued work with four API corrections:
+
+- the ambient platform conversion union is named `ObservableInput` directly;
+  the temporary alias over `ObservableValue` is gone;
+- `UnaryFunction<In, Out>` is a function type alias;
+- `OperatorFunction<In, Out>` directly spells
+  `(source: Observable<In>) => Observable<Out>`;
+- the redundant `MonoTypeOperatorFunction` alias is not part of RxJS Next.
+
+The review also selected shared internal operator callbacks for implementations
+used by both the pipeable and exact-Symbol forms, beginning with `mapOperator`.
+This resolves the implementation-sharing question for the next pilot slice;
+it does not yet settle the package-path move for the complete catalog.
+
 ## Review gates before expanding the catalog
 
 The pilot intentionally leaves these decisions open:
 
 1. Whether pipeable deep imports should be `rxjs/map` and Symbols should be a
    `rxjs/symbol` barrel, per-operator `rxjs/symbol/map` paths, or both.
-2. Whether Symbol implementations delegate to pipeable implementations, both
-   delegate to shared internal logic, or they remain independent contracts.
-3. Whether nine transformations is the right overload horizon and which
+2. Whether nine transformations is the right overload horizon and which
    representative projects should supply type-check performance evidence.
-4. Whether `operate` remains internal or becomes an advanced public API.
-5. Which first Promise-returning platform consumer should be reimplemented as
+3. Whether `operate` remains internal or becomes an advanced public API.
+4. Which first Promise-returning platform consumer should be reimplemented as
    an Observable-returning pipeable operator.
-6. The exact lite `subscribe` result and whether `closed` is a snapshot or a
+5. The exact lite `subscribe` result and whether `closed` is a snapshot or a
    live getter over the backing `AbortSignal`.
 
-No broader operator conversion or package-path move should begin until this
-first implementation is reviewed.
+The first implementation has now been reviewed. The next slice may add only a
+small representative set covering an ordinary operator, an
+Observable-returning terminal consumer, and the optional lite subscription
+facade before returning for another review.

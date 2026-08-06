@@ -1,12 +1,12 @@
 import { map } from './map.js';
 import { subscribeToSource } from './util/observable-helpers.js';
 
-type ObservedValuesOfWithFill<Sources extends readonly ObservableValue<any>[], Fill> = {
-  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T | Fill : never;
+type ObservedValuesOfWithFill<Sources extends readonly ObservableInput<any>[], Fill> = {
+  [K in keyof Sources]: Sources[K] extends ObservableInput<infer T> ? T | Fill : never;
 };
 
-type ObservedValues<Sources extends readonly ObservableValue<any>[]> = {
-  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T : never;
+type ObservedValues<Sources extends readonly ObservableInput<any>[]> = {
+  [K in keyof Sources]: Sources[K] extends ObservableInput<infer T> ? T : never;
 };
 
 interface ZipState {
@@ -14,17 +14,17 @@ interface ZipState {
   complete: boolean;
 }
 
-export function zip<Sources extends readonly ObservableValue<any>[], Result>(
+export function zip<Sources extends readonly ObservableInput<any>[], Result>(
   sources: Sources,
   project: (...values: ObservedValues<Sources>) => Result
 ): Observable<Result>;
-export function zip<Sources extends readonly ObservableValue<any>[], Fill = never>(
+export function zip<Sources extends readonly ObservableInput<any>[], Fill = never>(
   sources: Sources,
   config?: {
     fillAfterComplete?: Fill;
   }
 ): Observable<ObservedValuesOfWithFill<Sources, Fill>>;
-export function zip<Sources extends readonly ObservableValue<any>[], Fill = never, Result = never>(
+export function zip<Sources extends readonly ObservableInput<any>[], Fill = never, Result = never>(
   sources: Sources,
   configOrProject?:
     | {

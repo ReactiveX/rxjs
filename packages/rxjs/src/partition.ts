@@ -2,11 +2,11 @@ import { create } from './create.js';
 import { subscribeToSource } from './util/observable-helpers.js';
 
 interface PartitionMethod {
-  <T, U extends T>(source: ObservableValue<T>, predicate: (value: T, index: number) => value is U): [
+  <T, U extends T>(source: ObservableInput<T>, predicate: (value: T, index: number) => value is U): [
     Observable<U>,
     Observable<Exclude<T, U>>
   ];
-  <T>(source: ObservableValue<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
+  <T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
 }
 
 export const partition: unique symbol = Symbol('partition');
@@ -19,15 +19,15 @@ declare global {
 
 function partitionImpl<T, U extends T>(
   this: ObservableCtor,
-  source: ObservableValue<T>,
+  source: ObservableInput<T>,
   predicate: (value: T, index: number) => value is U
 ): [Observable<U>, Observable<Exclude<T, U>>];
 function partitionImpl<T>(
   this: ObservableCtor,
-  source: ObservableValue<T>,
+  source: ObservableInput<T>,
   predicate: (value: T, index: number) => boolean
 ): [Observable<T>, Observable<T>];
-function partitionImpl<T>(this: ObservableCtor, source: ObservableValue<T>, predicate: (value: T, index: number) => boolean): any {
+function partitionImpl<T>(this: ObservableCtor, source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): any {
   const ObservableCtor = this;
   const input = ObservableCtor.from(source);
 

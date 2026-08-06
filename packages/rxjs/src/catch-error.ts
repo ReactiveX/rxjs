@@ -6,13 +6,13 @@ export const catchError: unique symbol = Symbol('catchError');
 
 declare global {
   interface Observable<T> {
-    [catchError]: <Replacement extends ObservableValue<any>>(
+    [catchError]: <Replacement extends ObservableInput<any>>(
       selector: (error: any, caught: Observable<T>) => Replacement
     ) => Observable<T | ObservedValueOf<Replacement>>;
   }
 }
 
-Observable.prototype[catchError] = function <T, Replacement extends ObservableValue<any>>(
+Observable.prototype[catchError] = function <T, Replacement extends ObservableInput<any>>(
   this: Observable<T>,
   selector: (error: any, caught: Observable<T>) => Replacement
 ): Observable<T | ObservedValueOf<Replacement>> {

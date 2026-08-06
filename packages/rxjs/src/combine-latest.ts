@@ -2,12 +2,12 @@ import { combine } from './combine.js';
 import { map } from './map.js';
 import { isObservableInstance } from './util/ctor-helpers.js';
 
-type CombineLatestValues<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }> = {
-  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T : never;
+type CombineLatestValues<Sources extends readonly ObservableInput<any>[] | { [key: string]: ObservableInput<any> }> = {
+  [K in keyof Sources]: Sources[K] extends ObservableInput<infer T> ? T : never;
 };
 
-type CombineLatestArrayValues<Sources extends readonly ObservableValue<any>[]> = {
-  [K in keyof Sources]: Sources[K] extends ObservableValue<infer T> ? T : never;
+type CombineLatestArrayValues<Sources extends readonly ObservableInput<any>[]> = {
+  [K in keyof Sources]: Sources[K] extends ObservableInput<infer T> ? T : never;
 };
 
 export const combineLatest: unique symbol = Symbol('combineLatest');
@@ -15,11 +15,11 @@ export const combineLatest: unique symbol = Symbol('combineLatest');
 declare global {
   interface ObservableCtor {
     [combineLatest]: {
-      <Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
+      <Sources extends readonly ObservableInput<any>[] | { [key: string]: ObservableInput<any> }>(
         sources: Sources,
         config?: { requireAllValues?: boolean }
       ): Observable<CombineLatestValues<Sources>>;
-      <Sources extends readonly ObservableValue<any>[], Result>(
+      <Sources extends readonly ObservableInput<any>[], Result>(
         sources: Sources,
         project: (...values: CombineLatestArrayValues<Sources>) => Result
       ): Observable<Result>;
@@ -28,10 +28,10 @@ declare global {
 
   interface Observable<T> {
     [combineLatest]: {
-      <Sources extends readonly ObservableValue<any>[]>(sources: Sources, config?: { requireAllValues?: boolean }): Observable<
+      <Sources extends readonly ObservableInput<any>[]>(sources: Sources, config?: { requireAllValues?: boolean }): Observable<
         [T, ...CombineLatestArrayValues<Sources>]
       >;
-      <Sources extends readonly ObservableValue<any>[], Result>(
+      <Sources extends readonly ObservableInput<any>[], Result>(
         sources: Sources,
         project: (value: T, ...values: CombineLatestArrayValues<Sources>) => Result
       ): Observable<Result>;
@@ -42,7 +42,7 @@ declare global {
 Observable[combineLatest] = combineLatestImpl;
 Observable.prototype[combineLatest] = combineLatestImpl;
 
-function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
+function combineLatestImpl<Sources extends readonly ObservableInput<any>[] | { [key: string]: ObservableInput<any> }>(
   this: ObservableCtor | Observable<any>,
   sources: Sources,
   configOrProject?: { requireAllValues?: boolean } | ((...values: any[]) => any)
@@ -64,7 +64,7 @@ function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [
     return project === undefined ? (combined as any) : combined[map]((values) => project(...values));
   }
 
-  const actualSources: readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> } = Array.isArray(sources)
+  const actualSources: readonly ObservableInput<any>[] | { [key: string]: ObservableInput<any> } = Array.isArray(sources)
     ? [...sources]
     : { ...sources };
 
@@ -91,6 +91,6 @@ function combineLatestImpl<Sources extends readonly ObservableValue<any>[] | { [
   }
 }
 
-function isSourceArray(sources: any): sources is readonly ObservableValue<any>[] {
+function isSourceArray(sources: any): sources is readonly ObservableInput<any>[] {
   return Array.isArray(sources);
 }

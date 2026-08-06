@@ -140,7 +140,7 @@ describe('takeUntil', () => {
       events.push('source');
     });
 
-    source[takeUntil](invalidNotifier as ObservableValue<never>).subscribe({
+    source[takeUntil](invalidNotifier as ObservableInput<never>).subscribe({
       error: (error) => errors.push(error),
     });
 

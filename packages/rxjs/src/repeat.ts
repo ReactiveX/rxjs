@@ -5,7 +5,7 @@ export const repeat: unique symbol = Symbol('repeat');
 
 declare global {
   interface Observable<T> {
-    [repeat]: (config?: { count?: number; delay?: number | ((repeatCount: number) => ObservableValue<any>) }) => Observable<T>;
+    [repeat]: (config?: { count?: number; delay?: number | ((repeatCount: number) => ObservableInput<any>) }) => Observable<T>;
   }
 }
 
@@ -13,7 +13,7 @@ Observable.prototype[repeat] = function <T>(
   this: Observable<T>,
   config?: {
     count?: number;
-    delay?: number | ((repeatCount: number) => ObservableValue<any>);
+    delay?: number | ((repeatCount: number) => ObservableInput<any>);
   }
 ): Observable<T> {
   return this[create]((subscriber) => {

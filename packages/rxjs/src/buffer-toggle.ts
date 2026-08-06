@@ -6,8 +6,8 @@ export const bufferToggle: unique symbol = Symbol('bufferToggle');
 declare global {
   interface Observable<T> {
     [bufferToggle]<Opening>(
-      openings: ObservableValue<Opening>,
-      closingSelector: (opening: Opening) => ObservableValue<unknown>
+      openings: ObservableInput<Opening>,
+      closingSelector: (opening: Opening) => ObservableInput<unknown>
     ): Observable<T[]>;
   }
 }
@@ -19,8 +19,8 @@ interface BufferContext<T> {
 
 Observable.prototype[bufferToggle] = function <T, Opening>(
   this: Observable<T>,
-  openings: ObservableValue<Opening>,
-  closingSelector: (opening: Opening) => ObservableValue<unknown>
+  openings: ObservableInput<Opening>,
+  closingSelector: (opening: Opening) => ObservableInput<unknown>
 ): Observable<T[]> {
   return this[create]((subscriber) => {
     let buffers: BufferContext<T>[] = [];
@@ -61,7 +61,7 @@ Observable.prototype[bufferToggle] = function <T, Opening>(
       buffers.push(context);
       closingControllers.add(context.closingController);
 
-      let closingValue: ObservableValue<unknown>;
+      let closingValue: ObservableInput<unknown>;
       try {
         closingValue = closingSelector(opening);
       } catch (error) {

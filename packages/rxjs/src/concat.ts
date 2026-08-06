@@ -5,11 +5,11 @@ export const concat: unique symbol = Symbol('concat');
 
 declare global {
   interface ObservableCtor {
-    [concat]: <Sources extends readonly ObservableValue<any>[]>(otherSources: Sources) => Observable<ObservableArrayToValueUnion<Sources>>;
+    [concat]: <Sources extends readonly ObservableInput<any>[]>(otherSources: Sources) => Observable<ObservableArrayToValueUnion<Sources>>;
   }
 
   interface Observable<T> {
-    [concat]: <Sources extends readonly ObservableValue<any>[]>(
+    [concat]: <Sources extends readonly ObservableInput<any>[]>(
       otherSources: Sources
     ) => Observable<T | ObservableArrayToValueUnion<Sources>>;
   }
@@ -18,7 +18,7 @@ declare global {
 Observable[concat] = concatImpl;
 Observable.prototype[concat] = concatImpl;
 
-function concatImpl<Sources extends readonly ObservableValue<any>[]>(
+function concatImpl<Sources extends readonly ObservableInput<any>[]>(
   this: ObservableCtor | Observable<any>,
   sources: Sources
 ): Observable<ObservableArrayToValueUnion<Sources>> {

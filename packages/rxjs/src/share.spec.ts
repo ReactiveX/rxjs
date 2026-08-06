@@ -49,7 +49,7 @@ describe('share', () => {
     if (false) {
       // @ts-expect-error A connector must return a SubjectLike.
       source[share]({ connector: () => Observable.from([1]) });
-      // @ts-expect-error Reset factories must return an ObservableValue.
+      // @ts-expect-error Reset factories must return an ObservableInput.
       source[share]({ resetOnComplete: () => 1 });
       // @ts-expect-error Reset options accept only booleans or notifier factories.
       source[share]({ resetOnRefCountZero: 'yes' });
@@ -357,7 +357,7 @@ describe('share', () => {
       const conversionSource = tracked<number>();
       const conversionController = new AbortController();
       const conversionShared = conversionSource.observable[share]({
-        resetOnRefCountZero: () => ({} as ObservableValue<never>),
+        resetOnRefCountZero: () => ({} as ObservableInput<never>),
       });
 
       conversionShared.subscribe(() => {}, { signal: conversionController.signal });

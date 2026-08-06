@@ -5,11 +5,11 @@ export const takeUntil: unique symbol = Symbol('takeUntil');
 
 declare global {
   interface Observable<T> {
-    [takeUntil](notifier: ObservableValue<any>): Observable<T>;
+    [takeUntil](notifier: ObservableInput<any>): Observable<T>;
   }
 }
 
-Observable.prototype[takeUntil] = function <T>(this: Observable<T>, notifier: ObservableValue<any>): Observable<T> {
+Observable.prototype[takeUntil] = function <T>(this: Observable<T>, notifier: ObservableInput<any>): Observable<T> {
   return this[create]((subscriber) => {
     let notifierSource: Observable<any>;
     try {

@@ -56,7 +56,7 @@ describe('combineLatestAll', () => {
   it('supports an optional result selector', () => {
     const results: Array<string | 'complete'> = [];
 
-    fromValues<ObservableValue<string | number>>(Observable.from(['a']), Observable.from([1]))
+    fromValues<ObservableInput<string | number>>(Observable.from(['a']), Observable.from([1]))
       [combineLatestAll]((letter, number) => `${letter}${number}`)
       .subscribe({
         next: (value) => results.push(value),
@@ -94,7 +94,7 @@ describe('combineLatestAll', () => {
     const right = controllable<number>();
     const errors: unknown[] = [];
 
-    fromValues<ObservableValue<number>>(left.observable, right.observable)
+    fromValues<ObservableInput<number>>(left.observable, right.observable)
       [combineLatestAll]()
       .subscribe({
         error: (error) => errors.push(error),
@@ -114,7 +114,7 @@ describe('combineLatestAll', () => {
     const right = controllable<number>();
     const errors: unknown[] = [];
 
-    fromValues<ObservableValue<number>>(left.observable, right.observable)
+    fromValues<ObservableInput<number>>(left.observable, right.observable)
       [combineLatestAll](() => {
         throw failure;
       })
@@ -136,7 +136,7 @@ describe('combineLatestAll', () => {
     const controller = new AbortController();
     const observations: string[] = [];
 
-    fromValues<ObservableValue<number>>(never.observable, [])
+    fromValues<ObservableInput<number>>(never.observable, [])
       [combineLatestAll]()
       .subscribe({
         next: () => observations.push('next'),
@@ -157,7 +157,7 @@ describe('combineLatestAll', () => {
     const right = controllable<number>();
     const observations: number[][] = [];
 
-    fromValues<ObservableValue<number>>(left.observable, right.observable)
+    fromValues<ObservableInput<number>>(left.observable, right.observable)
       [combineLatestAll]()
       .subscribe((value) => {
         observations.push(value);
@@ -178,8 +178,8 @@ describe('combineLatestAll', () => {
     const left = controllable<number>();
     const right = controllable<string>();
     let outerActivations = 0;
-    let outerSubscriber: Subscriber<ObservableValue<number | string>> | undefined;
-    const outer = new Observable<ObservableValue<number | string>>((subscriber) => {
+    let outerSubscriber: Subscriber<ObservableInput<number | string>> | undefined;
+    const outer = new Observable<ObservableInput<number | string>>((subscriber) => {
       outerActivations++;
       outerSubscriber = subscriber;
     });

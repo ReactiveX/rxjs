@@ -6,7 +6,7 @@ export const combine: unique symbol = Symbol('combine');
 
 declare global {
   interface CombineItem<T> {
-    source: ObservableValue<T>;
+    source: ObservableInput<T>;
     causesEmit?: boolean;
     requireFirstValue?: boolean;
   }

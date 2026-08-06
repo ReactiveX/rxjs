@@ -37,7 +37,7 @@ describe('bufferToggle', () => {
     if (false) {
       // @ts-expect-error Both openings and a closing selector are required.
       source[bufferToggle]();
-      // @ts-expect-error The selector must return an ObservableValue.
+      // @ts-expect-error The selector must return an ObservableInput.
       source[bufferToggle](['open'], () => 1);
       // @ts-expect-error The selector parameter must match the opening value.
       source[bufferToggle](['open'], (opening: number) => [opening]);
@@ -468,10 +468,10 @@ function tracked<T>(): {
   };
 }
 
-function throwingIterable(error: unknown): ObservableValue<never> {
+function throwingIterable(error: unknown): ObservableInput<never> {
   return Object.defineProperty({}, Symbol.iterator, {
     get() {
       throw error;
     },
-  }) as ObservableValue<never>;
+  }) as ObservableInput<never>;
 }
