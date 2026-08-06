@@ -24,22 +24,25 @@ prevents the old RxJS 8 work from being mistaken for this product.
 ## Try the pipeable pilot
 
 ```ts
-import { filter, map, rx } from 'rxjs';
+import { filter, map, rx, subscribe, take, toArray } from 'rxjs';
 
-const result = rx(
+const subscription = rx(
   [1, 2, 3, 4],
   filter((value) => value % 2 === 0),
-  map((value) => value * 10)
+  map((value) => value * 10),
+  take(2),
+  toArray(),
+  subscribe(console.log)
 );
 
-result.subscribe(console.log); // 20, 40
+console.log(subscription.closed); // true after synchronous completion
 ```
 
 This branch is evaluating the root-level pipeable surface alongside the
-existing exact-Symbol catalog. The pilot is intentionally limited to `rx`,
-`map`, and `filter` until its implementation and typing approach are reviewed.
-Existing operator subpaths still export their exact Symbols and install only
-those capabilities.
+existing exact-Symbol catalog. After the first review, the pilot contains
+`rx`, `map`, `filter`, `take`, Observable-returning `toArray`, and the optional
+AbortSignal-backed `subscribe` compatibility terminal. Existing operator
+subpaths still export their exact Symbols and install only those capabilities.
 
 ## Choose the lifecycle deliberately
 

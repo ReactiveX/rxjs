@@ -2,8 +2,10 @@
 
 RxJS 9 is a new platform-based generation of RxJS. It extends the active
 web-platform `Observable` with exact Symbol-keyed capabilities instead of
-shipping the RxJS 7 Observable, Subscription, pipeable-operator, or scheduler
-runtime. The first planned prerelease is `9.0.0-beta.0`.
+shipping the RxJS 7 Observable or scheduler runtime. This branch also contains
+a review-gated pipeable pilot and a minimal AbortSignal-backed subscription
+handle; neither restores the complete RxJS 7 surface. The first planned
+prerelease is `9.0.0-beta.0`.
 
 This is a semantic migration, not a package-version bump. Before changing
 imports, decide which producer, sharing, cancellation, and timing behavior each
@@ -55,8 +57,8 @@ properties.
 
 ## Operator imports and composition
 
-RxJS 7 pipeable operators become exact Symbol imports and Symbol-keyed calls.
-The root package does not install the operator catalog.
+The complete reviewed migration target remains exact Symbol imports and
+Symbol-keyed calls. The root package does not install the Symbol catalog.
 
 ```ts
 // RxJS 7
@@ -81,6 +83,23 @@ The platform and RxJS forms can coexist. For example,
 `source[map](project)` is the RxJS contract. Importing the RxJS Symbol must not
 replace the platform string-named method.
 
+The experimental branch also supports ordinary composition for its reviewed
+subset:
+
+```ts
+import { filter, map, rx } from 'rxjs';
+
+const names = rx(
+  users,
+  filter((user) => user.active),
+  map((user) => user.name)
+);
+```
+
+This familiar syntax does not restore the entire RxJS 7 operator catalog,
+`.pipe`, scheduler overloads, or producer-per-subscription behavior. Review
+the target lifecycle before choosing it as a migration destination.
+
 RxJS 9 does not accept the RxJS 7 callback `thisArg` parameter on `every`,
 `filter`, `find`, `findIndex`, `map`, or `partition`. Capture state with a
 closure or bind the callback explicitly:
@@ -101,13 +120,15 @@ import { pipe } from 'rxjs/pipe';
 const names = users[pipe]((source) => source[map]((user) => user.name));
 ```
 
-RxJS 9 does not publish `.pipe`, RxJS 7 pipeable operator functions, or the
-`OperatorFunction` type family.
+RxJS 9 does not publish `.pipe`. The pilot publishes a small pipeable subset,
+`UnaryFunction`, and `OperatorFunction`; it is not yet a full compatibility
+surface.
 
 ## Cancellation and teardown
 
-`subscribe()` returns `undefined`. Own cancellation with an
-`AbortController`, and pass its signal in the subscription options.
+Platform `Observable.prototype.subscribe()` returns `undefined`. Own
+cancellation with an `AbortController`, and pass its signal in the subscription
+options.
 
 ```ts
 const controller = new AbortController();
@@ -122,6 +143,20 @@ source.subscribe(
 
 controller.abort('view disposed');
 ```
+
+The pilot's optional `subscribe(observer)` terminal supplies only the familiar
+`unsubscribe()` and live `closed` shape:
+
+```ts
+import { rx, subscribe } from 'rxjs';
+
+const subscription = rx(source, subscribe(consume));
+subscription.unsubscribe();
+console.log(subscription.closed); // true
+```
+
+It is one AbortController-backed observer handle, not an RxJS 7 Subscription
+tree. It has no `add`, `remove`, parentage, or teardown aggregation contract.
 
 Inside a producer, register cleanup with `subscriber.addTeardown()` instead of
 returning teardown logic:

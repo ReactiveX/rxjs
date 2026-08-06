@@ -113,16 +113,16 @@ remain unimplemented review items.
 D-050 stabilizes `ColdObservable`, `PerSubscriptionSubjectBase`, the Subject
 family, and the Symbol-keyed `pipe` as this intentional Next surface.
 
-| Intentional API              | Public form                                        | Own contract                                                                                   |
-| ---------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ColdObservable`             | Root and `rxjs/cold-observable` class              | One producer and compatibility Subscriber per direct `subscribe()` call                        |
-| `Subject`                    | Root and `rxjs/subject` class                      | Hot live fanout plus a non-mutating `asObservable()` platform view                             |
-| `AsyncSubject`               | Root and `rxjs/async-subject` class                | Hot final-value-on-completion fanout with retained terminal behavior                           |
-| Behavior subject             | Root and `rxjs/behavior-subject` lowercase factory | Hot current-value delivery for every direct observer                                           |
-| Replay subject               | Root and `rxjs/replay-subject` lowercase factory   | Hot size/host-time-bounded replay followed by live fanout                                      |
-| `PerSubscriptionSubjectBase` | Root and explicit advanced-base subpath            | Protected per-direct-observer setup hook for specialized hot Subject implementations           |
-| Exact Symbol-keyed `pipe`    | `rxjs/pipe` static and instance Symbol             | Typed one-to-seven-step composition; no `.pipe`, pipeable imports, or `OperatorFunction` claim |
-| Pipeable pilot               | Root `rx`, `map`, `filter`, and composition types  | New Next contracts with a nine-transformation `rx` type horizon                                |
+| Intentional API              | Public form                                                                       | Own contract                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `ColdObservable`             | Root and `rxjs/cold-observable` class                                             | One producer and compatibility Subscriber per direct `subscribe()` call                                         |
+| `Subject`                    | Root and `rxjs/subject` class                                                     | Hot live fanout plus a non-mutating `asObservable()` platform view                                              |
+| `AsyncSubject`               | Root and `rxjs/async-subject` class                                               | Hot final-value-on-completion fanout with retained terminal behavior                                            |
+| Behavior subject             | Root and `rxjs/behavior-subject` lowercase factory                                | Hot current-value delivery for every direct observer                                                            |
+| Replay subject               | Root and `rxjs/replay-subject` lowercase factory                                  | Hot size/host-time-bounded replay followed by live fanout                                                       |
+| `PerSubscriptionSubjectBase` | Root and explicit advanced-base subpath                                           | Protected per-direct-observer setup hook for specialized hot Subject implementations                            |
+| Exact Symbol-keyed `pipe`    | `rxjs/pipe` static and instance Symbol                                            | Typed one-to-seven-step composition; no `.pipe`, pipeable imports, or `OperatorFunction` claim                  |
+| Pipeable pilot               | Root `rx`, `map`, `filter`, `take`, `toArray`, `subscribe`, and composition types | New Next contracts with a nine-transformation `rx` horizon and a minimal AbortSignal-backed subscription handle |
 
 `PerSubscriptionSubjectBase` is hot: its Subject producer exists as soon as the
 instance is constructed. Its distinction from `Subject` is that it inherits
@@ -234,11 +234,14 @@ support:
   producer-per-subscription Next semantics.
 
 The exact Symbol-addressed `[pipe]` remains an intentional Next API. D-060's
-parallel pilot now adds root `rx`, pipeable `map` and `filter`, plus
+parallel pilot now adds root `rx`, pipeable `map`, `filter`, `take`, and
+Observable-returning `toArray`, plus
 `UnaryFunction` and `OperatorFunction`. `OperatorFunction<T, T>` replaces the
 redundant `MonoTypeOperatorFunction` alias. These are new Next contracts and do
-not imply that RxJS 7 import paths, scheduler
-overloads, broad `ObservableInput`, or `Subscription` behavior are restored.
+not imply that RxJS 7 import paths, scheduler overloads, broad
+`ObservableInput`, or full `Subscription` behavior are restored. The optional
+`subscribe` terminal exposes only `unsubscribe()` and a live `closed` getter
+backed by one AbortSignal.
 
 The initial `rx` overloads preserve exact types through nine transformations
 and return `unknown` for longer chains. Migration tooling must not hide that

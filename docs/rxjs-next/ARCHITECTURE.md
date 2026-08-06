@@ -568,8 +568,8 @@ smaller than the proposed destination:
 - the ambient `ObservableInput` union names the platform conversion boundary;
   public `UnaryFunction<In, Out>` and `OperatorFunction<In, Out>` type aliases
   describe composition without a redundant mono-type alias;
-- pipeable `map` and `filter` are root exports and use an internal `operate`
-  helper;
+- pipeable `map`, `filter`, and `take` are root exports and use an internal
+  `operate` helper;
 - `operate` creates through the source's D-037 `[create]` protocol and catches
   synchronous connection failures, while `subscribeToSource` continues to own
   signal propagation and notification-callback safety;
@@ -578,13 +578,26 @@ smaller than the proposed destination:
 The first maintainer review selected a shared internal callback for behavior
 implemented by both public forms. Pipeable `map` and exact-Symbol `[map]` now
 apply the same `mapOperator(project)` callback through `operate`; neither public
-surface delegates through the other.
+surface delegates through the other. The second slice applies the same pattern
+to `takeOperator(count)`.
+
+The post-review slice also adds two terminal shapes. RxJS `toArray()` is an
+`OperatorFunction<In, In[]>` that emits one array on source completion instead
+of returning the Promise produced by the platform string method. The optional
+`subscribe(observer)` terminal returns a minimal AbortSignal-backed
+`Subscription` with `unsubscribe()` and a live `closed` getter; it is not an
+RxJS 7 Subscription tree.
 
 The pilot does not settle the package layout. In particular, `rxjs/map` and
 `rxjs/filter` still export their existing Symbols even though the root exports
 pipeable functions with those names. Moving exact Symbols to an
 `rxjs/symbol` boundary and making ordinary deep imports pipeable would alter
 public exports and package side effects and remains gated on maintainer review.
+The pilot now exposes additive `rxjs/pipeable/{map,filter,take}` and
+`rxjs/symbol/{map,filter,take}` aliases so both per-operator directions can be
+tested without changing the established paths. `rxjs/rx`, `rxjs/to-array`, and
+`rxjs/subscribe` are direct deep imports because they have no legacy Symbol
+collision.
 
 The initial `rx` declaration uses explicit overloads through nine
 transformations and an `unknown` fallback after that point. This makes the

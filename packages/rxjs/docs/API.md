@@ -18,6 +18,9 @@ import {
   map,
   replaySubject,
   rx,
+  subscribe,
+  take,
+  toArray,
 } from 'rxjs';
 ```
 
@@ -28,8 +31,10 @@ The root also exports notifications and public errors, including
 claiming that a Subject is cold.
 
 Importing `rxjs` conditionally initializes the platform Observable surface. It
-does not install every Symbol operator. The experimental `map` and `filter`
-root exports are ordinary pipeable functions and do not patch operator keys.
+does not install every Symbol operator. The experimental `map`, `filter`,
+`take`, and `toArray` root exports are ordinary pipeable functions and do not
+patch operator keys. The experimental `subscribe` export is a terminal
+composition function.
 
 ## Pipeable pilot
 
@@ -45,11 +50,33 @@ const result = rx(
 result.subscribe(console.log); // 20, 40
 ```
 
+Platform `toArray()` returns a Promise. The RxJS function intentionally stays
+inside the Observable graph:
+
+```ts
+import { rx, subscribe, toArray } from 'rxjs';
+
+const subscription = rx(
+  [1, 2, 3],
+  toArray(),
+  subscribe((values) => console.log(values))
+);
+
+console.log(subscription.closed); // true after synchronous completion
+```
+
 The ambient platform declarations expose `ObservableInput`; the root exports
 `UnaryFunction` and `OperatorFunction` as supporting types. Use
 `OperatorFunction<T, T>` when an operator preserves its value type. See the
 [all-pipeable experiment](PIPEABLE_EXPERIMENT.md) for the overload horizon,
 checking-cost tradeoffs, and unresolved import layout.
+
+The pilot exposes additive deep imports at `rxjs/rx`, `rxjs/to-array`, and
+`rxjs/subscribe`. Operators whose ordinary subpaths still name exact Symbols
+are also available under `rxjs/pipeable/map`, `rxjs/pipeable/filter`, and
+`rxjs/pipeable/take`. Matching additive Symbol aliases exist at
+`rxjs/symbol/map`, `rxjs/symbol/filter`, and `rxjs/symbol/take`; the established
+Symbol subpaths remain unchanged while the final layout is under review.
 
 ## Symbol operators
 
@@ -103,8 +130,9 @@ const normalized = Observable[pipe]([1, 2], (values) => values[map](String));
 ```
 
 The existing Symbol form does not install `.pipe`. The review-gated root pilot
-does publish `rx`, two pipeable operators, and `OperatorFunction`; it does not
-yet convert the full catalog.
+does publish `rx`, three pipeable source operators, Observable-returning
+`toArray`, a lite `subscribe` terminal, and `OperatorFunction`; it does not yet
+convert the full catalog.
 
 ## Construction and input boundaries
 
@@ -120,10 +148,15 @@ lifecycle assumptions.
 
 ## Cancellation and teardown
 
-Subscriptions accept `{ signal: AbortSignal }`. Operators own upstream work
+Platform subscriptions accept `{ signal: AbortSignal }`. Operators own upstream work
 through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
+
+The optional pipeable `subscribe(observer)` terminal returns a minimal
+`Subscription` interface with `unsubscribe()` and a live `closed` getter. It is
+backed by one AbortController and does not recreate RxJS 7's Subscription tree,
+teardown aggregation, or `add`/`remove` methods.
 
 ## Environment and distribution
 

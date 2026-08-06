@@ -10,9 +10,9 @@
         "id": "imports:pipeable-functions",
         "surfaces": ["rxjs/operators", "root-imported operator functions", "source.pipe(...)"],
         "disposition": "replace",
-        "replacement": "Import exact Symbols from rxjs/<capability> and invoke source[symbol](...). Use rxjs/pipe only for deliberate Symbol composition.",
-        "rationale": "RxJS Next does not publish the RxJS 7 pipeable-function or string-named .pipe surface.",
-        "decisions": ["D-003", "D-039", "D-050"]
+        "replacement": "Use exact Symbols for the complete reviewed catalog. The D-060 pilot also offers root rx composition for its small reviewed operator subset.",
+        "rationale": "RxJS Next does not preserve the complete RxJS 7 pipeable-function catalog or the string-named .pipe surface.",
+        "decisions": ["D-003", "D-039", "D-050", "D-060"]
       },
       {
         "id": "imports:platform-constructors",
@@ -76,9 +76,9 @@
         "id": "types:subscription",
         "surfaces": ["Subscription", "SubscriptionLike", "Unsubscribable", "TeardownLogic"],
         "disposition": "replace",
-        "replacement": "Use AbortController, AbortSignal, SubscribeOptions, and Subscriber.addTeardown inside producers.",
-        "rationale": "subscribe() returns undefined and cancellation is signal-owned; no Subscription facade is published.",
-        "decisions": ["D-039", "D-041", "D-049"]
+        "replacement": "Use AbortController, AbortSignal, SubscribeOptions, and Subscriber.addTeardown inside producers. The D-060 pilot's subscribe terminal offers only unsubscribe() and live closed.",
+        "rationale": "Platform subscribe() returns undefined and cancellation is signal-owned; the pilot handle does not restore Subscription trees, add/remove, or teardown aggregation.",
+        "decisions": ["D-039", "D-041", "D-049", "D-060"]
       },
       {
         "id": "types:conversion",

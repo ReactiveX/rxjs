@@ -3,7 +3,9 @@
 This branch evaluates an all-pipeable RxJS 9 surface alongside the existing
 exact-Symbol surface. It is deliberately small: the first review slice contains
 `rx`, pipeable `map` and `filter`, the public composition types, and an internal
-`operate` helper. The rest of the operator catalog and the Symbol import move
+`operate` helper. After the first maintainer review, a second small slice adds
+pipeable `take`, Observable-returning `toArray`, and the optional lite
+`subscribe` terminal. The rest of the catalog and final Symbol import move
 remain gated on maintainer review.
 
 The experiment does not change the platform foundation. `rx` converts its
@@ -63,8 +65,8 @@ result.subscribe(console.log); // 20, 40
 
 This form is concise for methods the platform defines, but it cannot represent
 the complete RxJS catalog. Platform terminal consumers such as `first`,
-`last`, `reduce`, and `toArray` return Promises; the proposed RxJS pipeable
-counterparts would be separate Observable-returning contracts.
+`last`, `reduce`, and `toArray` return Promises; RxJS pipeable counterparts use
+separate Observable-returning contracts.
 
 ## Critical comparison
 
@@ -88,6 +90,49 @@ syntax has better unbounded chain inference, more local diagnostics, explicit
 contract selection at native-overlap names, and exact-key collision isolation.
 Platform methods have the best familiarity but cannot carry the complete RxJS
 contract.
+
+## Observable-returning terminal form
+
+The platform `source.toArray()` contract returns a Promise. The RxJS
+`toArray()` function intentionally emits one array as an Observable value:
+
+```ts
+import { rx, toArray } from 'rxjs';
+
+const result = rx([1, 2, 3], toArray());
+result.subscribe(console.log); // [1, 2, 3]
+```
+
+This keeps cancellation, sharing, error forwarding, and later Observable
+composition inside the same graph. It does not wrap the platform Promise; it
+collects source values through `operate` and emits only on completion.
+
+## Lite subscription terminal
+
+```ts
+import { rx, subscribe } from 'rxjs';
+
+const subscription = rx(source, subscribe(console.log));
+subscription.unsubscribe();
+console.log(subscription.closed); // true
+```
+
+The returned `Subscription` is intentionally only an interface with
+`unsubscribe()` and a live `closed` getter over one backing AbortSignal. Normal
+completion and source error abort that signal too. This does not restore the
+RxJS 7 class, child teardowns, `add`, `remove`, or aggregate unsubscription
+errors.
+
+## Provisional deep imports
+
+New names without collisions use `rxjs/rx`, `rxjs/to-array`, and
+`rxjs/subscribe`. While `rxjs/map`, `rxjs/filter`, and `rxjs/take` retain their
+exact Symbols, the pilot functions are available at `rxjs/pipeable/map`,
+`rxjs/pipeable/filter`, and `rxjs/pipeable/take`. Additive aliases at
+`rxjs/symbol/map`, `rxjs/symbol/filter`, and `rxjs/symbol/take` exercise the
+per-operator Symbol direction without moving or removing the established
+subpaths. These aliases are evidence for the final layout, not a decision that
+the complete catalog must use this exact arrangement.
 
 ## TypeScript limits and checking cost
 
@@ -161,10 +206,8 @@ The pilot intentionally leaves these decisions open:
 2. Whether nine transformations is the right overload horizon and which
    representative projects should supply type-check performance evidence.
 3. Whether `operate` remains internal or becomes an advanced public API.
-4. Which first Promise-returning platform consumer should be reimplemented as
-   an Observable-returning pipeable operator.
-5. The exact lite `subscribe` result and whether `closed` is a snapshot or a
-   live getter over the backing `AbortSignal`.
+4. Whether the Observable-returning `toArray` and live AbortSignal-backed lite
+   `subscribe` contracts should become accepted public APIs after the pilot.
 
 The first implementation has now been reviewed. The next slice may add only a
 small representative set covering an ordinary operator, an

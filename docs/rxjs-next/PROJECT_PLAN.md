@@ -1706,6 +1706,11 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
 - Stop after presenting the pilot implementation and evidence to the user.
   Any broader file layout, export, helper, or operator-family structure remains
   gated on that review.
+- The first maintainer review permits one follow-up slice: apply the requested
+  type cleanup, share map implementation logic, then add only pipeable `take`,
+  Observable-returning `toArray`, and the optional live AbortSignal-backed
+  `subscribe` facade with additive pilot deep imports. Return for review before
+  expanding the catalog or moving established Symbol paths.
 
 #### P6.1 completion bar
 
@@ -3780,3 +3785,26 @@ conformance implementation depends on a runnable harness.
   audits, ESM and Node `require(esm)` imports, package documentation links,
   build, lint with zero errors, and diff hygiene. P6.12 remains `NEXT` and work
   stops here for the requested maintainer review.
+
+### 2026-08-06 — P6.12 maintainer-review continuation
+
+- Applied the first review: renamed the ambient conversion union directly to
+  `ObservableInput`, changed `UnaryFunction<In, Out>` to a type alias, spelled
+  `OperatorFunction<In, Out>` directly, removed `MonoTypeOperatorFunction`, and
+  recorded D-061.
+- Moved common behavior into internal `mapOperator(project)` and
+  `takeOperator(count)` callbacks used through `operate` by both pipeable and
+  exact-Symbol forms. Public deep modules do not export those internal helpers.
+- Added the bounded second slice: root pipeable `take`, Observable-returning
+  `toArray`, and optional AbortSignal-backed `subscribe` with `unsubscribe()`
+  and a live `closed` getter. Added direct non-colliding deep imports plus
+  additive `rxjs/pipeable/*` and `rxjs/symbol/*` aliases for the pilot without
+  changing established Symbol paths or the 97-Symbol catalog.
+- Passed 113 source files and 774 tests in a serial full run, 28 focused tests,
+  52 polyfill unit tests, both package/build/type/import gates, migration and
+  generated-document freshness, all 97 Symbol installation audits, package
+  documentation links, lint with zero errors, and diff hygiene. Three unrelated
+  synchronous stress tests first hit the parallel five-second ceiling; all
+  three passed alone and the complete serial run was green.
+- P6.12 remains `NEXT`; stop after this second slice for maintainer review
+  before converting more operators or moving established Symbol subpaths.

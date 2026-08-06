@@ -1554,6 +1554,22 @@ Status meanings:
   overload horizon, public-versus-internal `operate`, terminal consumers, and
   lite subscription facade remain subject to later review.
 
+### Second review slice
+
+- **Status:** Proposed implementation for review
+- **Boundary:** Add root pipeable `take`, Observable-returning `toArray`, and
+  optional `subscribe`. `take` and exact-Symbol `[take]` share
+  `takeOperator(count)` through `operate`. `toArray` collects without invoking
+  the platform Promise-returning method.
+- **Subscription shape:** `subscribe(observer)` returns a minimal interface
+  whose `unsubscribe()` aborts one observer and whose live `closed` getter reads
+  the same backing AbortSignal. Completion and error abort it. No RxJS 7
+  Subscription tree, `add`, `remove`, or teardown aggregation is restored.
+- **Provisional paths:** Add direct `rxjs/rx`, `rxjs/to-array`, and
+  `rxjs/subscribe` paths plus additive per-operator `rxjs/pipeable/*` and
+  `rxjs/symbol/*` aliases for `map`, `filter`, and `take`. Established Symbol
+  subpaths are unchanged.
+
 ## D-061 — Name the platform conversion union `ObservableInput`
 
 - **Status:** Accepted

@@ -177,9 +177,10 @@ accepted decision and product contract.
 
 ### 10. How should pipeable functions and exact Symbols coexist during beta?
 
-D-060 proposes both surfaces and the first pilot proves only root `rx`, `map`,
-and `filter`. The existing `rxjs/map` and `rxjs/filter` deep imports still
-export exact Symbols. Before expanding the catalog, decide:
+D-060 proposes both surfaces. After the first review, the pilot proves root
+`rx`, `map`, `filter`, `take`, Observable-returning `toArray`, and a lite
+`subscribe` terminal. The existing `rxjs/map`, `rxjs/filter`, and `rxjs/take`
+deep imports still export exact Symbols. Before expanding the catalog, decide:
 
 - whether ordinary deep imports become pipeable functions;
 - whether Symbols move to one `rxjs/symbol` barrel, per-operator
@@ -187,13 +188,15 @@ export exact Symbols. Before expanding the catalog, decide:
 - whether `operate` is internal or public;
 - whether nine fixed transformations is the accepted `rx` type horizon or a
   different design passes representative type-check performance gates;
-- which Observable-returning terminal consumer and lite `subscribe` contract
-  should be the next review slice.
+- whether the tested Observable-returning `toArray` and live AbortSignal-backed
+  lite `subscribe` contracts should be accepted.
 
 The first review resolved implementation sharing for overlapping behavior:
 both public forms use the same internal operator callback through `operate`,
 beginning with `mapOperator`. Package layout, overload evidence, helper
-visibility, and the exact next terminal/subscription contracts remain open.
+visibility, terminal/subscription acceptance, and the complete-catalog layout
+remain open. Additive per-operator `rxjs/pipeable/*` and `rxjs/symbol/*` pilot
+aliases gather path evidence without moving the established exports.
 
 Do not answer these questions implicitly through bulk file moves or operator
 conversion. The first pilot and its comparison document are the evidence for
