@@ -21,29 +21,25 @@ finalized. RxJS 9 is a new platform-based generation, not a release of that
 paused implementation. The version communicates that architectural break and
 prevents the old RxJS 8 work from being mistaken for this product.
 
-## Use an operator
+## Try the pipeable pilot
 
 ```ts
-import { ColdObservable } from 'rxjs';
-import { map } from 'rxjs/map';
-import { pipe } from 'rxjs/pipe';
-import { scan } from 'rxjs/scan';
+import { filter, map, rx } from 'rxjs';
 
-const source = new ColdObservable<number>((subscriber) => {
-  subscriber.next(1);
-  subscriber.next(2);
-  subscriber.next(3);
-  subscriber.complete();
-});
+const result = rx(
+  [1, 2, 3, 4],
+  filter((value) => value % 2 === 0),
+  map((value) => value * 10)
+);
 
-source[pipe](
-  (values) => values[map]((value) => value * 2),
-  (values) => values[scan]((total, value) => total + value, 0)
-).subscribe(console.log); // 2, 6, 12
+result.subscribe(console.log); // 20, 40
 ```
 
-Each operator subpath exports its exact Symbol and installs only that
-capability. Importing the root does not install the operator catalog.
+This branch is evaluating the root-level pipeable surface alongside the
+existing exact-Symbol catalog. The pilot is intentionally limited to `rx`,
+`map`, and `filter` until its implementation and typing approach are reviewed.
+Existing operator subpaths still export their exact Symbols and install only
+those capabilities.
 
 ## Choose the lifecycle deliberately
 
@@ -80,6 +76,7 @@ not support legacy CommonJS resolvers.
 
 - [Security assurance and release verification](docs/SECURITY_ASSURANCE.md)
 - [API and import guide](docs/API.md)
+- [All-pipeable beta experiment](docs/PIPEABLE_EXPERIMENT.md)
 - [Migrate from RxJS 7](MIGRATION.md)
 - [Unsupported RxJS 7 surfaces](docs/UNSUPPORTED_RXJS_7_SURFACES.md)
 - [Migration evidence ledger](docs/MIGRATION_EVIDENCE_LEDGER.md)

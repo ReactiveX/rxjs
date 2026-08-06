@@ -1513,3 +1513,32 @@ Status meanings:
   construction, and platform string-named methods are unchanged. Historical
   RxJS 7 evidence retains its source identity, while active migrated specs use
   closures or bound functions instead of asserting the removed overload.
+
+## D-060 — Evaluate an all-pipeable beta surface alongside exact Symbols
+
+- **Status:** Proposed
+- **Direction under review:** Add ordinary pipeable operator functions at the
+  `rxjs` root and compose them with `rx(input, ...functions)`. `rx` converts its
+  first input through the active platform `Observable.from` and returns the
+  final unary function's result. Exact Symbol operators remain available
+  during beta so both forms can be evaluated rather than deleting one before
+  user and ecosystem feedback exists.
+- **Pilot boundary:** The first slice contains root `rx`, pipeable `map` and
+  `filter`, public unary/operator types, and an internal `operate` helper. It
+  does not move current Symbol subpaths, convert the full catalog, replace
+  Promise-returning platform consumers, or add the compatibility `subscribe`
+  facade.
+- **Typing:** The pilot tracks nine transformations with explicit overloads
+  and returns `unknown` beyond that horizon. Longer precise chains, additional
+  fixed overloads, or recursive tuple typing require representative
+  TypeScript checking-cost evidence before acceptance.
+- **Rationale:** User feedback finds pipeable syntax more readable and more
+  familiar than bracketed Symbol invocation. The beta can gather useful
+  evidence only if the two real surfaces coexist. The Symbol form retains
+  material advantages in unbounded stepwise inference, diagnostic locality,
+  native-overlap visibility, and exact-key collision isolation.
+- **Consequence if accepted:** D-003, D-039, D-040, and D-050 require narrow
+  supersession rather than deletion. Package exports, documentation, migration
+  guidance, bundle gates, and the root operator-isolation contract must be
+  revised together. The final `rxjs/map` versus `rxjs/symbol` layout and
+  implementation sharing model remain open until the pilot review.

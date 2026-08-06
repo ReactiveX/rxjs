@@ -174,3 +174,24 @@ and Cursor. P0.M5 records a Codex `0.146.0-alpha.3.1` outcome snapshot with
 marketplace distribution, harness support windows, and requalification beyond
 the committed beta evidence remain open. Adding MCP later would require a new
 accepted decision and product contract.
+
+### 10. How should pipeable functions and exact Symbols coexist during beta?
+
+D-060 proposes both surfaces and the first pilot proves only root `rx`, `map`,
+and `filter`. The existing `rxjs/map` and `rxjs/filter` deep imports still
+export exact Symbols. Before expanding the catalog, decide:
+
+- whether ordinary deep imports become pipeable functions;
+- whether Symbols move to one `rxjs/symbol` barrel, per-operator
+  `rxjs/symbol/map` paths, or both;
+- whether Symbol implementations delegate to pipeable implementations, both
+  call shared internal logic, or they remain independently specified;
+- whether `operate` is internal or public;
+- whether nine fixed transformations is the accepted `rx` type horizon or a
+  different design passes representative type-check performance gates;
+- which Observable-returning terminal consumer and lite `subscribe` contract
+  should be the next review slice.
+
+Do not answer these questions implicitly through bulk file moves or operator
+conversion. The first pilot and its comparison document are the evidence for
+maintainer review.

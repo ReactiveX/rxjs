@@ -81,10 +81,11 @@ bundle-size reduction. P6.8 completed durable pull-request and `master` CI
 ownership for every accepted RxJS 9 test and release check. P6.9 implemented
 truthful status signals and security automation and validated their first live
 GitHub results. The user then explicitly prioritized P6.11, which removed
-inherited callback `thisArg` parameters and their hot-path dispatch cost. P6.10
-remains the sole `NEXT` item: one understandable, interactive single-maintainer
-beta publication command with npm two-factor authentication and no CI
-publishing credential.
+inherited callback `thisArg` parameters and their hot-path dispatch cost. The
+user has now paused first-beta publication to evaluate an all-pipeable public
+surface alongside the exact-Symbol surface. P6.12 is the sole `NEXT` item and
+is review-gated after a small pilot; P6.10 returns to `PLANNED` until that beta
+architecture is settled.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1559,19 +1560,20 @@ names.
 
 ### Phase 6 — Release readiness
 
-| Status | ID    | Outcome                                                                               |
-| ------ | ----- | ------------------------------------------------------------------------------------- |
-| `DONE` | P6.1  | Finalize version naming, supported environments, support policy, and release channels |
-| `DONE` | P6.2  | Complete package, type, bundle, performance, and conformance gates                    |
-| `DONE` | P6.3  | Publish package-local API, migration, and contributor documentation                   |
-| `DONE` | P6.4  | Run pre-release adoption, resolve blockers, and approve the major release             |
-| `DONE` | P6.5  | Complete the terminal plan, verification, and documentation-site exclusion audit      |
-| `DONE` | P6.6  | Centralize eligible source subscriptions and record bundle-size evidence              |
-| `DONE` | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
-| `DONE` | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
-| `DONE` | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
-| `NEXT` | P6.10 | Publish and verify the first beta with the interactive release command                |
-| `DONE` | P6.11 | Remove inherited callback `thisArg` parameters and direct-call callback hot paths     |
+| Status    | ID    | Outcome                                                                               |
+| --------- | ----- | ------------------------------------------------------------------------------------- |
+| `DONE`    | P6.1  | Finalize version naming, supported environments, support policy, and release channels |
+| `DONE`    | P6.2  | Complete package, type, bundle, performance, and conformance gates                    |
+| `DONE`    | P6.3  | Publish package-local API, migration, and contributor documentation                   |
+| `DONE`    | P6.4  | Run pre-release adoption, resolve blockers, and approve the major release             |
+| `DONE`    | P6.5  | Complete the terminal plan, verification, and documentation-site exclusion audit      |
+| `DONE`    | P6.6  | Centralize eligible source subscriptions and record bundle-size evidence              |
+| `DONE`    | P6.7  | Use direct `[create]` construction and record bundle-size evidence                    |
+| `DONE`    | P6.8  | Complete RxJS 9 CI coverage and validate the resulting pull-request workflow matrix   |
+| `DONE`    | P6.9  | Validate the first live dependency-review and Scorecard runs on GitHub                |
+| `PLANNED` | P6.10 | Publish and verify the first beta with the interactive release command                |
+| `DONE`    | P6.11 | Remove inherited callback `thisArg` parameters and direct-call callback hot paths     |
+| `NEXT`    | P6.12 | Implement and review the first all-pipeable architecture pilot                        |
 
 #### P6.9 completion bar
 
@@ -1684,6 +1686,26 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
   The release performance gate measured approximately 63.0 million map values
   and 140,627 cancellations per second. Marked P6.11 `DONE`; the completed
   execution queue has no `NEXT` marker.
+
+#### P6.12 completion bar
+
+- A dedicated branch adds `rx`, a typed `operate` foundation, and only two
+  representative pipeable operators without removing or changing the existing
+  exact-Symbol implementations or their tests.
+- The pipeable APIs are available from the `rxjs` root, accept platform
+  `ObservableInput` through `Observable.from`, construct through the accepted
+  D-037 creation protocol, and preserve signal-owned source cancellation and
+  stream error forwarding.
+- Focused runtime tests cover composition, shared activation, cancellation,
+  restart, callback errors, and coexistence with the existing Symbol forms;
+  public declaration tests cover inference and the initial overload boundary.
+- Documentation records the experiment separately from the accepted Symbol
+  architecture, including TypeScript overload limits and checking cost. No
+  Symbol file move, full-catalog conversion, Promise-consumer replacement, or
+  compatibility `subscribe` facade is attempted before maintainer review.
+- Stop after presenting the pilot implementation and evidence to the user.
+  Any broader file layout, export, helper, or operator-family structure remains
+  gated on that review.
 
 #### P6.1 completion bar
 
@@ -3718,6 +3740,7 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+
 ### 2026-08-05 — P6.11 callback receiver removal
 
 - Audited the complete RxJS production source and removed callback `thisArg`
@@ -3734,3 +3757,26 @@ conformance implementation depends on a runnable harness.
   the release performance floor.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
+
+### 2026-08-06 — P6.12 first all-pipeable pilot
+
+- Created `codex/all-pipeable-experiment` from the completed callback-receiver
+  branch, moved P6.10 back to `PLANNED`, and made the review-gated P6.12 pilot
+  the sole `NEXT` item.
+- Added root `rx`, pipeable `map` and `filter`, public composition types, and an
+  internal `operate` helper. The pilot uses D-037 derived construction and the
+  existing guarded source-subscription helper without changing the 97 exact
+  Symbol implementations or their tests.
+- Added 13 focused runtime tests plus a published-declaration consumer covering
+  conversion, left-to-right arbitrary results, nine-step typing, the explicit
+  `unknown` fallback, narrowing, setup and notification errors, shared
+  activation, ref-count cancellation, restart, and Symbol coexistence.
+- Added the critical pipeable/Symbol/platform comparison, TypeScript checking
+  tradeoffs, D-060 proposal, architecture and compatibility records, and the
+  unresolved deep-import, implementation-sharing, terminal-consumer, and lite
+  subscription review gates.
+- Passed 110 focused files and 763 tests, the complete RxJS package gate,
+  public types, migration-document freshness, all 97 Symbol installation
+  audits, ESM and Node `require(esm)` imports, package documentation links,
+  build, lint with zero errors, and diff hygiene. P6.12 remains `NEXT` and work
+  stops here for the requested maintainer review.

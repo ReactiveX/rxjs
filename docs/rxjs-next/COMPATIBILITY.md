@@ -4,8 +4,10 @@
 
 RxJS Next reuses the behavioral knowledge in RxJS 7 tests where the represented
 expectations remain meaningful. It does not ship a separate runtime package
-that emulates RxJS 7 imports, `Subscription`, pipeable operators, schedulers, or
-deprecated aliases.
+that emulates RxJS 7, schedulers, or deprecated aliases. The accepted baseline
+uses exact Symbols; D-060 now proposes a real RxJS Next pipeable surface in the
+same package during beta. That proposal is a new public contract, not an RxJS 7
+runtime-emulation package.
 
 Useful APIs such as `ColdObservable`, Subjects, and the Symbol-keyed `pipe` may
 remain in `rxjs` as intentional RxJS Next capabilities with their own explicit
@@ -55,8 +57,8 @@ The table describes architectural defaults, not every edge case.
 | Teardown registration | Producer may return teardown logic; subscriptions aggregate finalizers                 | Producer calls `subscriber.addTeardown()`                                                          | Rewrite custom producers rather than relying on returned teardown functions                                              |
 | Teardown order        | RxJS 7 subscription finalizers follow RxJS aggregation semantics                       | The platform specification closes teardown callbacks in reverse insertion order                    | Treat order-sensitive teardown as a semantic migration                                                                   |
 | Error reporting       | RxJS configuration and host error reporting rules                                      | Platform exception reporting and Web IDL callback behavior                                         | Audit unhandled, late, and observer-callback errors                                                                      |
-| Operators             | Mostly standalone pipeable functions returning Observables                             | Platform string methods plus exact RxJS Symbol extensions                                          | Migrate imports and invocation shape; verify lifecycle-sensitive behavior                                                |
-| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                          | Exact Symbol-keyed `pipe` may remain as a Next API                                                 | Do not assume RxJS 7 pipeable functions or types exist                                                                   |
+| Operators             | Mostly standalone pipeable functions returning Observables                             | Exact Symbols plus D-060's proposed root pipeable surface                                          | Familiar syntax does not remove lifecycle and overload review                                                            |
+| Pipe                  | `pipe(...)`, `source.pipe(...)`, and `OperatorFunction` types                          | Exact Symbol-keyed `pipe`; proposed `rx` and new Next composition types                            | Do not assume RxJS 7 imports, overloads, or lifecycle behavior                                                           |
 | Subjects              | Subject family with established RxJS 7 semantics                                       | Intentional Next Subject APIs with directly documented contracts                                   | Verify late-observer, replay, terminal, and cancellation semantics                                                       |
 | Scheduling            | Scheduler arguments and scheduler classes affect many APIs                             | Host APIs and `@rxjs/test`; no general public RxJS scheduler abstraction                           | Remove scheduler arguments and review timing-sensitive code                                                              |
 | Input conversion      | Broad `ObservableInput` ecosystem and interop protocols                                | Platform `Observable.from` conversion order and categories                                         | Audit custom subscribables and legacy interop                                                                            |
@@ -102,8 +104,11 @@ helpers, and other APIs when they are useful on their own terms. They must:
   shared platform lifecycle;
 - keep unsupported RxJS 7 behavior visible in migration guidance.
 
-They do not provide an RxJS 7 `Subscription` facade, pipeable-operator import
-surface, scheduler system, deprecated aliases, or compatibility package.
+The accepted APIs do not provide an RxJS 7 `Subscription` facade, scheduler
+system, deprecated aliases, or compatibility package. D-060's pipeable pilot
+adds new root functions and familiar composition types on their own RxJS Next
+contracts; the full catalog, deep-import layout, and lite `subscribe` facade
+remain unimplemented review items.
 
 D-050 stabilizes `ColdObservable`, `PerSubscriptionSubjectBase`, the Subject
 family, and the Symbol-keyed `pipe` as this intentional Next surface.
@@ -117,6 +122,7 @@ family, and the Symbol-keyed `pipe` as this intentional Next surface.
 | Replay subject               | Root and `rxjs/replay-subject` lowercase factory   | Hot size/host-time-bounded replay followed by live fanout                                      |
 | `PerSubscriptionSubjectBase` | Root and explicit advanced-base subpath            | Protected per-direct-observer setup hook for specialized hot Subject implementations           |
 | Exact Symbol-keyed `pipe`    | `rxjs/pipe` static and instance Symbol             | Typed one-to-seven-step composition; no `.pipe`, pipeable imports, or `OperatorFunction` claim |
+| Pipeable pilot               | Root `rx`, `map`, `filter`, and composition types  | New Next contracts with a nine-transformation `rx` type horizon                                |
 
 `PerSubscriptionSubjectBase` is hot: its Subject producer exists as soon as the
 instance is constructed. Its distinction from `Subject` is that it inherits
@@ -227,11 +233,17 @@ support:
 - explicit selection when the pipeline moves between shared platform and
   producer-per-subscription Next semantics.
 
-The exact Symbol-addressed `[pipe]` is an intentional Next API. It does not
-promise RxJS 7 `OperatorFunction` types, standalone pipeable imports, or the
-string-named `.pipe`. Skills may transform an old pipeline to imported Symbols
-and `[pipe]` or to direct Symbol composition, then flag lifecycle-sensitive
-segments for review.
+The exact Symbol-addressed `[pipe]` remains an intentional Next API. D-060's
+parallel pilot now adds root `rx`, pipeable `map` and `filter`, plus
+`UnaryFunction`, `OperatorFunction`, and `MonoTypeOperatorFunction`. These are
+new Next contracts and do not imply that RxJS 7 import paths, scheduler
+overloads, broad `ObservableInput`, or `Subscription` behavior are restored.
+
+The initial `rx` overloads preserve exact types through nine transformations
+and return `unknown` for longer chains. Migration tooling must not hide that
+boundary with `any`. It may split a longer pipeline into typed segments, but it
+must retain lifecycle-sensitive review and cannot treat familiar pipeable
+syntax as proof of RxJS 7 semantic compatibility.
 
 ## Testing and migration-evidence boundary
 

@@ -1,5 +1,11 @@
 # Why RxJS is moving to Symbol operators
 
+This document explains the exact-Symbol design that entered the RxJS 9 beta.
+D-060 now proposes evaluating an all-pipeable surface alongside it rather than
+assuming either form wins before beta feedback. The pilot, TypeScript limits,
+and a more critical side-by-side comparison are recorded in the
+[all-pipeable experiment](../../packages/rxjs/docs/PIPEABLE_EXPERIMENT.md).
+
 The short version: RxJS operators are becoming methods addressed by imported
 Symbols.
 
@@ -129,10 +135,9 @@ const positive = (source) => source[filter]((value) => value > 0);
 const result = source[pipe](double, positive);
 ```
 
-The compatibility layer can use this composition point to preserve familiar
-RxJS 7-style pipeable operator functions and types. Existing applications do
-not need to rewrite every pipeline at once, and libraries can continue to pass
-reusable operator functions across an API boundary.
+D-060's pilot instead tests real root-level pipeable functions and `rx` as
+RxJS Next contracts. The existing Symbol-addressed `pipe` remains available
+while the two composition surfaces are evaluated during beta.
 
 ## This is not a new mental model
 
@@ -142,13 +147,12 @@ The important parts of RxJS do not change:
 - operators compose in order;
 - pipelines remain readable and reusable;
 - operator behavior remains backed by the RxJS test corpus;
-- a compatibility path remains available for pipeable code.
+- the beta can compare exact-Symbol and pipeable code with real implementations.
 
-The visible migration is usually mechanical: import the operator's Symbol and
-invoke it on the source. In return, RxJS gets collision-safe extension,
-coexists cleanly with the web platform, and gains one uniform operator syntax.
-
-It is a meaningful architectural improvement, but for day-to-day RxJS code,
-it is no big deal.
+The exact-Symbol form remains collision-safe and composes directly on the
+platform value. The pipeable form is more familiar to existing users and avoids
+bracket syntax. The beta experiment exists because those are both material
+facts, and a final decision should compare typing, checking cost, bundles,
+diagnostics, and user feedback rather than treating syntax as the only input.
 
 [tc39-pipe]: https://github.com/tc39/proposals#stage-2

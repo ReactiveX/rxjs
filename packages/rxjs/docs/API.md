@@ -1,13 +1,24 @@
 # RxJS 9 API and import guide
 
 RxJS 9 separates the platform Observable contract from RxJS capabilities.
-Import the root for intentional core primitives and import each operator or
-factory from its own subpath.
+This branch also contains a review-gated pipeable pilot at the root; the
+existing Symbol catalog remains available from its current subpaths.
 
 ## Root exports
 
 ```ts
-import { AsyncSubject, ColdObservable, ConnectableObservable, Subject, behaviorSubject, connectable, replaySubject } from 'rxjs';
+import {
+  AsyncSubject,
+  ColdObservable,
+  ConnectableObservable,
+  Subject,
+  behaviorSubject,
+  connectable,
+  filter,
+  map,
+  replaySubject,
+  rx,
+} from 'rxjs';
 ```
 
 The root also exports notifications and public errors, including
@@ -17,7 +28,27 @@ The root also exports notifications and public errors, including
 claiming that a Subject is cold.
 
 Importing `rxjs` conditionally initializes the platform Observable surface. It
-does not install every RxJS operator.
+does not install every Symbol operator. The experimental `map` and `filter`
+root exports are ordinary pipeable functions and do not patch operator keys.
+
+## Pipeable pilot
+
+```ts
+import { filter, map, rx } from 'rxjs';
+
+const result = rx(
+  [1, 2, 3, 4],
+  filter((value) => value % 2 === 0),
+  map((value) => value * 10)
+);
+
+result.subscribe(console.log); // 20, 40
+```
+
+The root exports `ObservableInput`, `UnaryFunction`, `OperatorFunction`, and
+`MonoTypeOperatorFunction` as supporting types. See the
+[all-pipeable experiment](PIPEABLE_EXPERIMENT.md) for the overload horizon,
+checking-cost tradeoffs, and unresolved import layout.
 
 ## Symbol operators
 
@@ -70,8 +101,9 @@ const doubled = source[pipe]((values) => values[map]((value) => value * 2));
 const normalized = Observable[pipe]([1, 2], (values) => values[map](String));
 ```
 
-RxJS 9 does not install `.pipe`, publish RxJS 7 pipeable operator functions,
-or restore `OperatorFunction`.
+The existing Symbol form does not install `.pipe`. The review-gated root pilot
+does publish `rx`, two pipeable operators, and `OperatorFunction`; it does not
+yet convert the full catalog.
 
 ## Construction and input boundaries
 

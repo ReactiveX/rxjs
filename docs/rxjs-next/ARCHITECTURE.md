@@ -557,6 +557,42 @@ been removed, and public declarations use explicit `unique symbol` types.
 D-037. D-048 records the version, duplicate-copy, realm, and collision
 consequences of that split.
 
+## Proposed all-pipeable beta experiment
+
+D-060 proposes exposing ordinary pipeable functions from the `rxjs` root while
+retaining exact Symbols during beta. The first review slice is intentionally
+smaller than the proposed destination:
+
+- `rx(input, ...functions)` converts `input` through the active platform
+  `Observable.from` and applies unary functions from left to right;
+- public `ObservableInput`, `UnaryFunction`, `OperatorFunction`, and
+  `MonoTypeOperatorFunction` types describe the initial composition boundary;
+- pipeable `map` and `filter` are root exports and use an internal `operate`
+  helper;
+- `operate` creates through the source's D-037 `[create]` protocol and catches
+  synchronous connection failures, while `subscribeToSource` continues to own
+  signal propagation and notification-callback safety;
+- all current Symbol modules, imports, installations, and tests remain intact.
+
+The pilot does not settle the package layout. In particular, `rxjs/map` and
+`rxjs/filter` still export their existing Symbols even though the root exports
+pipeable functions with those names. Moving exact Symbols to an
+`rxjs/symbol` boundary and making ordinary deep imports pipeable would alter
+public exports and package side effects and remains gated on maintainer review.
+
+The initial `rx` declaration uses explicit overloads through nine
+transformations and an `unknown` fallback after that point. This makes the
+type-safety horizon and overload-resolution cost visible. The alternative of
+recursive variadic-tuple typing remains a proposal until representative
+TypeScript projects measure checking time and diagnostic quality.
+
+This experiment does not change Observable lifecycle semantics. Pipeable
+results use the same construction protocol, active-producer sharing,
+AbortSignal cancellation, and source-subscription safety as the corresponding
+platform-layer Symbol design. See
+`packages/rxjs/docs/PIPEABLE_EXPERIMENT.md` for the detailed comparison and
+open review gates.
+
 ## Current API inventory
 
 This inventory documents what exists in source, not a supported public API.

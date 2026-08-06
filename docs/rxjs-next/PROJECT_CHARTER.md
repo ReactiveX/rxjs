@@ -28,6 +28,12 @@ Safari, Webpack 5, Deno, and Bun. Node 26 is advisory during beta. Browser,
 Webpack, `import`, and the Node `require(esm)` bridge resolve the same files;
 no CommonJS or runtime-specific code copy is published.
 
+D-060 is an active proposed beta experiment, not yet a replacement for the
+accepted Symbol goals below. It evaluates root-level pipeable functions and
+`rx(input, ...functions)` alongside exact Symbols, beginning with a small
+review-gated pilot. Any durable charter change follows that review and must
+state explicitly which earlier decisions it supersedes.
+
 ## Why this work exists
 
 RxJS 8 development stopped while Observable was being standardized for the web
@@ -78,7 +84,8 @@ Restarting the library on top of the platform primitive has three benefits:
   deterministic engine, and supported harness adapters selected for the
   foundation release.
 - Shipping a runtime package that emulates the RxJS 7 public API, import map,
-  subscription facade, pipeable-operator surface, or scheduler system.
+  subscription facade, or scheduler system. D-060's proposed pipeable surface
+  is a new RxJS Next contract in `rxjs`, not a compatibility package.
 - Claiming complete RxJS 7 behavioral compatibility on the platform
   `Observable`.
 - Preserving every RxJS 7 internal class, scheduler mechanism, import path, or
