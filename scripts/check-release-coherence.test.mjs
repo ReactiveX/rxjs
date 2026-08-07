@@ -7,6 +7,7 @@ function validInput() {
   return {
     manifests: {
       '@rxjs/observable-polyfill': releaseManifest('@rxjs/observable-polyfill', version, true),
+      '@rxjs/agent-plugin': { name: '@rxjs/agent-plugin', version, engines: { node: '>=22.13.0' } },
       '@rxjs/migrate': { ...releaseManifest('@rxjs/migrate', version, false), devDependencies: { '@types/node': '20.11.0' } },
       '@rxjs/test': { ...releaseManifest('@rxjs/test', version, true), peerDependencies: { rxjs: version } },
       rxjs: { ...releaseManifest('rxjs', version, true), dependencies: { '@rxjs/observable-polyfill': version } },
@@ -23,6 +24,7 @@ function validInput() {
     betaSource: [
       "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
       "{ name: '@rxjs/test', directory: 'packages/test' }",
+      "{ name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' }",
       "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
       "{ name: 'rxjs', directory: 'packages/rxjs' }",
       "    '--tag',\n    'next',\n    '--access',\n    'public',",
@@ -65,6 +67,7 @@ function validInput() {
       'target: [desktop, ios]',
       'boot-ios-simulator.mjs',
       'pnpm --filter @rxjs/test run build',
+      'pnpm --filter @rxjs/agent-plugin run build',
       'pnpm --filter @rxjs/migrate run build',
     ].join('\n'),
     safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",

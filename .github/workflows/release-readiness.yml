@@ -12,6 +12,7 @@ on:
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'packages/migrate/**'
+      - 'packages/agent-plugin/**'
       - 'packages/observable-polyfill/**'
       - 'packages/rxjs/**'
       - 'packages/test/**'
@@ -48,6 +49,7 @@ jobs:
           pnpm --filter @rxjs/observable-polyfill run build
           pnpm --filter rxjs run build
           pnpm --filter @rxjs/test run build
+          pnpm --filter @rxjs/agent-plugin run build
           pnpm --filter @rxjs/migrate run build
       - name: Install pinned browser engines
         run: pnpm exec playwright install --with-deps chromium firefox webkit

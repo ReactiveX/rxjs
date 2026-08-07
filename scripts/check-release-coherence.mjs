@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const packagePaths = {
   '@rxjs/observable-polyfill': 'packages/observable-polyfill/package.json',
+  '@rxjs/agent-plugin': 'packages/agent-plugin/package.json',
   '@rxjs/migrate': 'packages/migrate/package.json',
   '@rxjs/test': 'packages/test/package.json',
   rxjs: 'packages/rxjs/package.json',
@@ -48,7 +49,8 @@ export function auditReleaseCoherence(input) {
     errors.push(`The repository Node engine must be ${supportedNodeRange}; got ${input.rootNodeEngine ?? 'no engine'}.`);
   }
   for (const [name, manifest] of packageEntries) {
-    auditEsmDistribution(name, manifest, errors);
+    if (name === '@rxjs/agent-plugin') auditAgentPlugin(manifest, errors);
+    else auditEsmDistribution(name, manifest, errors);
   }
 
   if (input.nxReleaseConfigured) {
@@ -107,6 +109,7 @@ function auditReleaseMatrix(input, errors) {
     ["'safari:useSimulator': true", 'an actual Mobile Safari simulator'],
     ["'safari:deviceUDID'", 'the explicitly booted Mobile Safari simulator'],
     ['pnpm --filter @rxjs/test run build', 'the packed test-helper adoption prerequisite'],
+    ['pnpm --filter @rxjs/agent-plugin run build', 'the packed agent-plugin adoption prerequisite'],
     ['pnpm --filter @rxjs/migrate run build', 'the packed migration-tool adoption prerequisite'],
   ];
   const releaseMatrixSource = `${input.readinessWorkflowSource}\n${input.safariDriverSource}`;
@@ -124,6 +127,7 @@ function auditReleaseMatrix(input, errors) {
   for (const requirement of [
     "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
     "{ name: '@rxjs/test', directory: 'packages/test' }",
+    "{ name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' }",
     "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
     "{ name: 'rxjs', directory: 'packages/rxjs' }",
     "    '--tag',\n    'next',\n    '--access',\n    'public',",
@@ -154,6 +158,18 @@ function auditReleaseMatrix(input, errors) {
     }
   }
   requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
+}
+
+function auditAgentPlugin(manifest, errors) {
+  if (manifest.engines?.node !== supportedNodeRange) {
+    errors.push(`@rxjs/agent-plugin must declare Node ${supportedNodeRange}; got ${manifest.engines?.node ?? 'no engine'}.`);
+  }
+  if (manifest.dependencies && Object.keys(manifest.dependencies).length > 0) {
+    errors.push('@rxjs/agent-plugin must ship a prebuilt MCP with no installation-time runtime dependencies.');
+  }
+  if (manifest.scripts?.postinstall || manifest.bin || manifest.exports) {
+    errors.push('@rxjs/agent-plugin must not add a postinstall script, CLI, or public JavaScript library.');
+  }
 }
 
 function requireMasterPush(source, label, errors) {
