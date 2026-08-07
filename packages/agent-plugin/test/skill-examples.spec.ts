@@ -3,7 +3,45 @@ import { lastValueFrom, Observable as Observable7, of } from 'rxjs7';
 import type { OperatorFunction } from 'rxjs7';
 import { map as map7 } from 'rxjs7/operators';
 import { ColdObservable } from 'rxjs';
+import { create } from 'rxjs/create';
 import { map } from 'rxjs/map';
+
+const mapDefined9: unique symbol = Symbol('mapDefined');
+
+declare global {
+  interface Observable<T> {
+    [mapDefined9]<R>(project: (value: T, index: number) => R | undefined): Observable<R>;
+  }
+}
+
+Observable.prototype[mapDefined9] = function <T, R>(
+  this: Observable<T>,
+  project: (value: T, index: number) => R | undefined
+): Observable<R> {
+  return this[create]<R>((subscriber) => {
+    let index = 0;
+    try {
+      this.subscribe(
+        {
+          next: (value) => {
+            if (!subscriber.active) return;
+            try {
+              const projected = project(value, index++);
+              if (projected !== undefined) subscriber.next(projected);
+            } catch (error) {
+              subscriber.error(error);
+            }
+          },
+          error: (error) => subscriber.error(error),
+          complete: () => subscriber.complete(),
+        },
+        { signal: subscriber.signal }
+      );
+    } catch (error) {
+      subscriber.error(error);
+    }
+  });
+};
 
 function mapDefined<T, R>(project: (value: T, index: number) => R | undefined): OperatorFunction<T, R> {
   return (source) =>
@@ -72,5 +110,24 @@ describe('version-specific skill examples', () => {
     controller.abort();
     expect(values).toEqual([10, 20]);
     expect(teardowns).toBe(1);
+  });
+
+  it('runs the documented RxJS 9 exact-Symbol custom-operator pattern', () => {
+    const events: string[] = [];
+    const source = new ColdObservable<number>((subscriber) => {
+      subscriber.addTeardown(() => events.push('source teardown'));
+      subscriber.next(1);
+    });
+    const output = source[mapDefined9](() => {
+      throw new Error('project failed');
+    });
+
+    expect(output).toBeInstanceOf(ColdObservable);
+    output.subscribe({ error: () => events.push('error') });
+    expect(events).toEqual(['source teardown', 'error']);
+
+    const unrelated = Symbol('mapDefined');
+    expect(unrelated).not.toBe(mapDefined9);
+    expect((Observable.prototype as any)[unrelated]).toBeUndefined();
   });
 });
