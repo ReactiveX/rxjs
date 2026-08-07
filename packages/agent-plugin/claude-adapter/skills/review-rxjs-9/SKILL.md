@@ -1,29 +1,49 @@
 ---
 name: review-rxjs-9
-description: Review RxJS 9 code for platform lifecycle correctness, exact Symbol usage, AbortSignal ownership, native/fallback safety, input conversion, Subjects, teardown, reentrancy, and tests. Use only when the reviewed code targets RxJS 9.
+description: Review RxJS 9 code for web-platform active-producer lifecycle, intentional ColdObservable boundaries, exact Symbol imports and collision isolation, AbortSignal ownership, input normalization, higher-order concurrency, terminal teardown, Subjects and replay, custom sources and operators, native/fallback safety, and lifecycle tests. Use only for code targeting RxJS 9.
 ---
 
 # Review RxJS 9
 
-Confirm the version and review the subscription tree from consumer to sources,
-then notifications from sources back to consumers.
+Confirm the target is RxJS `9.0.0-beta.1`. Review the selected source lifecycle
+and subscription ownership before operator style. Trace cancellation and
+terminal behavior across every source, inner, notifier, and resource.
 
-Prioritize findings that can change behavior:
+Prioritize:
 
-- code assuming one producer per observer on a platform Observable;
-- captured return values from platform `subscribe()` or missing AbortSignal
-  ownership;
-- RxJS string-named prototype additions or a Symbol imported from the wrong
-  package copy;
-- operator results that bypass the receiver's construction contract;
-- inputs that rely on RxJS 7 arbitrary subscribables;
-- teardown after downstream notification when synchronous reentrancy can do
-  extra work;
-- Subject feedback, exposed writes, stale replay, or incorrect terminal state;
-- native/fallback or concurrent-observer behavior absent from tests.
+1. platform Observables whose shared active producer contradicts caller
+   expectations, or unnecessary `ColdObservable` work duplication;
+2. captured `subscribe()` return values or terminal subscriptions without an
+   owner-supplied AbortSignal;
+3. missing/wrong exact Symbol imports, string prototype patches, or lifecycle
+   results that bypass public `[create]`;
+4. concurrency, recovery, retry, completion, or input conversion that changes
+   observable behavior;
+5. cleanup registered incorrectly, late work after closure, or teardown order
+   that fails under reentrancy;
+6. exposed Subject writes, replay/reset misconceptions, and retained state;
+7. tests that omit concurrent observers, final-observer cancellation,
+   receiver lifecycle, or native/fallback differences.
 
-Lead with concrete file/line findings. Separate confirmed bugs, risks, design
-tradeoffs, and readability suggestions. Recommend the smallest
-behavior-preserving correction.
+Lead with narrow file/line findings, scenario, impact, evidence, smallest safe
+correction, and missing regression test. Separate confirmed defects from
+risks, design tradeoffs, and readability.
 
-Read the [review checklist](references/review-checklist.md).
+## Load references by review area
+
+- Use [review workflow](references/review-workflow.md) for evidence and finding
+  format.
+- Use [platform lifecycle and exact Symbols](references/platform-lifecycle-and-symbols.md)
+  for producer sharing, `ColdObservable`, imports, creation, and input limits.
+- Use [cancellation, errors, and resources](references/cancellation-errors-and-resources.md)
+  for signals, terminal ordering, teardown, and Promise consumers.
+- Use [concurrency, sharing, and state](references/concurrency-sharing-and-state.md)
+  for flattening, reset, replay, and Subjects.
+- Use [custom sources and operators](references/custom-sources-and-operators.md)
+  for public `[create]`, exact external Symbols, and callback forwarding.
+- Use [review examples](references/review-examples.md) for concrete bad/good
+  forms and actionable wording.
+- Use [testing evidence](references/testing-evidence.md) for lifecycle proof.
+
+Hand accepted fixes to `write-rxjs-9` and missing tests to
+`write-rxjs-9-tests`.

@@ -1,29 +1,47 @@
 ---
 name: review-rxjs-7
-description: Review RxJS 7 code for subscription ownership, higher-order concurrency, teardown, reentrancy, Subjects, multicasting, scheduler use, leaks, promise conversion, performance, and test coverage. Use only for RxJS 7 code or a 7.8.x maintenance review.
+description: Review RxJS 7.8.x code for subscription ownership, higher-order concurrency, recovery scope, completion dependencies, deterministic teardown, reentrancy, Subjects, sharing and retention, Promise conversion, custom sources and operators, performance, readability, and lifecycle tests. Use only for RxJS 7 code or maintenance; do not apply RxJS 9 platform-sharing, exact-Symbol, or AbortSignal contracts.
 ---
 
 # Review RxJS 7
 
-Pin runtime guidance to RxJS `7.8.2`. Trace each terminal subscription upstream
-through its operator chain and recursively inspect child subscriptions created
-by higher-order operators, notifiers, combinations, retries, and other
-`ObservableInput` boundaries.
+Pin runtime claims to RxJS `7.8.2`. Trace each terminal subscription upstream,
+then recursively inspect higher-order, notifier, combination, retry, repeat,
+and recovery children. Review lifetime and terminal behavior before style.
 
-Check first for:
+Use this order:
 
-- unowned or nested subscriptions;
-- `switchMap` canceling required writes, unbounded `mergeMap`, unbounded
-  `concatMap` queues, or `exhaustMap` dropping required state;
-- long-lived sources without deterministic teardown;
-- reentrant Subject feedback and synchronous producers that ignore
-  `subscriber.closed`;
-- `share`/`shareReplay` retention, reset, and ref-count policy;
-- `firstValueFrom`/`lastValueFrom` without emission/completion bounds;
-- custom Observables or operators missing error, completion, child ownership,
-  or cleanup paths;
-- tests that assert values but not cancellation or subscription windows where
-  lifecycle is the behavior.
+1. Identify the owner of every terminal subscription and manual resource.
+2. State replace, queue, overlap, or ignore behavior for every higher-order
+   boundary; verify cancellation and buffering match the requirement.
+3. Trace `error`, `complete`, and explicit unsubscription separately.
+4. Inspect Subjects, sharing, replay, retained closures, and reset policy.
+5. Review custom sources/operators for forwarding, user callback errors,
+   synchronous reentrancy, child ownership, and teardown.
+6. Require tests for the lifecycle behavior that supports each finding.
+7. Report confirmed behavior bugs first, then evidence-backed risks, design
+   tradeoffs, and readability improvements.
 
-Do not apply RxJS 9 platform-sharing or AbortSignal rules to RxJS 7 review.
-Read the [RxJS 7 review model](references/rxjs-7-review-model.md).
+Lead each finding with file and line, the concrete scenario, observable impact,
+and smallest safe correction. Do not report an operator name as the problem;
+report the requirement it violates.
+
+## Load references by review area
+
+- Use [review workflow](references/review-workflow.md) for evidence,
+  classification, severity, and finding format.
+- Use [subscription ownership and teardown](references/subscription-ownership-and-teardown.md)
+  for subscription trees, resource lifetime, completion traps, and reentrancy.
+- Use [concurrency, errors, and completion](references/concurrency-errors-and-completion.md)
+  for flattening, recovery scope, retry, joins, and Promise conversion.
+- Use [sharing, Subjects, and retention](references/sharing-subjects-and-retention.md)
+  for reset policy, replay memory, state, and write authority.
+- Use [custom sources and operators](references/custom-sources-and-operators.md)
+  for public operator construction and protocol correctness.
+- Use [review examples](references/review-examples.md) for good/bad code and
+  actionable finding examples.
+- Use [testing evidence](references/testing-evidence.md) to decide which tests
+  prove or fail to prove the behavior.
+
+Hand accepted rewrites to `write-rxjs-7` and missing tests to
+`write-rxjs-7-tests`.
