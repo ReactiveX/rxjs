@@ -48,7 +48,7 @@ describe('migration MCP service', () => {
     const first = previewMigration({ files: [{ path: 'test/example.spec.ts', source }], mode: 'cold' });
     expect(first.files[0]?.status).toBe('changed');
     expect(first.files[0]?.candidateSource).toContain('from "@rxjs/test"');
-    expect(first.files[0]?.candidateSource).toContain('source[map]');
+    expect(first.files[0]?.candidateSource).toContain('source.map');
 
     const second = previewMigration({
       files: [{ path: 'test/example.spec.ts', source: first.files[0]!.candidateSource }],

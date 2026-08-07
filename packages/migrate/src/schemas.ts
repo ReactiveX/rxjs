@@ -4,6 +4,7 @@ import {
   argumentAdapters,
   capabilityPreconditions,
   capabilityStatuses,
+  capabilityTargets,
   compatibilityClassifications,
   diagnosticDispositions,
   diagnosticNextActions,
@@ -47,6 +48,7 @@ export const capabilityMappingSchema = z
     legacyName: nonEmptyString,
     symbolName: nonEmptyString,
     module: nonEmptyString,
+    target: z.enum(capabilityTargets).optional(),
     argumentAdapter: z.enum(argumentAdapters),
     status: z.enum(capabilityStatuses),
     arity: z

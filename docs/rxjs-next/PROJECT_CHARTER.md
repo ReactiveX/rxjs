@@ -112,11 +112,12 @@ which capability they import and which Symbol they invoke.
 The Symbol catalog includes counterparts for platform operators such as `map`
 and `filter`. The platform form and RxJS form coexist:
 `observable.map(project)` uses the platform contract, while
-`observable[map](project)` uses the RxJS contract. This gives users a uniform
-Symbol-based style across the whole RxJS operator catalog. The RxJS form may
-delegate when the platform contract is sufficient or provide additional
-functionality under its separate key; it must not overwrite the string-named
-platform method.
+`observable[map](project)` uses the RxJS contract. Authoring guidance prefers
+the platform form when its semantics and receiver lifecycle fit, avoiding an
+unnecessary extension import in browser bundles. The exact Symbol remains
+available for missing/different behavior, uniform extension authoring, or
+`ColdObservable` construction. It must not overwrite the string-named platform
+method.
 
 This makes side-effect patching collision-safe: a Symbol property can be
 overwritten only by code that has obtained that exact Symbol value. Another

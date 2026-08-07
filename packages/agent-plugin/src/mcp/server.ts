@@ -18,7 +18,8 @@ export function createRxjsMcpServer(): McpServer {
   server.registerTool(
     'migration_capabilities',
     {
-      description: 'Return the versioned RxJS 7-to-9 mappings, preconditions, evidence classifications, limits, and engine schemas.',
+      description:
+        'Return versioned RxJS 7-to-9 target invocations, mappings, preconditions, evidence classifications, limits, and engine schemas.',
       inputSchema: {},
       annotations: readOnlyAnnotations,
     },

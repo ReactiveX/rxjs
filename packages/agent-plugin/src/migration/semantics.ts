@@ -620,10 +620,14 @@ function convertPipeline(context: ConvertPipelineContext): ts.Expression {
 
   let current = ts.visitNode(node.expression.expression, visit) as ts.Expression;
   for (const { call, local, mapping } of entries) {
-    addImport(context.imports, `rxjs/${mapping.module}`, mapping.symbolName);
+    if (mapping.target !== 'platform-method') {
+      addImport(context.imports, `rxjs/${mapping.module}`, mapping.symbolName);
+    }
     context.convertedOperatorLocals.add(local);
     current = factory.createCallExpression(
-      factory.createElementAccessExpression(current, factory.createIdentifier(mapping.symbolName)),
+      mapping.target === 'platform-method'
+        ? factory.createPropertyAccessExpression(current, mapping.symbolName)
+        : factory.createElementAccessExpression(current, factory.createIdentifier(mapping.symbolName)),
       call.typeArguments,
       adaptArguments(mapping.argumentAdapter, call.arguments, factory, visit)
     );

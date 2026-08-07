@@ -17,6 +17,7 @@ const exactMappings = exactOperators.map(
     legacyName,
     symbolName: legacyName,
     module: moduleName(legacyName),
+    target: legacyName === 'map' || legacyName === 'filter' ? 'platform-method' : 'exact-symbol',
     argumentAdapter: 'identity',
     status: 'exact',
     arity: exactArities[legacyName],

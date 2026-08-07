@@ -25,6 +25,9 @@ export type ArgumentAdapter = (typeof argumentAdapters)[number];
 export const capabilityStatuses = ['exact', 'unified', 'partial'] as const;
 export type CapabilityStatus = (typeof capabilityStatuses)[number];
 
+export const capabilityTargets = ['exact-symbol', 'platform-method'] as const;
+export type CapabilityTarget = (typeof capabilityTargets)[number];
+
 export const capabilityPreconditions = [
   'direct-pipe-call',
   'unshadowed-import-binding',
@@ -49,6 +52,7 @@ export interface CapabilityMapping {
   readonly legacyName: string;
   readonly symbolName: string;
   readonly module: string;
+  readonly target?: CapabilityTarget;
   readonly argumentAdapter: ArgumentAdapter;
   readonly status: CapabilityStatus;
   readonly arity: CapabilityArity;

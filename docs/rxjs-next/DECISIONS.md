@@ -1608,3 +1608,25 @@ Status meanings:
 - **Rationale:** Agent assistance is most useful when users discover it at the
   start of installation, migration, testing, or API work. Documentation can
   provide that visibility without imposing side effects on every RxJS install.
+
+## D-064 — Prefer platform methods in RxJS 9 authoring and proved migrations
+
+- **Status:** Accepted
+- **Decision:** RxJS 9 authoring, review, framework, and bundle guidance uses a
+  platform string method whenever its semantics and platform result lifecycle
+  fit. Exact RxJS Symbols remain public and are used for capabilities the
+  platform lacks, intentional semantic differences, public extension APIs, or
+  preservation of `ColdObservable` construction through `[create]`.
+- **Migration:** The deterministic registry records target invocation. The
+  proved RxJS 7 `map` and `filter` rewrites emit `.map()` and `.filter()` with
+  no extension imports. `takeUntil` remains exact `[takeUntil]` because
+  notifier errors terminate differently under the platform method. Legacy and
+  plugin engine copies, schemas, fixtures, diagnostics, and MCP capabilities
+  stay equivalent.
+- **Bundle consequence:** Platform-first code avoids an unnecessary
+  side-effecting extension import on browser-native paths. Exact byte impact is
+  still measured against the consumer's target and bundler. Node currently
+  relies on the fallback and often has different bundle priorities.
+- **Boundary:** Same-named string and Symbol methods are not mechanically
+  interchangeable. The author or migration must review semantics and receiver
+  lifecycle before choosing the platform form.

@@ -5,9 +5,10 @@ checks. The target must be idiomatic, reviewable RxJS 9 code.
 
 ## Required target shape
 
-- Import each operator/factory Symbol from its exact public subpath.
-- Invoke exact Symbol keys; do not patch string methods or manufacture a same-
-  description Symbol.
+- Prefer a platform string method whenever its behavior and receiver lifecycle
+  fit. This avoids unnecessary extension imports and browser bundle bytes.
+- Import each required operator/factory Symbol from its exact public subpath;
+  do not manufacture a same-description Symbol or patch string methods.
 - Select platform Observable or `ColdObservable` deliberately.
 - Use the public `[create]` protocol in low-level custom operators so result
   lifecycle follows the receiver.
@@ -18,6 +19,9 @@ checks. The target must be idiomatic, reviewable RxJS 9 code.
 - State concurrency limits, queue/drop policy, recovery scope, retry bounds,
   replay/reset policy, and Promise settlement bounds.
 - Keep Subject writes private unless public mutation is the API.
+- Preserve a sound controller shape: either a class with public command
+  methods/read-only Observables or a closure-backed factory returning a
+  readonly `[command, observable]` tuple.
 - Use domain-named transformations and intermediate Observables when a long
   Symbol chain hides policy.
 
@@ -25,9 +29,7 @@ checks. The target must be idiomatic, reviewable RxJS 9 code.
 
 ```ts
 import { debounce } from 'rxjs/debounce';
-import { switchMap } from 'rxjs/switch-map';
-
-const result = source[debounce](200)[switchMap](load);
+const result = source[debounce](200).switchMap(load);
 ```
 
 Review whether `source` now shares one active producer, whether `load` accepts
@@ -37,13 +39,11 @@ be recovered. Correct imports do not answer those questions.
 ## Prefer transformations for domain policy
 
 ```ts
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
 import { pipe } from 'rxjs/pipe';
 
-const accepted = () => (source: Observable<Event>) => source[filter]((event) => event.accepted);
+const accepted = () => (source: Observable<Event>) => source.filter((event) => event.accepted);
 
-const toPayload = () => (source: Observable<Event>) => source[map]((event) => event.payload);
+const toPayload = () => (source: Observable<Event>) => source.map((event) => event.payload);
 
 const payloads = events[pipe](accepted(), toPayload());
 ```
@@ -57,3 +57,9 @@ Before accepting a migration unit, apply the `write-rxjs-9` rules for
 lifecycle, common patterns, concurrency, errors, sharing/state, resources, and
 custom operators. Then apply `review-rxjs-9` to the final diff. The migration
 engine proves only its candidate transformation, not production quality.
+
+Do not convert a functional tuple controller into a class, or a class into a
+factory, as incidental migration cleanup. Both are valid. A class can share
+prototype methods and may reduce per-instance function allocation; a factory
+can be more compact and composable. Change the public shape only with caller
+evidence and review.

@@ -36,12 +36,12 @@ describe('migrateTestSchedulerSemantics', () => {
     expect(result.code).toContain('// Migrated from https://example.test/project.git @ abc123');
     expect(result.code).toContain('// Source: test/value-spec.ts');
     expect(result.code).toContain('import { rxTest } from "@rxjs/test"');
-    expect(result.code).toContain('import { map } from "rxjs/map"');
+    expect(result.code).not.toContain('rxjs/map');
     expect(result.code).toContain('import { buffer } from "rxjs/buffer"');
     expect(result.code).toContain('async () =>');
     expect(result.code).toContain('await rxTest');
-    expect(result.code).toContain('source[map]');
-    expect(result.code).toContain('source[map](x => x)[buffer]({ maxSize: 2, startEvery: 2, emitRemainingOnError: false })');
+    expect(result.code).toContain('source.map');
+    expect(result.code).toContain('source.map(x => x)[buffer]({ maxSize: 2, startEvery: 2, emitRemainingOnError: false })');
     expect(result.code).not.toContain('TestScheduler');
   });
 

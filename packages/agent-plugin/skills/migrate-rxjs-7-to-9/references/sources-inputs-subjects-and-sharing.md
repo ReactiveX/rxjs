@@ -42,6 +42,11 @@ Review current/replay behavior, late direct observers, terminal retention,
 write authority, synchronous reads, and reentrant feedback. Do not mechanically
 rename `BehaviorSubject` or `ReplaySubject` without tests for those contracts.
 
+Private Subject ownership may use a class or a functional factory returning a
+readonly `[command, observable]` tuple. Preserve that public design during the
+RxJS migration unless there is a separate approved API change. Update the
+Observable implementation and cancellation semantics inside the boundary.
+
 ## Sharing and replay
 
 A platform Observable already shares its active producer. Adding `[share]`

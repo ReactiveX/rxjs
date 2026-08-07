@@ -396,8 +396,11 @@ These are two intentional public surfaces on the same Observable:
   owns it when present; the conforming fallback supplies it only when the
   platform Observable itself is absent.
 - `source[map](...)` is the RxJS API. Providing it even for an overlapping name
-  lets developers use the same Symbol-based style for the complete RxJS
-  operator catalog.
+  preserves an explicit extension contract and receiver construction policy.
+- User and agent guidance prefers the platform method when its behavior and
+  platform result lifecycle fit. This avoids importing a side-effecting
+  extension module in browser-native paths. Exact Symbols remain required for
+  missing/different behavior or `ColdObservable` lifecycle.
 - The RxJS implementation may delegate to the platform method when the
   contracts match, wrap it, or independently implement additional inputs,
   overloads, or behavior. Those differences are part of the RxJS contract and

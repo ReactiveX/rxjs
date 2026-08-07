@@ -26,10 +26,12 @@ become an ordinary RxJS 9 source-to-source transformation composed through the
 exact `[pipe]` Symbol:
 
 ```ts
-const valid = () => (source: Observable<Reading>) => source[filter]((reading) => reading.valid);
+const valid = () => (source: Observable<Reading>) => source.filter((reading) => reading.valid);
 ```
 
-Do not recreate `.pipe` or the RxJS 7 `OperatorFunction` type family.
+Do not recreate `.pipe` or the RxJS 7 `OperatorFunction` type family. Prefer
+platform methods inside the transformation when their contracts fit; use an
+exact Symbol when behavior differs or `ColdObservable` lifecycle must persist.
 
 ## Low-level public operator migration
 
@@ -41,7 +43,10 @@ notifications, and keep state per activation unless sharing is intentional.
 
 Do not import RxJS internals such as `operate`, `OperatorSubscriber`, or `lift`
 machinery. Do not install a string-named method. Do not use `Symbol.for`
-without an explicit namespaced duplicate-install protocol.
+without an explicit namespaced protocol covering duplicate installation,
+version compatibility, property overwrite/refusal, and cross-realm behavior.
+Otherwise incompatible copies can silently share and replace the same
+prototype property while their declarations claim different contracts.
 
 ## Required characterization and target tests
 

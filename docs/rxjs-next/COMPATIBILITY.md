@@ -477,6 +477,13 @@ by checked-in source/target type evidence and exact mechanical fixtures:
 unproved overloads, incompatible registries, ambiguous TestScheduler lifecycle
 selection, and transformations whose legacy imports cannot be removed safely.
 
+Each registry entry records its target invocation. The proved `map` and
+`filter` rewrites use platform `.map()` and `.filter()` without extension
+imports. Exact `[takeUntil]` remains a Symbol rewrite because the platform
+method's notifier-error behavior is not RxJS 7-equivalent. Other exact or
+unified Symbol mappings remain explicit, especially where receiver
+construction or additional options are part of the target contract.
+
 The generated `compatibility-only` label remains stable provenance metadata.
 Under D-039 it means that the claim cannot be made for the shared platform
 surface; it does not name a package or promised facade.
