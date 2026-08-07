@@ -2,6 +2,14 @@
 
 Here are different ways you can install RxJS:
 
+## Coding agents
+
+If you use an AI coding agent, install the official `@rxjs/agent-plugin`. It
+provides version-aware RxJS 7 and RxJS 9 authoring, review, tests, debugging,
+performance analysis, and migration help. See the
+{@link guide/agent-plugin Agent Plugin guide} for supported clients and its
+read-only migration tools.
+
 ## ES2015 via npm
 
 ```shell

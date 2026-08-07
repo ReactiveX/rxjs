@@ -13,6 +13,7 @@ function validInput() {
     manifests: {
       'packages/rxjs/package.json': { files: ['dist', 'README.md', 'MIGRATION.md', 'CONTRIBUTING.md', 'docs'] },
       'packages/observable-polyfill/package.json': { files: ['dist', 'README.md'] },
+      'packages/agent-plugin/package.json': { files: ['dist', 'README.md', 'skills', 'schemas', 'plugin.json', 'mcp.json'] },
       'packages/test/package.json': { files: ['dist', 'README.md'] },
       'packages/migrate/package.json': { files: ['dist', 'README.md', 'docs', 'skill'] },
     },
@@ -39,6 +40,7 @@ test('rejects package documentation links that escape their package container', 
   const input = validInput();
   input.documents.set('packages/rxjs/README.md', '[Migration tool](../migrate/README.md)');
   input.existingPaths.add('packages/migrate/README.md');
+  input.existingPaths.add('packages/agent-plugin/README.md');
 
   assert.deepEqual(auditPackageDocs(input), [
     'packages/rxjs/README.md has a local link outside its package container: ../migrate/README.md.',

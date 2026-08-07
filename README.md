@@ -15,10 +15,14 @@ RxJS is a library for composing asynchronous and event-based programs with
 Observable values. This repository contains the platform-based next generation
 of RxJS, planned for release as **RxJS 9**.
 
-> RxJS 9 is prerelease work in development. The planned first beta is
-> `9.0.0-beta.0`, but it has not been published to npm yet. The `next` tag still
-> points to the earlier RxJS 8 prerelease, while RxJS 7 remains the production
-> `latest` line and continues to be maintained.
+> **Using an AI coding agent with RxJS?** Install the official
+> [`@rxjs/agent-plugin`](packages/agent-plugin/README.md) for version-aware
+> RxJS 7 and RxJS 9 authoring, review, tests, debugging, performance analysis,
+> and migration help. It is the recommended agent experience for RxJS.
+
+RxJS 9 is prerelease software. `9.0.0-beta.0` is available from npm's `next`
+tag, while RxJS 7 remains the production `latest` line. The synchronized
+`9.0.0-beta.1` train adds the official agent plugin.
 
 ## Why RxJS 9? What happened to RxJS 8?
 
@@ -44,8 +48,8 @@ product.
 
 ## Preview the RxJS 9 API
 
-The following example shows the planned beta API. Until `9.0.0-beta.0` is
-published, do not use npm's `next` tag to install RxJS 9.
+The following example shows the beta API. Install RxJS 9 from npm's `next`
+tag.
 
 ```ts
 import { ColdObservable } from 'rxjs';
@@ -71,7 +75,8 @@ Import the Symbol and call it with bracket syntax. A platform method such as
 | `rxjs`                      | Symbol extensions and intentional RxJS primitives        | [Package guide](packages/rxjs/README.md) · [API](packages/rxjs/docs/API.md) · [RxJS 7 migration](packages/rxjs/MIGRATION.md) |
 | `@rxjs/observable-polyfill` | Conditional platform Observable fallback                 | [Package guide](packages/observable-polyfill/README.md)                                                                      |
 | `@rxjs/test`                | Implementation-neutral virtual-time and marble testing   | [Package guide](packages/test/README.md)                                                                                     |
-| `@rxjs/migrate`             | Deterministic migration engine and canonical agent Skill | [Package guide](packages/migrate/README.md)                                                                                  |
+| `@rxjs/agent-plugin`        | Official RxJS 7 and 9 agent skills and migration MCP     | [Package guide](packages/agent-plugin/README.md)                                                                             |
+| `@rxjs/migrate`             | Final compatible migration API and CLI during transition | [Package guide](packages/migrate/README.md)                                                                                  |
 
 Release support, budgets, and exact environment gates are documented in the
 [`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). The irreversible npm

@@ -1,5 +1,10 @@
 # RxJS 9 API and import guide
 
+> Coding agents should use the official
+> [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin). Its generated public
+> entry-point catalog follows this package's export map and keeps RxJS 7 and
+> RxJS 9 guidance separate.
+
 RxJS 9 separates the platform Observable contract from RxJS capabilities.
 Import the root for intentional core primitives and import each operator or
 factory from its own subpath.

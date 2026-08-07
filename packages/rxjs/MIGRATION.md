@@ -1,9 +1,15 @@
 # Migrating from RxJS 7 to RxJS 9
 
+> **Recommended workflow:** install the official
+> [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin) and use its
+> `migrate-rxjs-7-to-9` skill. Its read-only MCP can analyze and preview
+> deterministic changes from explicit source text; it cannot read or write
+> your repository. Review all lifecycle choices before applying a preview.
+
 RxJS 9 is a new platform-based generation of RxJS. It extends the active
 web-platform `Observable` with exact Symbol-keyed capabilities instead of
 shipping the RxJS 7 Observable, Subscription, pipeable-operator, or scheduler
-runtime. The first planned prerelease is `9.0.0-beta.0`.
+runtime. The current synchronized target is `9.0.0-beta.1`.
 
 This is a semantic migration, not a package-version bump. Before changing
 imports, decide which producer, sharing, cancellation, and timing behavior each
@@ -90,9 +96,11 @@ const offset = 10;
 const closedOver = source[map]((value) => value + offset);
 
 const context = { offset: 10 };
-const bound = source[map](function (value) {
-  return value + this.offset;
-}.bind(context));
+const bound = source[map](
+  function (value) {
+    return value + this.offset;
+  }.bind(context)
+);
 ```
 
 Use the exact `pipe` Symbol only when deliberate multi-step composition is

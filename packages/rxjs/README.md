@@ -14,6 +14,13 @@ npm install rxjs@next
 RxJS 7 remains npm's `latest` line during the beta and continues to be
 maintained.
 
+> **Recommended for coding agents:** install the official
+> [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin). Its version-aware skills
+> cover RxJS 7 and RxJS 9 authoring, review, tests, debugging, performance, API
+> design, frameworks, bundles, and migration. The local migration MCP only
+> previews explicit source supplied by the host agent and cannot read or write
+> your project.
+
 ## Why version 9?
 
 Work on RxJS 8 began years ago and paused while Web Platform Observables were
@@ -81,6 +88,8 @@ not support legacy CommonJS resolvers.
 - [Security assurance and release verification](docs/SECURITY_ASSURANCE.md)
 - [API and import guide](docs/API.md)
 - [Migrate from RxJS 7](MIGRATION.md)
+- [Use the official RxJS agent plugin](https://www.npmjs.com/package/@rxjs/agent-plugin)
+- [Beta.1 release notes](docs/BETA_1_RELEASE_NOTES.md)
 - [Unsupported RxJS 7 surfaces](docs/UNSUPPORTED_RXJS_7_SURFACES.md)
 - [Migration evidence ledger](docs/MIGRATION_EVIDENCE_LEDGER.md)
 - [Release environments and budgets](docs/RELEASE_GATES.md)

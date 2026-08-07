@@ -8,6 +8,7 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const packageRequirements = {
   'packages/rxjs/package.json': ['README.md', 'MIGRATION.md', 'CONTRIBUTING.md', 'docs'],
   'packages/observable-polyfill/package.json': ['README.md'],
+  'packages/agent-plugin/package.json': ['README.md', 'skills', 'schemas', 'plugin.json', 'mcp.json'],
   'packages/test/package.json': ['README.md'],
   'packages/migrate/package.json': ['README.md', 'docs', 'skill'],
 };

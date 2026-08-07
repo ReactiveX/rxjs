@@ -1,5 +1,11 @@
 # `@rxjs/migrate`
 
+> **Transition notice:** This final compatible release preserves the existing
+> JavaScript API and CLI for current users. New agent workflows should install
+> [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin), which contains the same
+> deterministic engine behind a local, read-only migration MCP plus the full
+> RxJS 7 and RxJS 9 skill suite.
+
 Deterministic source-migration tools used by the RxJS 9 agent-first
 migration workflow. The current well-tested path migrates RxJS 7
 `TestScheduler` marble specs from Mocha/Chai to ordinary Vitest specs that call
@@ -79,8 +85,9 @@ machine-readable list. Aliases are tracked, while shadowed bindings, mixed
 unsupported pipelines, scheduler overloads, malformed input, and unsupported
 framework assertions are refused or preserved with structured findings.
 
-The package ships no MCP binary, export, or runtime dependency. D-046 keeps
-the library and dry-run-first CLI as the only deterministic engine surfaces.
+This transitional package ships no MCP binary. The official agent plugin owns
+the new MCP surface; this package retains its library and dry-run-first CLI so
+existing users are not broken during the beta.1 transition.
 
 The representative agent-workflow matrix and its deliberately bounded claims
 are documented in
