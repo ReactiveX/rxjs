@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "title": "Agent Plugins MCP Configuration",
+  "description": "Machine-readable schema for mcp.json in Agent Plugins 1.0.0. The Agent Plugins specification defines additional semantic and operational requirements.",
+  "type": "object",
+  "properties": {
+    "$schema": { "const": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json" },
+    "mcpServers": { "type": "object", "additionalProperties": { "$ref": "#/$defs/server" } }
+  },
+  "required": ["$schema", "mcpServers"],
+  "additionalProperties": false,
+  "$defs": {
+    "server": {
+      "oneOf": [
+        { "$ref": "#/$defs/stdioServer" },
+        { "$ref": "#/$defs/streamableHttpServer" },
+        { "$ref": "#/$defs/sseServer" }
+      ]
+    },
+    "stdioServer": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "stdio" },
+        "command": { "type": "string", "minLength": 1 },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "env": {
+          "type": "object",
+          "propertyNames": { "not": { "enum": ["PLUGIN_ROOT", "PLUGIN_DATA"] } },
+          "additionalProperties": { "type": "string" }
+        },
+        "cwd": {
+          "type": "string",
+          "pattern": "^(?:\\./|\\$\\{PLUGIN_ROOT\\}(?:/|$)|\\$\\{PLUGIN_DATA\\}(?:/|$))"
+        }
+      },
+      "required": ["type", "command"],
+      "additionalProperties": false
+    },
+    "streamableHttpServer": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "streamable-http" },
+        "url": { "type": "string", "minLength": 1 },
+        "headers": { "$ref": "#/$defs/headers" }
+      },
+      "required": ["type", "url"],
+      "additionalProperties": false
+    },
+    "sseServer": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "sse" },
+        "url": { "type": "string", "minLength": 1 },
+        "headers": { "$ref": "#/$defs/headers" }
+      },
+      "required": ["type", "url"],
+      "additionalProperties": false
+    },
+    "headers": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}
