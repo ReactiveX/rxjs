@@ -4,7 +4,7 @@
 
 Ship `@rxjs/agent-plugin@9.0.0-beta.1` as the official agent experience for
 RxJS 7 and RxJS 9. The portable package follows Agent Plugins 1.0 and Agent
-Skills, contains eleven narrowly triggered skills, and exposes the
+Skills, contains twelve narrowly triggered skills, and exposes the
 deterministic migration engine through a local read-only MCP server. A
 digest-locked Claude Code adapter is generated from the same sources.
 
@@ -240,7 +240,7 @@ ordinary agent tools.
 ### 2026-08-07 — P7.2 through P7.7 implementation
 
 - Added the portable beta.1 package, generated export/evidence knowledge,
-  prebuilt read-only MCP, eleven version-specific Skills, and copied mechanical
+  prebuilt read-only MCP, twelve version-specific Skills, and copied mechanical
   fixtures with legacy-engine equivalence coverage.
 - Added pinned schema/Skill/package/MCP/framework validation and a generated
   Claude adapter with byte-level artifact digests and a `git-subdir`

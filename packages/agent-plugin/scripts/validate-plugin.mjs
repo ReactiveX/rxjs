@@ -16,6 +16,7 @@ const expectedSkills = [
   'optimize-rxjs-bundles',
   'review-rxjs-7',
   'review-rxjs-9',
+  'write-rxjs-7',
   'write-rxjs-7-tests',
   'write-rxjs-9',
   'write-rxjs-9-tests',

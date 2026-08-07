@@ -3,7 +3,7 @@
 This synchronized beta introduces `@rxjs/agent-plugin`, the official agent
 experience for RxJS 7 and RxJS 9.
 
-The plugin contains eleven portable Agent Skills for migration, authoring,
+The plugin contains twelve portable Agent Skills for migration, authoring,
 review, testing, debugging, performance, library API design, framework
 integration, and bundle optimization. Its local MCP server exposes four
 read-only migration tools. It accepts explicit source text, has no repository
