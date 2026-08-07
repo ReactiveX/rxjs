@@ -16,10 +16,10 @@ maintained.
 
 > **Recommended for coding agents:** install the official
 > [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin). Its version-aware skills
-> cover RxJS 7 and RxJS 9 authoring, review, tests, debugging, performance, API
-> design, frameworks, bundles, and migration. The local migration MCP only
-> previews explicit source supplied by the host agent and cannot read or write
-> your project.
+> cover RxJS 7 and RxJS 9 authoring, review, tests, dedicated version-specific
+> debugging, performance, API design, frameworks, bundles, and migration. The
+> local migration MCP only previews explicit source supplied by the host agent
+> and cannot read or write your project.
 
 ## Why version 9?
 

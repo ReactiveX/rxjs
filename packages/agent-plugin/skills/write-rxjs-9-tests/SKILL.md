@@ -58,4 +58,4 @@ Use this workflow:
   reentry, Subject terminal controls, and owner abort.
 - Use [good and bad tests](references/good-and-bad-tests.md) during review.
 
-Hand production code to `write-rxjs-9` and diagnosis to `debug-rxjs`.
+Hand production code to `write-rxjs-9` and diagnosis to `debug-rxjs-9`.

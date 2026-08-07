@@ -10,7 +10,8 @@ const outputPath = resolve(packageRoot, 'dist/knowledge-digests.json');
 const surfaceCatalogPath = resolve(packageRoot, 'dist/migration-surface-catalog.json');
 const skillNames = [
   'analyze-rxjs-performance',
-  'debug-rxjs',
+  'debug-rxjs-7',
+  'debug-rxjs-9',
   'design-rxjs-library-apis',
   'integrate-rxjs-frameworks',
   'migrate-rxjs-7-to-9',

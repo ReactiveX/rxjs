@@ -17,8 +17,9 @@ of RxJS, planned for release as **RxJS 9**.
 
 > **Using an AI coding agent with RxJS?** Install the official
 > [`@rxjs/agent-plugin`](packages/agent-plugin/README.md) for version-aware
-> RxJS 7 and RxJS 9 authoring, review, tests, debugging, performance analysis,
-> and migration help. It is the recommended agent experience for RxJS.
+> RxJS 7 and RxJS 9 authoring, review, tests, dedicated version-specific
+> debugging, performance analysis, and migration help. It is the recommended
+> agent experience for RxJS.
 
 RxJS 9 is prerelease software. `9.0.0-beta.0` is available from npm's `next`
 tag, while RxJS 7 remains the production `latest` line. The synchronized

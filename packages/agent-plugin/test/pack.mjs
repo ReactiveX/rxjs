@@ -21,7 +21,7 @@ try {
   for (const required of ['plugin.json', 'mcp.json', 'dist/mcp-server.cjs', 'dist/knowledge-digests.json']) {
     assert(names.includes(required), `packed artifact is missing ${required}`);
   }
-  assert(names.filter((name) => /(^|\/)SKILL\.md$/.test(name)).length === 12, 'packed artifact must contain all twelve skills');
+  assert(names.filter((name) => /(^|\/)SKILL\.md$/.test(name)).length === 13, 'packed artifact must contain all thirteen skills');
   assert(
     !names.some((name) => name.startsWith('src/') || name.startsWith('scripts/') || name.startsWith('test/')),
     'source and tests must not ship'

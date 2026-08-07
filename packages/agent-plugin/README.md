@@ -2,7 +2,7 @@
 
 The official, portable agent plugin for RxJS 7 and RxJS 9. It helps agents migrate, write, review, test, debug, and optimize RxJS code while keeping version-specific semantics explicit.
 
-The package follows Agent Plugins 1.0. Install the package with the plugin mechanism supported by your agent client. The artifact contains twelve Agent Skills and a prebuilt, local MCP server; it has no postinstall script and makes no network requests.
+The package follows Agent Plugins 1.0. Install the package with the plugin mechanism supported by your agent client. The artifact contains thirteen Agent Skills, including separate RxJS 7 and RxJS 9 debugging skills, and a prebuilt, local MCP server; it has no postinstall script and makes no network requests.
 
 ## Migration tools
 

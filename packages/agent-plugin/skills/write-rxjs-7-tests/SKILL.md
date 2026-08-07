@@ -63,4 +63,4 @@ Use this workflow:
 - Use [good and bad tests](references/good-and-bad-tests.md) during test review.
 
 Hand production changes to `write-rxjs-7` and behavior diagnosis to
-`debug-rxjs`.
+`debug-rxjs-7`.

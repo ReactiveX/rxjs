@@ -9,7 +9,8 @@ import { readProperties, validate } from 'skills-ref';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const expectedSkills = [
   'analyze-rxjs-performance',
-  'debug-rxjs',
+  'debug-rxjs-7',
+  'debug-rxjs-9',
   'design-rxjs-library-apis',
   'integrate-rxjs-frameworks',
   'migrate-rxjs-7-to-9',
@@ -130,6 +131,12 @@ for (const [path, requiredText] of [
   ['skills/design-rxjs-library-apis/references/controller-api-shapes.md', 'Readonly tuple'],
   ['skills/integrate-rxjs-frameworks/references/angular-22.md', '^6.5.3 || ^7.4.0'],
   ['skills/optimize-rxjs-bundles/references/rxjs-9-platform-methods-and-symbol-modules.md', 'Prefer the platform surface'],
+  ['skills/debug-rxjs-7/SKILL.md', 'A call stack is one synchronous slice'],
+  ['skills/debug-rxjs-7/references/temporary-tap-instrumentation.md', 'Re-run with the probe disabled and then removed'],
+  ['skills/debug-rxjs-7/references/call-stacks-and-error-signatures.md', 'reportUnhandledError'],
+  ['skills/debug-rxjs-9/SKILL.md', 'logging itself takes time'],
+  ['skills/debug-rxjs-9/references/temporary-inspect-and-tap-instrumentation.md', 'ColdObservable'],
+  ['skills/debug-rxjs-9/references/call-stacks-and-error-signatures.md', 'Platform `subscribe()` returns'],
 ]) {
   const contents = await readFile(resolve(root, path), 'utf8');
   if (!contents.includes(requiredText)) errors.push(`${path}: missing required expert guidance: ${requiredText}`);

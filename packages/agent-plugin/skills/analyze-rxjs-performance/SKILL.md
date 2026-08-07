@@ -46,4 +46,5 @@ Use this sequence:
   off reproducible evidence.
 
 Hand bundle-only work to `optimize-rxjs-bundles`, correctness diagnosis to
-`debug-rxjs`, and code rewrites to the matching version authoring skill.
+`debug-rxjs-7` or `debug-rxjs-9`, and code rewrites to the matching version
+authoring skill.

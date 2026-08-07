@@ -1681,3 +1681,31 @@ Status meanings:
   rules that previously said tooling never selected any lifecycle are narrowed:
   tooling may choose the behavior-preserving cold default, but it must never
   infer or silently apply platform promotion.
+
+## D-066 — Split debugging guidance by RxJS major and diagnose with timelines
+
+- **Status:** Accepted
+- **Decision:** Replace the cross-version `debug-rxjs` Skill with
+  `debug-rxjs-7` and `debug-rxjs-9`. Their triggers and diagnostic models are
+  version-specific: RxJS 7 follows Subscription ownership and cold/shared
+  source contracts; RxJS 9 begins with native/fallback platform Observable
+  versus `ColdObservable`, exact Symbol identity, and AbortSignal ownership.
+- **Stack boundary:** Treat a call stack as evidence for one synchronous slice,
+  not as the history of a concurrent reactive system. Use the first user-owned
+  frame and surrounding library/host frames to classify setup, notification,
+  observer, teardown, or host-report phases. Reconstruct cross-task ordering
+  with stable activation, observer, inner, controller, and resource ids in an
+  ordered event timeline.
+- **Instrumentation:** Teach temporary `tap` probes for RxJS 7 and exact
+  `[tap]` probes for RxJS 9. Platform `.inspect()` is preferred for an
+  already-platform RxJS 9 stream when its lifecycle fits; it must not be used
+  to hide a `ColdObservable` lifecycle bug. Diagnostic callbacks are
+  non-throwing, compact, and removed after the cause becomes a regression test.
+- **Timing boundary:** Debugger pauses and logs both perturb execution.
+  Timeline logging usually preserves concurrency better than stepping, but
+  console output, inspection, and serialization can still change fast-system
+  outcomes. Repeat the reproduction and verify it with probes disabled and
+  removed before accepting a cause or fix.
+- **Consequence:** The beta.1 plugin contains thirteen Skills. Deterministic
+  schema, reference, package, and adapter checks enforce both debugger Skills;
+  no model-backed evaluation is added.

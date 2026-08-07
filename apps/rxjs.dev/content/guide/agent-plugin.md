@@ -9,7 +9,8 @@ RxJS 7 and RxJS 9 semantics separate.
 - migrate reviewed source from RxJS 7 to RxJS 9;
 - write and review RxJS 7 or RxJS 9 code;
 - write version-correct tests;
-- debug subscription, cancellation, sharing, and teardown behavior;
+- use dedicated RxJS 7 and RxJS 9 debugging skills to interpret call stacks,
+  common errors, notification timelines, cancellation, sharing, and teardown;
 - analyze performance and bundle size;
 - design reactive library APIs; and
 - integrate RxJS with Angular, React, Vue, Svelte, and SolidJS.

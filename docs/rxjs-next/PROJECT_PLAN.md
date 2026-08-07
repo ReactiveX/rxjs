@@ -4,7 +4,7 @@
 
 Ship `@rxjs/agent-plugin@9.0.0-beta.1` as the official agent experience for
 RxJS 7 and RxJS 9. The portable package follows Agent Plugins 1.0 and Agent
-Skills, contains twelve narrowly triggered skills, and exposes the
+Skills, contains thirteen narrowly triggered skills, and exposes the
 deterministic migration engine through a local read-only MCP server. A
 digest-locked Claude Code adapter is generated from the same sources.
 
@@ -37,8 +37,9 @@ mutation is not complete until its external result is verified.
 | `DONE`    | P7.7  | Put the agent plugin front-and-center in package, migration, release, and `rxjs.dev` documentation                                              |
 | `DONE`    | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
 | `DONE`    | P7.9  | Complete migration coverage across the full RxJS 7 public surface and make `ColdObservable` the conservative lifecycle default                  |
-| `NEXT`    | P7.10 | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
-| `PLANNED` | P7.11 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
+| `DONE`    | P7.10 | Split debugging into dedicated RxJS 7 and RxJS 9 skills with timeline, stack, error-signature, and temporary instrumentation guidance           |
+| `NEXT`    | P7.11 | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
+| `PLANNED` | P7.12 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
 
 ## P7.1 — Architecture rollover
 
@@ -87,7 +88,7 @@ preview remains the host agent's reviewed edit.
 
 ## P7.4–P7.5 — Skill suite
 
-Ship twelve immediate `skills/` children with matching frontmatter names:
+Ship thirteen immediate `skills/` children with matching frontmatter names:
 
 1. `migrate-rxjs-7-to-9`
 2. `write-rxjs-7`
@@ -97,10 +98,11 @@ Ship twelve immediate `skills/` children with matching frontmatter names:
 6. `write-rxjs-9-tests`
 7. `write-rxjs-7-tests`
 8. `analyze-rxjs-performance`
-9. `debug-rxjs`
-10. `design-rxjs-library-apis`
-11. `integrate-rxjs-frameworks`
-12. `optimize-rxjs-bundles`
+9. `debug-rxjs-7`
+10. `debug-rxjs-9`
+11. `design-rxjs-library-apis`
+12. `integrate-rxjs-frameworks`
+13. `optimize-rxjs-bundles`
 
 Keep each `SKILL.md` concise and route detailed, version-specific material to
 focused references. Framework guidance covers Angular 22.1 and React 19.2
@@ -199,7 +201,27 @@ engine/MCP fixtures, legacy-engine equivalence, updated migration Skills and
 public guidance, package/adapter digest validation, and the deterministic free
 package gate. No model or paid evaluation runs.
 
-## P7.10–P7.11 — Release and retirement
+## P7.10 — Version-specific debugging
+
+Replace the overlapping cross-version debugger with dedicated RxJS 7 and
+RxJS 9 skills. Both skills must teach agents to treat a call stack as one
+synchronous slice and reconstruct concurrency from a stable, ordered event
+timeline. Include common error signatures, subscription/producer identity,
+recovery and higher-order boundaries, cancellation and teardown ownership,
+Subjects, sharing, synchronous reentrancy, and symptom-driven experiments.
+
+Provide temporary `tap` logging for both versions and platform `.inspect()`
+where its RxJS 9 lifecycle fits. Require probes to be lightweight,
+non-throwing, removed after diagnosis, and followed by a probe-free
+reproduction because logging and debugger pauses can perturb fast systems.
+RxJS 9 guidance must preserve the distinction between a platform Observable
+and `ColdObservable` and use the exact imported `tap` Symbol.
+
+Completion requires non-overlapping triggers, progressive references,
+deterministic expert-guidance assertions, updated package/adapter inventories,
+and the free package validation gate.
+
+## P7.11–P7.12 — Release and retirement
 
 Prepare and publish `9.0.0-beta.1` in this order:
 
@@ -267,7 +289,7 @@ ordinary agent tools.
 ### 2026-08-07 — P7.2 through P7.7 implementation
 
 - Added the portable beta.1 package, generated export/evidence knowledge,
-  prebuilt read-only MCP, twelve version-specific Skills, and copied mechanical
+  prebuilt read-only MCP, the initial twelve-Skill suite, and copied mechanical
   fixtures with legacy-engine equivalence coverage.
 - Added pinned schema/Skill/package/MCP/framework validation and a generated
   Claude adapter with byte-level artifact digests and a `git-subdir`
@@ -285,14 +307,14 @@ ordinary agent tools.
   code examples, common-pattern guidance, custom-operator depth, and meaningful
   progressive references.
 - Inserted P7.8 ahead of publication, made it the sole `NEXT`, and moved
-  publication and retirement to P7.9 and P7.10.
+  publication and retirement to the then-current P7.9 and P7.10.
 - Required targeted generated references instead of copying one broad export
   catalog into every skill, and required migration output to follow the same
   target-authoring rules as new RxJS 9 code.
 
 ### 2026-08-07 — P7.8 expert knowledge completed
 
-- Expanded all twelve skills into 89 focused authored/generated references,
+- Expanded the initial twelve skills into 89 focused authored/generated references,
   with every reference linked through progressive-disclosure routing and no
   duplicated `version-catalog.md` files.
 - Added first-class RxJS 7 authoring; good/bad and production-pattern guidance;
@@ -349,4 +371,26 @@ ordinary agent tools.
   RxJS migration-guide type check passed. No model, paid-token, authenticated,
   or credit-consuming evaluation ran.
 - Marked P7.9 complete and advanced synchronized beta.1 publication and
+  registry verification as the sole `NEXT` item.
+
+### 2026-08-07 — P7.10 version-specific debugging
+
+- Replaced the overlapping `debug-rxjs` trigger with `debug-rxjs-7` and
+  `debug-rxjs-9`, bringing the package to thirteen Skills and 100 focused
+  references.
+- Added stack-phase interpretation and common error signatures for each major,
+  plus timeline-first diagnosis for subscriptions, producer activations,
+  higher-order inners, cancellation, teardown, sharing, Subjects, and
+  synchronous reentrancy.
+- Added temporary RxJS 7 `tap` and RxJS 9 `.inspect()`/exact `[tap]`
+  instrumentation. The guidance requires non-throwing compact probes, warns
+  that logs and debugger pauses perturb timing, and requires verification after
+  all diagnostic code is disabled and removed.
+- Recorded D-066, updated the universal and Claude inventories and digests, and
+  added deterministic content assertions for both debugging skills.
+- Deterministic evidence: Agent Plugin/Skill schemas validated all 13 Skills;
+  package and framework type checks passed; all 46 plugin tests passed; and the
+  124-file packed artifact and MCP lifecycle passed. No model, paid-token,
+  authenticated, or credit-consuming evaluation ran.
+- Marked P7.10 complete and restored synchronized beta.1 publication and
   registry verification as the sole `NEXT` item.
