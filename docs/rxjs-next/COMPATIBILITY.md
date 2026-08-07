@@ -13,7 +13,7 @@ contracts. Passing former RxJS 7 tests against those APIs proves the represented
 behavior only; it is not a source, type, import, or lifecycle compatibility
 claim.
 
-Migration guidance and Skills must classify each material difference, identify
+Migration guidance and version-specific plugin Skills must classify each material difference, identify
 the required source change or semantic review, and keep unsupported behavior
 visible rather than disguising it in the platform layer.
 
@@ -442,30 +442,35 @@ platform layer to recover RxJS 7 producer-per-subscription semantics. See
 
 The executable cases are ordinary checked-in Vitest source under `cold/` and
 `platform/`, not generator-owned output. A static `migration-report.json`
-retains file-to-case identity for JSON audits. `@rxjs/migrate` is the reusable
-deterministic authoring engine; its framework adapter is optional, and its
-output becomes source owned by the destination project. The engine does not
-classify lifecycle intent or establish migration completion.
+retains file-to-case identity for JSON audits. The deterministic engine moves
+from the final functional `@rxjs/migrate@9.0.0-beta.1` transition package into
+`@rxjs/agent-plugin`. Its framework adapter is optional, and candidate output
+becomes source owned by the destination project only after host-agent review.
+The engine does not classify lifecycle intent or establish migration
+completion.
 
 ## Agent-first migration contract
 
-The canonical migration Skill is the primary product surface. It requires an
+The plugin's `migrate-rxjs-7-to-9` Skill is the primary migration surface. It requires an
 RxJS 7 build-and-test baseline, characterization evidence for affected
 behavior, and a reviewed contract manifest before writes. Every affected
 pipeline receives an explicit lifecycle target; `unsupported` and `unresolved`
 items stop automation and remain visible for maintainer review.
 
-The deterministic `@rxjs/migrate` engine performs only bounded, reviewable
-rewrites selected by that workflow. Completion requires both mechanical
-fixture evidence and an explicitly qualified agent-outcome lane. P0.M5
-qualifies Codex/ChatGPT only: four representative runs passed, with three
-approved migrations completed and one required unsupported/weak-coverage safe
-stop. Claude Code and Cursor have P0.M4 Skill installation and discovery
-evidence, not measured migration-outcome parity. There is no accepted
-migration MCP surface. See D-046, D-047, and
-`packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
+The deterministic engine performs only bounded, reviewable rewrites selected
+by that workflow. Four read-only MCP tools expose capabilities, analysis,
+preview, and contract validation from explicit source-content inputs; they
+receive no repository filesystem authority. The server validates each complete
+request before processing, with limits of 25 files, 512 KiB per file, and
+2 MiB total. Applying a preview remains a host-agent edit.
 
-Its default versioned registry currently claims only the ten mappings backed
+D-062 requires deterministic schema, package, MCP, fixture, compilation, and
+discovery-only gates. The P0.M5 Codex records remain historical evidence for
+the previous package and Skill and are not rerun or claimed as proof of the
+plugin. No model call, token-consuming evaluation, or paid authentication is a
+release requirement. See D-060 through D-062.
+
+The default versioned registry currently claims only the ten mappings backed
 by checked-in source/target type evidence and exact mechanical fixtures:
 `filter`, `map`, `takeUntil`, `bufferCount`, `concatMap`, `concatAll`,
 `switchAll`, `debounceTime`, `audit`, and `auditTime`. The engine refuses
@@ -629,8 +634,9 @@ ambient declaration visibility.
 
 ## Accepted migration fixtures
 
-The P4.4 fixtures in `packages/migrate/test/contracts` turn the intentional API
-and lifecycle boundaries into executable migration outcomes:
+The P4.4 fixtures currently in `packages/migrate/test/contracts`, and migrated
+into the agent-plugin package during P7.3, turn the intentional API and
+lifecycle boundaries into executable migration outcomes:
 
 - a `ColdObservable` plus exact Symbol pipeline preserves one producer per
   direct subscription and cancels through `AbortSignal`;
@@ -673,7 +679,7 @@ from semantic audits.
 - repeated subscriptions used as retries, refreshes, or cache invalidation;
 - custom Observable subclasses and interop protocols.
 
-The canonical Skill and deterministic engine derive their advice and mappings
+The plugin Skills and deterministic engine derive their advice and mappings
 from the migration-evidence ledger and accepted decisions rather than from
 general RxJS knowledge alone.
 
@@ -688,8 +694,7 @@ A release-ready migration story requires:
   every affected pipeline;
 - passing behavioral tests tied back to RxJS 7 evidence;
 - migration guidance for every intentional divergence;
-- representative mechanical fixtures and agent evaluations that pass build,
-  behavior, idempotence, containment, and the outcome gates claimed for their
-  recorded harness and model configuration;
+- representative mechanical fixtures that pass build, behavior, idempotence,
+  containment, refusal safety, package, and MCP protocol gates;
 - no language that implies an RxJS 7 runtime package, facade, or blanket
   compatibility guarantee.

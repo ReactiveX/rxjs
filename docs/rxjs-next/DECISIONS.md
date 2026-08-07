@@ -1069,7 +1069,7 @@ Status meanings:
 
 ## D-046 — Make migration agent-first with one canonical Skill and no MCP product
 
-- **Status:** Accepted
+- **Status:** Superseded by D-060
 - **Decision:** The primary RxJS 7-to-Next migration product is one portable
   Agent Skill that assesses the repository, establishes or strengthens a
   passing RxJS 7 behavioral baseline, records explicit target contracts,
@@ -1108,7 +1108,7 @@ Status meanings:
 
 ## D-047 — Bound P0 live migration qualification to Codex/ChatGPT
 
-- **Status:** Accepted
+- **Status:** Superseded by D-062
 - **Decision:** P0.M5 runs each representative migration repository once
   through Codex/ChatGPT. Claude Code and Cursor remain supported Skill
   installation targets from P0.M4, but P0 does not spend additional live-model
@@ -1295,7 +1295,7 @@ Status meanings:
 
 ## D-052 — Keep package documentation with its package and exclude rxjs.dev
 
-- **Status:** Accepted
+- **Status:** Superseded in part by D-063
 - **Decision:** User-facing documentation for a package lives inside that
   package container. Repository-wide charter, architecture, decisions,
   compatibility policy, open questions, and active-plan records remain under
@@ -1317,7 +1317,8 @@ Status meanings:
 
 ## D-053 — Ship one ESM implementation across the supported release matrix
 
-- **Status:** Accepted
+- **Status:** Accepted; the synchronized package-train portion is superseded by
+  D-061
 - **Release identity and channels:** All four release packages version together,
   beginning at `9.0.0-beta.0`. RxJS 9 prereleases publish under npm's `next`
   tag while RxJS 7 remains `latest`. RxJS 9 becomes `latest` only when the
@@ -1468,7 +1469,8 @@ Status meanings:
 
 ## D-058 — Publish betas with one local interactive command
 
-- **Status:** Accepted
+- **Status:** Accepted; the package order and package-count portions are
+  superseded by D-061
 - **Decision:** Ben Lesh remains the sole required author, reviewer, merger,
   release operator, and security responder. All four packages keep one exact
   synchronized version. From a clean local `master` checkout that exactly
@@ -1513,3 +1515,96 @@ Status meanings:
   construction, and platform string-named methods are unchanged. Historical
   RxJS 7 evidence retains its source identity, while active migrated specs use
   closures or bound functions instead of asserting the removed overload.
+
+## D-060 — Publish the official RxJS agent experience as a portable plugin
+
+- **Status:** Accepted
+- **Decision:** Publish `@rxjs/agent-plugin` as the official RxJS 7 and RxJS 9
+  agent experience. Its universal artifact conforms to Agent Plugins 1.0 and
+  Agent Skills, uses plugin name `rxjs`, and versions in lockstep with RxJS 9.
+  It contains version-specific authoring, review, testing, migration,
+  performance, debugging, API-design, framework, and bundling skills.
+- **Migration MCP:** The plugin exposes the deterministic migration engine
+  through four local stdio tools: `migration_capabilities`,
+  `analyze_migration`, `preview_migration`, and
+  `validate_migration_contract`. Tools accept explicit repository-relative
+  names and source text, have no repository filesystem authority, and validate
+  an entire request before processing. Requests are limited to 25 files,
+  512 KiB per file, and 2 MiB total. The MCP never writes a project; the host
+  agent applies reviewed previews with its ordinary edit tools.
+- **Distribution:** Codex/ChatGPT and Cursor consume the universal artifact.
+  Because Claude Code uses a different manifest and MCP filename, the
+  repository generates a separate digest-locked Claude adapter from the same
+  skills, MCP implementation, version, and knowledge catalogs. Client-specific
+  files do not enter the universal npm artifact.
+- **Boundary:** The package ships a prebuilt Node `>=22.13.0` MCP bundle. It has
+  no install-time build, postinstall script, public JavaScript library, or
+  replacement CLI. D-046's lifecycle-classification and safe-stop principles
+  remain valid, but its single-Skill and no-MCP product choices are
+  superseded.
+- **Rationale:** Portable agent plugins now provide a standard distribution
+  unit for multiple skills and local structured tools. The read-only MCP adds
+  value over a CLI by giving agents bounded source-content analysis and
+  preview contracts without granting project filesystem authority.
+
+## D-061 — Transition the synchronized train through agent-plugin beta.1
+
+- **Status:** Accepted
+- **Decision:** `9.0.0-beta.1` is a five-package transition train published in
+  this order: `@rxjs/observable-polyfill`, `@rxjs/test`,
+  `@rxjs/agent-plugin`, the final functional `@rxjs/migrate`, and `rxjs`.
+  `@rxjs/migrate@9.0.0-beta.1` retains its existing API and CLI but directs new
+  users to the plugin.
+- **Retirement:** Only after all beta.1 registry artifacts and npm channels are
+  verified may every published `@rxjs/migrate` version be deprecated with the
+  replacement message. The migration workspace, generated local Skill,
+  obsolete tests/docs, and release references are removed afterward. Future
+  synchronized releases return to four packages: polyfill, test, agent plugin,
+  and `rxjs`.
+- **RxJS 7:** After the plugin is publicly installable, the same prominent
+  documentation notice is backported to the RxJS 7 line and published as the
+  documentation-only `rxjs@7.8.3` patch. RxJS 7 runtime guidance stays pinned
+  to `7.8.2` at `e5351d02e225e275ac0e497c7b66eaa5f0c88791`; the patch does not
+  change its runtime contract.
+- **Consequence:** D-053 and D-058 continue to control environments, ESM
+  distribution, credentials, local authorization, integrity verification, and
+  channels. Their exact four-package assumptions and prior order are
+  superseded. Publication, deprecation, workspace removal, and backport remain
+  explicit operator actions, not automatic consequences of local validation.
+
+## D-062 — Make deterministic, free validation the plugin release gate
+
+- **Status:** Accepted
+- **Decision:** Agent-plugin release qualification is deterministic and free:
+  pinned schema validation, Agent Skills validation, package containment and
+  inventory, MCP protocol tests, migration fixtures, compilation, type checks,
+  example execution, generated-digest checks, and discovery-only client checks
+  may block release. A command that invokes a model, consumes credits or paid
+  tokens, or requires paid/authenticated agent execution must be skipped and
+  cannot block release.
+- **Historical evidence:** The P0.M5 live-model records remain archived evidence
+  for the exact old Skill, engine, repositories, model, and settings. They are
+  not proof of the new plugin and are not rerun for beta.1. D-047's
+  Codex-only qualification boundary is therefore historical rather than a
+  current product gate.
+- **Rationale:** Package and protocol conformance can be proved without buying
+  model output. Model behavior is nondeterministic and client-dependent; it is
+  useful feedback after release, not an acceptable hidden CI cost.
+
+## D-063 — Promote the agent plugin in packages and on rxjs.dev
+
+- **Status:** Accepted
+- **Decision:** Put a prominent plugin callout and installation link in the
+  repository and `rxjs` READMEs, RxJS 9 migration and API guides,
+  `@rxjs/test` documentation, beta notes and npm metadata, and the `rxjs.dev`
+  homepage announcement bar, navigation, installation guide, and a dedicated
+  agent-plugin page. The same notice is later backported to RxJS 7 docs.
+- **Boundary:** Do not add `postinstall` behavior, install-time warnings,
+  runtime logging, telemetry, or repeated notices. Documentation is the
+  promotion surface.
+- **Supersession:** D-052 still governs package-local ownership for package
+  contracts. Its blanket exclusion of `apps/rxjs.dev` is superseded for this
+  coordinated promotion work.
+- **Rationale:** Agent assistance is most useful when users discover it at the
+  start of installation, migration, testing, or API work. Documentation can
+  provide that visibility without imposing side effects on every RxJS install.
