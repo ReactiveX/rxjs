@@ -1,12 +1,18 @@
 # Testing concurrency, sharing, and errors in RxJS 7
 
-## Higher-order policies
+## Higher-order domain contracts
 
-For `switchMap`, test an overlapping inner and assert the first subscription
-ends when the second begins. For `concatMap`, assert one active inner, order,
-and that queued input waits. For bounded `mergeMap`, assert the maximum active
-count and buffered release. For `exhaustMap`, include a trigger that is
-deliberately ignored.
+Do not re-test RxJS's flattening operators in application tests. Drive the
+public feature and prove its contract: every successful deletion updates the
+view, a duplicate “Place order” click is blocked until settlement, stale search
+results cannot render, or declared parallel work stays within the
+application's resource limit. Use inner subscription windows only when they
+are necessary evidence for that behavior.
+
+For a custom operator, test the operator's own documented ordering,
+cancellation, terminal behavior, and teardown. If it delegates to `concatMap`,
+`mergeMap`, `exhaustMap`, or `switchMap`, do not duplicate the library's tests
+unless the wrapper adds or promises behavior at that boundary.
 
 Test completion with active inner work; most higher-order outputs wait for
 accepted inners after the outer completes.
@@ -17,13 +23,17 @@ Prove that an inner failure does not terminate a long-lived outer interaction:
 
 ```ts
 scheduler.run(({ cold, hot, expectObservable }) => {
-  const refresh = hot('  a---b---|');
-  const failed = cold('   -#');
-  const success = cold('      -x|', { x: 'ready' });
+  const refreshMarbles = '  a---b---|';
+  const failedMarbles = '       -#';
+  const successMarbles = '          -x|';
+  const expectedMarbles = ' -f---x--|';
+  const refresh = hot(refreshMarbles);
+  const failed = cold(failedMarbles);
+  const success = cold(successMarbles, { x: 'ready' });
 
   const result = refresh.pipe(switchMap((value) => (value === 'a' ? failed : success).pipe(catchError(() => of('failed')))));
 
-  expectObservable(result).toBe('-f---x--|', { f: 'failed', x: 'ready' });
+  expectObservable(result).toBe(expectedMarbles, { f: 'failed', x: 'ready' });
 });
 ```
 
@@ -53,3 +63,8 @@ the required current value; for `ReplaySubject`, test size/time retention; for
 
 Do not expose a writable Subject merely to make a test easy. Exercise the
 public read/control boundary.
+
+For a controller API, run the same behavior contract whether the boundary is a
+class method plus Observable property or a readonly `[command, observable]`
+tuple returned by a factory. Test encapsulation through public behavior; do not
+reach into the private Subject.

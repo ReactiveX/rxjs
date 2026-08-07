@@ -27,6 +27,31 @@ it('aborts the resource with its owner', () => {
 
 Cancellation does not emit completion.
 
+## Owner abort with subscription marbles
+
+`expectObservable` accepts subscription marbles. Its `!` is the owner-abort
+frame, and `expectSubscriptions` proves when that abort closes the platform
+producer:
+
+```ts
+await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
+  const sourceMarbles = '       -a-b-c-d-|';
+  const ownerWindow = '         ^----!';
+  const expected = '            -a-b-';
+  const producerWindow = '      ^----!';
+  const source = observable(sourceMarbles);
+
+  expectObservable(source, ownerWindow).toBe(expected);
+  expectSubscriptions(source.subscriptions).toBe(producerWindow);
+});
+```
+
+The unsubscription frame is exclusive, so `c` at that frame is not delivered.
+No completion is expected because owner cancellation is not a completion
+notification. For overlapping observers, use two observation windows and
+assert that aborting the first does not end the producer while the second is
+still attached; the final observer's `!` closes it.
+
 ## Shared platform producer
 
 For a platform source, test two overlapping observers. Abort one and assert the
@@ -60,3 +85,8 @@ late value alone does not prove resource cancellation.
 Cover setup throw, `next`, error, completion, owner abort, final-observer
 remove, later restart, `addTeardown` after closure, idempotence, and synchronous
 registration/removal races.
+
+When a feature exposes a readonly `[command, observable]` factory tuple, test
+it through those two capabilities just as a class is tested through its public
+method and Observable view. Create two instances to prove their private
+Subjects and lifetimes do not cross.

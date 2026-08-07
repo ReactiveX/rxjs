@@ -7,15 +7,11 @@ notification. Cancellation closes observation without sending `error` or
 ## Recover only where the interaction can continue
 
 ```ts
-import { catchError } from 'rxjs/catch-error';
-import { map } from 'rxjs/map';
-import { switchMap } from 'rxjs/switch-map';
-
-const state = refreshes[switchMap](() =>
+const state = refreshes.switchMap(() =>
   repository
     .load()
-    [map]((value) => ({ kind: 'ready' as const, value }))
-    [catchError]((error) => Observable.from([{ kind: 'failed' as const, error: toDisplayError(error) }]))
+    .map((value) => ({ kind: 'ready' as const, value }))
+    .catch((error) => Observable.from([{ kind: 'failed' as const, error: toDisplayError(error) }]))
 );
 ```
 
@@ -24,7 +20,7 @@ Avoid an outer recovery boundary when later refreshes must remain possible:
 ```ts
 // Bad for a persistent interaction: the first failure replaces and completes
 // the whole refresh stream.
-const state = refreshes[switchMap](() => repository.load())[catchError](() => Observable.from([]));
+const state = refreshes.switchMap(() => repository.load()).catch(() => Observable.from([]));
 ```
 
 Do not turn every error into an ordinary value. Preserve the error channel when
@@ -98,7 +94,7 @@ that may remain silent without a timeout or owner signal.
 - Errors thrown by operator user callbacks become output errors when the
   operator follows the public construction contract.
 - Errors thrown by observer callbacks are reported to the host; they are not
-  sent upstream and cannot be recovered by `[catchError]`.
+  sent upstream and cannot be recovered by `.catch(...)` or `[catchError]`.
 - An error sent after a Subscriber has closed is a host-reporting concern, not
   a second terminal notification.
 

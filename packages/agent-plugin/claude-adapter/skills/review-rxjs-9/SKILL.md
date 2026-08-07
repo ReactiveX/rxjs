@@ -1,6 +1,6 @@
 ---
 name: review-rxjs-9
-description: Review RxJS 9 code for web-platform active-producer lifecycle, intentional ColdObservable boundaries, exact Symbol imports and collision isolation, AbortSignal ownership, input normalization, higher-order concurrency, terminal teardown, Subjects and replay, custom sources and operators, native/fallback safety, and lifecycle tests. Use only for code targeting RxJS 9.
+description: Review RxJS 9 code for platform-method-first authoring, web-platform active-producer lifecycle, intentional ColdObservable boundaries, exact Symbol imports and collision isolation, AbortSignal ownership, input normalization, higher-order concurrency, terminal teardown, Subjects and replay, custom sources and operators, native/fallback safety, and lifecycle tests. Use only for code targeting RxJS 9.
 ---
 
 # Review RxJS 9
@@ -15,8 +15,9 @@ Prioritize:
    expectations, or unnecessary `ColdObservable` work duplication;
 2. captured `subscribe()` return values or terminal subscriptions without an
    owner-supplied AbortSignal;
-3. missing/wrong exact Symbol imports, string prototype patches, or lifecycle
-   results that bypass public `[create]`;
+3. unnecessary Symbol extensions where a platform method fits, missing/wrong
+   exact Symbol imports where one is required, string prototype patches, or
+   lifecycle results that bypass public `[create]`;
 4. concurrency, recovery, retry, completion, or input conversion that changes
    observable behavior;
 5. cleanup registered incorrectly, late work after closure, or teardown order

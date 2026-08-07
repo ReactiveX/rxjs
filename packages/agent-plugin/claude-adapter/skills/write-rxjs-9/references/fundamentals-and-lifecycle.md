@@ -63,26 +63,42 @@ back to a platform Observable and therefore to platform lifecycle. Types still
 say `Observable<T>` at the public boundary, so review runtime lifecycle from
 the receiver rather than assuming the type encodes it.
 
-## Exact Symbols are the RxJS contract
+## Prefer platform methods; use exact Symbols deliberately
 
-Every RxJS extension owns an exact Symbol exported from a public subpath:
+Use the platform string method when it has the behavior you need:
 
 ```ts
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
-
-const labels = readings[filter]((reading) => reading.valid)[map]((reading) => reading.label);
+const labels = readings.filter((reading) => reading.valid).map((reading) => reading.label);
 ```
 
-Importing the module installs that exact Symbol on the active Observable
-prototype. An unrelated `Symbol('map')` does not address it. The string method
-`readings.map(...)` is platform-owned and remains a separate contract even
-when its name is familiar. Do not add RxJS string methods to the platform
-prototype.
+This is the smallest browser-oriented form: a conforming native Observable
+already owns those methods, so no RxJS operator extension module is needed.
+The conditional fallback supplies the platform surface where native Observable
+is absent. That currently matters most in Node, where application bundle size
+is usually a lesser concern but the semantic preference still keeps code ready
+for native Observable support.
+
+Every RxJS extension owns an exact Symbol exported from a public subpath. Use
+one when the platform has no equivalent, when the RxJS behavior intentionally
+differs, or when a `ColdObservable` result must preserve its construction
+policy:
+
+```ts
+import { distinctUntilChanged } from 'rxjs/distinct-until-changed';
+import { map } from 'rxjs/map';
+
+const stableLabels = readings.map((reading) => reading.label)[distinctUntilChanged]();
+const coldLabels = coldReadings[map]((reading) => reading.label);
+```
+
+Importing an extension module installs that exact Symbol on the active
+Observable prototype. An unrelated `Symbol('map')` does not address it. Do not
+add RxJS string methods to the platform prototype. Also do not mechanically
+replace a Symbol call with a same-named string call: compare contracts first.
 
 The root `rxjs` import provides the intentional classes, subject factories,
-notifications, and errors. It does not make every operator available; import
-only the exact subpaths used.
+notifications, and errors. It does not make every Symbol operator available;
+import only the exact subpaths actually needed.
 
 ## Input normalization is the platform boundary
 

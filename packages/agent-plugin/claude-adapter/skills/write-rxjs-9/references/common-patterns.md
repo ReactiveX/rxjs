@@ -8,40 +8,37 @@ than copying operator sequences blindly.
 ```ts
 import { debounce } from 'rxjs/debounce';
 import { distinctUntilChanged } from 'rxjs/distinct-until-changed';
-import { map } from 'rxjs/map';
-import { switchMap } from 'rxjs/switch-map';
 
 const queries = input
   .when('input')
-  [map](() => input.value.trim())
+  .map(() => input.value.trim())
   [debounce](200)
   [distinctUntilChanged]();
 
-const results = queries[switchMap]((query) => api.search(query));
+const results = queries.switchMap((query) => api.search(query));
 ```
 
 The newest query replaces the previous request. The platform source and its
 derived platform Observables share one active producer among concurrent UI
 observers.
 
-## Queue ordered writes
+## Queue ordered writes by default
 
-RxJS 9 expresses queueing as bounded merge concurrency:
+The platform `.flatMap()` method queues one inner at a time:
 
 ```ts
-import { mergeMap } from 'rxjs/merge-map';
-
-const saved = saveRequests[mergeMap]((request) => repository.save(request), {
-  concurrent: 1,
-});
+const saved = saveRequests.flatMap((request) => repository.save(request));
 ```
 
-Do not substitute `switchMap` for writes that must finish, or unbounded
-`mergeMap` for work with a fixed resource budget.
+This is the safe, easy-to-reason-about starting point. Do not substitute
+`.switchMap()` for writes that must finish, or unbounded `[mergeMap]` for work
+with a fixed resource budget.
 
 ## Bound intentional overlap
 
 ```ts
+import { mergeMap } from 'rxjs/merge-map';
+
 const thumbnails = imageRequests[mergeMap](renderThumbnail, {
   concurrent: 4,
 });
@@ -79,6 +76,9 @@ emission, use `combineLatest` and document its initial-value requirement.
 
 ## Keep event ingress private
 
+A class is a good boundary when an object identity and shared prototype methods
+fit the surrounding design:
+
 ```ts
 import { Subject } from 'rxjs';
 
@@ -94,6 +94,29 @@ class RefreshController {
 
 Consumers can observe but cannot inject values or terminate the controller's
 event source.
+
+A functional factory can provide the same encapsulation with a readonly tuple:
+
+```ts
+import { debounce } from 'rxjs/debounce';
+import { distinctUntilChanged } from 'rxjs/distinct-until-changed';
+function createSearch(api: SearchApi) {
+  const queryInput = new Subject<string>();
+
+  const results = queryInput[debounce](150)
+    [distinctUntilChanged]()
+    .switchMap((query) => api.search(query));
+
+  const setQuery = (query: string) => queryInput.next(query);
+
+  return [setQuery, results] as const;
+}
+```
+
+The factory creates a command closure per call; a class can share method
+implementations on its prototype and may be slightly more efficient for large
+instance counts in some runtimes. Treat that as a measurable tradeoff, not a
+universal reason to reject the functional form.
 
 ## Wrap a resource with signal ownership
 
@@ -123,10 +146,9 @@ callback APIs when those public adapters already fit.
 ## Consume one bounded value
 
 ```ts
-import { filter } from 'rxjs/filter';
 import { timeout } from 'rxjs/timeout';
 
-const readyState = await states[filter](isReadyState)[timeout]({ first: 5_000 }).first();
+const readyState = await states.filter(isReadyState)[timeout]({ first: 5_000 }).first();
 ```
 
 The platform Promise method `first()` is string-named and accepts an optional
@@ -135,13 +157,11 @@ subscription signal. It is not the RxJS `[first]` Observable operator.
 ## Extract readable domain transformations
 
 ```ts
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
 import { pipe } from 'rxjs/pipe';
 
-const validReadings = () => (source: Observable<Reading>) => source[filter]((reading) => reading.valid);
+const validReadings = () => (source: Observable<Reading>) => source.filter((reading) => reading.valid);
 
-const toLabels = () => (source: Observable<Reading>) => source[map]((reading) => reading.label);
+const toLabels = () => (source: Observable<Reading>) => source.map((reading) => reading.label);
 
 const labels = readings[pipe](validReadings(), toLabels());
 ```

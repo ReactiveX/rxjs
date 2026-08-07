@@ -20,7 +20,7 @@ answer:
 - prepare and publish the RxJS 7 documentation-only backport after the plugin
   has a stable public installation URL.
 
-These actions remain P7.8 and P7.9 work. They must not be inferred from a local
+These actions remain P7.9 and P7.10 work. They must not be inferred from a local
 passing test run.
 
 ## Open product questions after beta.1

@@ -7,13 +7,15 @@ supported.
 ```ts
 import 'rxjs';
 import { rxTest } from '@rxjs/test';
-import { map } from 'rxjs/map';
 
-await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
-  const source = cold('12ms a 20ms (b|)', { a: 1, b: 2 });
+await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
+  const sourceMarbles = '       12ms a 20ms (b|)';
+  const expectedMarbles = '     12ms x 20ms (y|)';
+  const sourceSubscriptions = ' ^ 32ms !';
+  const source = observable(sourceMarbles, { a: 1, b: 2 });
 
-  expectObservable(source[map]((value) => value * 10)).toBe('12ms x 20ms (y|)', { x: 10, y: 20 });
-  expectSubscriptions(source.subscriptions).toBe('^ 32ms !');
+  expectObservable(source.map((value) => value * 10)).toBe(expectedMarbles, { x: 10, y: 20 });
+  expectSubscriptions(source.subscriptions).toBe(sourceSubscriptions);
 });
 ```
 
@@ -40,6 +42,9 @@ failures.
 
 ## Make diagrams readable
 
-Align sources and expected values, use domain value maps, keep one behavior per
-case, and assert subscription logs whenever delivery alone cannot prove the
-claim.
+Whitespace in marble strings is ignored, specifically so diagrams can be
+placed in visual columns in a fixed-width editor. Assign each role a named
+constant and align the timeline portion vertically: source, inner sources,
+observation windows, expected output, and subscription windows. Use domain
+value maps, keep one behavior per case, and assert subscription logs whenever
+delivery alone cannot prove the claim.

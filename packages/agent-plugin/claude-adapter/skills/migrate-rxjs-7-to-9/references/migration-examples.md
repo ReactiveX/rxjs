@@ -9,10 +9,8 @@ These are candidate shapes plus required review, not blind replacements.
 import { filter, map } from 'rxjs/operators';
 const labels = values.pipe(filter(isValid), map(toLabel));
 
-// RxJS 9 candidate
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
-const labels = values[filter](isValid)[map](toLabel);
+// RxJS 9 candidate for platform lifecycle
+const labels = values.filter(isValid).map(toLabel);
 ```
 
 Review receiver lifecycle, callback `thisArg`, user callback errors, and tests.
@@ -23,12 +21,15 @@ Review receiver lifecycle, callback `thisArg`, user callback errors, and tests.
 // RxJS 7
 const saved = requests.pipe(concatMap(save));
 
-// RxJS 9 candidate
-const saved = requests[mergeMap](save, { concurrent: 1 });
+// RxJS 9 candidate for platform lifecycle
+const saved = requests.flatMap(save);
 ```
 
 Review queue growth, completion, source input category, cancellation of the
-underlying save, and any removed result selector.
+underlying save, and any removed result selector. Sequential queueing is the
+safe default. Use exact `[mergeMap](save, { concurrent: 1 })` when the receiver
+is a `ColdObservable` whose result must preserve producer-per-subscription
+lifecycle; use higher concurrency only for intentional parallelization.
 
 ## Terminal subscription ownership
 
@@ -53,7 +54,7 @@ lifecycle; connect directly when possible.
 const ready = await firstValueFrom(state.pipe(filter(isReady)));
 
 // RxJS 9 candidate
-const ready = await state[filter](isReady)[timeout]({ first: 5_000 }).first({ signal: request.signal });
+const ready = await state.filter(isReady)[timeout]({ first: 5_000 }).first({ signal: request.signal });
 ```
 
 Confirm the timeout and owner signal are actual requirements. Distinguish the
@@ -94,6 +95,21 @@ readonly state = this.stateSubject.asObservable();
 Review synchronous current-value access, per-direct-observer delivery,
 terminal behavior, write authority, and whether derived `[scan]` state would
 better model transitions.
+
+The same state boundary may be functional and should remain so when already
+part of the API:
+
+```ts
+function createState(initial: State) {
+  const state = behaviorSubject(initial);
+  const setState = (value: State) => state.next(value);
+  return [setState, state.asObservable()] as const;
+}
+```
+
+Do not introduce a class merely as migration churn. Choose between prototype
+method reuse and per-instance closure composition as a separate design/performance
+decision.
 
 ## Unsupported arbitrary subscribable
 

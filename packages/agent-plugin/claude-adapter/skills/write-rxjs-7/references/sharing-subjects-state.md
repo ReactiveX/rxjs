@@ -64,6 +64,21 @@ Avoid publishing the Subject itself:
 readonly query$ = new Subject<string>();
 ```
 
+A closure-backed factory is equally valid when a class is unnecessary:
+
+```ts
+function createQueryInput() {
+  const input = new Subject<string>();
+  const setQuery = (query: string) => input.next(query.trim());
+  return [setQuery, input.asObservable()] as const;
+}
+```
+
+Review the same contract in either form: the Subject stays private, the command
+validates writes, and the Observable is read-only. Prefer a class when shared
+prototype methods, nominal identity, or a broader object API are useful;
+prefer the tuple factory for a small composable command/result boundary.
+
 Name Subjects for the fact that they accept input (`queryInput`, `destroyed`,
 `refreshRequested`) rather than adding `Subject` to every domain name.
 

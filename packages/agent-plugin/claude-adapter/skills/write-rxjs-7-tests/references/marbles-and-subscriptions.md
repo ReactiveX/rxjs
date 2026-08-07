@@ -9,15 +9,17 @@ syntax such as `10ms` is available. Use `()` for simultaneous notifications,
 ```ts
 scheduler.run(({ cold, expectObservable }) => {
   const failure = new Error('failed');
-  const source = cold(' -a-b-#', { a: 1, b: 2 }, failure);
-  const expected = '    -x-y-#';
+  const sourceMarbles = '   -a-b-#';
+  const expectedMarbles = ' -x-y-#';
+  const source = cold(sourceMarbles, { a: 1, b: 2 }, failure);
 
-  expectObservable(source.pipe(map((value) => value * 10))).toBe(expected, { x: 10, y: 20 }, failure);
+  expectObservable(source.pipe(map((value) => value * 10))).toBe(expectedMarbles, { x: 10, y: 20 }, failure);
 });
 ```
 
-Align diagrams by semantic role, use domain names in value maps, and keep
-irrelevant whitespace out of the expected timeline.
+Whitespace in run-mode marble strings is ignored so diagrams can be aligned in
+fixed-width columns. Use that feature deliberately. Align diagrams by semantic
+role and use domain names in value maps.
 
 ## Assert subscription windows
 
@@ -25,23 +27,27 @@ Values do not prove cancellation:
 
 ```ts
 scheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-  const queries = hot('   a---b------|');
-  const first = cold('     --x--y--|');
-  const second = cold('        -z|');
-  const firstSubs = '       ^---!';
-  const secondSubs = '          ^-!';
-  const expected = '      --x--z-----|';
+  const queriesMarbles = '    a---b------|';
+  const firstMarbles = '          --x--y--|';
+  const secondMarbles = '             -z|';
+  const expectedMarbles = '      --x--z-----|';
+  const firstSubscriptions = '  ^---!';
+  const secondSubscriptions = '     ^-!';
+  const queries = hot(queriesMarbles);
+  const first = cold(firstMarbles);
+  const second = cold(secondMarbles);
 
   const result = queries.pipe(switchMap((query) => (query === 'a' ? first : second)));
 
-  expectObservable(result).toBe(expected);
-  expectSubscriptions(first.subscriptions).toBe(firstSubs);
-  expectSubscriptions(second.subscriptions).toBe(secondSubs);
+  expectObservable(result).toBe(expectedMarbles);
+  expectSubscriptions(first.subscriptions).toBe(firstSubscriptions);
+  expectSubscriptions(second.subscriptions).toBe(secondSubscriptions);
 });
 ```
 
 Check the actual frame math when adapting this pattern; subscription diagrams
-are part of the contract, not decoration.
+are part of the contract, not decoration. Keep all timelines in a vertical
+column so cancellation is visible without mentally stripping labels.
 
 ## Hot versus cold
 

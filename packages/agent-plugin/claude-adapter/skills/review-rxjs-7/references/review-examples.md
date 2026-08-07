@@ -29,6 +29,10 @@ const saved$ = saveClicks$.pipe(concatMap(() => saveDraft(snapshot())));
 The correction is only valid if queue growth is bounded. If saves may be
 coalesced, state that different domain policy instead.
 
+The same defect is especially subtle for delete-then-update-view code: the
+server can complete every deletion while `switchMap` discards an earlier
+success response, so the client never removes that item from its view.
+
 ## Outer recovery ends an interaction
 
 ```ts

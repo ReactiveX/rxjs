@@ -5,7 +5,7 @@
 For every previewed file:
 
 - compare source and candidate behavior, not formatting alone;
-- inspect every added/removed import and exact Symbol identity;
+- inspect every added/removed import, platform-method choice, and exact Symbol identity;
 - resolve every diagnostic and review note;
 - confirm no unsupported mixed pipeline was partially changed;
 - apply the chosen lifecycle and cancellation architecture;
@@ -53,7 +53,8 @@ A migration is complete only when:
 
 - all units have accepted target lifecycle or documented exclusion;
 - no unresolved/unsupported code is presented as migrated;
-- exact imports and public APIs are used;
+- platform methods are preferred where correct, and exact imports/public APIs
+  are used where required;
 - cancellation, resources, inputs, Subjects, timing, and custom code are
   reviewed;
 - target tests prove the selected lifecycle and behavior;

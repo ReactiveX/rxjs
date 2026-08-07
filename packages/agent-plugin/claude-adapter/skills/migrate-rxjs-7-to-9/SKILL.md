@@ -1,6 +1,6 @@
 ---
 name: migrate-rxjs-7-to-9
-description: Migrate an RxJS 7 application, library, or test suite to RxJS 9 through an evidence-first behavioral workflow with explicit platform-versus-producer-per-subscription lifecycle decisions, characterization tests, bounded read-only MCP analysis and preview, exact Symbol authoring, AbortSignal ownership, safe stops, and post-migration verification. Use only for RxJS 7-to-9 migration or migration planning.
+description: Migrate an RxJS 7 application, library, or test suite to RxJS 9 through an evidence-first behavioral workflow with explicit platform-versus-producer-per-subscription lifecycle decisions, characterization tests, bounded read-only MCP analysis and preview, platform-method-first authoring, exact Symbols when needed, AbortSignal ownership, safe stops, and post-migration verification. Use only for RxJS 7-to-9 migration or migration planning.
 ---
 
 # Migrate RxJS 7 to RxJS 9
@@ -13,7 +13,7 @@ guidance to RxJS `7.8.2` and target `9.0.0-beta.1`.
 const result = source.pipe(debounceTime(200), switchMap(load));
 
 // Candidate RxJS 9 syntax; lifecycle and cancellation still require review.
-const result = source[debounce](200)[switchMap](load);
+const result = source[debounce](200).switchMap(load);
 ```
 
 Use this sequence:
@@ -54,7 +54,7 @@ safe stop, not an invitation to bypass the engine.
 - Use [target authoring rules](references/target-authoring-rules.md) to ensure
   accepted output meets RxJS 9 quality rules rather than merely compiling.
 - Use [operators and composition](references/operators-and-composition.md) for
-  exact Symbols, unified capabilities, overloads, and manual pipelines.
+  platform methods, exact Symbols, unified capabilities, overloads, and manual pipelines.
 - Use [cancellation and teardown](references/cancellation-and-teardown.md) for
   Subscription removal, owner signals, resources, and terminal order.
 - Use [sources, inputs, Subjects, and sharing](references/sources-inputs-subjects-and-sharing.md)

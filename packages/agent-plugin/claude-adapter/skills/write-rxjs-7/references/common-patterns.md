@@ -68,6 +68,9 @@ restart contract.
 
 ## Imperative event ingress, Observable output
 
+Class and closure-backed factory forms are both strong ownership boundaries.
+The class exposes shared prototype methods:
+
 ```ts
 class SearchModel {
   private readonly queryInput = new Subject<string>();
@@ -88,6 +91,32 @@ class SearchModel {
 
 Keep the Subject private. Public callers receive a named command method and a
 read-only Observable contract.
+
+A functional factory can expose the same authority as a readonly tuple:
+
+```ts
+function createSearch(api: SearchApi) {
+  const queryInput = new Subject<string>();
+
+  const results$ = queryInput.pipe(
+    debounceTime(150),
+    distinctUntilChanged(),
+    switchMap((query) => api.search(query))
+  );
+
+  const setQuery = (query: string) => queryInput.next(query);
+
+  return [setQuery, results$] as const;
+}
+```
+
+The closure keeps the Subject private, the tuple keeps command/result order
+and types readonly, and callers can destructure a compact capability boundary.
+Choose the form that best fits the surrounding API. A class shares prototype
+method implementations across instances; the functional form allocates its
+command closure per factory call. That can make the class slightly more
+efficient in some runtimes when many instances exist, but measure before
+making performance the deciding factor.
 
 ## Resource wrapper
 

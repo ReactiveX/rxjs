@@ -27,6 +27,12 @@ A public Subject permits every consumer to call `next`, `error`, or
 `complete`. Flag it when the type is meant to expose reads only. Prefer a
 private Subject plus `asObservable()` and named methods that validate writes.
 
+That boundary may be a class or a function returning a readonly
+`[command, observable]` tuple. Review authority and lifetime rather than
+requiring one style. A class shares prototype methods; a factory creates
+closures per instance. Treat the latter as a performance finding only with
+measured instance churn or allocation evidence.
+
 Review reentrant feedback:
 
 ```ts

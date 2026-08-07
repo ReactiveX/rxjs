@@ -49,12 +49,31 @@ removal plus later restart.
 const result = source.pipe(map(project), switchMap(load));
 
 // Candidate
-const result = source[map](project)[switchMap](load);
+const result = source.map(project).switchMap(load);
 ```
 
-Finding: the source uses RxJS 7 pipeable syntax. Import exact `map` and
-`switchMap` Symbols from public subpaths. Then review lifecycle and input
-semantics; syntax replacement alone is not proof of equivalence.
+Finding: the source uses RxJS 7 pipeable syntax. Platform `.map()` and
+`.switchMap()` fit this platform-lifecycle candidate without importing
+extension modules. Review lifecycle and input semantics; syntax replacement
+alone is not proof of equivalence. Use exact Symbols instead when the contract
+differs or a `ColdObservable` result must retain its lifecycle.
+
+## Cancellation drops a required write result
+
+```ts
+// Before: each success removes the deleted item from the client view.
+const deleted = requests.switchMap((request) => api.delete(request.id));
+
+// Candidate when every delete must be observed in order.
+const deleted = requests.flatMap((request) => api.delete(request.id));
+```
+
+Finding: the server can complete an earlier deletion after `switchMap` aborts
+its observation, so the client never applies that success and becomes stale.
+Use sequential `.flatMap()` as the default. Reserve `[mergeMap]` for explicit
+parallelization, `[exhaustMap]` for locking actions such as placing an order,
+and `.switchMap()` for disposable reads, streaming source changes, or reactive
+process control.
 
 ## Unbounded overlap
 

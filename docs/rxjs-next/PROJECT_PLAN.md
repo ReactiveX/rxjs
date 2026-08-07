@@ -35,8 +35,8 @@ mutation is not complete until its external result is verified.
 | `DONE`    | P7.5  | Ship debugging, API-design, framework-integration, and bundle-optimization skills                                                               |
 | `DONE`    | P7.6  | Validate the universal artifact and digest-locked Claude adapter                                                                                |
 | `DONE`    | P7.7  | Put the agent plugin front-and-center in package, migration, release, and `rxjs.dev` documentation                                              |
-| `NEXT`    | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
-| `PLANNED` | P7.9  | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
+| `DONE`    | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
+| `NEXT`    | P7.9  | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
 | `PLANNED` | P7.10 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
 
 ## P7.1 — Architecture rollover
@@ -262,3 +262,29 @@ ordinary agent tools.
 - Required targeted generated references instead of copying one broad export
   catalog into every skill, and required migration output to follow the same
   target-authoring rules as new RxJS 9 code.
+
+### 2026-08-07 — P7.8 expert knowledge completed
+
+- Expanded all twelve skills into 89 focused authored/generated references,
+  with every reference linked through progressive-disclosure routing and no
+  duplicated `version-catalog.md` files.
+- Added first-class RxJS 7 authoring; good/bad and production-pattern guidance;
+  public custom-operator authoring for both majors; class and readonly-tuple
+  controller patterns; and deep debugging, performance, API, framework, and
+  bundle guidance.
+- Recorded platform-method-first RxJS 9 guidance and D-064, including
+  `.map()`/`.filter()` migration output, exact `[takeUntil]` preservation,
+  browser bundle rationale, `ColdObservable` exceptions, and explicit
+  `Symbol.for()` collision/version hazards.
+- Made sequential flattening the safety baseline while documenting intentional
+  parallelization, action locking, and switching. Reframed tests around public
+  product/custom-operator contracts rather than re-testing RxJS operators.
+- Standardized RxJS 7 and RxJS 9 marble examples on named variables declared
+  together and vertically aligned with ignored whitespace. Added an executable
+  subscription-marble owner-abort example.
+- Deterministic evidence: Agent Plugin/Skill schemas and containment passed;
+  exact framework pins type-checked; 33 plugin tests passed; the 111-file packed
+  artifact and MCP lifecycle passed; and all 166 standalone migration tests
+  passed. No model, paid-token, or authenticated evaluation ran.
+- Marked P7.8 complete and advanced registry publication/verification as the
+  sole `NEXT` item. Publication remains an explicit operator action.

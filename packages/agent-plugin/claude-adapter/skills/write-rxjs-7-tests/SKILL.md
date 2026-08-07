@@ -14,14 +14,19 @@ const scheduler = new TestScheduler((actual, expected) => {
 });
 
 scheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-  const source = cold('  -a-b-c-|');
-  const expected = '     -a-b-c-|';
-  const subscriptions = '^------!';
+  const sourceMarbles = '       -a-b-c-|';
+  const expectedMarbles = '     -a-b-c-|';
+  const sourceSubscriptions = ' ^------!';
+  const source = cold(sourceMarbles);
 
-  expectObservable(source).toBe(expected);
-  expectSubscriptions(source.subscriptions).toBe(subscriptions);
+  expectObservable(source).toBe(expectedMarbles);
+  expectSubscriptions(source.subscriptions).toBe(sourceSubscriptions);
 });
 ```
+
+Declare every marble string together at the top of the test and use ignored
+leading spaces to align the timeline characters vertically in a fixed-width
+editor.
 
 Use this workflow:
 

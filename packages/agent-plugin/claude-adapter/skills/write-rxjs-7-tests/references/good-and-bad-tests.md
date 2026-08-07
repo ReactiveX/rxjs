@@ -4,28 +4,36 @@
 
 ```ts
 // Good when cancellation is the behavior.
-expectObservable(result, '^---!').toBe('--a-');
-expectSubscriptions(source.subscriptions).toBe('^---!');
+const ownerWindow = '        ^---!';
+const expectedMarbles = '    --a-';
+const sourceSubscriptions = '^---!';
+
+expectObservable(result, ownerWindow).toBe(expectedMarbles);
+expectSubscriptions(source.subscriptions).toBe(sourceSubscriptions);
 ```
 
 ```ts
 // Bad: values alone cannot show whether the source leaked after observation.
-expectObservable(result, '^---!').toBe('--a-');
+const ownerWindow = '     ^---!';
+const expectedMarbles = ' --a-';
+expectObservable(result, ownerWindow).toBe(expectedMarbles);
 ```
 
 ## Focused diagrams
 
 ```ts
 // Good: one scenario, named values, aligned timelines.
-const source = '  -a-b-|';
-const expected = '-x-y-|';
-expectObservable(cold(source, values).pipe(map(toOutput))).toBe(expected, outputs);
+const sourceMarbles = '    -a-b-|';
+const expectedMarbles = '  -x-y-|';
+const source = cold(sourceMarbles, values);
+expectObservable(source.pipe(map(toOutput))).toBe(expectedMarbles, outputs);
 ```
 
 ```ts
 // Bad: dense single-character values and unrelated policies make failure hard
 // to diagnose.
-expectObservable(complex).toBe('ab-(cde)-#', { a: hugeA, b: hugeB, c: hugeC });
+const denseExpected = 'ab-(cde)-#';
+expectObservable(complex).toBe(denseExpected, { a: hugeA, b: hugeB, c: hugeC });
 ```
 
 ## Production source model
@@ -39,7 +47,8 @@ const result = service.connect(input);
 ```ts
 // Bad: replacing the hot boundary with cold() solely for concise marbles can
 // hide late-subscriber and shared-state behavior.
-const input = cold('-a-b-|');
+const inputMarbles = '-a-b-|';
+const input = cold(inputMarbles);
 ```
 
 ## Resource proof

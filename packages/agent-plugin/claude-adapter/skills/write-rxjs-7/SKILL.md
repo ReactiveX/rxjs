@@ -32,8 +32,10 @@ Use this workflow:
 
 1. Model the source and its owner. RxJS 7 Observables are producer-per-direct-
    subscription by default; sharing is an explicit operator policy.
-2. Choose higher-order behavior from requirements: replace, queue, overlap, or
-   ignore. Do not pick a flattening operator from habit.
+2. Start with sequential `concatMap` because it preserves every operation and
+   is easiest to reason about. Choose `mergeMap`, `exhaustMap`, or `switchMap`
+   only when the requirement explicitly calls for parallelization, an action
+   lock, or cancellation/switching.
 3. Place error recovery at the scope that may recover. Bound retry and promise
    conversion so the operation can settle.
 4. Keep Subjects private unless public writes are the API. Make replay,

@@ -16,25 +16,37 @@ Symbol operator results use the receiver's public `[create]` protocol. A
 although the public return type is `Observable<T>`. A native string method on
 a cold value crosses back to platform lifecycle.
 
-## Verify exact imports
+## Verify platform-first method selection
 
 ```ts
-import { map } from 'rxjs/map';
-const names = users[map]((user) => user.name);
+const names = users.map((user) => user.name);
 ```
 
-The imported exact Symbol is the collision boundary. Flag:
+Prefer the string method when its platform contract fits. In a browser-native
+implementation this avoids importing an RxJS extension module and its bundle
+bytes. Node currently relies on the fallback, but platform-first authoring
+still aligns code with eventual native support.
+
+Use an exact Symbol when the platform lacks the capability, its semantics
+differ, or a `ColdObservable` result must remain producer-per-subscription. The
+imported exact Symbol is then the collision boundary. Flag:
 
 - `Symbol('map')` substituted by description;
-- `Symbol.for` without an accepted identity/duplicate-install protocol;
+- `Symbol.for` without a namespaced identity, duplicate-install,
+  version-compatibility, overwrite/refusal, and cross-realm protocol;
 - string-named RxJS prototype additions;
 - operator calls without the corresponding side-effecting public subpath
   import; and
 - private `src/` or internal imports.
 
-Do not treat `source.map(...)` and `source[map](...)` as interchangeable. The
-first is platform-owned; the second is the RxJS extension and may have a
-different contract.
+Do not treat `source.map(...)` and `source[map](...)` as mechanically
+interchangeable. Review semantics and receiver lifecycle; then prefer the
+platform form whenever those requirements fit.
+
+Treat an ungoverned `Symbol.for()` key as a correctness risk, not a style
+issue. Unrelated libraries or incompatible copies can address the same
+prototype slot, and installation order can select behavior that disagrees with
+the ambient types.
 
 ## Review construction and input normalization separately
 
