@@ -67,8 +67,8 @@ The checked-in budgets in `test/release/budgets.json` are blocking:
 - the median subscribe-and-abort loop must complete at least 30,000
   cancellations per second.
 - packed tarballs must stay under 250,000 bytes for `rxjs`, 30,000 bytes for
-  the polyfill, 60,000 bytes for `@rxjs/test`, and 140,000 bytes for
-  `@rxjs/migrate`.
+  the polyfill, 60,000 bytes for `@rxjs/test`, and 2,000,000 bytes for
+  `@rxjs/agent-plugin`.
 
 The initial Node 24 evidence was 17,502 Webpack bytes, approximately 50.4
 million mapped values per second, and approximately 140,500 cancellations per

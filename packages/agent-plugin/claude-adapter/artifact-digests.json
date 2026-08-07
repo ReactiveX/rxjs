@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "name": "rxjs",
+  "version": "9.0.0-beta.1",
+  "universalPackage": "@rxjs/agent-plugin",
+  "artifacts": {
+    "dist/knowledge-digests.json": {
+      "sha256": "eba9a00ad7abb76b3017d489150a92566dd6a8e4b5838248bf5713d1c4b03e63",
+      "bytes": 2838
+    },
+    "dist/mcp-server.cjs": {
+      "sha256": "c7c666f7bdb11a9df3c2ce8547644827a23ff748de59647f3b45110dc5dcfb68",
+      "bytes": 11012820
+    },
+    "skills/analyze-rxjs-performance/SKILL.md": {
+      "sha256": "0128a2879643131cecfdfb920d8c0af4d7f1975b4e49788af2b7c9c94a4924ee",
+      "bytes": 2790
+    },
+    "skills/analyze-rxjs-performance/references/concurrency-and-backlog.md": {
+      "sha256": "4a6bb9ba0789fd3d484da3ce1113de2759dac61cd29d89645e3d8968176cda85",
+      "bytes": 2260
+    },
+    "skills/analyze-rxjs-performance/references/cpu-allocation-and-scheduling.md": {
+      "sha256": "c648909ab06a6a947af032af961d9f04370257beb0316be15d73698644f77e03",
+      "bytes": 1901
+    },
+    "skills/analyze-rxjs-performance/references/measurement-workflow.md": {
+      "sha256": "211fc45f6c4d30e2d9989a8bf9c9161f365abdb659d0e9dce9818b7ac516f216",
+      "bytes": 1749
+    },
+    "skills/analyze-rxjs-performance/references/memory-leak-investigation.md": {
+      "sha256": "712b01c56560be04fd30a2302179794cb3c890b1a83c8104c1e8087ee8fed05b",
+      "bytes": 1751
+    },
+    "skills/analyze-rxjs-performance/references/optimization-patterns.md": {
+      "sha256": "e0b8ecf9cc5189fe8818f99b5f775b3323892531491b812f7178cf3ddaac50c6",
+      "bytes": 2279
+    },
+    "skills/analyze-rxjs-performance/references/performance-report.md": {
+      "sha256": "22818c88f77f7f7b8af7ca44283818ede2ca1bc893141d643117862dc121a4df",
+      "bytes": 911
+    },
+    "skills/analyze-rxjs-performance/references/subscription-work-and-retention.md": {
+      "sha256": "2f45314c4b62dc347c1a198093b1e90076c7789d6163d2174ae22c0e14b3b70b",
+      "bytes": 1997
+    },
+    "skills/debug-rxjs-7/SKILL.md": {
+      "sha256": "bb5494bd86b40908c96286da88e632d153302a2933f856148072ba200bb96e77",
+      "bytes": 2743
+    },
+    "skills/debug-rxjs-7/references/call-stacks-and-error-signatures.md": {
+      "sha256": "b89e1e2ee0344eed245903f5d0ca8a11ff2c28ddd045dd81b84fd9803ce71e68",
+      "bytes": 2859
+    },
+    "skills/debug-rxjs-7/references/higher-order-errors-and-completion.md": {
+      "sha256": "1652f3fba022ff62ae8076a1c834581253d4e9f1e02cc78cc9abcd480ea920f5",
+      "bytes": 1838
+    },
+    "skills/debug-rxjs-7/references/subjects-sharing-and-reentrancy.md": {
+      "sha256": "7639eb1216bcd93fdc57f7f6e0891f7042b16a67d3d0da60fcbff1ec9daf20b3",
+      "bytes": 1819
+    },
+    "skills/debug-rxjs-7/references/subscriptions-cancellation-and-teardown.md": {
+      "sha256": "ccdf58096676a9cf17cd81d32bc05dc8480856607fd7e0cb56fc8a5a954a1d54",
+      "bytes": 1836
+    },
+    "skills/debug-rxjs-7/references/symptom-experiments.md": {
+      "sha256": "71a0bbf4d9ad501bdffc8ff13952b2b335252af294a2b3033fbded8d25573787",
+      "bytes": 1614
+    },
+    "skills/debug-rxjs-7/references/temporary-tap-instrumentation.md": {
+      "sha256": "019a859a16252ab9309e89bb77c69ed927d44714fe9c5e2154f430452f33701a",
+      "bytes": 2381
+    },
+    "skills/debug-rxjs-7/references/timeline-and-concurrency.md": {
+      "sha256": "1278f6dbb2401d7ec3812f3281513cec8b63bc5d1380d00b88b7b500cc8c0e26",
+      "bytes": 2087
+    },
+    "skills/debug-rxjs-9/SKILL.md": {
+      "sha256": "dc3e0361545673f22875ef4c2d7baa61115f370b8336bbb5ac49443ea0042107",
+      "bytes": 2849
+    },
+    "skills/debug-rxjs-9/references/abort-cancellation-and-teardown.md": {
+      "sha256": "03b8f2375f2c2a27acb6f6e1ed9a02aea0d2f4c050ece629e228cff6988f875c",
+      "bytes": 1879
+    },
+    "skills/debug-rxjs-9/references/call-stacks-and-error-signatures.md": {
+      "sha256": "4b1e0fa83582f2a9a084698b3a3b9deddf7c8cbf1b064ff29060b25de032dc75",
+      "bytes": 3478
+    },
+    "skills/debug-rxjs-9/references/higher-order-errors-and-completion.md": {
+      "sha256": "9a419cd67e2e1d656ac5d77bc494816aa061ac877a7d0ed23781605bc492bb38",
+      "bytes": 1875
+    },
+    "skills/debug-rxjs-9/references/subjects-sharing-and-reentrancy.md": {
+      "sha256": "9712aded44237ebfebd6dbf47c5e489a6b3b4d5d79e6ff5f5f9838a418b9aa77",
+      "bytes": 1794
+    },
+    "skills/debug-rxjs-9/references/symptom-experiments.md": {
+      "sha256": "02fe3ae634c6d8d96b8f8ade5528f78ef8af5c2f9e53dc027bda66895e5c52e5",
+      "bytes": 1690
+    },
+    "skills/debug-rxjs-9/references/temporary-inspect-and-tap-instrumentation.md": {
+      "sha256": "dc3d617f6408e7995bc5f03bc8162af1e0f1efa6703ef8ce1ffab5099b3d1c2c",
+      "bytes": 2492
+    },
+    "skills/debug-rxjs-9/references/timeline-and-concurrency.md": {
+      "sha256": "c31af1b1023534d4d370fa8d212775d0737bb815333494d5be03503f74bfb7bd",
+      "bytes": 1934
+    },
+    "skills/design-rxjs-library-apis/SKILL.md": {
+      "sha256": "ab391667fbde2e7a39447d0b187587108fbea1b13f9224678a903da89629c265",
+      "bytes": 2577
+    },
+    "skills/design-rxjs-library-apis/references/consumer-testing-and-release-checks.md": {
+      "sha256": "8b1e607d314630d2aa0f01a45fe306a40eeba098a2c903b2ba48c067564e98cc",
+      "bytes": 1019
+    },
+    "skills/design-rxjs-library-apis/references/controller-api-shapes.md": {
+      "sha256": "42cdfadcb49e28f938400ed8ffcdfcb8daa68ec9ad1a850f6ca7e5b11f23a5db",
+      "bytes": 1383
+    },
+    "skills/design-rxjs-library-apis/references/good-and-bad.md": {
+      "sha256": "438a34ebe54efdf6bdf0cc52625cacecdeee43bc17c326f6bc1f71b27188ba48",
+      "bytes": 1205
+    },
+    "skills/design-rxjs-library-apis/references/lifecycle-and-cancellation.md": {
+      "sha256": "0ca198eb7fe4f3d862f1d7efaadfb76be83827bd8234d7b7f55a9e9e687b2b6c",
+      "bytes": 1203
+    },
+    "skills/design-rxjs-library-apis/references/rxjs-9-platform-methods-and-extensions.md": {
+      "sha256": "8bcc116cd1cb3c38994c84383ec2c5b730b2b47f642cacd0600d9edd8201fb15",
+      "bytes": 1361
+    },
+    "skills/design-rxjs-library-apis/references/values-inputs-errors-and-concurrency.md": {
+      "sha256": "d27ebd85e5aebd9b0127a99b3419704bab095c52e70917bb9479d009dd6fdac4",
+      "bytes": 1361
+    },
+    "skills/design-rxjs-library-apis/references/version-and-package-boundaries.md": {
+      "sha256": "3012f2bd0e3005027f6c7ae5d46179afaa759560f6307513be811fd747e3d7e6",
+      "bytes": 1454
+    },
+    "skills/integrate-rxjs-frameworks/SKILL.md": {
+      "sha256": "a57e6141d89da051dc23b3ff93a0829960484ae6738c347b8fbcee693bb578b1",
+      "bytes": 1634
+    },
+    "skills/integrate-rxjs-frameworks/references/angular-22.md": {
+      "sha256": "d8ce1c8d6407ae26a2a73cc367f0f919a8743d8afe78f744f1ecd0f52dbf536f",
+      "bytes": 1902
+    },
+    "skills/integrate-rxjs-frameworks/references/framework-versions.md": {
+      "sha256": "e25ccb96ca2a35e429b385f36e3af04130799c0d1446ea52e3875ee8df97bc79",
+      "bytes": 405
+    },
+    "skills/integrate-rxjs-frameworks/references/good-and-bad.md": {
+      "sha256": "7de711c796767c387e60a093209106fdd7df609b7daf13e832afd3f87c7d7f7f",
+      "bytes": 1245
+    },
+    "skills/integrate-rxjs-frameworks/references/lifecycle-ssr-and-errors.md": {
+      "sha256": "11abc271daff7ee5c6bb5b4b34d3b84cf1825292c5bde05241945319fadb7151",
+      "bytes": 1728
+    },
+    "skills/integrate-rxjs-frameworks/references/react-19.md": {
+      "sha256": "6e2d7801de76ff96d6d37cc44029ab4a0db335edddb1b94e9187209c8daec234",
+      "bytes": 1878
+    },
+    "skills/integrate-rxjs-frameworks/references/svelte-5-and-solid-1.md": {
+      "sha256": "723cf3a482b1cd93b8b40cfe2fb22d2fdbb083331273ae9601e4e92499b60c5e",
+      "bytes": 1024
+    },
+    "skills/integrate-rxjs-frameworks/references/vue-3.md": {
+      "sha256": "265483445b3ca25105f5bcc39d5f72605133167ce7a22703cdb84aa2b8bcdcb0",
+      "bytes": 1234
+    },
+    "skills/migrate-rxjs-7-to-9/SKILL.md": {
+      "sha256": "2cd430244d3f87251989f7e0081c821adbeef72eee6c9c579e6c549696bd4323",
+      "bytes": 4772
+    },
+    "skills/migrate-rxjs-7-to-9/references/cancellation-and-teardown.md": {
+      "sha256": "ce67e09dfbada466af626a0fa99ead2d733dd82eb28b626b3eb2036072ebb773",
+      "bytes": 2467
+    },
+    "skills/migrate-rxjs-7-to-9/references/custom-sources-and-operators.md": {
+      "sha256": "8b4d49672674e12e2db02bbe05a07c4d5ac948f3e26ff2c7a45d2714bc7a2ab9",
+      "bytes": 2817
+    },
+    "skills/migrate-rxjs-7-to-9/references/inventory-and-batching.md": {
+      "sha256": "914e039a277bec93d2bd58165395ae5e2ee84369bbe65ddfd80ffdc14607d146",
+      "bytes": 2896
+    },
+    "skills/migrate-rxjs-7-to-9/references/lifecycle-decisions.md": {
+      "sha256": "8eb4a1e966c9546f3903315102cee58b29a37736414df26bbccccad4540deb53",
+      "bytes": 3779
+    },
+    "skills/migrate-rxjs-7-to-9/references/migration-capabilities.md": {
+      "sha256": "415b49674b3338cd0df05b0dbd423a0118ff3999c88c9b2ee0eb9605422d8873",
+      "bytes": 1425
+    },
+    "skills/migrate-rxjs-7-to-9/references/migration-contract.md": {
+      "sha256": "7ee07ba608abe1647a05aef25b966e0e5705377a4d01ed393f1d1c8cf4433d97",
+      "bytes": 3655
+    },
+    "skills/migrate-rxjs-7-to-9/references/migration-examples.md": {
+      "sha256": "5da6130d3b3ec796341a6c45e733ee086d688c6a42f5e9e225d9dd5d76ddb19b",
+      "bytes": 4422
+    },
+    "skills/migrate-rxjs-7-to-9/references/operators-and-composition.md": {
+      "sha256": "e3264c6bab1c9b1b204dfbcea68769b7020f3db851155885f262ec5bc5b23f31",
+      "bytes": 3855
+    },
+    "skills/migrate-rxjs-7-to-9/references/schedulers-and-testing.md": {
+      "sha256": "98f2fd21668ac6c5032cdd25c20b04df2307c09490925785304ad4bd7f75b78c",
+      "bytes": 2007
+    },
+    "skills/migrate-rxjs-7-to-9/references/sources-inputs-subjects-and-sharing.md": {
+      "sha256": "5590a370d7ad0ad7bad96d3635181ab7b8eaeeb1076fc353a40b02412bca44d8",
+      "bytes": 4485
+    },
+    "skills/migrate-rxjs-7-to-9/references/target-authoring-rules.md": {
+      "sha256": "51b3cc95d35fe39749d5b7bb0fb1b147cf746108b24cb8732eab262fdc1449df",
+      "bytes": 3299
+    },
+    "skills/migrate-rxjs-7-to-9/references/verification-and-safe-stops.md": {
+      "sha256": "5ba9e8e9b110bfb49474304608a8dcfcb922f67490f3fa31e510e60b0da80224",
+      "bytes": 2531
+    },
+    "skills/optimize-rxjs-bundles/SKILL.md": {
+      "sha256": "2c7b44e3087ee04017c093ce5b9733246e5c152cf6f36cd81954b44ef1ceeeae",
+      "bytes": 1953
+    },
+    "skills/optimize-rxjs-bundles/references/duplicates-and-targets.md": {
+      "sha256": "b1b79f7f34bd58edf3535236c3e766ccb7e294d1b9153b7281985aa32f28d9c0",
+      "bytes": 1080
+    },
+    "skills/optimize-rxjs-bundles/references/entry-points.md": {
+      "sha256": "20707e5bbb71e1d5ee976fa8017b156223049d2dccf8dc2f08ac19706e7d80b2",
+      "bytes": 2768
+    },
+    "skills/optimize-rxjs-bundles/references/good-and-bad.md": {
+      "sha256": "e95134dbad66c9f77b296e94bdcefb4ca2dbf1a59458229f9ddb6e917b080f17",
+      "bytes": 1072
+    },
+    "skills/optimize-rxjs-bundles/references/imports-side-effects-and-tree-shaking.md": {
+      "sha256": "b886c498ef8e902b56ac6531f42619c905958f4b7dacee376cba50a94b398f4a",
+      "bytes": 1210
+    },
+    "skills/optimize-rxjs-bundles/references/measurement-workflow.md": {
+      "sha256": "7646e4108f912e5cd27c8130e311265dc32343dc9b4c3b3f6fab65d815e0355e",
+      "bytes": 951
+    },
+    "skills/optimize-rxjs-bundles/references/rxjs-9-platform-methods-and-symbol-modules.md": {
+      "sha256": "403c226b6beee4ddd679d1b064c0745ae7163f6ada684656d0862385f4d8f80e",
+      "bytes": 1420
+    },
+    "skills/review-rxjs-7/SKILL.md": {
+      "sha256": "5e7d737165ff89be3c832763963d2601b261df25fa46aa8d2e465b5cdaa477ee",
+      "bytes": 2805
+    },
+    "skills/review-rxjs-7/references/concurrency-errors-and-completion.md": {
+      "sha256": "ab4f1ea130f7888beb22618dcd04566a5562f99dd2d190e64e0f17f3c4ee95e6",
+      "bytes": 3149
+    },
+    "skills/review-rxjs-7/references/custom-sources-and-operators.md": {
+      "sha256": "8cfd73896d8ba20323905df85ccc908b8591cce30525ed9e5e9b8b20a9b1e2f2",
+      "bytes": 2087
+    },
+    "skills/review-rxjs-7/references/review-examples.md": {
+      "sha256": "fad68554e393daf656209da73d6e76d6ab2471165cb0c2f4ccd334795428998f",
+      "bytes": 2727
+    },
+    "skills/review-rxjs-7/references/review-workflow.md": {
+      "sha256": "28d8b5635a25533c21312f6ef5f404b4f1812cc3f9c453db362d5b0a75839184",
+      "bytes": 2539
+    },
+    "skills/review-rxjs-7/references/sharing-subjects-and-retention.md": {
+      "sha256": "81ab487355428ac03f45d3b0dbb9132c435ebca37e0f3558688493be07ba7ae5",
+      "bytes": 3359
+    },
+    "skills/review-rxjs-7/references/subscription-ownership-and-teardown.md": {
+      "sha256": "7f7ef9f4c8850f9bfd67aab6208ef7d7ff720df47140e6bf3bd3d6e0fd350bf1",
+      "bytes": 2906
+    },
+    "skills/review-rxjs-7/references/testing-evidence.md": {
+      "sha256": "a232aa9fe0ca2247f91be0fd7c17208b5744e93fe15c68f4f59065b52f6e0b52",
+      "bytes": 1552
+    },
+    "skills/review-rxjs-9/SKILL.md": {
+      "sha256": "c4abad2232263a7adc75a49a507c571cbf0ce5cf8b3e9ae44a1198986adbc115",
+      "bytes": 2899
+    },
+    "skills/review-rxjs-9/references/cancellation-errors-and-resources.md": {
+      "sha256": "a6b254f03b80084f1b399447f41fd3c0cb9ccb927f299ec62cc1d66f87e1137c",
+      "bytes": 2254
+    },
+    "skills/review-rxjs-9/references/concurrency-sharing-and-state.md": {
+      "sha256": "41e193a82f231304052cd4e78ee15011e5920ea3cb90d595f184657aa52942af",
+      "bytes": 3711
+    },
+    "skills/review-rxjs-9/references/custom-sources-and-operators.md": {
+      "sha256": "071a2668532e38c28501a261d9ea277ce371663802a53e637a80b94a84862c85",
+      "bytes": 2240
+    },
+    "skills/review-rxjs-9/references/platform-lifecycle-and-symbols.md": {
+      "sha256": "03c181163fa0c5c11189c69826eed155278c4f48a363c6050b4e89c227431f50",
+      "bytes": 3171
+    },
+    "skills/review-rxjs-9/references/review-examples.md": {
+      "sha256": "6a70f25810ae9047e3841f03b9ac07abb5d9eb9b782aaf136477261d5ca677d3",
+      "bytes": 3891
+    },
+    "skills/review-rxjs-9/references/review-workflow.md": {
+      "sha256": "30ab4d3212ee84597771f172aaa888ce4b2b3b54ce3f9033379574deab95b876",
+      "bytes": 2047
+    },
+    "skills/review-rxjs-9/references/testing-evidence.md": {
+      "sha256": "6c3e92d7d5e6eb636e4c5292ff7d972fd29ba79e7442d0f5cc15b7cc45423456",
+      "bytes": 1562
+    },
+    "skills/write-rxjs-7-tests/SKILL.md": {
+      "sha256": "bdb90fca965666d01247602b3aedd3f1f9299d3428c2d381ac9fd123325edd78",
+      "bytes": 3056
+    },
+    "skills/write-rxjs-7-tests/references/concurrency-sharing-and-errors.md": {
+      "sha256": "c0c7d836503a2a600fae3f595419d32ef4a80e3d4ca9d026970d371e797d47b5",
+      "bytes": 2939
+    },
+    "skills/write-rxjs-7-tests/references/fake-timers-and-async.md": {
+      "sha256": "b0d9e9a723e4e26802d1123530fafa492eaa45a4bc3e438ff85a1cd9c8963951",
+      "bytes": 1555
+    },
+    "skills/write-rxjs-7-tests/references/good-and-bad-tests.md": {
+      "sha256": "9bdf60d431176055ae27a6e1379725fa27e434e509485a8a1536a5d6536797ec",
+      "bytes": 1737
+    },
+    "skills/write-rxjs-7-tests/references/marbles-and-subscriptions.md": {
+      "sha256": "5452c539f114f0203985b745cc28d6617047fba38cde3265668d8ddc7da97f21",
+      "bytes": 3723
+    },
+    "skills/write-rxjs-7-tests/references/resources-and-custom-operators.md": {
+      "sha256": "0b2e36b4ea93ac4f0789fdb70d6cfe77ba86a0aa4080e22e5a88fb61ef386aeb",
+      "bytes": 1870
+    },
+    "skills/write-rxjs-7-tests/references/strategy-and-style-selection.md": {
+      "sha256": "7cab01cd7519a36a7e26204c56abe81e09de6a8336c40aaee72718b5f8b27947",
+      "bytes": 2120
+    },
+    "skills/write-rxjs-7-tests/references/synchronous-feedback-machines.md": {
+      "sha256": "2d25ae6ed30ea8993088ea5658d745fba9d0cfa2b7d605b8c466708cc3045dd7",
+      "bytes": 1648
+    },
+    "skills/write-rxjs-7/SKILL.md": {
+      "sha256": "27a34bea1494cc41f1957e88a3820f52194cf9564725957ca2ad2a55931f0c3d",
+      "bytes": 3570
+    },
+    "skills/write-rxjs-7/agents/openai.yaml": {
+      "sha256": "c502dd5efdb9a36136d1c8356e64e9ff063795ac0c5b80f3cacec9ff504d2efc",
+      "bytes": 191
+    },
+    "skills/write-rxjs-7/references/common-patterns.md": {
+      "sha256": "4e37d2dce79795130e0b97d20700875456a75fe5eb912bc972b4f59e79e12799",
+      "bytes": 5008
+    },
+    "skills/write-rxjs-7/references/custom-operators.md": {
+      "sha256": "e2511a0ff92e5f5419050cffdc42120feeac2e7ec391b54e333dce3a58fae9dc",
+      "bytes": 4712
+    },
+    "skills/write-rxjs-7/references/errors-retry-completion.md": {
+      "sha256": "10129bdd5b48dd6f93f87933b44a8cb831ee573871c8b762ed40606ff4202d79",
+      "bytes": 3740
+    },
+    "skills/write-rxjs-7/references/fundamentals-and-lifecycle.md": {
+      "sha256": "004a131763f6c84c05c5cd12c0c199a410155e9d49184b08a518e51932455d3d",
+      "bytes": 3437
+    },
+    "skills/write-rxjs-7/references/good-and-bad.md": {
+      "sha256": "abdc0f48e549c6644fc607746f2d7b194053dc7fb090c5253b7035936e3d8597",
+      "bytes": 4614
+    },
+    "skills/write-rxjs-7/references/operator-concurrency.md": {
+      "sha256": "f41bcae14bf4dd58cc6bbc180a6a3a0bff311798d857518a48a2a6326b9c8661",
+      "bytes": 3969
+    },
+    "skills/write-rxjs-7/references/sharing-subjects-state.md": {
+      "sha256": "5531555095276713f854a8b04bc7254c9893db7c46f48c47e51bd470c8e91687",
+      "bytes": 4668
+    },
+    "skills/write-rxjs-7/references/synchronous-side-effects-and-feedback.md": {
+      "sha256": "022588fe222d357b5fdb966364a63998e702565ecb1cc64c2b19b7ec2c7e2d41",
+      "bytes": 4420
+    },
+    "skills/write-rxjs-7/references/teardown-resource-ownership.md": {
+      "sha256": "17aba72938039d40881c7c76b330913fa7826b313d1dad2183ba0c2265774f1b",
+      "bytes": 4232
+    },
+    "skills/write-rxjs-9-tests/SKILL.md": {
+      "sha256": "86c6c0a09552000cf0dec69b00d5c8fccfb8f1dd29b374e8b2096eebba81629f",
+      "bytes": 3350
+    },
+    "skills/write-rxjs-9-tests/references/cancellation-and-resources.md": {
+      "sha256": "97d79ba58b4ecef580fe69707d8b68f60f2c22454b826a724deaa03e04541391",
+      "bytes": 3127
+    },
+    "skills/write-rxjs-9-tests/references/custom-operators-and-platform-parity.md": {
+      "sha256": "2130f696aa88035be0553f57c5afdd09c18fe0f7660bbac79e41b002ecb89b98",
+      "bytes": 1886
+    },
+    "skills/write-rxjs-9-tests/references/good-and-bad-tests.md": {
+      "sha256": "1269751f5e2c64177d7313f9730bba072cb260394f2d402c8caec705a1ba4811",
+      "bytes": 4545
+    },
+    "skills/write-rxjs-9-tests/references/marbles-and-assertions.md": {
+      "sha256": "a2e88938c6709be64fa346a86fb1614e572b74bf3f0016a22e7579c309746dcc",
+      "bytes": 2940
+    },
+    "skills/write-rxjs-9-tests/references/source-models-and-lifecycle.md": {
+      "sha256": "d16b70897777dadffb0702b86fe4247ae37f09d50a65622fb2a1a003e8c3d925",
+      "bytes": 3036
+    },
+    "skills/write-rxjs-9-tests/references/synchronous-feedback-machines.md": {
+      "sha256": "690ac3e9d74e0fa7b48b8095d20fd783c4ac0d96dab7d19c3848aa42a6356446",
+      "bytes": 1822
+    },
+    "skills/write-rxjs-9-tests/references/virtual-host-time.md": {
+      "sha256": "f2d5faa9cc554d2bb835f7ce203e42138b1724f81a5ac8d6590a29503be6d441",
+      "bytes": 1793
+    },
+    "skills/write-rxjs-9/SKILL.md": {
+      "sha256": "497176f59fc5f6adb8caa21cef474a86d729ca9ac2e880ef1baa90a2bcba29d4",
+      "bytes": 4245
+    },
+    "skills/write-rxjs-9/references/api-surface.md": {
+      "sha256": "9e97632e5ec408f5fb55015f3f62ea2e55aaf8cc863246812dead89c8b5a001b",
+      "bytes": 6514
+    },
+    "skills/write-rxjs-9/references/cancellation-and-resource-ownership.md": {
+      "sha256": "1f5fb67ec41f49bdc0a082d2a12969955f2ffa28fca4287577d46e23f5570e10",
+      "bytes": 3543
+    },
+    "skills/write-rxjs-9/references/common-patterns.md": {
+      "sha256": "ed7c49c8f25e792af149c449f2103c459de2e8feca810c4fd7736cff64b838e8",
+      "bytes": 5001
+    },
+    "skills/write-rxjs-9/references/custom-operators.md": {
+      "sha256": "62abef42eb639014d562aca92d35ca834a2b2b0aa6229abc10530486d8fcf49c",
+      "bytes": 6206
+    },
+    "skills/write-rxjs-9/references/errors-completion-and-promises.md": {
+      "sha256": "1b1d418e7fc441aa7a589d71959c745e26635ce452c63bef41f3f01d9c597cfe",
+      "bytes": 3603
+    },
+    "skills/write-rxjs-9/references/fundamentals-and-lifecycle.md": {
+      "sha256": "54f38afeab73b14cd9d98b205e00dcdf67aed345d02f5ef45e36ec6737a418fc",
+      "bytes": 5193
+    },
+    "skills/write-rxjs-9/references/good-and-bad.md": {
+      "sha256": "dc44e40ea2f7f59f48e9db6f90e4bfa21f59d7b7fdcc2d135e98547fa268b537",
+      "bytes": 6703
+    },
+    "skills/write-rxjs-9/references/operator-concurrency.md": {
+      "sha256": "98348b96278536a7ccac79325a2de4011f758038ce13070f11307f98a30435fb",
+      "bytes": 5084
+    },
+    "skills/write-rxjs-9/references/sharing-subjects-state.md": {
+      "sha256": "6df3b7fba6d82d2e9c6aa1151d2d055f866265be2c75b128a0031e58f37183e5",
+      "bytes": 4518
+    },
+    "skills/write-rxjs-9/references/synchronous-side-effects-and-feedback.md": {
+      "sha256": "0dd1b9d8828072c0fc565868928cf3bb68c696932e6885b661a2f1ca88ae902c",
+      "bytes": 4837
+    }
+  }
+}

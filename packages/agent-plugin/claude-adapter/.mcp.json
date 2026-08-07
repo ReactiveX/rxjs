@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "rxjs-migration": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/dist/mcp-server.cjs"
+      ],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}"
+    }
+  }
+}

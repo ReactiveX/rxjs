@@ -2,8 +2,8 @@
 
 ## Decision
 
-The repository evidence approves `rxjs@9.0.0-beta.0` and the synchronized
-four-package train to begin the RxJS 9 public beta under npm's `next` tag, once
+The repository evidence approves `rxjs@9.0.0-beta.0` and its synchronized
+train to begin the RxJS 9 public beta under npm's `next` tag, once
 the configured blocking CI jobs are green. RxJS 7 remains npm's `latest` line
 and remains maintained.
 
@@ -15,7 +15,7 @@ because the paused RxJS 8 effort predates this platform-based generation; RxJS
 
 ## Adoption evidence
 
-The exact four package artifacts were packed and audited locally. An isolated,
+The retained beta.0 runtime and testing artifacts were packed and audited locally. An isolated,
 offline consumer installed the `rxjs`, `@rxjs/observable-polyfill`, and
 `@rxjs/test` tarballs and passed:
 
@@ -32,16 +32,14 @@ The browser bundle was 20,222 bytes. Packed artifact sizes were:
 | `rxjs`                      |       183,920 | 250,000 |
 | `@rxjs/observable-polyfill` |        23,375 |  30,000 |
 | `@rxjs/test`                |        47,270 |  60,000 |
-| `@rxjs/migrate`             |       112,638 | 140,000 |
 
 The audit found no source specs, CommonJS/browser/Webpack dialect copies, or
-missing package documentation. The Nx first-release version dry run resolves
-the complete train to `9.0.0-beta.0`.
+missing package documentation.
 
 ## Broader qualification
 
-- Focused product suites pass 51 polyfill, 750 RxJS, 75 test-harness, and 166
-  migration tests.
+- Focused product suites pass 51 polyfill, 750 RxJS, 75 test-harness, and the
+  then-current migration suite.
 - Pinned Observable WPT passes all 52 URLs, 525 upstream subtests, and 52 exact
   implementation-identity attestations.
 - Current Chromium, Firefox, and WebKit pass the shared eight-case lifecycle

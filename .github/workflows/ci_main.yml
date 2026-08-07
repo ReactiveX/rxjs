@@ -72,21 +72,21 @@ jobs:
         run: pnpm run release:check
 
       - name: Lint release packages
-        run: pnpm --filter rxjs --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run lint
+        run: pnpm --filter rxjs --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/agent-plugin run lint
 
       - name: Build release packages
         run: |
           pnpm --filter @rxjs/observable-polyfill run build
           pnpm --filter rxjs run build
-          pnpm --filter @rxjs/test --filter @rxjs/migrate run build
+          pnpm --filter @rxjs/test --filter @rxjs/agent-plugin run build
 
       - name: Test release packages
         run: |
-          pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test
+          pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/agent-plugin run test
           pnpm --filter rxjs exec vitest --run src
 
       - name: Build, type-check, and exercise package imports
-        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run test:package
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/agent-plugin run test:package
 
       - name: Run runtime contract
         run: pnpm run test:release:runtime

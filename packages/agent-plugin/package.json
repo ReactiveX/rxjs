@@ -1,0 +1,75 @@
+{
+  "name": "@rxjs/agent-plugin",
+  "version": "9.0.0-beta.1",
+  "description": "Official RxJS 7 and RxJS 9 agent plugin with skills and read-only migration tools",
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/agent-plugin#readme",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "skills",
+    "schemas",
+    "plugin.json",
+    "mcp.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "node scripts/generate-knowledge.mjs && esbuild src/mcp/server.ts --bundle --platform=node --format=cjs --target=node22 --outfile=dist/mcp-server.cjs --log-level=warning && node scripts/generate-claude-adapter.mjs",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest --run",
+    "test:types": "tsc -p tsconfig.json --noEmit",
+    "test:frameworks": "tsc -p test/frameworks/tsconfig.json --noEmit",
+    "test:schemas": "node scripts/validate-plugin.mjs",
+    "test:pack": "node test/pack.mjs",
+    "test:mcp": "vitest --run test/mcp.spec.ts",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:frameworks && pnpm run test:schemas && pnpm run test && pnpm run test:pack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReactiveX/rxjs.git",
+    "directory": "packages/agent-plugin"
+  },
+  "keywords": [
+    "rxjs",
+    "agent-plugin",
+    "agent-skills",
+    "mcp",
+    "migration",
+    "typescript"
+  ],
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@angular/core": "22.1.0",
+    "@rxjs/observable-polyfill": "workspace:*",
+    "@rxjs/test": "workspace:*",
+    "@types/react": "19.2.2",
+    "@types/node": "20.11.0",
+    "ajv": "8.18.0",
+    "esbuild": "0.25.12",
+    "react": "19.2.8",
+    "rxjs": "workspace:*",
+    "rxjs7": "npm:rxjs@7.8.2",
+    "skills-ref": "0.1.5",
+    "solid-js": "1.9.14",
+    "svelte": "5.56.8",
+    "typescript": "~5.7.3",
+    "vitest": "4.1.10",
+    "vue": "3.5.41",
+    "zod": "^3.25.76"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [],
+        "outputs": [
+          "{projectRoot}/dist",
+          "{projectRoot}/claude-adapter"
+        ]
+      }
+    }
+  }
+}

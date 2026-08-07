@@ -1,0 +1,92 @@
+# Sources, inputs, Subjects, and sharing
+
+## Creation functions and factories
+
+RxJS 9 creation capabilities may be static exact Symbols, platform
+`Observable.from`, constants, ordinary exports, or custom construction. Verify
+the public subpath and signature; do not infer target syntax from the RxJS 7
+name.
+
+Default ordinary RxJS 7 sources and factories to `ColdObservable`. Invoke exact
+static Symbols through `ColdObservable` where available so their `[create]`
+protocol preserves producer-per-direct-subscription behavior. For platform
+conversion forms such as `Observable.from`, wrap activation when necessary
+rather than silently sharing concurrent consumers.
+
+Promote a unit to the ambient platform `Observable` only when tests prove that
+concurrent observers should share the active producer or repository-wide
+inventory proves that only one observer can exist at a time. After promotion,
+prefer platform construction and native methods when their contracts fit to
+reduce browser bundle size.
+
+## ObservableValue input boundary
+
+RxJS 9 accepts:
+
+- an active-realm Observable;
+- async iterable;
+- iterable; or
+- Promise-like value.
+
+It does not transparently accept arbitrary lowercase `subscribe()` objects,
+legacy `Symbol.observable`/`@@observable` protocols, or every foreign-realm
+value. Inventory inputs to flattening, combination, notifiers, recovery, and
+creation separately from result lifecycle.
+
+For an unsupported input, write an explicit active-realm adapter only after
+defining cancellation, setup errors, terminal delivery, and teardown. Do not
+cast to silence the type checker.
+
+## Subject migrations
+
+- `Subject` and `AsyncSubject` remain classes with intentional RxJS 9
+  contracts.
+- `behaviorSubject(initial)` and `replaySubject({ size, maxAge })` are lowercase
+  factories.
+- `Subject.asObservable()` returns a non-mutating platform view.
+- `PerSubscriptionSubjectBase` is advanced hot Subject infrastructure for
+  observer-local setup.
+
+Review current/replay behavior, late direct observers, terminal retention,
+write authority, synchronous reads, and reentrant feedback. Do not mechanically
+rename `BehaviorSubject` or `ReplaySubject` without tests for those contracts.
+
+Inventory subject-primed feedback machines explicitly. Preserve subscribe-
+before-prime ordering, the single feedback owner, per-cycle collection,
+sequential versus replacement policy, and the distinct meanings of Subject
+completion, Subject error, and owner cancellation. Do not move an inner
+`toArray()` to the whole Subject-rooted chain: the machine would wait for its
+own input to complete before producing the result that drives the next cycle.
+Every side effect in the feedback handler is a possible indirect reentry edge.
+
+Private Subject ownership may use a class or a functional factory returning a
+readonly `[command, observable]` tuple. Preserve that public design during the
+RxJS migration unless there is a separate approved API change. Update the
+Observable implementation and cancellation semantics inside the boundary.
+
+## Sharing and replay
+
+Existing `share`, `shareReplay`, `publish`, `multicast`, `refCount`, `connect`,
+and `connectable` usage is evidence that platform promotion may be appropriate;
+it is not proof by operator name alone. Compare connector type, replay,
+reset-on-error, reset-on-complete, reset-on-zero-ref-count, manual connection,
+and restart behavior. A platform Observable already shares its active producer,
+so a matching `share()` may become redundant only after that comparison.
+
+A late concurrent platform observer joins the already active derived
+Subscriber. `[shareReplay]` cannot force the derived platform initializer to
+run once for that observer, so it does not transparently reproduce every RxJS
+7 late-subscriber cache pattern.
+
+`[share]` applied to a `ColdObservable` can coordinate its direct subscribers
+through a connector. Review reset on error, completion, and zero ref count;
+retention size/age; synchronous reentrancy; and source disconnect.
+
+A single `.subscribe()` in one file is only a promotion candidate. Search
+templates, framework adapters, helper functions, async iteration, Promise
+consumers, retry/repeat paths, public exports, and downstream libraries before
+claiming a single-subscriber topology.
+
+When every direct observer needs current or retained state, use an intentional
+state/Subject API or expose a normal state read beside changes. Preserve the
+actual public requirement, not the old operator spelling.

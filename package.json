@@ -9,7 +9,7 @@
     "analyze:bundles": "node scripts/analyze-bundles.mjs",
     "prepare-packages": "pnpm nx run-many -t build,lint,test:circular,dtslint,copy_common_package_files --exclude rxjs.dev",
     "release:beta": "node scripts/release/beta.mjs",
-    "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs scripts/release/beta.test.mjs scripts/release/conventional-commit.test.mjs scripts/security/check-osv-exceptions.test.mjs && node scripts/security/check-osv-exceptions.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs",
+    "release:check": "node --test scripts/analyze-bundles.test.mjs scripts/check-package-docs.test.mjs scripts/check-release-coherence.test.mjs scripts/check-retired-products.test.mjs scripts/finalize-esm-package.test.mjs scripts/prerelease-adoption-lib.test.mjs scripts/release/beta.test.mjs scripts/release/conventional-commit.test.mjs scripts/security/check-osv-exceptions.test.mjs && node scripts/security/check-osv-exceptions.mjs && node scripts/check-package-docs.mjs && node scripts/check-release-coherence.mjs && node scripts/check-retired-products.mjs",
     "test:bundle-analysis": "node --test scripts/analyze-bundles.test.mjs",
     "test:workflows": "prettier --check .github/workflows/*.yml .github/actions/install-dependencies/action.yml .github/dependabot.yml",
     "test:kernel": "pnpm --filter rxjs run test:kernel",

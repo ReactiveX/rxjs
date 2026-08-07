@@ -12,14 +12,15 @@ Producer-per-subscription values, Subjects, Symbol-keyed composition, and
 other useful library capabilities may remain first-class RxJS Next APIs, but
 they are specified on their own terms rather than as a blanket emulation
 promise. Migration from RxJS 7 will instead be supported by documentation and
-an agent-first workflow: one canonical portable Skill directs reviewed project
-work while deterministic one-time transforms handle only bounded source
-rewrites.
+the official `@rxjs/agent-plugin`: version-specific portable Skills direct
+reviewed project work while a read-only MCP exposes only bounded deterministic
+source analysis and previews.
 
 The working project name is **RxJS Next**. The public version is RxJS 9 because
 a cancelled RxJS 8 line already exists and reusing that version would create
-avoidable confusion. The first planned prerelease is `9.0.0-beta.0`; the
-release must explain prominently that RxJS 8 was paused while the web-platform
+avoidable confusion. `9.0.0-beta.0` is the first published prerelease;
+`9.0.0-beta.1` adds the synchronized agent-plugin product. Release guidance
+must explain prominently that RxJS 8 was paused while the web-platform
 Observable was finalized and that RxJS 9 is the new platform-based generation.
 
 D-053 fixes the initial release matrix: one ESM implementation serves Node
@@ -62,10 +63,12 @@ Restarting the library on top of the platform primitive has three benefits:
    Subjects, and Symbol-keyed `pipe` when they have explicit RxJS Next
    contracts, without presenting them as a separate RxJS 7 compatibility
    surface.
-6. **Migration intelligence.** Ship a robust, reviewable agent-first workflow
-   that helps users apply RxJS Next and migrate from RxJS 7. Keep lifecycle
-   classification explicit, deterministic rewrites bounded, test-framework
-   syntax adaptable, and project writes under host-agent review.
+6. **Agent intelligence.** Ship a robust, reviewable portable plugin that
+   helps agents write, review, test, debug, tune, and migrate RxJS 7 and RxJS 9. Cover the complete pinned RxJS 7 public surface, preserve ordinary RxJS
+   7 producer-per-subscription behavior through a cold default, require
+   evidence before platform promotion, keep deterministic rewrites bounded,
+   isolate version-specific knowledge, and keep project writes under
+   host-agent review.
 7. **AI-ready development.** Keep project intent, architecture, decisions,
    tests, and open questions explicit enough for AI-assisted implementation to
    be safe and reviewable.
@@ -74,9 +77,8 @@ Restarting the library on top of the platform primitive has three benefits:
 
 - Treating the completed test-only harness and its reviewed failure baseline as
   proof that the current fallback already conforms.
-- Implementing or qualifying migration surfaces beyond the canonical Skill,
-  deterministic engine, and supported harness adapters selected for the
-  foundation release.
+- Requiring paid models, credits, authenticated agent execution, or
+  nondeterministic model grading for release qualification.
 - Shipping a runtime package that emulates the RxJS 7 public API, import map,
   subscription facade, pipeable-operator surface, or scheduler system.
 - Claiming complete RxJS 7 behavioral compatibility on the platform
@@ -85,10 +87,10 @@ Restarting the library on top of the platform primitive has three benefits:
   implementation technique.
 - Treating the exploratory branch's package names, `8.0.0-alpha` versions, or
   exports as final.
-- Changing, building, publishing, or redesigning the `rxjs.dev` documentation
-  site during this plan. Package-relative documentation belongs inside the
-  corresponding package container; repository-wide governance remains under
-  `docs/rxjs-next`.
+- Adding install-time or runtime promotion for the agent plugin. Promotion
+  belongs in package documentation and the coordinated `rxjs.dev` surfaces;
+  package-relative contracts remain with their packages and governance remains
+  under `docs/rxjs-next`.
 - Freezing the upstream Observable proposal. The project must expect the
   specification and tentative WPT suite to evolve.
 
@@ -112,11 +114,12 @@ which capability they import and which Symbol they invoke.
 The Symbol catalog includes counterparts for platform operators such as `map`
 and `filter`. The platform form and RxJS form coexist:
 `observable.map(project)` uses the platform contract, while
-`observable[map](project)` uses the RxJS contract. This gives users a uniform
-Symbol-based style across the whole RxJS operator catalog. The RxJS form may
-delegate when the platform contract is sufficient or provide additional
-functionality under its separate key; it must not overwrite the string-named
-platform method.
+`observable[map](project)` uses the RxJS contract. Authoring guidance prefers
+the platform form when its semantics and receiver lifecycle fit, avoiding an
+unnecessary extension import in browser bundles. The exact Symbol remains
+available for missing/different behavior, uniform extension authoring, or
+`ColdObservable` construction. It must not overwrite the string-named platform
+method.
 
 This makes side-effect patching collision-safe: a Symbol property can be
 overwritten only by code that has obtained that exact Symbol value. Another
@@ -155,16 +158,17 @@ runtime code.
 
 ## Quality attributes
 
-| Attribute           | Required outcome                                                                                                                   |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Platform fidelity   | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched              |
-| Interoperability    | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                       |
-| Product focus       | Intentional RxJS Next APIs are specified directly; no runtime-emulation product is implied                                         |
-| Extensibility       | A new operator can be added through one documented Symbol-extension pattern                                                        |
-| Testability         | Native, polyfilled, producer-per-subscription, shared-active-producer, cancellation, and type behavior can be tested independently |
-| Packaging integrity | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems        |
-| Migration clarity   | Every material RxJS 7 difference has a documented migration path or an explicit unsupported status                                 |
-| AI change safety    | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing                  |
+| Attribute           | Required outcome                                                                                                                                            |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Platform fidelity   | The fallback matches the pinned Observable specification and selected WPT baseline; native behavior remains untouched                                       |
+| Interoperability    | Operators accept platform `Observable` values and preserve the appropriate constructor/realm                                                                |
+| Product focus       | Intentional RxJS Next APIs are specified directly; no runtime-emulation product is implied                                                                  |
+| Extensibility       | A new operator can be added through one documented Symbol-extension pattern                                                                                 |
+| Testability         | Native, polyfilled, producer-per-subscription, shared-active-producer, cancellation, and type behavior can be tested independently                          |
+| Packaging integrity | Every published entry point builds, has correct types, declares runtime dependencies, and works in supported module systems                                 |
+| Agent experience    | Version-specific Skills and bounded tools cover authoring, review, testing, migration, debugging, performance, APIs, frameworks, and bundles                |
+| Migration clarity   | Every pinned RxJS 7 public surface has a documented migration path or explicit unsupported status; cold defaults and platform promotions are evidence-based |
+| AI change safety    | A contributor can find the controlling decision, active plan item, invariants, and validation gate before editing                                           |
 
 ## Success criteria
 
@@ -181,10 +185,9 @@ The project is ready for a major release when:
   supported environment;
 - migration documentation explains sharing, cancellation, pipeable operators,
   subjects, and other accepted breaking changes;
-- the canonical migration Skill and deterministic engine pass their mechanical
-  fixture gates; the Skill passes Codex, Claude Code, and Cursor installation
-  and discovery gates; and the representative Codex/ChatGPT outcome lane
-  passes its declared safety gates;
+- the universal plugin and generated Claude adapter pass schema, Skill,
+  containment, package, MCP, fixture, compilation, digest, and discovery-only
+  gates without a paid-model requirement;
 - no unresolved release-blocking decision remains in `OPEN_QUESTIONS.md`.
 
 ## Stakeholders and audience

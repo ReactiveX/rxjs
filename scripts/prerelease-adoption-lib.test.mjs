@@ -19,6 +19,28 @@ test('accepts a documented ESM-only package within its tarball budget', () => {
   assert.deepEqual(auditPackedPackage({ name: 'rxjs', files: validFiles, size: 200_000 }, budgets), []);
 });
 
+test('accepts only the reviewed prebuilt agent-plugin distribution files', () => {
+  const files = [
+    'README.md',
+    'plugin.json',
+    'mcp.json',
+    'dist/mcp-server.cjs',
+    'dist/knowledge-digests.json',
+    'dist/migration-surface-catalog.json',
+    'skills/migrate-rxjs-7-to-9/SKILL.md',
+  ].map((path) => ({ path }));
+  const pluginBudgets = { packageTarballBytes: { '@rxjs/agent-plugin': 2_000_000 } };
+
+  assert.deepEqual(auditPackedPackage({ name: '@rxjs/agent-plugin', files, size: 1_000_000 }, pluginBudgets), []);
+  assert.match(
+    auditPackedPackage(
+      { name: '@rxjs/agent-plugin', files: [...files, { path: 'dist/unreviewed.json' }], size: 1_000_000 },
+      pluginBudgets
+    ).join('\n'),
+    /non-ESM distribution file dist\/unreviewed\.json/
+  );
+});
+
 test('rejects missing docs, source specs, duplicate dialects, and budget regressions', () => {
   const errors = auditPackedPackage(
     {

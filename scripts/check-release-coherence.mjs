@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const packagePaths = {
   '@rxjs/observable-polyfill': 'packages/observable-polyfill/package.json',
-  '@rxjs/migrate': 'packages/migrate/package.json',
+  '@rxjs/agent-plugin': 'packages/agent-plugin/package.json',
   '@rxjs/test': 'packages/test/package.json',
   rxjs: 'packages/rxjs/package.json',
 };
@@ -29,7 +29,7 @@ export function auditReleaseCoherence(input) {
   } else {
     requireDependency(input.manifests.rxjs, '@rxjs/observable-polyfill', workspaceVersion, errors);
     requireDependency(input.manifests['@rxjs/test'], 'rxjs', workspaceVersion, errors, 'peerDependencies');
-    requireDependency(input.manifests['@rxjs/migrate'], '@types/node', '20.11.0', errors, 'devDependencies');
+    requireDependency(input.manifests['@rxjs/agent-plugin'], '@types/node', '20.11.0', errors, 'devDependencies');
 
     for (const runtime of input.runtimeVersions) {
       if (runtime.version !== workspaceVersion) {
@@ -37,18 +37,14 @@ export function auditReleaseCoherence(input) {
       }
     }
 
-    if (input.skillProvenance.packageName !== '@rxjs/migrate' || input.skillProvenance.packageVersion !== workspaceVersion) {
-      errors.push(
-        `Checked-in migration Skill provenance must report @rxjs/migrate@${workspaceVersion}; got ${input.skillProvenance.packageName}@${input.skillProvenance.packageVersion}.`
-      );
-    }
   }
 
   if (input.rootNodeEngine !== supportedNodeRange) {
     errors.push(`The repository Node engine must be ${supportedNodeRange}; got ${input.rootNodeEngine ?? 'no engine'}.`);
   }
   for (const [name, manifest] of packageEntries) {
-    auditEsmDistribution(name, manifest, errors);
+    if (name === '@rxjs/agent-plugin') auditAgentPlugin(manifest, errors);
+    else auditEsmDistribution(name, manifest, errors);
   }
 
   if (input.nxReleaseConfigured) {
@@ -107,7 +103,8 @@ function auditReleaseMatrix(input, errors) {
     ["'safari:useSimulator': true", 'an actual Mobile Safari simulator'],
     ["'safari:deviceUDID'", 'the explicitly booted Mobile Safari simulator'],
     ['pnpm --filter @rxjs/test run build', 'the packed test-helper adoption prerequisite'],
-    ['pnpm --filter @rxjs/migrate run build', 'the packed migration-tool adoption prerequisite'],
+    ['pnpm --filter @rxjs/agent-plugin run build', 'the packed agent-plugin adoption prerequisite'],
+    ['pnpm --filter @rxjs/agent-plugin run test:package', 'deterministic agent-plugin qualification'],
   ];
   const releaseMatrixSource = `${input.readinessWorkflowSource}\n${input.safariDriverSource}`;
   for (const [needle, label] of readinessClaims) {
@@ -124,7 +121,7 @@ function auditReleaseMatrix(input, errors) {
   for (const requirement of [
     "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
     "{ name: '@rxjs/test', directory: 'packages/test' }",
-    "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
+    "{ name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' }",
     "{ name: 'rxjs', directory: 'packages/rxjs' }",
     "    '--tag',\n    'next',\n    '--access',\n    'public',",
     "assert.equal(branch, 'master'",
@@ -154,6 +151,18 @@ function auditReleaseMatrix(input, errors) {
     }
   }
   requireUnfilteredMasterPush(input.readinessWorkflowSource, 'Release-readiness CI', 'workflow_dispatch', errors);
+}
+
+function auditAgentPlugin(manifest, errors) {
+  if (manifest.engines?.node !== supportedNodeRange) {
+    errors.push(`@rxjs/agent-plugin must declare Node ${supportedNodeRange}; got ${manifest.engines?.node ?? 'no engine'}.`);
+  }
+  if (manifest.dependencies && Object.keys(manifest.dependencies).length > 0) {
+    errors.push('@rxjs/agent-plugin must ship a prebuilt MCP with no installation-time runtime dependencies.');
+  }
+  if (manifest.scripts?.postinstall || manifest.bin || manifest.exports) {
+    errors.push('@rxjs/agent-plugin must not add a postinstall script, CLI, or public JavaScript library.');
+  }
 }
 
 function requireMasterPush(source, label, errors) {
@@ -208,7 +217,6 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
   const [
     rootManifest,
     nxConfig,
-    skillProvenance,
     betaSource,
     ciWorkflowSource,
     tsWorkflowSource,
@@ -219,7 +227,6 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
   ] = await Promise.all([
     readFile(resolve(root, 'package.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'nx.json'), 'utf8').then(JSON.parse),
-    readFile(resolve(root, '.agents/skills/rxjs-next-migration/.rxjs-migrate-skill.json'), 'utf8').then(JSON.parse),
     readFile(resolve(root, 'scripts/release/beta.mjs'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_main.yml'), 'utf8'),
     readFile(resolve(root, '.github/workflows/ci_ts_latest.yml'), 'utf8'),
@@ -231,7 +238,12 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
 
   const runtimeSources = await Promise.all([
     readRuntimeVersions(root, 'packages/observable-polyfill/src/index.ts', /version:\s*'([^']+)'/g, 'polyfill runtime metadata'),
-    readRuntimeVersions(root, 'packages/migrate/src/version.ts', /migrationEngineVersion\s*=\s*'([^']+)'/g, 'migration engine runtime'),
+    readRuntimeVersions(
+      root,
+      'packages/agent-plugin/src/migration/version.ts',
+      /migrationEngineVersion\s*=\s*'([^']+)'/g,
+      'agent-plugin migration engine runtime'
+    ),
     readRuntimeVersions(root, 'packages/observable-polyfill/test/import/esm.mjs', /version:\s*'([^']+)'/g, 'polyfill ESM fixture'),
     readRuntimeVersions(
       root,
@@ -247,7 +259,6 @@ export async function readReleaseCoherenceInput(root = repositoryRoot) {
   return {
     manifests: Object.fromEntries(manifestEntries),
     runtimeVersions: runtimeSources.flat(),
-    skillProvenance,
     rootNodeEngine: rootManifest.engines?.node,
     nxReleaseConfigured: nxConfig.release !== undefined,
     preparePackagesCommand: rootManifest.scripts?.['prepare-packages'] ?? '',

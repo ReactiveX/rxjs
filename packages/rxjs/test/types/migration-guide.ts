@@ -21,16 +21,11 @@ names.subscribe(
 );
 controller.abort('view disposed');
 
-const ticks = new Observable<number>((subscriber) => {
+const ticks = new ColdObservable<number>((subscriber) => {
   let value = 0;
   const handle = setInterval(() => subscriber.next(value++), 1000);
   subscriber.addTeardown(() => clearInterval(handle));
 });
 
-const coldTicks = new ColdObservable<number>((subscriber) => {
-  subscriber.next(1);
-});
-
 void composed;
 void ticks;
-void coldTicks;

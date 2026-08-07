@@ -8,7 +8,7 @@ assert.equal(typeof EventTarget.prototype.when, 'function');
 const info = getObservablePolyfillInfo();
 assert.deepEqual(info, {
   packageName: '@rxjs/observable-polyfill',
-  version: '9.0.0-beta.0',
+  version: '9.0.0-beta.1',
 });
 assert.ok(Object.isFrozen(info));
 assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis.Observable, observablePolyfillInfo), {

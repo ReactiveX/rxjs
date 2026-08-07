@@ -14,6 +14,12 @@ typings/
 dist/
 .tshy-build
 
+# The agent plugin intentionally checks in its prebuilt, installation-free MCP.
+!packages/agent-plugin/dist/
+!packages/agent-plugin/dist/**
+!packages/agent-plugin/claude-adapter/dist/
+!packages/agent-plugin/claude-adapter/dist/**
+
 # Import location artifacts
 packages/rxjs/ajax/
 packages/rxjs/fetch/

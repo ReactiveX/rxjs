@@ -3,6 +3,10 @@
 Implementation-neutral virtual-time and marble testing for RxJS 9 Observable
 contracts.
 
+> The official [`@rxjs/agent-plugin`](https://www.npmjs.com/package/@rxjs/agent-plugin) includes
+> separate skills for writing and reviewing RxJS 7 and RxJS 9 tests. Use it
+> with your coding agent to keep lifecycle and scheduler semantics explicit.
+
 ```sh
 npm install --save-dev @rxjs/test@next rxjs@next
 ```
