@@ -4,8 +4,8 @@ import { capabilityRegistrySchemaVersion, capabilityRegistryVersion, migrationEn
 const exactOperators = ['filter', 'map', 'takeUntil'] as const;
 
 const exactArities = {
-  filter: { minimum: 1, maximum: 2 },
-  map: { minimum: 1, maximum: 2 },
+  filter: { minimum: 1, maximum: 1 },
+  map: { minimum: 1, maximum: 1 },
   takeUntil: { minimum: 1, maximum: 1 },
 } as const;
 

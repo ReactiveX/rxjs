@@ -49,7 +49,14 @@ const exportEntries = Object.entries(rxjsManifest.tshy.exports)
   .map(([name, source]) => ({ name: name === '.' ? 'rxjs' : `rxjs/${name.slice(2)}`, source }))
   .sort((left, right) => left.name.localeCompare(right.name));
 const capabilitySource = await readFile(resolve(packageRoot, 'src/migration/capabilities.ts'), 'utf8');
-const capabilityIds = [...capabilitySource.matchAll(/id:\s*'([^']+)'/g)].map((match) => match[1]);
+const exactOperatorBlock = capabilitySource.match(/const exactOperators = \[([\s\S]*?)\] as const;/)?.[1] ?? '';
+const exactCapabilityIds = [...exactOperatorBlock.matchAll(/'([^']+)'/g)].map(([, name]) => `operator.${moduleName(name)}`);
+const declaredCapabilityIds = [...capabilitySource.matchAll(/id:\s*'([^']+)'/g)].map((match) => match[1]);
+const capabilityIds = [...exactCapabilityIds, ...declaredCapabilityIds];
+
+function moduleName(name) {
+  return name.replace(/[A-Z]/g, (character) => `-${character.toLowerCase()}`);
+}
 
 const generatedReferences = {
   'skills/write-rxjs-9/references/api-surface.md': `# RxJS 9 public API surface
@@ -102,9 +109,7 @@ ${exportEntries.map(({ name }) => `- \`${name}\``).join('\n')}
 };
 
 await rm(resolve(packageRoot, 'dist'), { recursive: true, force: true });
-await Promise.all(
-  skillNames.map((name) => rm(resolve(skillsRoot, name, 'references/version-catalog.md'), { force: true }))
-);
+await Promise.all(skillNames.map((name) => rm(resolve(skillsRoot, name, 'references/version-catalog.md'), { force: true })));
 await Promise.all(
   Object.entries(generatedReferences).map(async ([path, contents]) => {
     const target = resolve(packageRoot, path);
@@ -120,10 +125,7 @@ const manifest = {
   rxjs7: { version: '7.8.2', commit: 'e5351d02e225e275ac0e497c7b66eaa5f0c88791' },
   rxjs9: { version: '9.0.0-beta.1' },
   generatedReferences: Object.fromEntries(
-    Object.entries(generatedReferences).map(([path, contents]) => [
-      path,
-      { sha256: sha256(contents), bytes: Buffer.byteLength(contents) },
-    ])
+    Object.entries(generatedReferences).map(([path, contents]) => [path, { sha256: sha256(contents), bytes: Buffer.byteLength(contents) }])
   ),
   sources,
 };

@@ -4,6 +4,9 @@
 
 The migration MCP currently proves these bounded rewrites:
 
+- `operator.filter`
+- `operator.map`
+- `operator.take-until`
 - `operator.buffer-count`
 - `operator.concat-map`
 - `operator.concat-all`

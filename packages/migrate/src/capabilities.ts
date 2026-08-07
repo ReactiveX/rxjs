@@ -1,15 +1,11 @@
 import type { CapabilityMapping, CapabilityRegistry } from './types.js';
 import { capabilityRegistrySchemaVersion, capabilityRegistryVersion, migrationEngineVersion } from './version.js';
 
-const exactOperators = [
-  'filter',
-  'map',
-  'takeUntil',
-] as const;
+const exactOperators = ['filter', 'map', 'takeUntil'] as const;
 
 const exactArities = {
-  filter: { minimum: 1, maximum: 2 },
-  map: { minimum: 1, maximum: 2 },
+  filter: { minimum: 1, maximum: 1 },
+  map: { minimum: 1, maximum: 1 },
   takeUntil: { minimum: 1, maximum: 1 },
 } as const;
 
