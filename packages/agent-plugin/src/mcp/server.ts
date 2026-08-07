@@ -11,6 +11,8 @@ import {
 } from './service.js';
 
 const readOnlyAnnotations = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
+const emptyInputSchema = z.object({}).strict();
+const contractInputSchema = z.object({ manifest: z.record(z.unknown()) }).strict();
 
 export function createRxjsMcpServer(): McpServer {
   const server = new McpServer({ name: 'rxjs-migration', version: '9.0.0-beta.1' });
@@ -20,7 +22,7 @@ export function createRxjsMcpServer(): McpServer {
     {
       description:
         'Return complete RxJS 7 public-surface migration guidance plus the smaller fixture-proved rewrite registry, lifecycle policy, limits, and engine versions.',
-      inputSchema: {},
+      inputSchema: emptyInputSchema,
       annotations: readOnlyAnnotations,
     },
     async () => success(migrationCapabilities())
@@ -31,7 +33,7 @@ export function createRxjsMcpServer(): McpServer {
     {
       description:
         'Analyze explicit source contents for complete import-surface guidance, subscriber topology, sharing candidates, lifecycle recommendations, unsupported constructs, and structured diagnostics.',
-      inputSchema: batchSchema.shape,
+      inputSchema: batchSchema,
       annotations: readOnlyAnnotations,
     },
     async (input) => call(() => analyzeMigration(input))
@@ -42,7 +44,7 @@ export function createRxjsMcpServer(): McpServer {
     {
       description:
         'Return cold-by-default candidate source, imports, and diagnostics without reading or writing project files; platform mode must be selected explicitly.',
-      inputSchema: batchSchema.shape,
+      inputSchema: batchSchema,
       annotations: readOnlyAnnotations,
     },
     async (input) => call(() => previewMigration(input))
@@ -52,7 +54,7 @@ export function createRxjsMcpServer(): McpServer {
     'validate_migration_contract',
     {
       description: 'Validate migration-contract schema independently from migration readiness.',
-      inputSchema: { manifest: z.unknown() },
+      inputSchema: contractInputSchema,
       annotations: readOnlyAnnotations,
     },
     async ({ manifest }) => success(validateMigrationContract(manifest))

@@ -1,35 +1,42 @@
 import { describe, expect, it } from 'vitest';
 import { readFile } from 'node:fs/promises';
-import { migrateTestSource as migrateFromLegacyPackage } from '../../migrate/src/index.js';
+import ts from 'typescript';
 import { defaultCapabilityRegistry, migrateTestSource } from '../src/migration/index.js';
-import { mechanicalFixtures } from './migration/fixtures.js';
+import { parseDiagnostics } from '../src/migration/diagnostics.js';
+import type { MigrationDiagnostic } from '../src/migration/types.js';
+import { mechanicalFixtures, type ExpectedDiagnostic, type MechanicalFixture } from './migration/fixtures.js';
 
-describe('migration engine transfer', () => {
+describe('migration engine contracts', () => {
+  it('covers every mechanical capability, evidence fixture, and argument adapter', () => {
+    const fixturesByCapability = new Map(
+      mechanicalFixtures.flatMap((fixture) => (fixture.capabilityId ? [[fixture.capabilityId, fixture] as const] : []))
+    );
+    const fixtureIds = new Set(mechanicalFixtures.map(({ id }) => id));
+    const adapters = new Set(mechanicalFixtures.flatMap(({ adapter }) => (adapter ? [adapter] : [])));
+
+    for (const capability of defaultCapabilityRegistry.capabilities) {
+      const fixture = fixturesByCapability.get(capability.id);
+      expect(fixture, `missing fixture for ${capability.id}`).toBeDefined();
+      expect(fixture?.adapter).toBe(capability.argumentAdapter);
+      for (const evidenceId of capability.evidence.fixtureIds) expect(fixtureIds.has(evidenceId), evidenceId).toBe(true);
+    }
+    for (const adapter of new Set(defaultCapabilityRegistry.capabilities.map(({ argumentAdapter }) => argumentAdapter))) {
+      expect(adapters.has(adapter), `missing fixture for ${adapter}`).toBe(true);
+    }
+  });
+
   for (const fixture of mechanicalFixtures) {
-    it(`${fixture.id} preserves candidate output and diagnostic identity`, () => {
-      const options = { fileName: fixture.fileName };
-      const legacy = migrateFromLegacyPackage(fixture.input, options);
-      const transferred = migrateTestSource(fixture.input, options);
-      expect(transferred).toEqual(legacy);
-      expect(transferred.status).toBe(fixture.expectedStatus);
-      expect(transferred.code).toBe(fixture.expected);
-
-      if (transferred.status !== 'refused') {
-        const secondPass = migrateTestSource(transferred.code, options);
-        expect(secondPass.status).toBe('unchanged');
-        expect(secondPass.code).toBe(transferred.code);
-      }
+    it(`${fixture.id} preserves exact output, diagnostic identity, parsing, and idempotence`, () => {
+      expect(() => runFixture(fixture)).not.toThrow();
     });
   }
 
-  it('refuses removed RxJS 7 thisArg overloads in both engine copies', () => {
+  it('refuses removed RxJS 7 thisArg overloads', () => {
     const source = `import { map } from 'rxjs/operators';\nconst result = values.pipe(map(project, context));\n`;
-    const legacy = migrateFromLegacyPackage(source, { fileName: 'map-this-arg.ts' });
-    const transferred = migrateTestSource(source, { fileName: 'map-this-arg.ts' });
+    const result = migrateTestSource(source, { fileName: 'map-this-arg.ts' });
 
-    expect(transferred).toEqual(legacy);
-    expect(transferred).toMatchObject({ status: 'refused', code: source });
-    expect(transferred.diagnostics).toContainEqual(
+    expect(result).toMatchObject({ status: 'refused', code: source });
+    expect(result.diagnostics).toContainEqual(
       expect.objectContaining({
         code: 'unsupported-overload',
         disposition: 'refused',
@@ -50,4 +57,78 @@ describe('migration engine transfer', () => {
     expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'concatMap')?.platformMethod).toBe('flatMap');
     expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'takeUntil')?.target).toBe('exact-symbol');
   });
+
+  it('detects output, diagnostic, parse, source-refusal, and idempotence regressions', () => {
+    const mapFixture = fixture('operator.map');
+    const malformedFixture = fixture('syntax.malformed');
+
+    expect(() => runFixture({ ...mapFixture, expected: `${mapFixture.expected}// drift\n` })).toThrow(/output/);
+    expect(() => runFixture(malformedFixture, () => ({ ...migrateTestSource(malformedFixture.input), diagnostics: [] }))).toThrow(
+      /diagnostics/
+    );
+    expect(() =>
+      runFixture({ ...mapFixture, expected: 'const = ;\n' }, () => ({ status: 'changed', code: 'const = ;\n', diagnostics: [], imports: [] }))
+    ).toThrow(/target-parse/);
+    expect(() =>
+      runFixture(malformedFixture, () => ({ status: 'changed', code: 'const valid = true;\n', diagnostics: [], imports: [] }))
+    ).toThrow(/source-refusal/);
+
+    let calls = 0;
+    expect(() =>
+      runFixture(mapFixture, (source, options) => {
+        calls++;
+        const result = migrateTestSource(source, options);
+        return calls === 1 ? result : { ...result, status: 'changed', code: `${result.code}// second-pass drift\n` };
+      })
+    ).toThrow(/idempotence/);
+  });
 });
+
+type Transform = typeof migrateTestSource;
+
+function fixture(id: string): MechanicalFixture {
+  const found = mechanicalFixtures.find((candidate) => candidate.id === id);
+  if (!found) throw new Error(`Missing fixture ${id}.`);
+  return found;
+}
+
+function runFixture(fixture: MechanicalFixture, transform: Transform = migrateTestSource): void {
+  const sourceFile = ts.createSourceFile(fixture.fileName, fixture.input, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const sourceMalformed = parseDiagnostics(sourceFile).length > 0;
+  const result = transform(fixture.input, { fileName: fixture.fileName });
+
+  if (sourceMalformed && (result.status !== 'refused' || result.code !== fixture.input)) throw new Error('source-refusal');
+  if (result.status !== fixture.expectedStatus) throw new Error('status');
+  if (result.code !== fixture.expected) throw new Error('output');
+  if (JSON.stringify(result.diagnostics.map(projectDiagnostic)) !== JSON.stringify(fixture.expectedDiagnostics)) {
+    throw new Error('diagnostics');
+  }
+  if (result.status !== 'refused') {
+    const target = ts.createSourceFile(fixture.fileName, result.code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    if (parseDiagnostics(target).length > 0) throw new Error('target-parse');
+  }
+
+  const second = transform(result.code, { fileName: fixture.fileName });
+  const secondStatus = result.status === 'refused' ? 'refused' : 'unchanged';
+  if (
+    second.status !== secondStatus ||
+    second.code !== result.code ||
+    JSON.stringify(second.diagnostics.map(projectDiagnostic)) !== JSON.stringify(result.diagnostics.map(projectDiagnostic))
+  ) {
+    throw new Error('idempotence');
+  }
+}
+
+function projectDiagnostic(diagnostic: MigrationDiagnostic): ExpectedDiagnostic {
+  return {
+    code: diagnostic.code,
+    severity: diagnostic.severity,
+    disposition: diagnostic.disposition,
+    refusalScope: diagnostic.refusalScope,
+    classification: diagnostic.classification,
+    ...(diagnostic.capabilityId ? { capabilityId: diagnostic.capabilityId } : {}),
+    start: diagnostic.span.start.offset,
+    end: diagnostic.span.end.offset,
+    nextAction: diagnostic.nextAction.code,
+  };
+}

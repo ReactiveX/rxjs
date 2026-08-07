@@ -144,17 +144,91 @@ void operate;
 
     const valid = validateMigrationContract(validManifest());
     expect(valid).toMatchObject({ valid: true, issues: [], readiness: { state: 'ready', findings: [] } });
+
+    const incomplete = validateMigrationContract({
+      ...validManifest(),
+      units: [
+        {
+          ...validManifest().units[0],
+          lifecycle: 'unresolved',
+          approval: { status: 'pending' },
+        },
+      ],
+      blockers: [
+        {
+          owner: 'maintainer',
+          reason: 'Lifecycle is unresolved.',
+          unitIds: ['pipeline-1'],
+          evidence: ['Characterization test is pending.'],
+          accepted: false,
+        },
+      ],
+    });
+    expect(incomplete).toMatchObject({ valid: true, issues: [], readiness: { state: 'incomplete' } });
+    expect(incomplete.readiness?.findings.length).toBeGreaterThan(0);
+  });
+
+  it('accepts every exact batch boundary and measures UTF-8 bytes', () => {
+    const fileBoundary = previewMigration({ files: [{ path: 'src/file.ts', source: ' '.repeat(MAX_FILE_BYTES) }] });
+    expect(fileBoundary.files[0]).toMatchObject({ path: 'src/file.ts', status: 'unchanged' });
+
+    const totalBoundary = previewMigration({
+      files: Array.from({ length: MAX_TOTAL_BYTES / MAX_FILE_BYTES }, (_, index) => ({
+        path: `src/${index}.ts`,
+        source: ' '.repeat(MAX_FILE_BYTES),
+      })),
+    });
+    expect(totalBoundary.files).toHaveLength(MAX_TOTAL_BYTES / MAX_FILE_BYTES);
+
+    const countBoundary = analyzeMigration({
+      files: Array.from({ length: MAX_FILES }, (_, index) => ({ path: `src/${index}.ts`, source: '' })),
+    });
+    expect(countBoundary.files).toHaveLength(MAX_FILES);
+
+    expectRefusal(
+      () => previewMigration({ files: [{ path: 'src/multibyte.ts', source: '😀'.repeat(MAX_FILE_BYTES / 2 + 1) }] }),
+      'file-too-large'
+    );
+  });
+
+  it('rejects a complete invalid batch before analyzing any earlier file', () => {
+    const malformed = "import { map } from 'rxjs/operators'; const value = source.pipe(map(;";
+    expectRefusal(
+      () =>
+        analyzeMigration({
+          files: [
+            { path: 'src/would-produce-diagnostics.ts', source: malformed },
+            { path: '../escape.ts', source: '' },
+          ],
+        }),
+      'invalid-path'
+    );
   });
 
   it.each([
     ['absolute path', { files: [{ path: '/tmp/file.ts', source: '' }] }, 'invalid-path'],
     ['parent traversal', { files: [{ path: '../file.ts', source: '' }] }, 'invalid-path'],
+    ['embedded parent traversal', { files: [{ path: 'src/../file.ts', source: '' }] }, 'invalid-path'],
+    ['dot segment', { files: [{ path: './file.ts', source: '' }] }, 'invalid-path'],
+    ['empty segment', { files: [{ path: 'src//file.ts', source: '' }] }, 'invalid-path'],
+    ['Windows absolute path', { files: [{ path: 'C:\\src\\file.ts', source: '' }] }, 'invalid-path'],
+    ['control character', { files: [{ path: 'src/file\0.ts', source: '' }] }, 'invalid-path'],
     [
       'duplicate path',
       {
         files: [
           { path: 'src/file.ts', source: '' },
           { path: 'src/file.ts', source: '' },
+        ],
+      },
+      'duplicate-path',
+    ],
+    [
+      'normalized duplicate path',
+      {
+        files: [
+          { path: 'src/file.ts', source: '' },
+          { path: 'src\\file.ts', source: '' },
         ],
       },
       'duplicate-path',
@@ -173,15 +247,21 @@ void operate;
       'invalid-input',
     ],
   ])('refuses %s before producing partial output', (_name, input, code) => {
-    expect(() => previewMigration(input)).toThrowError(InputRefusal);
-    try {
-      previewMigration(input);
-    } catch (error) {
-      expect((error as InputRefusal).refusal.code).toBe(code);
-      expect((error as InputRefusal).refusal.limits.maxFiles).toBe(MAX_FILES);
-    }
+    expectRefusal(() => previewMigration(input), code as InputRefusal['refusal']['code']);
   });
 });
+
+function expectRefusal(operation: () => unknown, code: InputRefusal['refusal']['code']): void {
+  expect(operation).toThrowError(InputRefusal);
+  try {
+    operation();
+  } catch (error) {
+    expect((error as InputRefusal).refusal).toMatchObject({
+      code,
+      limits: { maxFiles: MAX_FILES, maxFileBytes: MAX_FILE_BYTES, maxTotalBytes: MAX_TOTAL_BYTES },
+    });
+  }
+}
 
 function validManifest() {
   const span = {
