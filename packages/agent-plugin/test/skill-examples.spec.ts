@@ -95,7 +95,7 @@ describe('version-specific skill examples', () => {
     expect(tornDown).toBe(true);
   });
 
-  it('runs an RxJS 9 Symbol authoring example with cancellation teardown', () => {
+  it('preserves ColdObservable lifecycle through an exact Symbol result', () => {
     const values: number[] = [];
     let teardowns = 0;
     const source = new ColdObservable<number>((subscriber) => {

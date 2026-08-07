@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-9
-description: Write or refactor production RxJS 9 code with the web-platform Observable, exact imported Symbol extensions, explicit shared-versus-producer-per-subscription lifecycles, AbortSignal ownership, bounded concurrency and retry, intentional Subjects, deterministic resource teardown, and public custom operators. Use for RxJS 9 implementation work; do not apply RxJS 7 pipeable, Subscription, scheduler, or arbitrary-subscribable assumptions.
+description: Write or refactor production RxJS 9 code with platform methods first, exact imported Symbol extensions when needed, explicit shared-versus-producer-per-subscription lifecycles, AbortSignal ownership, bounded concurrency and retry, intentional Subjects, deterministic resource teardown, and public custom operators. Use for RxJS 9 implementation work; do not apply RxJS 7 pipeable, Subscription, scheduler, or arbitrary-subscribable assumptions.
 ---
 
 # Write RxJS 9
@@ -9,16 +9,16 @@ Target RxJS `9.0.0-beta.1`. State the producer, values, lifetime owner,
 concurrency policy, error/completion meaning, and cancellation boundary before
 composing a stream.
 
-Prefer exact imported Symbols:
+Prefer platform methods whenever their contract fits. They require no RxJS
+operator extension import and let browser-native implementations provide the
+operation without adding those extension bytes to a bundle:
 
 ```ts
 import { debounce } from 'rxjs/debounce';
 import { distinctUntilChanged } from 'rxjs/distinct-until-changed';
-import { switchMap } from 'rxjs/switch-map';
-
 const results = searchTerms[debounce](200)
   [distinctUntilChanged]()
-  [switchMap]((term) => api.search(term));
+  .switchMap((term) => api.search(term));
 ```
 
 Avoid RxJS 7 syntax and accidental platform-method substitution:
@@ -32,10 +32,13 @@ Use this workflow:
 
 1. Choose the source lifecycle. A platform Observable shares one active
    producer; `ColdObservable` creates a producer for every direct subscription.
-2. Import every factory or operator Symbol from its exact public subpath. A
-   same-named string method is a separate platform contract.
-3. Choose replace, queue, overlap, or ignore semantics from requirements and
-   state bounds explicitly.
+2. Use a platform string method first when its semantics fit. Import an exact
+   Symbol when the platform lacks the capability, the RxJS contract differs,
+   or a `ColdObservable` result must retain producer-per-subscription lifecycle.
+3. Start with sequential platform `.flatMap()` because it preserves every
+   operation and is easiest to reason about. Choose `[mergeMap]`,
+   `[exhaustMap]`, or `.switchMap()` only for explicit parallelization, action
+   locking, or cancellation/switching requirements.
 4. Put recovery at the scope that can recover. Bound retry and Promise
    consumption so work can settle.
 5. Give each terminal subscription an `AbortSignal` owned by its component,
@@ -43,7 +46,7 @@ Use this workflow:
    `subscriber.addTeardown()`.
 6. Keep Subject writes private. Make retained state, replay, reset, and
    late-observer behavior explicit.
-7. Prefer existing public capabilities or reusable transformations. Define a
+7. Prefer existing platform methods, public capabilities, or reusable transformations. Define a
    new exact Symbol only when a public fluent operator is the intended API.
 
 ## Load references by task

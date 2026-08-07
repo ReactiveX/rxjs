@@ -2,12 +2,22 @@
 
 ## Translate operator choice into behavior
 
+Treat sequential `concatMap` as the safety baseline. Require an explicit
+reason to introduce parallelism, action suppression, or cancellation.
+
 | Operator     | When a new outer value arrives | Review failure mode                                   |
 | ------------ | ------------------------------ | ----------------------------------------------------- |
 | `switchMap`  | unsubscribe previous inner     | required work canceled or result deliberately ignored |
 | `concatMap`  | queue until previous completes | unbounded backlog or blocked queue                    |
 | `mergeMap`   | overlap, optionally bounded    | excessive active work or retained buffer              |
 | `exhaustMap` | ignore while inner active      | lost user intent or state transition                  |
+
+Flag `switchMap` around state-changing work. A delete may finish on the server
+after its observation is canceled; if the client uses each success to update
+its view, losing an earlier response leaves client and server state out of
+sync. Use `mergeMap` for intentional parallelization, `exhaustMap` to lock an
+action such as “Place order” until it completes, and `switchMap` for streaming
+source changes, disposable read-only results, or reactive process control.
 
 Review the inner resource, not only its Observable. Unsubscribing from a
 Promise-backed source may suppress delivery without canceling the underlying

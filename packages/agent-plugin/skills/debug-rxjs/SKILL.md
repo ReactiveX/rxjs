@@ -1,28 +1,51 @@
 ---
 name: debug-rxjs
-description: Diagnose RxJS 7 or RxJS 9 bugs involving missing or duplicate emissions, cancellation, teardown, Subjects, higher-order operators, scheduling, errors, multicasting, or reentrancy. Use for debugging rather than broad code review.
+description: Diagnose a concrete RxJS 7 or RxJS 9 failure involving missing, duplicate, stale, or out-of-order values; unexpected cancellation; stuck completion; unhandled errors; retries; Subjects; sharing/replay; scheduler or host timing; custom operators; reentrancy; teardown; or leaks. Use for reproduction and root-cause analysis, not broad review or speculative optimization.
 ---
 
 # Debug RxJS
 
-Confirm the RxJS major and reproduce the smallest failing behavior.
+Confirm the RxJS major, reproduce the smallest public failure, and build a
+timeline before editing production code.
 
-Build a timeline containing subscription, source activation, inner activation,
-each notification, cancellation, teardown, and restart. Read the chain both
-ways: subscription setup travels upstream; notifications travel downstream.
+Record:
 
-Check these common fault lines:
+1. observer subscription and source producer activation;
+2. every outer/inner/notifier/recovery subscription;
+3. each `next`, `error`, and `complete`;
+4. cancellation/abort/unsubscribe and its owner;
+5. resource teardown and restart; and
+6. synchronous reentrant actions.
 
-- the wrong higher-order strategy for replacement, ordering, parallelism, or
-  ignored triggers;
-- `catchError`, retry, or repeat scoped at the wrong level;
-- a hot/cold or shared/per-subscription assumption that does not match the
-  chosen major and source type;
-- synchronous reentrancy before closed state or teardown is visible;
-- Subject terminal state or replay/current value behavior;
-- scheduler/host-timer mismatch;
-- unhandled errors, promise conversions waiting forever, or cancellation that
-  reaches only part of the subscription tree.
+Read setup upstream and notifications downstream. Vary a synchronous source,
+a delayed source, an overlapping second input, a second observer, and a later
+restart; each separates a different class of bug.
 
-Add one focused regression test before changing production code. Read the
-[debugging playbook](references/debugging-playbook.md).
+```ts
+// Useful debug event, not permanent noisy logging:
+events.push({ at: now(), kind: 'inner-abort', requestId, reason });
+```
+
+Add one focused failing regression test at the public boundary before fixing
+the cause. Do not “fix” a timing bug by adding a delay unless delayed semantics
+are the actual requirement.
+
+## Load references by symptom
+
+- Use [reproduction and timeline](references/reproduction-and-timeline.md) to
+  reduce the failure and instrument lifecycle.
+- Use [missing, duplicate, and stale values](references/missing-duplicate-and-stale-values.md)
+  for filtering, combination readiness, sharing, replay, and producer count.
+- Use [higher-order, errors, and completion](references/higher-order-errors-and-completion.md)
+  for cancellation/queue/drop, recovery scope, retry, and stuck streams.
+- Use [Subjects, sharing, and reentrancy](references/subjects-sharing-and-reentrancy.md)
+  for feedback, late observers, reset, and retained state.
+- Use [cancellation and teardown](references/cancellation-and-teardown.md) for
+  partial cancellation, resource leaks, and terminal order.
+- Use [version-specific fault lines](references/version-specific-fault-lines.md)
+  to keep RxJS 7 and RxJS 9 diagnostic models separate.
+- Use [debugging examples](references/debugging-examples.md) for symptom-to-
+  hypothesis experiments.
+
+Hand the proven fix to the matching authoring skill and its regression test to
+the matching testing skill.

@@ -13,6 +13,12 @@ For a public custom operator, test:
 - synchronous/reentrant order is correct; and
 - mutable state is isolated per activation.
 
+If a library deliberately uses `Symbol.for()`, add multi-copy and
+incompatible-version tests for its namespaced registry protocol, installation
+order, overwrite/refusal rules, declarations, and cross-realm expectations.
+Without that explicit public protocol and evidence, replace it with a
+module-owned `Symbol()`.
+
 ## Receiver lifecycle preservation
 
 Invoke the operator on both a platform Observable and `ColdObservable`.

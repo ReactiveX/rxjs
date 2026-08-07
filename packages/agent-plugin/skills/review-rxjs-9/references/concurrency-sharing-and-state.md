@@ -2,13 +2,18 @@
 
 ## Higher-order behavior
 
-- `[switchMap]`: default latest-only; aborts the oldest active inner at its
-  concurrency limit.
-- `[mergeMap]`: overlaps up to `concurrent` and buffers the rest; default is
-  unbounded active concurrency.
-- Queueing: `[mergeMap](project, { concurrent: 1 })`.
-- `[exhaustMap]`: accepts up to its concurrency limit and ignores additional
-  inputs while busy.
+- Platform `.flatMap()` queues sequentially. Treat it as the safe default.
+- `[mergeMap]` is for intentional parallelization; it overlaps up to
+  `concurrent` and buffers the rest.
+- `[exhaustMap]` locks an action while accepted work is active, such as an
+  ecommerce order button.
+- Platform `.switchMap()` deliberately replaces stale read-only work, changes
+  streaming sources, or starts/stops reactive processes. The exact extension
+  adds a newest-N concurrency option.
+
+Flag `.switchMap()` or `[switchMap]` around state-changing work. A server-side
+delete can complete after its observation is canceled; if the success response
+updates the client view, dropping it leaves client and server out of sync.
 
 Review resource cancellation, pending-buffer bounds, completion waiting, and
 whether projected Promise work is actually cancelable.
@@ -43,6 +48,12 @@ Every Subject is a hot producer. Review:
 - reentrant feedback and snapshot fanout; and
 - native-method crossings that can bypass an advanced direct-subscription
   hook.
+
+A private Subject may live in a class or a closure-backed factory returning a
+readonly `[command, observable]` tuple. Both can enforce the same write
+authority. Review whether callers need object identity/shared prototype
+methods or compact functional composition; report per-instance closure cost
+only when profiling shows it matters.
 
 `behaviorSubject` and `replaySubject` perform per-direct-observer retained
 delivery. `PerSubscriptionSubjectBase` is an advanced hot Subject base, not a

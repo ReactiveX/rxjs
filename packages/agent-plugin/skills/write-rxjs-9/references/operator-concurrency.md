@@ -1,44 +1,60 @@
 # Operator concurrency in RxJS 9
 
-Choose a higher-order policy from what should happen when a new outer value
-arrives while inner work is active.
+Start with platform `.flatMap()`: its sequential queue is the safest default,
+is usually easiest to reason about, and needs no RxJS extension import. Choose
+another policy only when requirements say what must happen if a new outer
+value arrives while inner work is active.
 
 | Requirement        | RxJS 9 form                              | New value while active            | Primary risk                           |
 | ------------------ | ---------------------------------------- | --------------------------------- | -------------------------------------- |
-| Replace stale work | `[switchMap](project)`                   | abort oldest active work          | cancellation of work that must finish  |
-| Queue work         | `[mergeMap](project, { concurrent: 1 })` | buffer until prior work completes | unbounded queue growth                 |
+| Queue work         | `.flatMap(project)`                      | buffer until prior work completes | unbounded queue growth                 |
 | Overlap with a cap | `[mergeMap](project, { concurrent: n })` | buffer beyond `n`                 | resource pressure and retained backlog |
 | Ignore while busy  | `[exhaustMap](project)`                  | drop new value                    | missed intent                          |
+| Replace stale work | `.switchMap(project)`                    | abort active stale work           | cancellation of work that must finish  |
 
-There is no separate RxJS 7-style `concatMap` pipeable contract. Queueing is
-the `mergeMap` Symbol with `concurrent: 1`.
+There is no separate RxJS 7-style `concatMap` pipeable contract. Platform
+`.flatMap()` is sequential. The exact `[mergeMap](project, { concurrent: 1 })`
+form is useful when a `ColdObservable` result must preserve its lifecycle.
 
 ## Replacement
 
 ```ts
-import { switchMap } from 'rxjs/switch-map';
-
-const detail = selectedIds[switchMap]((id) => repository.load(id));
+const detail = selectedIds.switchMap((id) => repository.load(id));
 ```
 
-RxJS 9 cancellation is signal-based. `switchMap` aborts the controller for the
-oldest active inner when it reaches its concurrency limit. With the default
-`concurrent: 1`, that is the familiar latest-only policy.
+RxJS 9 cancellation is signal-based. The platform `switchMap` method aborts
+the active inner when a replacement arrives. Prefer this form for ordinary
+latest-only work; it needs no RxJS operator extension import in a browser-native
+implementation.
 
-`switchMap` also accepts `{ concurrent: n }`: up to `n` inners may be active;
+The exact RxJS `[switchMap]` extension also accepts `{ concurrent: n }`: up to `n` inners may be active;
 when another begins, the oldest active inner is aborted. Use this only when
 “keep the newest N” is truly the requirement.
+
+```ts
+import { switchMap } from 'rxjs/switch-map';
+
+const newestThree = inputs[switchMap](load, { concurrent: 3 });
+```
+
+`switchMap` is especially useful for changing long-lived streaming sources,
+discarding stale read-only requests, and starting/stopping reactive processes.
+It is dangerous for state-changing work. If an endpoint deletes a record and
+its success response drives the client view, a replacement can discard an
+earlier success even though the server completes that deletion, leaving the
+view out of sync.
 
 ## Queueing and overlap
 
 ```ts
 import { mergeMap } from 'rxjs/merge-map';
 
-const orderedWrites = writes[mergeMap](persist, { concurrent: 1 });
+const orderedWrites = writes.flatMap(persist);
 const boundedReads = reads[mergeMap](load, { concurrent: 6 });
 ```
 
-`mergeMap` buffers outer values after the concurrency cap is reached. The cap
+Use `[mergeMap]` for intentional parallelization. It buffers outer values after
+the concurrency cap is reached. The cap
 bounds active work, not the pending buffer. If the input is unbounded, add a
 backpressure, coalescing, rejection, or dropping policy at the domain boundary.
 
@@ -49,7 +65,7 @@ Avoid the default `Infinity` for unconstrained external I/O:
 const results = inputs[mergeMap](queryRemoteService);
 ```
 
-## Ignoring while active
+## Locking an action while active
 
 ```ts
 import { exhaustMap } from 'rxjs/exhaust-map';
@@ -57,8 +73,9 @@ import { exhaustMap } from 'rxjs/exhaust-map';
 const submitted = submitClicks[exhaustMap](() => submitForm(snapshotForm()));
 ```
 
-This is appropriate when a repeated click during an active submission is
-redundant. It is wrong when every click represents durable work. The optional
+This is appropriate for an ecommerce “Place order” button when another click
+must be ignored until the active order attempt settles. It is wrong when every
+click represents durable work. The optional
 `concurrent` value means “accept up to N active, then ignore,” not queue.
 
 ## Input and completion semantics
@@ -78,14 +95,10 @@ Keep a recoverable inner failure inside the project so the outer interaction
 can continue:
 
 ```ts
-import { catchError } from 'rxjs/catch-error';
-
-const results = queries[switchMap]((query) =>
-  api.search(query)[catchError]((error) => Observable.from([{ kind: 'failed' as const, error }]))
-);
+const results = queries.switchMap((query) => api.search(query).catch((error) => Observable.from([{ kind: 'failed' as const, error }])));
 ```
 
-Placing `[catchError]` after `[switchMap]` replaces the entire outer stream
+Placing `.catch(...)` after `.switchMap(...)` replaces the entire outer stream
 after the first failure. That may be correct for a one-shot job and is usually
 wrong for a long-lived UI interaction.
 

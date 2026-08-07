@@ -2,9 +2,10 @@
 
 > Generated from the `rxjs@9.0.0-beta.1` export map. Do not edit by hand.
 
-The root is intentionally operator-free. Import each required capability from
-its exact subpath and confirm the resulting module graph with the consumer's
-bundler.
+The root is intentionally operator-free. Prefer platform methods when their
+contracts fit; they need no RxJS extension subpath. For a required exact Symbol
+or factory, verify its public subpath below and confirm the resulting module
+graph with the consumer's bundler. Presence here is not a recommendation.
 
 - `rxjs`
 - `rxjs/animation-frames`

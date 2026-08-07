@@ -85,6 +85,19 @@ readonly updates$ = this.updates.asObservable();
 readonly updates$ = new Subject<Update>();
 ```
 
+The good boundary can also be functional:
+
+```ts
+function createUpdates() {
+  const updates = new Subject<Update>();
+  return [(update: Update) => updates.next(update), updates.asObservable()] as const;
+}
+```
+
+Do not flag a readonly tuple factory merely because it is not a class. Both
+forms narrow write authority; classes additionally share prototype methods,
+while factories create per-instance closures.
+
 ## Bound Promise conversion
 
 ```ts

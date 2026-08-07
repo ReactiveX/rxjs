@@ -64,12 +64,47 @@ for (const name of actualSkills) {
   const properties = await readProperties(skillRoot);
   if (properties.name !== name) errors.push(`${name}: frontmatter name must equal its directory`);
   const markdown = await readFile(resolve(skillRoot, 'SKILL.md'), 'utf8');
+  const linkedReferences = new Set();
   for (const match of markdown.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
     if (!match[1].startsWith('references/')) continue;
+    linkedReferences.add(match[1]);
     const target = resolve(skillRoot, match[1]);
     const rel = relative(skillRoot, target);
     if (rel.startsWith(`..${sep}`) || rel === '..') errors.push(`${name}: reference escapes the skill: ${match[1]}`);
     else await lstat(target).catch(() => errors.push(`${name}: missing reference ${match[1]}`));
+  }
+  const references = (await readdir(resolve(skillRoot, 'references'), { withFileTypes: true }))
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+    .map((entry) => `references/${entry.name}`)
+    .sort();
+  if (references.length < 4) errors.push(`${name}: expected focused progressive-disclosure references, found ${references.length}`);
+  for (const reference of references) {
+    if (!linkedReferences.has(reference)) errors.push(`${name}: unlinked reference ${reference}`);
+    if (reference.endsWith('/version-catalog.md')) errors.push(`${name}: duplicated version-catalog reference is prohibited`);
+  }
+}
+
+for (const [path, requiredText] of [
+  ['skills/write-rxjs-7/references/operator-concurrency.md', 'safest default'],
+  ['skills/write-rxjs-9/references/fundamentals-and-lifecycle.md', 'Prefer platform methods'],
+  ['skills/write-rxjs-9/references/custom-operators.md', 'Why `Symbol.for()` is dangerous'],
+  ['skills/write-rxjs-9-tests/SKILL.md', 'Declare every marble string together'],
+  ['skills/design-rxjs-library-apis/references/controller-api-shapes.md', 'Readonly tuple'],
+  ['skills/integrate-rxjs-frameworks/references/angular-22.md', '^6.5.3 || ^7.4.0'],
+  ['skills/optimize-rxjs-bundles/references/rxjs-9-platform-methods-and-symbol-modules.md', 'Prefer the platform surface'],
+]) {
+  const contents = await readFile(resolve(root, path), 'utf8');
+  if (!contents.includes(requiredText)) errors.push(`${path}: missing required expert guidance: ${requiredText}`);
+}
+
+for (const skillName of ['write-rxjs-7-tests', 'write-rxjs-9-tests']) {
+  const referenceRoot = resolve(root, 'skills', skillName, 'references');
+  for (const entry of await readdir(referenceRoot, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    const contents = await readFile(resolve(referenceRoot, entry.name), 'utf8');
+    if (/(?:cold|hot|observable)\(\s*['"]/.test(contents)) {
+      errors.push(`${skillName}/${entry.name}: declare marble strings as aligned variables before creating sources`);
+    }
   }
 }
 

@@ -4,15 +4,17 @@ Use this reference whenever an outer value starts inner work.
 
 ## Decide from the second input
 
-Ask: “What must happen if another input arrives before the current inner work
-finishes?”
+Start with `concatMap`: sequential work is the safest default and usually the
+easiest behavior to reason about. Move away from it only when the product
+requirement answers: “What must happen if another input arrives before the
+current inner work finishes?”
 
 | Required behavior                 | Operator     | Primary risk                            |
 | --------------------------------- | ------------ | --------------------------------------- |
-| Replace/cancel the previous inner | `switchMap`  | Cancels work that may matter            |
 | Queue every inner in order        | `concatMap`  | Unbounded queue or non-completing inner |
 | Run inners concurrently           | `mergeMap`   | Resource saturation and reordering      |
 | Ignore new inputs while busy      | `exhaustMap` | Drops required state changes            |
+| Replace/cancel the previous inner | `switchMap`  | Cancels work that may matter            |
 
 ## Replace stale reads
 
@@ -33,6 +35,11 @@ Bad when every write must complete:
 const saved$ = changes$.pipe(switchMap((change) => api.save(change)));
 ```
 
+For example, if an endpoint deletes a record and its success response drives a
+view update, `switchMap` can unsubscribe from an earlier deletion response.
+The server may delete both records while the client applies only the newest
+success, leaving the view out of sync.
+
 ## Queue ordered work
 
 ```ts
@@ -43,7 +50,7 @@ This preserves order only while every inner eventually completes. If the
 source can outrun the sink, specify a product-level queue bound or rejection
 policy; `concatMap` does not make an infinite backlog safe.
 
-## Bound parallel work
+## Use `mergeMap` for intentional parallelization
 
 ```ts
 const uploaded$ = files$.pipe(mergeMap((file) => upload(file), 4));
@@ -53,14 +60,27 @@ Unbounded `mergeMap` is appropriate only when the input cardinality and inner
 cost are trivially bounded. Completion waits for the outer source and all
 required active inners.
 
-## Ignore duplicate triggers
+## Use `exhaustMap` as an action lock
 
 ```ts
 const submissions$ = submitClicks$.pipe(exhaustMap(() => submitForm()));
 ```
 
-Use this only when ignored clicks are truly duplicates. Do not use it for a
-stream of required state changes.
+An ecommerce “Place order” button is the canonical shape: ignore further
+clicks until the current order attempt settles. Use this only when ignored
+actions are truly duplicates. Do not use it for required state changes.
+
+## Use `switchMap` for deliberate switching
+
+`switchMap` is ideal when a newer source makes the old observation irrelevant:
+
+- switching between long-lived streaming sources;
+- discarding in-flight read-only results such as stale searches; and
+- starting and stopping reactive processes.
+
+It is tricky precisely because unsubscription can discard the result or error
+of work that the underlying system still performs. Do not use it for writes by
+default.
 
 ## Scope recovery to the operation
 

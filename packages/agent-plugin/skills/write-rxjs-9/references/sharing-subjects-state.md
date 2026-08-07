@@ -88,6 +88,20 @@ class SelectionModel {
 Do not expose a Subject when consumers should only observe. A public Subject
 lets arbitrary callers inject, error, or complete shared state.
 
+The same ownership boundary can be expressed without a class:
+
+```ts
+function createSelectionModel() {
+  const changes = new Subject<Selection>();
+  const select = (value: Selection) => changes.next(value);
+  return [select, changes.asObservable()] as const;
+}
+```
+
+Class methods are shared through the prototype; tuple-factory commands are
+closures allocated per instance. Both keep the Subject private. Choose by API
+shape, identity, composition, and measured instance-creation cost.
+
 ## State decisions
 
 - Derive state with `[scan]` when events define transitions.

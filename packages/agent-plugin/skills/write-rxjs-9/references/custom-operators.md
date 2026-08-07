@@ -15,19 +15,17 @@ RxJS 9 does not require or export the RxJS 7 `OperatorFunction` contract. Type
 the source-to-source function directly:
 
 ```ts
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
 import { pipe } from 'rxjs/pipe';
 
 type Transformation<A, B> = (source: Observable<A>) => Observable<B>;
 
 function validReadings(): Transformation<Reading, Reading> {
-  return (source) => source[filter]((reading) => reading.valid);
+  return (source) => source.filter((reading) => reading.valid);
 }
 
 function toDisplayReading(): Transformation<Reading, DisplayReading> {
   return (source) =>
-    source[map]((reading) => ({
+    source.map((reading) => ({
       label: reading.sensorName,
       value: `${reading.value.toFixed(1)} ${reading.unit}`,
     }));
@@ -38,6 +36,10 @@ const display = readings[pipe](validReadings(), toDisplayReading());
 
 The exact `[pipe]` Symbol composes ordinary functions; it is not the RxJS 7
 string `.pipe` or pipeable import surface.
+
+Prefer platform methods inside a transformation when their contracts fit.
+Use exact Symbols for missing/different behavior or to preserve a
+`ColdObservable` receiver's producer-per-subscription result lifecycle.
 
 ## Publish an exact Symbol extension
 
@@ -108,6 +110,37 @@ method, derive identity from the description, or assume another
 `Symbol('mapDefined')` is equivalent. Duplicate physical installations of an
 external library naturally own different exact Symbols unless that library
 deliberately specifies another protocol.
+
+### Why `Symbol.for()` is dangerous
+
+`Symbol.for(key)` retrieves shared identity from the global Symbol registry.
+That defeats module-local collision isolation:
+
+```ts
+// Bad: any code using this registry key addresses the same prototype slot.
+export const mapDefined = Symbol.for('mapDefined');
+Observable.prototype[mapDefined] = implementation;
+```
+
+An unrelated package can choose the same descriptive key. More subtly, two
+incompatible versions or physical copies can share the key and overwrite the
+same property; installation order then selects runtime behavior while each
+copy's TypeScript declarations may still claim its own signature. A global key
+also makes a local refactor into a compatibility commitment that cannot be
+reasoned about from imports alone.
+
+Use a module-owned `Symbol()` by default. Consider `Symbol.for()` only after
+designing all of the following as a public protocol:
+
+- a namespaced registry key owned by a stable authority;
+- duplicate-install behavior and who may install the property;
+- version negotiation and incompatible-signature handling;
+- property descriptor and overwrite/refusal rules;
+- cross-realm expectations; and
+- tests with multiple copies and incompatible versions.
+
+Without that protocol, `Symbol.for()` is not a deduplication optimization; it
+is an uncontrolled global collision surface.
 
 ## Operator authoring checklist
 

@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-9-tests
-description: Write or improve RxJS 9 tests with @rxjs/test, explicit cold/hot/platform source models, exact Symbol APIs, active-producer and subscription-window assertions, AbortSignal/resource teardown checks, virtual host timers and clocks, synchronous reentrancy cases, and native/fallback parity. Use only for RxJS 9 behavior; do not restore RxJS 7 TestScheduler or scheduler arguments.
+description: Write or improve RxJS 9 tests with @rxjs/test, explicit cold/hot/platform source models, platform methods and exact Symbols, active-producer and subscription-window assertions, AbortSignal/resource teardown checks, virtual host timers and clocks, synchronous reentrancy cases, and native/fallback parity. Use only for RxJS 9 behavior; do not restore RxJS 7 TestScheduler or scheduler arguments.
 ---
 
 # Write RxJS 9 tests
@@ -9,18 +9,28 @@ Use `await rxTest(...)` and select the production lifecycle explicitly:
 
 ```ts
 await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
-  const source = observable('--a--b--|');
+  const sourceMarbles = '       --a--b--|';
+  const firstExpected = '       --a--b--|';
+  const secondWindow = '        ---^------!';
+  const secondExpected = '      -----b--|';
+  const producerWindow = '      ^-------!';
+  const source = observable(sourceMarbles);
 
-  expectObservable(source).toBe('--a--b--|');
-  expectObservable(source, '---^').toBe('-----b--|');
-  expectSubscriptions(source.subscriptions).toBe('^-------!');
+  expectObservable(source).toBe(firstExpected);
+  expectObservable(source, secondWindow).toBe(secondExpected);
+  expectSubscriptions(source.subscriptions).toBe(producerWindow);
 });
 ```
+
+Declare every marble string together at the top of the test. Alignment
+whitespace is ignored, so use it to put source, expected, observation, and
+producer timelines in vertical columns in a fixed-width editor.
 
 Use this workflow:
 
 1. Choose `cold`, `hot`, or `observable` from the real producer lifecycle.
-2. Import and exercise exact public Symbols and package paths.
+2. Exercise the platform method when its contract fits; import and exercise an
+   exact public Symbol when behavior or receiver construction requires it.
 3. Assert values/terminals and producer/observer windows when lifecycle matters.
 4. Test owner abort, one-of-many observer abort, final-observer teardown, and
    later restart for platform sources.
