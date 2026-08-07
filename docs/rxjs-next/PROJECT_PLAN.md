@@ -288,3 +288,15 @@ ordinary agent tools.
   passed. No model, paid-token, or authenticated evaluation ran.
 - Marked P7.8 complete and advanced registry publication/verification as the
   sole `NEXT` item. Publication remains an explicit operator action.
+
+### 2026-08-07 — P7.8 synchronous feedback refinement
+
+- Added focused RxJS 7 and RxJS 9 authoring and testing references for
+  synchronous side effects, indirect reentrancy, and subject-primed “snake
+  eating its tail” feedback machines.
+- Extended migration, review, and debugging guidance with subscribe-before-
+  prime ordering, per-cycle collection, concurrency policy, and the distinct
+  terminal meanings of Subject completion, Subject error, and owner
+  cancellation.
+- Deterministic evidence now covers 93 focused references, 39 plugin tests,
+  and a 115-file packed artifact. P7.9 remains the sole `NEXT` item.

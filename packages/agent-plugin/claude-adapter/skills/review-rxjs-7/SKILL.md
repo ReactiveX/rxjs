@@ -1,6 +1,6 @@
 ---
 name: review-rxjs-7
-description: Review RxJS 7.8.x code for subscription ownership, higher-order concurrency, recovery scope, completion dependencies, deterministic teardown, reentrancy, Subjects, sharing and retention, Promise conversion, custom sources and operators, performance, readability, and lifecycle tests. Use only for RxJS 7 code or maintenance; do not apply RxJS 9 platform-sharing, exact-Symbol, or AbortSignal contracts.
+description: Review RxJS 7.8.x code for subscription ownership, higher-order concurrency, recovery scope, completion dependencies, deterministic teardown, synchronous side effects, reentrancy and feedback machines, Subjects, sharing and retention, Promise conversion, custom sources and operators, performance, readability, and lifecycle tests. Use only for RxJS 7 code or maintenance; do not apply RxJS 9 platform-sharing, exact-Symbol, or AbortSignal contracts.
 ---
 
 # Review RxJS 7
@@ -15,7 +15,8 @@ Use this order:
 2. State replace, queue, overlap, or ignore behavior for every higher-order
    boundary; verify cancellation and buffering match the requirement.
 3. Trace `error`, `complete`, and explicit unsubscription separately.
-4. Inspect Subjects, sharing, replay, retained closures, and reset policy.
+4. Inspect Subjects, sharing, replay, retained closures, reset policy,
+   synchronous side effects, and intentional or indirect feedback edges.
 5. Review custom sources/operators for forwarding, user callback errors,
    synchronous reentrancy, child ownership, and teardown.
 6. Require tests for the lifecycle behavior that supports each finding.

@@ -45,6 +45,20 @@ Determine ordering, termination, stack growth, and whether other observers see
 intermediate state. A scheduled boundary can change ordering but is not a
 substitute for an explicit state machine.
 
+Recognize a subject-primed feedback machine when a downstream handler writes
+back to the Subject and a later `subject.next()` provides the initial seed.
+Verify that subscription happens before priming, exactly one path owns the
+feedback write, each cycle has a reachable boundary, and `complete`, `error`,
+and owner unsubscription have intentional meanings. Treat every side-effecting
+call between receiving a value and writing the next input as a possible
+indirect reentry path.
+
+If the loop collects cycle results, ensure `toArray()` belongs to each finite
+inner cycle. A `toArray()` after the Subject-rooted chain cannot emit the value
+needed for feedback until that input Subject completes. Review `switchMap` as
+replacement/cancellation policy; prefer `concatMap` when every cycle must
+finish.
+
 ## Match the Subject to the contract
 
 - `BehaviorSubject` requires an initial value and exposes a synchronous

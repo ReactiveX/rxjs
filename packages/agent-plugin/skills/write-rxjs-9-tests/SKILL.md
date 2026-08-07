@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-9-tests
-description: Write or improve RxJS 9 tests with @rxjs/test, explicit cold/hot/platform source models, platform methods and exact Symbols, active-producer and subscription-window assertions, AbortSignal/resource teardown checks, virtual host timers and clocks, synchronous reentrancy cases, and native/fallback parity. Use only for RxJS 9 behavior; do not restore RxJS 7 TestScheduler or scheduler arguments.
+description: Write or improve RxJS 9 tests with @rxjs/test, explicit cold/hot/platform source models, platform methods and exact Symbols, active-producer and subscription-window assertions, AbortSignal/resource teardown checks, virtual host timers and clocks, synchronous reentrancy and feedback-machine cases, and native/fallback parity. Use only for RxJS 9 behavior; do not restore RxJS 7 TestScheduler or scheduler arguments.
 ---
 
 # Write RxJS 9 tests
@@ -53,6 +53,9 @@ Use this workflow:
   owner signals, final-observer teardown, terminal order, and restarts.
 - Use [custom operators and platform parity](references/custom-operators-and-platform-parity.md)
   for exact Symbols, `[create]`, reentrancy, and native/fallback contracts.
+- Use [synchronous feedback machines](references/synchronous-feedback-machines.md)
+  for nested notification order, subscribe-before-prime behavior, side-effect
+  reentry, Subject terminal controls, and owner abort.
 - Use [good and bad tests](references/good-and-bad-tests.md) during review.
 
 Hand production code to `write-rxjs-9` and diagnosis to `debug-rxjs`.

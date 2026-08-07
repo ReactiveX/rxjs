@@ -1,6 +1,6 @@
 ---
 name: debug-rxjs
-description: Diagnose a concrete RxJS 7 or RxJS 9 failure involving missing, duplicate, stale, or out-of-order values; unexpected cancellation; stuck completion; unhandled errors; retries; Subjects; sharing/replay; scheduler or host timing; custom operators; reentrancy; teardown; or leaks. Use for reproduction and root-cause analysis, not broad review or speculative optimization.
+description: Diagnose a concrete RxJS 7 or RxJS 9 failure involving missing, duplicate, stale, or out-of-order values; unexpected cancellation; stuck completion; unhandled errors; retries; Subjects; sharing/replay; scheduler or host timing; custom operators; synchronous side effects, reentrancy, and feedback machines; teardown; or leaks. Use for reproduction and root-cause analysis, not broad review or speculative optimization.
 ---
 
 # Debug RxJS

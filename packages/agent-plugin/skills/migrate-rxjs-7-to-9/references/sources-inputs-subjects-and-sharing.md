@@ -42,6 +42,14 @@ Review current/replay behavior, late direct observers, terminal retention,
 write authority, synchronous reads, and reentrant feedback. Do not mechanically
 rename `BehaviorSubject` or `ReplaySubject` without tests for those contracts.
 
+Inventory subject-primed feedback machines explicitly. Preserve subscribe-
+before-prime ordering, the single feedback owner, per-cycle collection,
+sequential versus replacement policy, and the distinct meanings of Subject
+completion, Subject error, and owner cancellation. Do not move an inner
+`toArray()` to the whole Subject-rooted chain: the machine would wait for its
+own input to complete before producing the result that drives the next cycle.
+Every side effect in the feedback handler is a possible indirect reentry edge.
+
 Private Subject ownership may use a class or a functional factory returning a
 readonly `[command, observable]` tuple. Preserve that public design during the
 RxJS migration unless there is a separate approved API change. Update the

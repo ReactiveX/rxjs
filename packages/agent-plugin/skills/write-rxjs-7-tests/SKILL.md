@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-7-tests
-description: Write or improve RxJS 7.8.x tests with TestScheduler.run marbles, subscription-window assertions, Subject-driven unit tests, resource teardown spies, synchronous reentrancy cases, fake timers, and bounded async tests. Use only for RxJS 7 behavior or maintenance; do not use @rxjs/test or RxJS 9 platform source semantics.
+description: Write or improve RxJS 7.8.x tests with TestScheduler.run marbles, subscription-window assertions, Subject-driven unit tests, resource teardown spies, synchronous reentrancy and feedback-machine cases, fake timers, and bounded async tests. Use only for RxJS 7 behavior or maintenance; do not use @rxjs/test or RxJS 9 platform source semantics.
 ---
 
 # Write RxJS 7 tests
@@ -55,6 +55,9 @@ Use this workflow:
   for flattening, retry/recovery, Subjects, and multicasting.
 - Use [resources and custom operators](references/resources-and-custom-operators.md)
   for teardown, callback errors, synchronous sources, and reentrancy.
+- Use [synchronous feedback machines](references/synchronous-feedback-machines.md)
+  for nested notification order, subscribe-before-prime behavior, side-effect
+  reentry, and Subject terminal controls.
 - Use [fake timers and async boundaries](references/fake-timers-and-async.md)
   for Promise, DOM, animation, and framework timing.
 - Use [good and bad tests](references/good-and-bad-tests.md) during test review.

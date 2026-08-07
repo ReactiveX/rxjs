@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-7
-description: Write or refactor production RxJS 7.8.x code with pipeable operators, explicit subscription ownership, deliberate higher-order concurrency, bounded retries, safe sharing, private Subjects, deterministic teardown, readable pipelines, and public custom operators. Use for implementation work that must remain on RxJS 7; do not use RxJS 9 platform Observable or Symbol APIs.
+description: Write or refactor production RxJS 7.8.x code with pipeable operators, explicit subscription ownership, deliberate higher-order concurrency, bounded retries, safe sharing, private Subjects, synchronous side-effect and reentrancy safety, feedback machines, deterministic teardown, readable pipelines, and public custom operators. Use for implementation work that must remain on RxJS 7; do not use RxJS 9 platform Observable or Symbol APIs.
 ---
 
 # Write RxJS 7
@@ -51,6 +51,9 @@ Use this workflow:
 
 - Start with [fundamentals and lifecycle](references/fundamentals-and-lifecycle.md)
   for source, notification, subscription-tree, hot/cold, and error semantics.
+- Read [synchronous side effects, reentrancy, and feedback](references/synchronous-side-effects-and-feedback.md)
+  when callbacks can write to Subjects, call back into public APIs, or drive a
+  subject-primed reactive machine.
 - Read [common patterns](references/common-patterns.md) for production recipes
   with good/bad examples.
 - Read [operator concurrency](references/operator-concurrency.md) before using

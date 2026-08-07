@@ -38,6 +38,22 @@ Record exact nested call order, subscriber snapshots, closed/active state, and
 resource teardown. Compare with a scheduled/delayed version only as an
 experiment; scheduling changes behavior.
 
+For a subject-primed “snake eating its tail” machine, record these events
+separately:
+
+1. pipeline subscription;
+2. the single prime `next`;
+3. each cycle's start and finite result boundary;
+4. entry and exit of every side effect such as `handleResults`;
+5. direct or indirect feedback writes; and
+6. Subject completion/error versus owner unsubscribe/abort.
+
+If a machine never starts, check whether it was primed before subscription. If
+it never advances, check whether a whole-machine `toArray()` is waiting for the
+Subject to complete. If it duplicates or cancels work, check whether a side
+effect feeds back in addition to the explicit tail write, or whether
+`switchMap` replacement occurs during a reentrant notification.
+
 ## Mutable state identity
 
 If state appears stuck, check whether the same object is mutated and re-emitted

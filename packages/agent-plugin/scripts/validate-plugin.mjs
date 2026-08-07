@@ -88,6 +88,8 @@ for (const [path, requiredText] of [
   ['skills/write-rxjs-7/references/operator-concurrency.md', 'safest default'],
   ['skills/write-rxjs-9/references/fundamentals-and-lifecycle.md', 'Prefer platform methods'],
   ['skills/write-rxjs-9/references/custom-operators.md', 'Why `Symbol.for()` is dangerous'],
+  ['skills/write-rxjs-7/references/synchronous-side-effects-and-feedback.md', 'Prime only after'],
+  ['skills/write-rxjs-9/references/synchronous-side-effects-and-feedback.md', 'Prime only after'],
   ['skills/write-rxjs-9-tests/SKILL.md', 'Declare every marble string together'],
   ['skills/write-rxjs-7-tests/references/marbles-and-subscriptions.md', '--- 10s ---a'],
   ['skills/write-rxjs-9-tests/references/marbles-and-assertions.md', '--- 10s ---a'],

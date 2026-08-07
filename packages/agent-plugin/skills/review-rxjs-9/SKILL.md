@@ -1,6 +1,6 @@
 ---
 name: review-rxjs-9
-description: Review RxJS 9 code for platform-method-first authoring, web-platform active-producer lifecycle, intentional ColdObservable boundaries, exact Symbol imports and collision isolation, AbortSignal ownership, input normalization, higher-order concurrency, terminal teardown, Subjects and replay, custom sources and operators, native/fallback safety, and lifecycle tests. Use only for code targeting RxJS 9.
+description: Review RxJS 9 code for platform-method-first authoring, web-platform active-producer lifecycle, intentional ColdObservable boundaries, exact Symbol imports and collision isolation, AbortSignal ownership, input normalization, higher-order concurrency, terminal teardown, synchronous side effects, reentrancy and feedback machines, Subjects and replay, custom sources and operators, native/fallback safety, and lifecycle tests. Use only for code targeting RxJS 9.
 ---
 
 # Review RxJS 9
@@ -22,7 +22,8 @@ Prioritize:
    observable behavior;
 5. cleanup registered incorrectly, late work after closure, or teardown order
    that fails under reentrancy;
-6. exposed Subject writes, replay/reset misconceptions, and retained state;
+6. exposed Subject writes, replay/reset misconceptions, retained state,
+   synchronous side effects, and intentional or indirect feedback edges;
 7. tests that omit concurrent observers, final-observer cancellation,
    receiver lifecycle, or native/fallback differences.
 

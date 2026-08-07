@@ -49,6 +49,20 @@ Every Subject is a hot producer. Review:
 - native-method crossings that can bypass an advanced direct-subscription
   hook.
 
+Recognize a subject-primed feedback machine when a downstream handler writes
+back to the Subject and a later `subject.next()` provides the initial seed.
+Verify that subscription happens before priming, exactly one path owns the
+feedback write, each cycle has a reachable boundary, and Subject `complete`,
+Subject `error`, and owner abort have intentionally different meanings. Treat
+every side-effecting call between receiving a value and writing the next input
+as a possible indirect reentry path.
+
+If the loop collects cycle results, ensure `.toArray()` belongs to each finite
+inner cycle. Calling it on the Subject-rooted machine waits for that input to
+complete and cannot produce the next feedback value. Review `.switchMap()` or
+`[switchMap]()` as deliberate replacement/cancellation policy; prefer platform
+`.flatMap()` when every cycle must finish.
+
 A private Subject may live in a class or a closure-backed factory returning a
 readonly `[command, observable]` tuple. Both can enforce the same write
 authority. Review whether callers need object identity/shared prototype

@@ -1,6 +1,6 @@
 ---
 name: write-rxjs-9
-description: Write or refactor production RxJS 9 code with platform methods first, exact imported Symbol extensions when needed, explicit shared-versus-producer-per-subscription lifecycles, AbortSignal ownership, bounded concurrency and retry, intentional Subjects, deterministic resource teardown, and public custom operators. Use for RxJS 9 implementation work; do not apply RxJS 7 pipeable, Subscription, scheduler, or arbitrary-subscribable assumptions.
+description: Write or refactor production RxJS 9 code with platform methods first, exact imported Symbol extensions when needed, explicit shared-versus-producer-per-subscription lifecycles, AbortSignal ownership, bounded concurrency and retry, intentional Subjects, synchronous side-effect and reentrancy safety, feedback machines, deterministic resource teardown, and public custom operators. Use for RxJS 9 implementation work; do not apply RxJS 7 pipeable, Subscription, scheduler, or arbitrary-subscribable assumptions.
 ---
 
 # Write RxJS 9
@@ -54,6 +54,9 @@ Use this workflow:
 - Start with [fundamentals and lifecycle](references/fundamentals-and-lifecycle.md)
   for platform activation, `ColdObservable`, Symbols, inputs, and terminal
   behavior.
+- Read [synchronous side effects, reentrancy, and feedback](references/synchronous-side-effects-and-feedback.md)
+  when callbacks can write to Subjects, call back into public APIs, or drive a
+  subject-primed reactive machine.
 - Read [common patterns](references/common-patterns.md) for production recipes
   with concrete code.
 - Read [operator concurrency](references/operator-concurrency.md) before
