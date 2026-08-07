@@ -655,9 +655,8 @@ use locally.
 
 Reusable agent guidance now lives in `@rxjs/agent-plugin`; its read-only MCP
 owns the source-content analysis and preview boundary accepted by D-060 and
-D-065. The final `@rxjs/migrate@9.0.0-beta.1` preserves the framework-neutral
-semantic transform, dry-run-first CLI, legacy Skill assets, and
-Mocha/Chai-to-Vitest adapter for existing users during the transition. Neither
+D-065. The plugin-owned engine preserves the framework-neutral semantic
+transform and Mocha/Chai-to-Vitest adapter behind bounded MCP tools. Neither
 package participates in test collection or execution after migrated files are
 accepted. Complete public-surface guidance, fixture-proved mechanical
 rewrites, and historical agent-workflow evidence remain distinct claims.

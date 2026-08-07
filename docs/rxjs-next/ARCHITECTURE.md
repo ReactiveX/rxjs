@@ -36,7 +36,7 @@ The remaining transition work is agent and documentation infrastructure:
 
 - package manifests begin from the published `9.0.0-beta.0` train;
 - the inherited `@rxjs/observable` workspace package has been removed;
-- the deterministic migration engine currently lives in `packages/migrate`;
+- the deterministic migration engine lives exclusively in `packages/agent-plugin`;
 - the documentation application now participates in the coordinated plugin
   promotion defined by D-063.
 
@@ -73,11 +73,9 @@ checkout that exactly matches its remote. `pnpm release:beta <version>` validate
 the synchronized package version, runs repository and package gates, packs
 the packages, prints their SHA-512 integrities, and runs npm publication dry
 runs. Ben must then type the exact version before npm's own OTP/WebAuthn flow
-publishes each tarball under `next`. The beta.1 transition order is polyfill,
-test, agent plugin, the final functional migration package, then `rxjs`.
-Registry integrity and dist-tags are verified before the command reports
-success. After migration-package retirement, future trains contain polyfill,
-test, agent plugin, and `rxjs`.
+publishes each tarball under `next`. The beta.1 order is polyfill, test, agent
+plugin, then `rxjs`. Registry integrity and dist-tags are verified before the
+command reports success.
 
 CI has no npm publishing credential and no workflow can publish. The design
 deliberately trusts Ben's local machine and npm account at the publication
@@ -100,8 +98,7 @@ Agent and migration tooling are not runtime dependencies of `rxjs`.
 | `packages/rxjs`                | Installs entry-scoped Symbol operators, factories, and async-iteration adapters by direct exact-Symbol assignment; exports intentional subjects, producer-per-subscription primitives, notifications, and errors | Main Symbol-extension library with direct exact-Symbol assignment plus intentional non-operator RxJS Next APIs | Published at beta.0; synchronize beta.1                                   |
 | `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                              | Retained only as prototype history until removed                                                               | Superseded by the accepted `@rxjs/test` boundary                          |
 | `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                            | Implementation-neutral framework testing that consumes an already active realm Observable                      | Published at beta.0; add prominent plugin guidance and synchronize beta.1 |
-| `packages/agent-plugin`        | Phase 7 package containing Agent Plugins manifests, thirteen Skills, generated knowledge, prebuilt MCP, validation, and Claude adapter generation                                                                | Official RxJS 7 and RxJS 9 agent experience                                                                    | Qualify deterministically and publish beta.1                              |
-| `packages/migrate`             | Provides the current deterministic engine, canonical migration Skill, structured CLIs, schemas, fixtures, and historical Codex qualification records                                                             | One final functional beta.1 release; engine and reusable fixtures move into the plugin                         | Deprecate after registry verification, then remove in P7.12               |
+| `packages/agent-plugin`        | Phase 7 package containing Agent Plugins manifests, thirteen Skills, generated knowledge, prebuilt MCP, validation, and Claude adapter generation                                                                | Official RxJS 7 and RxJS 9 agent experience                                                                    | Deterministically qualified; publish beta.1                               |
 | `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                                 | Prominent public discovery surface for the official agent plugin                                               | Add announcement, navigation, installation guidance, and dedicated page   |
 
 ## Platform Observable lifecycle
@@ -793,15 +790,14 @@ are classified as `compatibility-only` and fail explicitly where the current
 surface rejects arbitrary subscribables. Replacing those inputs with platform
 Observables would change the behavioral claim rather than preserve it.
 
-P0.M1 established `@rxjs/migrate`; P0.M3 hardened its framework-neutral
-semantic transform, versioned capability registry, adapter, CLI, contract
-schemas, safe batch writes, and fixture gates. D-060 now moves the reusable
-engine, schemas, capabilities, and fixtures into `@rxjs/agent-plugin` and
-exposes only their source-content-safe subset through MCP. The final
-`@rxjs/migrate@9.0.0-beta.1` remains functional during transition, then is
-deprecated and removed under D-061. Framework syntax remains an adapter
-boundary, and the repository's native/polyfill matrix remains local test
-infrastructure rather than generated user code.
+P0.M1 established a standalone migration utility; P0.M3 hardened its
+framework-neutral semantic transform, versioned capability registry, adapter,
+CLI, contract schemas, safe batch writes, and fixture gates. D-060 and D-067
+consolidate the reusable engine, schemas, capabilities, and fixtures in
+`@rxjs/agent-plugin` and expose only their source-content-safe subset through
+MCP. Framework syntax remains an adapter boundary, and the repository's
+native/polyfill matrix remains local test infrastructure rather than generated
+user code.
 
 ### Agent-first migration architecture
 
@@ -847,8 +843,8 @@ The 2026-08-01 qualification snapshot ran four pinned RxJS 7 repositories
 through Codex `0.146.0-alpha.3.1` with `gpt-5.6-sol` at medium reasoning. All
 four passed the 14 semantic gate families: three completed their approved
 migrations and the weak-coverage/unsupported scenario made its required safe
-stop before target installation or migration writes. The records bind
-`@rxjs/migrate` and the canonical Skill to `8.0.0-alpha.14`, retain five
+stop before target installation or migration writes. The records bind the
+then-current engine and canonical Skill to `8.0.0-alpha.14`, retain five
 SHA-256-addressed artifacts per run, and are verified offline. This is bounded
 historical evidence for those scenarios and settings, not proof of the new
 plugin and not a general automatic-migration or cross-harness reliability
@@ -1020,10 +1016,8 @@ The official agent product is a separate development-time package:
 | -------------------- | -------------------------------------------------------------------------------------- |
 | `@rxjs/agent-plugin` | Portable RxJS 7/9 Skills, generated versioned knowledge, and a read-only migration MCP |
 
-It is not a dependency of the runtime packages. During beta.1,
-`@rxjs/migrate` remains a temporary fifth release artifact so existing CLI and
-API users are not broken; after verified deprecation and removal the
-synchronized train contains polyfill, test, agent plugin, and `rxjs`.
+It is not a dependency of the runtime packages. The synchronized beta.1 train
+contains the polyfill, test helper, agent plugin, and `rxjs`, in that order.
 
 `rxjs` declares a runtime dependency on `@rxjs/observable-polyfill`. Every
 public root or subpath import first evaluates the conditional initializer. The
@@ -1066,8 +1060,8 @@ cross-realm operation remain unclaimed.
 
 D-052 keeps package-relative user documentation inside the package it
 describes. The RxJS 7 migration guide and its generated evidence references
-therefore live under `packages/rxjs`; migration-engine and canonical-Skill
-documentation lives under `packages/migrate`; and testing-package
+therefore live under `packages/rxjs`; migration-engine and Skill documentation
+lives under `packages/agent-plugin`; and testing-package
 documentation belongs under `packages/test`. Repository-wide charter,
 architecture, decisions, open questions, compatibility policy, and active-plan
 records remain under `docs/rxjs-next`.
@@ -1092,7 +1086,6 @@ flowchart TD
     Plugin["@rxjs/agent-plugin"] -.-> RxJS
     Plugin -.-> Test
     MCP["Read-only migration MCP"] --> Plugin
-    Migrate["Final @rxjs/migrate transition package"] -.-> Plugin
 ```
 
 The fallback must not depend on RxJS operators or agent/migration tooling.
@@ -1244,6 +1237,17 @@ evidence without skip or expected-failure inversion and are not a release-gate
 failure. The package-local release-gate contract and current budgets are in
 `packages/rxjs/docs/RELEASE_GATES.md`.
 
+The P7.11 plugin migration baseline was verified on 2026-08-07. All 114 plugin
+tests pass, including exact mechanical output and diagnostic fixtures,
+idempotence and negative controls, contract schema/readiness, pinned RxJS 7.8.2
+behavior, source/target type evidence, lifecycle contracts, and complete
+surface-catalog checks. The 124-file packed artifact validates all four MCP
+tools, strict schemas and annotations, text/structured parity, exact
+file/count/total boundaries, every post-schema structured refusal, malformed protocol
+input, safe stops, and clean shutdown. The standalone workspace and its CLI,
+local generated Skill, tests, documentation, budgets, and release entries are
+absent; a repository fitness check keeps them absent.
+
 ## Target architecture invariants
 
 These invariants should become automated fitness functions:
@@ -1290,20 +1294,22 @@ These invariants should become automated fitness functions:
     invalid batch before returning partial transformation output.
 17. Universal and Claude artifacts have identical Skill, MCP, version, and
     knowledge digests; client-specific files never enter the universal package.
+18. Retired migration product names, paths, and binary names are absent from
+    the current tree; deterministic engine evidence lives only in the plugin.
 
 ## Initial fitness-function scorecard
 
-| Characteristic         | Check                                                                                                                                 | Target enforcement                                                        |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                                   | Unit and package-import tests                                             |
-| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL                             | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
-| Extension safety       | Snapshot string properties; verify each module installs only its exported exact Symbol and leaves platform string methods untouched   | Unit tests and CI                                                         |
-| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                                             | Shared platform test suite                                                |
-| Native/fallback parity | Run the same operator cases against both implementations                                                                              | CI matrix                                                                 |
-| Package integrity      | Build, type, ESM and Node `require(esm)` import, browser/Webpack bundle, runtime-matrix, and duplicate-copy fixtures                  | Package and release CI                                                    |
-| Migration evidence     | Complete RxJS 7 public-surface coverage plus fixture-proved mappings and accepted-divergence records without runtime-emulation claims | Declaration/catalog, migration review, and generated-ledger checks        |
-| Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior                    | Package CI and pre-release gate                                           |
-| Agent plugin           | Manifests, Skills, references, digests, containment, MCP protocol, and representative examples validate without model calls           | Package CI and pre-release gate                                           |
+| Characteristic         | Check                                                                                                                                        | Target enforcement                                                        |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                                          | Unit and package-import tests                                             |
+| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL                                    | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
+| Extension safety       | Snapshot string properties; verify each module installs only its exported exact Symbol and leaves platform string methods untouched          | Unit tests and CI                                                         |
+| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                                                    | Shared platform test suite                                                |
+| Native/fallback parity | Run the same operator cases against both implementations                                                                                     | CI matrix                                                                 |
+| Package integrity      | Build, type, ESM and Node `require(esm)` import, browser/Webpack bundle, runtime-matrix, and duplicate-copy fixtures                         | Package and release CI                                                    |
+| Migration evidence     | Complete RxJS 7 public-surface coverage plus fixture-proved mappings and accepted-divergence records without runtime-emulation claims        | Declaration/catalog, migration review, and generated-ledger checks        |
+| Mechanical migration   | Deterministic fixtures prove exact output, diagnostic identity, parsing, idempotence, type evidence, behavior, lifecycle, and atomic refusal | Plugin package CI and pre-release gate                                    |
+| Agent plugin           | Manifests, Skills, references, digests, containment, MCP protocol, and representative examples validate without model calls                  | Package CI and pre-release gate                                           |
 
 ## Known architectural risks
 

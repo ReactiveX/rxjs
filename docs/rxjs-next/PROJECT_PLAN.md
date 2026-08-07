@@ -8,8 +8,10 @@ Skills, contains thirteen narrowly triggered skills, and exposes the
 deterministic migration engine through a local read-only MCP server. A
 digest-locked Claude Code adapter is generated from the same sources.
 
-The earlier implementation diary is preserved unchanged at
+The earlier implementation diary is preserved at
 [`archive/PROJECT_PLAN_THROUGH_9.0.0-beta.0.md`](./archive/PROJECT_PLAN_THROUGH_9.0.0-beta.0.md).
+Retired product identifiers are generalized so the archive cannot be mistaken
+for current package or command guidance.
 Its P6.10 publication item is historical: `9.0.0-beta.0` is already live on
 the npm `next` channel. Historical live-model qualification remains evidence
 for the old migration workflow, not a release gate for this plugin.
@@ -26,29 +28,28 @@ mutation is not complete until its external result is verified.
 
 ## Phase 7 queue
 
-| Status    | ID    | Outcome                                                                                                                                         |
-| --------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DONE`    | P7.1  | Roll the plan forward and accept the agent-plugin architecture, release matrix, promotion policy, and free deterministic qualification boundary |
-| `DONE`    | P7.2  | Build the portable `@rxjs/agent-plugin` package and generated versioned knowledge pipeline                                                      |
-| `DONE`    | P7.3  | Port the deterministic migration engine into the read-only migration MCP                                                                        |
-| `DONE`    | P7.4  | Ship the core migration, RxJS 7/9 authoring, review, testing, and performance skills                                                            |
-| `DONE`    | P7.5  | Ship debugging, API-design, framework-integration, and bundle-optimization skills                                                               |
-| `DONE`    | P7.6  | Validate the universal artifact and digest-locked Claude adapter                                                                                |
-| `DONE`    | P7.7  | Put the agent plugin front-and-center in package, migration, release, and `rxjs.dev` documentation                                              |
-| `DONE`    | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
-| `DONE`    | P7.9  | Complete migration coverage across the full RxJS 7 public surface and make `ColdObservable` the conservative lifecycle default                  |
-| `DONE`    | P7.10 | Split debugging into dedicated RxJS 7 and RxJS 9 skills with timeline, stack, error-signature, and temporary instrumentation guidance           |
-| `NEXT`    | P7.11 | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
-| `PLANNED` | P7.12 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
+| Status | ID    | Outcome                                                                                                                                         |
+| ------ | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DONE` | P7.1  | Roll the plan forward and accept the agent-plugin architecture, release matrix, promotion policy, and free deterministic qualification boundary |
+| `DONE` | P7.2  | Build the portable `@rxjs/agent-plugin` package and generated versioned knowledge pipeline                                                      |
+| `DONE` | P7.3  | Port the deterministic migration engine into the read-only migration MCP                                                                        |
+| `DONE` | P7.4  | Ship the core migration, RxJS 7/9 authoring, review, testing, and performance skills                                                            |
+| `DONE` | P7.5  | Ship debugging, API-design, framework-integration, and bundle-optimization skills                                                               |
+| `DONE` | P7.6  | Validate the universal artifact and digest-locked Claude adapter                                                                                |
+| `DONE` | P7.7  | Put the agent plugin front-and-center in package, migration, release, and `rxjs.dev` documentation                                              |
+| `DONE` | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
+| `DONE` | P7.9  | Complete migration coverage across the full RxJS 7 public surface and make `ColdObservable` the conservative lifecycle default                  |
+| `DONE` | P7.10 | Split debugging into dedicated RxJS 7 and RxJS 9 skills with timeline, stack, error-signature, and temporary instrumentation guidance           |
+| `DONE` | P7.11 | Harden the packed migration MCP, consolidate deterministic engine evidence in the plugin, and retire the superseded workspace                   |
+| `NEXT` | P7.12 | Publish and verify the four-package beta.1 train, then publish the RxJS 7 documentation-only backport                                           |
 
 ## P7.1 — Architecture rollover
 
 Completion requires:
 
 - D-046 is superseded by the portable plugin plus read-only migration MCP.
-- The synchronized release matrix includes the temporary final functional
-  `@rxjs/migrate@9.0.0-beta.1`, then returns to four packages after its
-  retirement.
+- The synchronized release matrix contains the polyfill, test helper, agent
+  plugin, and `rxjs`, with `rxjs` published last.
 - Package and website promotion is authorized without `postinstall`, install
   warnings, or runtime notices.
 - Paid-model calls, model-backed evaluations, credits, and authenticated agent
@@ -197,7 +198,7 @@ The MCP reports catalog guidance, sharing indicators, and local subscriber
 topology without claiming that file-local syntax proves a global contract.
 
 Completion requires declaration-to-catalog completeness tests, mode-specific
-engine/MCP fixtures, legacy-engine equivalence, updated migration Skills and
+engine/MCP fixtures, exact-output preservation, updated migration Skills and
 public guidance, package/adapter digest validation, and the deterministic free
 package gate. No model or paid evaluation runs.
 
@@ -221,26 +222,32 @@ Completion requires non-overlapping triggers, progressive references,
 deterministic expert-guidance assertions, updated package/adapter inventories,
 and the free package validation gate.
 
-## P7.11–P7.12 — Release and retirement
+## P7.11 — MCP hardening and workspace retirement
+
+Consolidate the reusable migration engine, fixtures, schema contracts, type
+evidence, behavior comparisons, and lifecycle checks in the plugin. Exercise
+the packed stdio artifact—not only in-process services—across initialization,
+tool discovery, annotations, schemas, every tool, text/structured parity,
+malformed calls, exact batch boundaries, every structured refusal, safe stops,
+and clean shutdown.
+
+Remove the superseded workspace, CLI, generated local skill, package docs,
+tests, release entries, budgets, and coherence assumptions. CI and release
+readiness must run the plugin's deterministic package gate. A repository
+fitness check prevents the retired product name, path, or binaries from being
+reintroduced. Historical design evidence remains in Git history.
+
+## P7.12 — Publication and RxJS 7 documentation backport
 
 Prepare and publish `9.0.0-beta.1` in this order:
 
 1. `@rxjs/observable-polyfill`
 2. `@rxjs/test`
 3. `@rxjs/agent-plugin`
-4. the final functional `@rxjs/migrate`
-5. `rxjs`
+4. `rxjs`
 
-The final migration package retains its API and CLI while its description and
-README direct users to the plugin. Only after registry integrity and channel
-verification may all published `@rxjs/migrate` versions be deprecated with the
-replacement message. Then remove `packages/migrate`, its generated local
-skill, obsolete tests/docs, and release/coherence references. Future
-synchronized releases contain polyfill, test, agent plugin, and `rxjs`.
-
-Publication, npm deprecation, GitHub release creation, branch backport, and
-workspace removal are deliberate external or post-verification operations;
-they are never inferred from a passing local build.
+Publication, GitHub release creation, and the branch backport are deliberate
+external operations; they are never inferred from a passing local build.
 
 ## Follow-on ideas outside beta.1
 
@@ -262,7 +269,7 @@ ordinary agent tools.
 | The package silently gains filesystem or install authority | Source-content-only MCP inputs, no postinstall, package inventory audit, and subprocess tests                         |
 | Documentation promotion becomes an install-time nuisance   | Promote in package/site documentation only; prohibit runtime and postinstall notices                                  |
 | Paid evaluations become a hidden release cost              | Keep every blocking gate deterministic, local, and free                                                               |
-| Registry retirement breaks current migrate users           | Publish one final functional version, verify it, deprecate with a replacement message, then remove the workspace      |
+| Users expect the removed standalone CLI                    | Keep the plugin migration Skill and read-only MCP prominent; preserve safe, reviewed application through host tools   |
 
 ## Session log
 
@@ -290,15 +297,14 @@ ordinary agent tools.
 
 - Added the portable beta.1 package, generated export/evidence knowledge,
   prebuilt read-only MCP, the initial twelve-Skill suite, and copied mechanical
-  fixtures with legacy-engine equivalence coverage.
+  fixtures with exact-output equivalence coverage.
 - Added pinned schema/Skill/package/MCP/framework validation and a generated
   Claude adapter with byte-level artifact digests and a `git-subdir`
   marketplace entry. No model or paid evaluation ran.
 - Added prominent repository, package, migration, testing, release-note, and
   `rxjs.dev` promotion without postinstall or runtime warnings.
-- Prepared the synchronized five-package manifests and release order while
-  preserving the final functional migration package. Publication and
-  deprecation still require clean-checkout registry verification.
+- Prepared synchronized manifests and release ordering. Publication still
+  requires clean-checkout registry verification.
 
 ### 2026-08-07 — P7.8 knowledge-depth reset
 
@@ -366,10 +372,9 @@ ordinary agent tools.
   candidate-output equivalence, and added declaration-completeness, topology,
   sharing, default-mode, and mode-specific invocation tests.
 - Deterministic evidence: all 46 plugin tests, schema/Skill/framework/type
-  checks, the 116-file packed artifact and MCP lifecycle, all 166 transitional
-  migration tests, migration package build/import/type/package checks, and the
-  RxJS migration-guide type check passed. No model, paid-token, authenticated,
-  or credit-consuming evaluation ran.
+  checks, the 116-file packed artifact and MCP lifecycle, the then-current
+  standalone engine suite, and the RxJS migration-guide type check passed. No
+  model, paid-token, authenticated, or credit-consuming evaluation ran.
 - Marked P7.9 complete and advanced synchronized beta.1 publication and
   registry verification as the sole `NEXT` item.
 
@@ -394,3 +399,25 @@ ordinary agent tools.
   authenticated, or credit-consuming evaluation ran.
 - Marked P7.10 complete and restored synchronized beta.1 publication and
   registry verification as the sole `NEXT` item.
+
+### 2026-08-07 — P7.11 migration MCP hardening and retirement
+
+- Expanded the plugin to 114 deterministic tests covering exact fixture bytes
+  and diagnostics, idempotence and negative controls, contract schemas and
+  readiness, pinned RxJS 7.8.2 behavior, source/target type evidence, lifecycle
+  contracts, and byte-accurate batch boundaries.
+- Expanded the packed stdio gate to inspect all four tool schemas and read-only
+  annotations; call every tool; compare text and structured content; exercise
+  framework adaptation, safe stops, exact file/count/total limits, all
+  post-schema structured refusal codes, malformed protocol inputs, atomic rejection, and
+  clean shutdown.
+- Removed the superseded workspace, CLI, generated local skill, release and CI
+  entries, documentation ownership, budgets, and package-coherence rules. The
+  four-package release train and plugin package gate are now the only active
+  path.
+- Packed all four beta.1 artifacts and installed them into an isolated offline
+  consumer. ESM, Node `require(esm)`, public types, marble testing, and the
+  20,083-byte browser bundle passed; all tarballs remained within budget.
+- No model, paid-token, authenticated, or credit-consuming evaluation ran.
+- Marked P7.11 complete and advanced four-package beta.1 publication and the
+  RxJS 7 documentation backport as the sole `NEXT` item.

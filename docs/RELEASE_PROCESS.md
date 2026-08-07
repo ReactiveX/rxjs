@@ -43,13 +43,13 @@ The command performs these steps in order:
 
 1. validates the exact `9.0.0-beta.N` argument and synchronized package metadata;
 2. runs `pnpm run release:check` and every release package's `test:package` gate;
-3. packs all five beta.1 transition packages into a temporary directory;
+3. packs all four beta.1 packages into a temporary directory;
 4. prints each tarball's byte count and SHA-512 integrity;
 5. runs `npm publish --dry-run --tag next --access public` for every tarball;
 6. asks Ben to type the exact version as the irreversible confirmation;
 7. publishes with npm's interactive authentication in this order:
-   `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/agent-plugin`, the final
-   functional `@rxjs/migrate`, and `rxjs` last;
+   `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/agent-plugin`, and `rxjs`
+   last;
 8. compares each registry integrity with the local tarball;
 9. verifies every package's `next` tag and confirms `rxjs@latest` remains RxJS 7.
 

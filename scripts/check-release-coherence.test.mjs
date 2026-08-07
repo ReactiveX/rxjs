@@ -3,20 +3,23 @@ import test from 'node:test';
 import { auditReleaseCoherence } from './check-release-coherence.mjs';
 
 function validInput() {
-  const version = '9.0.0-beta.0';
+  const version = '9.0.0-beta.1';
   return {
     manifests: {
       '@rxjs/observable-polyfill': releaseManifest('@rxjs/observable-polyfill', version, true),
-      '@rxjs/agent-plugin': { name: '@rxjs/agent-plugin', version, engines: { node: '>=22.13.0' } },
-      '@rxjs/migrate': { ...releaseManifest('@rxjs/migrate', version, false), devDependencies: { '@types/node': '20.11.0' } },
+      '@rxjs/agent-plugin': {
+        name: '@rxjs/agent-plugin',
+        version,
+        engines: { node: '>=22.13.0' },
+        devDependencies: { '@types/node': '20.11.0' },
+      },
       '@rxjs/test': { ...releaseManifest('@rxjs/test', version, true), peerDependencies: { rxjs: version } },
       rxjs: { ...releaseManifest('rxjs', version, true), dependencies: { '@rxjs/observable-polyfill': version } },
     },
     runtimeVersions: [
       { label: 'polyfill metadata', version },
-      { label: 'migration engine', version },
+      { label: 'agent-plugin migration engine', version },
     ],
-    skillProvenance: { packageName: '@rxjs/migrate', packageVersion: version },
     rootNodeEngine: '>=22.13.0',
     nxReleaseConfigured: false,
     preparePackagesCommand: 'pnpm nx run-many -t build --exclude rxjs.dev',
@@ -25,7 +28,6 @@ function validInput() {
       "{ name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' }",
       "{ name: '@rxjs/test', directory: 'packages/test' }",
       "{ name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' }",
-      "{ name: '@rxjs/migrate', directory: 'packages/migrate' }",
       "{ name: 'rxjs', directory: 'packages/rxjs' }",
       "    '--tag',\n    'next',\n    '--access',\n    'public',",
       "assert.equal(branch, 'master'",
@@ -68,7 +70,7 @@ function validInput() {
       'boot-ios-simulator.mjs',
       'pnpm --filter @rxjs/test run build',
       'pnpm --filter @rxjs/agent-plugin run build',
-      'pnpm --filter @rxjs/migrate run build',
+      'pnpm --filter @rxjs/agent-plugin run test:package',
     ].join('\n'),
     safariDriverSource: "'safari:useSimulator': true\n'safari:deviceUDID'",
     wptRunnerSource: "'--binary-arg=--no-sandbox'",
@@ -98,10 +100,9 @@ test('accepts one synchronized release train and the protected npm channels', ()
 
 test('rejects manifest, dependency, runtime identity, and release-channel drift', () => {
   const input = validInput();
-  input.manifests['@rxjs/migrate'].version = '8.0.0-alpha.14';
+  input.manifests['@rxjs/agent-plugin'].version = '8.0.0-alpha.14';
   input.manifests['@rxjs/test'].peerDependencies.rxjs = '8.0.0-alpha.14';
   input.runtimeVersions[0].version = '8.0.0-alpha.14';
-  input.skillProvenance.packageVersion = '8.0.0-alpha.14';
   input.rootNodeEngine = '>=18';
   input.manifests.rxjs.main = './dist/commonjs/index.js';
   input.manifests.rxjs.exports['.'].require = {
@@ -121,11 +122,10 @@ test('rejects manifest, dependency, runtime identity, and release-channel drift'
 
   const errors = auditReleaseCoherence(input);
 
-  assert.ok(errors.length >= 24);
+  assert.ok(errors.length >= 23);
   assert.match(errors.join('\n'), /Release package versions differ/);
   assert.match(errors.join('\n'), /must declare rxjs/);
   assert.match(errors.join('\n'), /polyfill metadata reports/);
-  assert.match(errors.join('\n'), /migration Skill provenance/);
   assert.match(errors.join('\n'), /repository Node engine/);
   assert.match(errors.join('\n'), /legacy or target-specific/);
   assert.match(errors.join('\n'), /same dist\/esm files/);
@@ -196,10 +196,10 @@ test('rejects removal of the TypeScript-latest build command', () => {
   assert.match(auditReleaseCoherence(input).join('\n'), /TypeScript-latest CI must retain pnpm --filter rxjs run build/);
 });
 
-test('rejects removal of the migration package Node declarations', () => {
+test('rejects removal of the agent-plugin Node declarations', () => {
   const input = validInput();
-  delete input.manifests['@rxjs/migrate'].devDependencies['@types/node'];
-  assert.match(auditReleaseCoherence(input).join('\n'), /@rxjs\/migrate must declare @types\/node@20\.11\.0/);
+  delete input.manifests['@rxjs/agent-plugin'].devDependencies['@types/node'];
+  assert.match(auditReleaseCoherence(input).join('\n'), /@rxjs\/agent-plugin must declare @types\/node@20\.11\.0/);
 });
 
 test('rejects removal of WPT and release-readiness runner prerequisites', () => {

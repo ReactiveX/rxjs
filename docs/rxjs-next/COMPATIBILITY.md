@@ -443,9 +443,8 @@ platform layer to recover RxJS 7 producer-per-subscription semantics. See
 
 The executable cases are ordinary checked-in Vitest source under `cold/` and
 `platform/`, not generator-owned output. A static `migration-report.json`
-retains file-to-case identity for JSON audits. The deterministic engine moves
-from the final functional `@rxjs/migrate@9.0.0-beta.1` transition package into
-`@rxjs/agent-plugin`. Its framework adapter is optional, and candidate output
+retains file-to-case identity for JSON audits. The deterministic engine lives
+in `@rxjs/agent-plugin`. Its framework adapter is optional, and candidate output
 becomes source owned by the destination project only after host-agent review.
 The engine selects only the behavior-preserving cold default and does not infer
 platform promotion or establish migration completion.
@@ -657,8 +656,7 @@ ambient declaration visibility.
 
 ## Accepted migration fixtures
 
-The P4.4 fixtures currently in `packages/migrate/test/contracts`, and migrated
-into the agent-plugin package during P7.3, turn the intentional API and
+The plugin-owned accepted-contract fixtures turn the intentional API and
 lifecycle boundaries into executable migration outcomes:
 
 - a `ColdObservable` plus exact Symbol pipeline preserves one producer per

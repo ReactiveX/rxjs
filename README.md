@@ -71,13 +71,12 @@ Import the Symbol and call it with bracket syntax. A platform method such as
 
 ## Packages and documentation
 
-| Package                     | Purpose                                                  | Documentation                                                                                                                |
-| --------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `rxjs`                      | Symbol extensions and intentional RxJS primitives        | [Package guide](packages/rxjs/README.md) · [API](packages/rxjs/docs/API.md) · [RxJS 7 migration](packages/rxjs/MIGRATION.md) |
-| `@rxjs/observable-polyfill` | Conditional platform Observable fallback                 | [Package guide](packages/observable-polyfill/README.md)                                                                      |
-| `@rxjs/test`                | Implementation-neutral virtual-time and marble testing   | [Package guide](packages/test/README.md)                                                                                     |
-| `@rxjs/agent-plugin`        | Official RxJS 7 and 9 agent skills and migration MCP     | [Package guide](packages/agent-plugin/README.md)                                                                             |
-| `@rxjs/migrate`             | Final compatible migration API and CLI during transition | [Package guide](packages/migrate/README.md)                                                                                  |
+| Package                     | Purpose                                                | Documentation                                                                                                                |
+| --------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `rxjs`                      | Symbol extensions and intentional RxJS primitives      | [Package guide](packages/rxjs/README.md) · [API](packages/rxjs/docs/API.md) · [RxJS 7 migration](packages/rxjs/MIGRATION.md) |
+| `@rxjs/observable-polyfill` | Conditional platform Observable fallback               | [Package guide](packages/observable-polyfill/README.md)                                                                      |
+| `@rxjs/test`                | Implementation-neutral virtual-time and marble testing | [Package guide](packages/test/README.md)                                                                                     |
+| `@rxjs/agent-plugin`        | Official RxJS 7 and 9 agent skills and migration MCP   | [Package guide](packages/agent-plugin/README.md)                                                                             |
 
 Release support, budgets, and exact environment gates are documented in the
 [`rxjs` package](packages/rxjs/docs/RELEASE_GATES.md). The irreversible npm

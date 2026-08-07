@@ -1010,7 +1010,7 @@ Status meanings:
 ## D-044 — Publish one-time migration tooling and make its output project-owned
 
 - **Status:** Superseded in part by D-046
-- **Decision:** Publish `@rxjs/migrate` as a development-only package containing
+- **Decision:** Publish a development-only migration engine containing
   a framework-neutral RxJS 7 semantic transform, caller-supplied capability
   maps, a dry-run-first CLI, reusable Skill assets, and bounded read-only MCP
   tools. Test-framework syntax is handled by adapters; Mocha/Chai-to-Vitest is
@@ -1023,7 +1023,7 @@ Status meanings:
   without encoding them into the marble model. The same semantic pipeline can
   migrate production `pipe(...)` expressions even when no test framework or
   `TestScheduler` is present.
-- **Consequence:** The CLI writes only with explicit `--write` and records
+- **Consequence:** The former CLI wrote only with explicit `--write` and recorded
   source repository, exact SHA, and path. MCP tools accept source content and
   return source content plus diagnostics; they do not receive filesystem
   authority. The repository dogfoods the package into checked-in `cold/` and
@@ -1031,7 +1031,7 @@ Status meanings:
   as repository-specific harness behavior. Broader framework adapters and the
   eventual Skill/plugin portfolio can evolve without changing this package's
   runtime-independent boundary.
-- **Supersession:** D-046 retains the deterministic package, dry-run-first CLI,
+- **Supersession:** D-046 retained the deterministic engine, dry-run-first CLI,
   framework boundary, and project-owned output. It replaces the assumption
   that a bundled test-migration Skill and source-content MCP together form the
   migration product. The complete product is agent-first, has one canonical
@@ -1074,11 +1074,11 @@ Status meanings:
   Agent Skill that assesses the repository, establishes or strengthens a
   passing RxJS 7 behavioral baseline, records explicit target contracts,
   invokes bounded deterministic transforms, and iterates through build and test
-  repair with the developer. `@rxjs/migrate` is the versioned deterministic
-  engine used by that Skill; it cannot select ambiguous lifecycle semantics or
+  repair with the developer. A versioned deterministic engine supports that
+  Skill; it cannot select ambiguous lifecycle semantics or
   claim that its output completes a migration.
-- **Canonical source:** `packages/migrate/skill` is the only authored Skill
-  source and shares the `@rxjs/migrate` package version. Codex, Claude, and
+- **Canonical source:** The former standalone workspace held the only authored
+  Skill source and shared the engine version. Codex, Claude, and
   Cursor receive validated copies or links plus thin discovery, invocation,
   permission, and update adapters. Harness-specific material must not fork the
   workflow or capability claims.
@@ -1104,7 +1104,6 @@ Status meanings:
   canonical Skill and harness adapters, and P0.M5 qualifies the workflow on
   representative repositories. A transformed file, green narrow test, or
   operator-name match is never sufficient proof that a project is migrated.
-- **Details:** `packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
 
 ## D-047 — Bound P0 live migration qualification to Codex/ChatGPT
 
@@ -1307,7 +1306,7 @@ Status meanings:
   separate colleague-owned documentation workstream and prevents this release
   effort from creating merge conflicts or publishing an incomplete site.
 - **Consequence:** P5 and P6 write RxJS guidance under `packages/rxjs`,
-  migration-tooling guidance under `packages/migrate`, and testing guidance
+  migration-tooling guidance beside its then-owning package, and testing guidance
   under `packages/test`. Generated migration references move with their owning
   package and retain freshness gates. Package manifests publish those local
   documents, and the documentation checker rejects missing links, links that
@@ -1365,7 +1364,7 @@ Status meanings:
 
 - **Status:** Accepted
 - **Approval:** `rxjs@9.0.0-beta.0`, `@rxjs/observable-polyfill`, `@rxjs/test`,
-  and `@rxjs/migrate` at the same version are approved to begin public beta
+  and the then-current migration utility at the same version are approved to begin public beta
   under npm's `next` tag after the configured blocking CI matrix is green.
   This repository decision does not itself publish npm packages or create a
   GitHub release.
@@ -1549,18 +1548,11 @@ Status meanings:
 
 ## D-061 — Transition the synchronized train through agent-plugin beta.1
 
-- **Status:** Accepted
-- **Decision:** `9.0.0-beta.1` is a five-package transition train published in
-  this order: `@rxjs/observable-polyfill`, `@rxjs/test`,
-  `@rxjs/agent-plugin`, the final functional `@rxjs/migrate`, and `rxjs`.
-  `@rxjs/migrate@9.0.0-beta.1` retains its existing API and CLI but directs new
-  users to the plugin.
-- **Retirement:** Only after all beta.1 registry artifacts and npm channels are
-  verified may every published `@rxjs/migrate` version be deprecated with the
-  replacement message. The migration workspace, generated local Skill,
-  obsolete tests/docs, and release references are removed afterward. Future
-  synchronized releases return to four packages: polyfill, test, agent plugin,
-  and `rxjs`.
+- **Status:** Superseded by D-067
+- **Decision:** This decision proposed a temporary fifth transition artifact
+  so the earlier API and CLI could remain functional through beta.1, followed
+  by workspace retirement. D-067 replaces that staged transition with direct
+  retirement before beta.1 and one plugin-owned engine and MCP surface.
 - **RxJS 7:** After the plugin is publicly installable, the same prominent
   documentation notice is backported to the RxJS 7 line and published as the
   documentation-only `rxjs@7.8.3` patch. RxJS 7 runtime guidance stays pinned
@@ -1568,9 +1560,7 @@ Status meanings:
   change its runtime contract.
 - **Consequence:** D-053 and D-058 continue to control environments, ESM
   distribution, credentials, local authorization, integrity verification, and
-  channels. Their exact four-package assumptions and prior order are
-  superseded. Publication, deprecation, workspace removal, and backport remain
-  explicit operator actions, not automatic consequences of local validation.
+  channels. D-067 controls package count, order, retirement, and qualification.
 
 ## D-062 — Make deterministic, free validation the plugin release gate
 
@@ -1709,3 +1699,37 @@ Status meanings:
 - **Consequence:** The beta.1 plugin contains thirteen Skills. Deterministic
   schema, reference, package, and adapter checks enforce both debugger Skills;
   no model-backed evaluation is added.
+
+## D-067 — Consolidate migration tooling in the plugin before beta.1
+
+- **Status:** Accepted
+- **Decision:** Retire the superseded standalone migration workspace, API,
+  CLI, generated local Skill, documentation, tests, budgets, release entries,
+  and coherence assumptions before beta.1. The reusable deterministic engine,
+  schemas, capability catalog, fixtures, and behavior contracts live only in
+  `@rxjs/agent-plugin`; reviewed application of MCP previews remains a host
+  agent responsibility.
+- **Release train:** Publish `9.0.0-beta.1` in this exact order:
+  `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/agent-plugin`, and `rxjs`.
+  RxJS remains last. D-061's temporary fifth artifact is superseded, and the
+  package-count portions of D-053 and D-058 again describe a four-package
+  synchronized train.
+- **MCP evidence:** The packed stdio artifact must prove initialization,
+  discovery, exact read-only annotations, strict input schemas, all four tools,
+  text/structured-content parity, framework adaptation, safe stops, exact
+  file/count/total boundaries, every post-schema structured refusal code, malformed
+  protocol rejection without partial output, and clean shutdown. Service tests
+  additionally prove UTF-8 byte accounting, normalized duplicate paths, and
+  whole-batch validation before analysis.
+- **Engine evidence:** Plugin-owned tests cover exact fixture output and
+  diagnostic identity, parsing, idempotence, negative controls, schema and
+  readiness rules, source and target type evidence, pinned RxJS 7.8.2 behavior,
+  lifecycle contracts, full public-surface catalog completeness, and generated
+  knowledge freshness. CI and release readiness run the plugin package gate.
+- **Repository fitness:** The retired product name, workspace path, and former
+  binary names are forbidden in the current tree. Historical implementation
+  details remain recoverable from Git history rather than active docs or
+  release logic.
+- **Cost boundary:** D-062 remains controlling. No model invocation,
+  authenticated agent run, paid token, or credit-consuming evaluation is a
+  release gate.

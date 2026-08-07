@@ -147,12 +147,17 @@ try {
   });
   assert.equal(totalBoundary.files.length, MAX_TOTAL_BYTES / MAX_FILE_BYTES);
 
-  await refusal(client, 'invalid-path', {
-    files: [
-      { path: 'src/valid.ts', source },
-      { path: '../escape.ts', source: '' },
-    ],
-  });
+  await refusal(
+    client,
+    'invalid-path',
+    {
+      files: [
+        { path: 'src/valid.ts', source },
+        { path: '../escape.ts', source: '' },
+      ],
+    },
+    'analyze_migration'
+  );
   await refusal(client, 'duplicate-path', {
     files: [
       { path: 'src/file.ts', source: '' },
@@ -202,8 +207,8 @@ async function call(client, name, arguments_) {
   return parsedText;
 }
 
-async function refusal(client, code, arguments_) {
-  const result = await client.callTool({ name: 'preview_migration', arguments: arguments_ });
+async function refusal(client, code, arguments_, name = 'preview_migration') {
+  const result = await client.callTool({ name, arguments: arguments_ });
   assert.equal(result.isError, true);
   assert.equal(result.content.length, 1);
   assert.equal(result.content[0].type, 'text');

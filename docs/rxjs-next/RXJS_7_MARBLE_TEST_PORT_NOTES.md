@@ -258,10 +258,9 @@ order, so human test names contain no machine-only prefixes.
 
 The official migration workflow is published from `packages/agent-plugin` as
 `@rxjs/agent-plugin`. It combines the portable `migrate-rxjs-7-to-9` Skill with
-the source-content-only read-only MCP accepted by D-060 and D-065. The final
-`@rxjs/migrate@9.0.0-beta.1` preserves its framework-neutral semantic
-transform, caller-supplied capability map, dry-run-first CLI, bundled legacy
-Skill, and Mocha/Chai-to-Vitest adapter for existing users. Other test
+the source-content-only read-only MCP accepted by D-060, D-065, and D-067. The
+plugin preserves the framework-neutral semantic transform, versioned
+capability map, safe-stop diagnostics, and Mocha/Chai-to-Vitest adapter. Other test
 frameworks can preserve their syntax or provide another adapter.
 
 Repository-specific revision discovery, platform-promotion proof,

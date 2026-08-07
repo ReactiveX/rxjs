@@ -10,7 +10,6 @@ const packageRequirements = {
   'packages/observable-polyfill/package.json': ['README.md'],
   'packages/agent-plugin/package.json': ['README.md', 'skills', 'schemas', 'plugin.json', 'mcp.json'],
   'packages/test/package.json': ['README.md'],
-  'packages/migrate/package.json': ['README.md', 'docs', 'skill'],
 };
 
 export function auditPackageDocs({ documents, existingPaths, manifests }) {
@@ -64,9 +63,6 @@ export async function checkPackageDocs(root = repositoryRoot) {
     'packages/observable-polyfill/README.md',
     'packages/observable-polyfill/test/wpt/README.md',
     'packages/test/README.md',
-    'packages/migrate/README.md',
-    ...(await markdownFiles(root, 'packages/migrate/docs')),
-    ...(await markdownFiles(root, 'packages/migrate/skill')),
   ];
   const documents = await Promise.all(
     documentPaths.map(async (documentPath) => [documentPath, await readFile(path.join(root, documentPath), 'utf8')])

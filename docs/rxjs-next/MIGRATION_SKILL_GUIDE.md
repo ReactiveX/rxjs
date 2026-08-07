@@ -2,9 +2,8 @@
 
 `@rxjs/agent-plugin` is the canonical agent workflow. Its
 `migrate-rxjs-7-to-9` skill combines authored behavioral guidance with a local,
-read-only MCP server. The final `@rxjs/migrate@9.0.0-beta.1` keeps its existing
-API, CLI, and legacy generated skill so current users are not broken, but new
-work should use the plugin.
+read-only MCP server. Migration analysis and candidate generation now live
+only in the plugin; the host agent reviews and applies accepted output.
 
 ## Install and invoke
 

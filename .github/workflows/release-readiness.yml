@@ -11,13 +11,13 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
-      - 'packages/migrate/**'
       - 'packages/agent-plugin/**'
       - 'packages/observable-polyfill/**'
       - 'packages/rxjs/**'
       - 'packages/test/**'
       - 'scripts/check-package-docs.mjs'
       - 'scripts/check-release-coherence.mjs'
+      - 'scripts/check-retired-products*.mjs'
       - 'scripts/finalize-esm-package.mjs'
       - 'scripts/prerelease-adoption-lib.mjs'
       - 'scripts/qualify-prerelease.mjs'
@@ -50,7 +50,8 @@ jobs:
           pnpm --filter rxjs run build
           pnpm --filter @rxjs/test run build
           pnpm --filter @rxjs/agent-plugin run build
-          pnpm --filter @rxjs/migrate run build
+      - name: Run deterministic agent-plugin qualification
+        run: pnpm --filter @rxjs/agent-plugin run test:package
       - name: Install pinned browser engines
         run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Run browser contract

@@ -408,6 +408,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: 1.30.0
         version: 1.30.0(zod@3.25.76)
+      '@rxjs/observable-polyfill':
+        specifier: workspace:*
+        version: link:../observable-polyfill
       '@rxjs/test':
         specifier: workspace:*
         version: link:../test
@@ -453,25 +456,6 @@ importers:
       zod:
         specifier: ^3.25.76
         version: 3.25.76
-
-  packages/migrate:
-    dependencies:
-      typescript:
-        specifier: ~5.7.3
-        version: 5.7.3
-      zod:
-        specifier: ^3.25.76
-        version: 3.25.76
-    devDependencies:
-      '@rxjs/observable-polyfill':
-        specifier: 9.0.0-beta.1
-        version: link:../observable-polyfill
-      '@types/node':
-        specifier: 20.11.0
-        version: 20.11.0
-      vitest:
-        specifier: 4.1.10
-        version: 4.1.10(@types/node@20.11.0)(jsdom@15.2.1)(vite@6.4.3(@types/node@20.11.0)(less@4.1.2)(sass@1.44.0)(stylus@0.55.0)(terser@5.49.0)(yaml@2.9.0))
 
   packages/observable-polyfill:
     devDependencies:

@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import '../../observable-polyfill/src/index.js';
+import '@rxjs/observable-polyfill';
 import { behaviorSubject } from '../../rxjs/src/behavior-subject.js';
 import { ColdObservable } from '../../rxjs/src/cold-observable.js';
 import { map } from '../../rxjs/src/map.js';

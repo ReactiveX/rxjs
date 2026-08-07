@@ -15,7 +15,6 @@ export const releasePackages = Object.freeze([
   { name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' },
   { name: '@rxjs/test', directory: 'packages/test' },
   { name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' },
-  { name: '@rxjs/migrate', directory: 'packages/migrate' },
   { name: 'rxjs', directory: 'packages/rxjs' },
 ]);
 
@@ -224,7 +223,7 @@ function assertSupportedNode(version) {
 async function confirmVersion(version) {
   const readline = createInterface({ input: process.stdin, output: process.stdout });
   try {
-    process.stdout.write('\nThis is irreversible. The five packages above will become publicly installable.\n');
+    process.stdout.write('\nThis is irreversible. The four packages above will become publicly installable.\n');
     return await readline.question(`Type ${version} to publish, or anything else to cancel: `);
   } finally {
     readline.close();

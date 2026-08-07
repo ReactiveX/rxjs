@@ -42,7 +42,7 @@ The user has now made the complete agent-first migration experience the top
 project priority. The focused P0.M1 package is useful mechanical groundwork,
 but its nine package tests and unreferenced single source fixture do not prove
 general RxJS 7 migration safety. P0.M2 is complete: D-046 and
-`packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md` defines the agent-first
+the archived migration-tooling design defines the agent-first
 product contract, explicit
 lifecycle classification, separate mechanical and agent evidence lanes, one
 canonical Skill with thin Codex/Claude/Cursor adapters, and no MCP release
@@ -133,31 +133,31 @@ completes, mark it `DONE`, record verification in the session log, and move
 
 ### Phase 0 — Foundation and architectural safety rails
 
-| Status | ID     | Outcome                                                                                                            |
-| ------ | ------ | ------------------------------------------------------------------------------------------------------------------ |
-| `DONE` | P0.1   | Record the charter, current architecture, migration policy, decisions, risks, open questions, and AI working rules |
-| `DONE` | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                      |
-| `DONE` | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                       |
-| `DONE` | P0.T2b | Vet the migration Skill independently before using it on the repository                                            |
-| `DONE` | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                              |
-| `DONE` | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                |
-| `DONE` | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                      |
-| `DONE` | P0.T2f | Make the default ported-test gate strict and progress-visible                                                      |
-| `DONE` | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue              |
-| `DONE` | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                    |
-| `DONE` | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                         |
-| `DONE` | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                 |
-| `DONE` | P0.DX4 | Materialize normal rxTest specs with stock Vitest reporting and real source locations                              |
-| `DONE` | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                             |
-| `DONE` | P0.2   | Decide the package map and native-versus-polyfill installation contract                                            |
-| `DONE` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                 |
-| `DONE` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                           |
-| `DONE` | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                 |
-| `DONE` | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution              |
-| `DONE` | P0.M3  | Harden `@rxjs/migrate` as the deterministic mechanical engine with comprehensive executable fixtures               |
-| `DONE` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                       |
-| `DONE` | P0.M5  | Qualify the end-to-end Codex/ChatGPT workflow on representative repositories and behavioral outcome gates          |
-| `DONE` | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass      |
+| Status | ID     | Outcome                                                                                                                      |
+| ------ | ------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `DONE` | P0.1   | Record the charter, current architecture, migration policy, decisions, risks, open questions, and AI working rules           |
+| `DONE` | P0.T1  | Design and implement the user-prioritized framework-neutral `@rxjs/test` virtual-time package                                |
+| `DONE` | P0.T2a | Create a portable RxJS 7-to-Next marble-test migration Skill                                                                 |
+| `DONE` | P0.T2b | Vet the migration Skill independently before using it on the repository                                                      |
+| `DONE` | P0.T2c | Port and classify the RxJS 7 marble-test corpus without repairing production behavior                                        |
+| `DONE` | P0.T2d | Materialize every inventoried marble case as an executable parity-test registration                                          |
+| `DONE` | P0.T2e | Exhaustively convert remaining runnable RxJS 7 marble evidence and expand capability mappings                                |
+| `DONE` | P0.T2f | Make the default ported-test gate strict and progress-visible                                                                |
+| `DONE` | P0.T3  | Resolve the cold and polyfill RxJS 7 parity failures through the durable operator/function work queue                        |
+| `DONE` | P0.DX1 | Migrate repository workspaces, automation, and contributor tooling from Yarn Classic to pnpm 10                              |
+| `DONE` | P0.DX2 | Make the root developer command guide concise, accurate, and task-oriented                                                   |
+| `DONE` | P0.DX3 | Add cached one-shot bundle comparison for current Next and published RxJS versions                                           |
+| `DONE` | P0.DX4 | Materialize normal rxTest specs with stock Vitest reporting and real source locations                                        |
+| `DONE` | P0.I1  | Add four explicit Symbol-based Observable-to-async-iterator strategies                                                       |
+| `DONE` | P0.2   | Decide the package map and native-versus-polyfill installation contract                                                      |
+| `DONE` | P0.3   | Restore green builds and coherent public entry points for the selected package map                                           |
+| `DONE` | P0.4   | Add a native/fallback lifecycle test harness and package-import fixtures                                                     |
+| `DONE` | P0.M1  | Publish and dogfood one-time RxJS 7-to-Next test migration tooling                                                           |
+| `DONE` | P0.M2  | Design the agent-first migration product, contracts, fixture strategy, and cross-harness distribution                        |
+| `DONE` | P0.M3  | Harden the former standalone migration utility as the deterministic mechanical engine with comprehensive executable fixtures |
+| `DONE` | P0.M4  | Publish the portable migration Skill and thin Codex, Claude, and Cursor integration guidance                                 |
+| `DONE` | P0.M5  | Qualify the end-to-end Codex/ChatGPT workflow on representative repositories and behavioral outcome gates                    |
+| `DONE` | P0.5   | Pin the written Observable reference and require every selected test from the executable WPT revision to pass                |
 
 #### P0.1 completion evidence
 
@@ -461,7 +461,7 @@ completes, mark it `DONE`, record verification in the session log, and move
 
 #### P0.M1 completion evidence
 
-- Added the publishable `@rxjs/migrate` workspace package with a
+- Added the publishable the former standalone migration utility workspace package with a
   framework-neutral migration core,
   a one-time CLI, reusable Skill assets, and an exploratory read-only MCP
   prototype later excluded from the accepted release product by D-046.
@@ -496,7 +496,7 @@ completes, mark it `DONE`, record verification in the session log, and move
   RxJS 7; explicit target-contract classification; mechanical transformation;
   and an interactive build/test/repair loop that ends green or with a
   developer-accepted, documented blocker.
-- Product boundaries are explicit. `@rxjs/migrate` is the deterministic,
+- Product boundaries are explicit. the former standalone migration utility is the deterministic,
   versioned codemod engine and never claims to complete a migration alone. The
   portable Skill is the primary reasoning and orchestration layer. A separate
   MCP is included only if the design identifies capabilities that a
@@ -525,7 +525,7 @@ completes, mark it `DONE`, record verification in the session log, and move
 #### P0.M2 execution handoff
 
 - **Objective:** create the package-owned migration tooling design (now at
-  `packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`) as the
+  the archived migration-tooling design) as the
   controlling product and technical design for the complete agent-first
   migration experience.
 - **Why now:** migration safety is a release-defining user experience, while
@@ -567,7 +567,7 @@ completes, mark it `DONE`, record verification in the session log, and move
 - Covered ColdObservable, platform sharing/ref counting, Subjects,
   cancellation, teardown, timing, errors, input conversion, repeated
   subscriptions, unsupported APIs, missing coverage, and mixed pipelines.
-- Selected `packages/migrate/skill` as the only authored Skill source. Thin
+- Selected the former workspace Skill source as the only authored Skill source. Thin
   Codex, Claude Code, and Cursor placements consume the same package version
   and content digest and have explicit discovery, invocation, permission,
   update, and smoke-test requirements.
@@ -582,7 +582,7 @@ completes, mark it `DONE`, record verification in the session log, and move
 
 #### P0.M3 completion bar
 
-- `@rxjs/migrate` exposes a programmatic core and dry-run-first,
+- the former standalone migration utility exposes a programmatic core and dry-run-first,
   machine-readable CLI with narrow preconditions, structured findings, safe
   file boundaries, and no agent- or harness-specific runtime dependency.
 - Comprehensive checked-in input/expected-output fixtures exercise every
@@ -644,7 +644,7 @@ completes, mark it `DONE`, record verification in the session log, and move
 
 #### P0.M4 completion evidence
 
-- Expanded `packages/migrate/skill` into the canonical eight-stage agent
+- Expanded the former workspace Skill source into the canonical eight-stage agent
   workflow, including assessment, RxJS 7 baseline and characterization tests,
   explicit lifecycle approval, dry-run-first bounded transforms, repair, and
   reviewed closeout without mutable prose copies of the capability registry.
@@ -654,7 +654,7 @@ completes, mark it `DONE`, record verification in the session log, and move
   force is explicit; Codex and Cursor share one `.agents/skills` copy.
 - Replaced the independently authored repository Skill with the generated
   `.agents/skills/rxjs-next-migration` copy, preserving natural Codex and Cursor
-  invocation while keeping `packages/migrate/skill` as the only authored
+  invocation while keeping the former workspace Skill source as the only authored
   source.
 - Added 21 harness acceptance cases for discovery, explicit and implicit
   invocation metadata, least privilege, byte/digest identity, no-symlink
@@ -1541,12 +1541,12 @@ names.
 
 - Audited P0.M3, P4.4, and P0.M5 against the package-local migration guide and
   recorded the guide-to-evidence map in
-  `packages/migrate/docs/MIGRATION_QUALIFICATION.md`.
+  the archived migration-qualification record.
 - Confirmed four immutable RxJS 7 application/library seeds spanning Vitest,
   Mocha, Jest, strong and weak coverage, cold, shared platform, mixed, and
   unsupported target contracts. Three complete and one makes the required safe
   stop before target installation or migration writes.
-- Re-ran all 17 `@rxjs/migrate` suites and 166 tests, including deterministic
+- Re-ran all 17 former standalone migration utility suites and 166 tests, including deterministic
   mechanical behavior, the four P4.4 lifecycle outcomes, seed oracles, the
   14-family semantic grader, the closed four-record matrix, and artifact
   mutation controls. All pass.
@@ -1783,10 +1783,10 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
   shows an install/use example, names the four package products, and states the
   release/support channels and current environment boundary.
 - Added package READMEs for `rxjs`, `@rxjs/observable-polyfill`, and
-  `@rxjs/test`; refreshed `@rxjs/migrate`; added package-local RxJS API and
+  `@rxjs/test`; refreshed the former standalone migration utility; added package-local RxJS API and
   contributor guides; and retained the migration, unsupported-surface,
   evidence-ledger, and release-gate references beside `rxjs`.
-- Moved the 650-line migration tooling design into `packages/migrate/docs`
+- Moved the 650-line migration tooling design into the former workspace documentation area
   beside its qualification record and updated controlling repository links.
   Package metadata now points npm users at the package READMEs rather than the
   separate site workstream.
@@ -3071,9 +3071,9 @@ conformance implementation depends on a runnable harness.
   mode remains explicitly skipped in the current Node realm. P0.5 remains the
   sole `NEXT` item.
 
-### 2026-07-31 — P0.M1 owned migrations and `@rxjs/migrate`
+### 2026-07-31 — P0.M1 owned migrations and the former standalone migration utility
 
-- Added the independently publishable `@rxjs/migrate` development package
+- Added the independently publishable the former standalone migration utility development package
   with a framework-neutral semantic transform, caller-supplied capability
   maps, a generic framework-adapter interface, a Mocha/Chai-to-Vitest adapter,
   dry-run-first CLI, bundled Skill assets, and two read-only source-content MCP
@@ -3126,7 +3126,7 @@ conformance implementation depends on a runnable harness.
 - Made the complete RxJS 7-to-Next migration user experience the top project
   priority and returned P1.1 to `PLANNED` without changing its scope.
 - Added P0.M2 through P0.M5 for product and fixture design, deterministic
-  `@rxjs/migrate` hardening, one portable Skill with Codex/Claude/Cursor
+  the former standalone migration utility hardening, one portable Skill with Codex/Claude/Cursor
   integration guidance, and representative end-to-end outcome qualification.
 - Recorded the primary workflow as repository assessment, coverage warnings,
   optional pre-migration characterization tests that pass on RxJS 7, explicit
@@ -3152,7 +3152,7 @@ conformance implementation depends on a runnable harness.
 - Defined separate mechanical and agent evaluation schemas, required behavior
   categories, outcome gates, and negative controls. A transform cannot select
   lifecycle intent or turn missing evidence into a completion claim.
-- Accepted D-046: `packages/migrate/skill` is the canonical Skill source; thin
+- Accepted D-046: the former workspace Skill source is the canonical Skill source; thin
   Codex, Claude Code, and Cursor adapters preserve one package version and
   digest; the deterministic engine remains subordinate; and no MCP ships.
 - Partially superseded D-044 and reconciled the charter, architecture,
@@ -3164,7 +3164,7 @@ conformance implementation depends on a runnable harness.
 
 ### 2026-07-31 — P0.M3 deterministic migration engine hardening
 
-- Hardened `@rxjs/migrate` around a versioned evidence registry, structured
+- Hardened the former standalone migration utility around a versioned evidence registry, structured
   diagnostics, contract-manifest readiness, atomic transforms, contained
   batch writes, and a machine-readable dry-run-first CLI.
 - Added exact fixture, pinned RxJS 7 behavior/type, current Next type,
@@ -3418,7 +3418,7 @@ conformance implementation depends on a runnable harness.
 
 - Mapped the P5.1 migration journey to the existing P0.M3 deterministic,
   P4.4 contract-fixture, and P0.M5 four-repository evidence and recorded that
-  package-local map beside `@rxjs/migrate`.
+  package-local map beside the former standalone migration utility.
 - Confirmed the matrix covers applications and libraries, Vitest/Mocha/Jest,
   strong and weak coverage, cold, shared platform, mixed, Subject, and
   unsupported contracts, with three completed migrations and one timely safe
@@ -3476,7 +3476,7 @@ conformance implementation depends on a runnable harness.
 - Added package-owned READMEs for the runtime, polyfill, and test packages;
   refreshed the migration package; and added RxJS API, release-gate, and
   package-contributor guides.
-- Moved the migration tooling design beside `@rxjs/migrate`, kept all public
+- Moved the migration tooling design beside the former standalone migration utility, kept all public
   package guidance inside its owning container, and published the applicable
   README/docs paths from each manifest.
 - Added a tested documentation gate that rejects missing published paths,
@@ -3695,7 +3695,7 @@ conformance implementation depends on a runnable harness.
 
 - Rejected the staged design after confirming npm's initial-publication
   prerequisite: `rxjs` has a public registry record, while
-  `@rxjs/observable-polyfill`, `@rxjs/test`, and `@rxjs/migrate` return 404 and
+  `@rxjs/observable-polyfill`, `@rxjs/test`, and the former standalone migration utility return 404 and
   therefore cannot use npm staged publishing or trusted-publisher configuration
   for their first version. The earlier dry runs did not contact the registry
   and did not reveal that blocker.

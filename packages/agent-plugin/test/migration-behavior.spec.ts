@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
-import '../../observable-polyfill/src/index.js';
+import '@rxjs/observable-polyfill';
 import { of as rxjs7Of } from 'rxjs7';
 import { bufferCount as rxjs7BufferCount, concatMap as rxjs7ConcatMap, map as rxjs7Map } from 'rxjs7/operators';
 import { buffer } from '../../rxjs/src/buffer.js';

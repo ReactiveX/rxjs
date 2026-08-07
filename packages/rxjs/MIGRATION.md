@@ -247,8 +247,6 @@ successful transform is not proof of a completed migration.
 - [`@rxjs/agent-plugin`](https://github.com/ReactiveX/rxjs/tree/master/packages/agent-plugin):
   the canonical migration skill, complete generated surface catalog,
   read-only MCP, safe-stop behavior, and supported mechanical subset.
-- [`@rxjs/migrate`](https://github.com/ReactiveX/rxjs/tree/master/packages/migrate):
-  the final compatible legacy API and CLI during the beta.1 transition.
 - [Compatibility policy](https://github.com/ReactiveX/rxjs/blob/master/docs/rxjs-next/COMPATIBILITY.md):
   the repository
   rules behind the migration evidence and intentional divergences.

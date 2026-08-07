@@ -13,14 +13,12 @@ implementation or deterministic qualification of
 Publication still requires external operator actions rather than a design
 answer:
 
-- publish and verify the five beta.1 artifacts in D-061 order;
+- publish and verify the four beta.1 artifacts in D-067 order;
 - verify registry integrity and npm channel state;
-- deprecate `@rxjs/migrate` only after that verification;
-- remove the migration workspace only after deprecation is visible;
 - prepare and publish the RxJS 7 documentation-only backport after the plugin
   has a stable public installation URL.
 
-These actions remain P7.11 and P7.12 work. They must not be inferred from a local
+These actions remain P7.12 work. They must not be inferred from a local
 passing test run.
 
 ## Open product questions after beta.1
