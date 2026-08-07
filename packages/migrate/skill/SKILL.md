@@ -1,6 +1,6 @@
 ---
 name: rxjs-next-migration
-description: Migrate an RxJS 7 application, library, or test suite to RxJS Next through an agent-led workflow that establishes a green behavioral baseline, makes Observable lifecycle choices explicit, uses @rxjs/migrate only for bounded fixture-proved rewrites, repairs without weakening evidence, and records a versioned migration contract. Use for repository assessment, migration planning or execution, lifecycle review, TestScheduler conversion, or migration closeout.
+description: Migrate an RxJS 7 application, library, or test suite to RxJS Next through an agent-led workflow that establishes a green behavioral baseline, defaults ordinary Observable units to ColdObservable, requires evidence for platform promotion, uses @rxjs/migrate only for bounded fixture-proved rewrites, repairs without weakening evidence, and records a versioned migration contract. Use for repository assessment, migration planning or execution, lifecycle review, TestScheduler conversion, or migration closeout.
 ---
 
 # RxJS 7 to RxJS Next migration
@@ -19,8 +19,10 @@ involved at every explicit pause.
 - Read and obey repository-local instructions before acting. Protect existing
   work and stay within the authorized repository and paths.
 - Establish the RxJS 7 baseline before changing dependencies or source.
-- Never infer platform sharing versus producer-per-direct-subscription behavior
-  from syntax, filenames, operator names, or a currently passing output.
+- Default ordinary RxJS 7 Observable-producing units to `ColdObservable`,
+  which preserves producer-per-direct-subscription behavior. Never infer
+  platform promotion from syntax, filenames, operator names, or a currently
+  passing output.
 - Use the installed engine's versioned registry and schemas as authority. Do
   not reconstruct capability mappings from this Skill or from memory.
 - Run the deterministic engine without writes first. A refusal is a successful
@@ -121,11 +123,13 @@ evidence classification. Use repository evidence and
 [references/assessment-and-contract.md](references/assessment-and-contract.md)
 to explain the choice.
 
-The engine may identify risk but cannot choose lifecycle intent. `unresolved`
-is a stop state. Pause for the developer when either platform-shared behavior
-or producer-per-direct-subscription behavior is plausible, or when Subject
-semantics, cancellation, scheduler ordering, error behavior, interop, or a
-public behavior change is not proved.
+The engine may apply the behavior-preserving cold default but cannot choose
+platform lifecycle intent. Promote only after compatible characterized RxJS 7
+sharing/multicasting behavior or a repository-wide single-subscriber topology
+is proved. A file-local `share()` or single `.subscribe()` call is only a
+candidate. `unresolved` remains a stop state for Subject semantics,
+cancellation, scheduler ordering, error behavior, interop, public behavior
+changes, or any disputed cold/platform claim.
 
 Intentional divergences require a concrete old claim, proposed Next claim,
 user impact, evidence, and developer approval. Validate the manifest
@@ -144,10 +148,11 @@ approved unit. Do not infer support from a familiar name. Follow
 When the batch contains RxJS 7 marble tests, also read
 [references/test-migration.md](references/test-migration.md).
 
-Run `rxjs-migrate` without `--write` using explicit provenance and, when
-required, the approved `cold` or `platform` mode. Preserve the current test
-framework unless a supported adapter was separately selected. Capture the
-versioned JSON report, changed paths, structured diagnostics, and exit code.
+Run `rxjs-migrate` without `--write` using explicit provenance. Omitted mode
+means `cold`; use `--mode platform` only after the promotion evidence is
+recorded and approved. Preserve the current test framework unless a supported
+adapter was separately selected. Capture the versioned JSON report, changed
+paths, structured diagnostics, and exit code.
 
 Pause when a diagnostic requires review or refuses a transform, when output
 would escape authorized paths, when source does not match the capability

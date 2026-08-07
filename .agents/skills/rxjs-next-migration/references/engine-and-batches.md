@@ -62,14 +62,16 @@ rxjs-migrate \
   --source-root <authorized-root> \
   --source-repo <source-repository> \
   --source-sha <exact-revision> \
-  --mode <approved-cold-or-platform-mode> \
+  --mode cold \
   --framework preserve \
   <selected-files>
 ```
 
-Omit `--mode` when the selected source does not require a lifecycle choice.
-Never let a directory name or wrapper select it implicitly. Use the package's
-documented framework adapter only for a separately approved framework change.
+Omitting `--mode` selects the behavior-preserving cold default. Use `--mode
+platform` only after the unit's compatible sharing behavior or repository-wide
+single-subscriber topology is recorded and approved. Never let a directory
+name or wrapper promote the lifecycle implicitly. Use the package's documented
+framework adapter only for a separately approved framework change.
 
 Without `--write`, the CLI returns a versioned JSON report and performs no
 writes. Record its engine version, registry version, operation, file results,
@@ -91,7 +93,7 @@ rxjs-migrate \
   --source-root <authorized-root> \
   --source-repo <source-repository> \
   --source-sha <exact-revision> \
-  --mode <approved-cold-or-platform-mode> \
+  --mode cold \
   --framework preserve \
   --write --out-dir <authorized-destination> \
   <selected-files>

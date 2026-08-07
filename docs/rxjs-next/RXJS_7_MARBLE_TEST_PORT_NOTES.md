@@ -256,15 +256,16 @@ order, so human test names contain no machine-only prefixes.
 
 ## Skill boundary
 
-Reusable migration tooling is published from `packages/migrate` as
-`@rxjs/migrate`. P0.M1 established a framework-neutral semantic transform,
-caller-supplied capability-map boundary, dry-run-first CLI, bundled Skill,
-Mocha/Chai-to-Vitest adapter, and source-content-only read-only MCP prototype.
-D-046 accepts only the deterministic engine, one canonical Skill, and thin
-harness adapters as the release product; P0.M3 removes the MCP prototype.
-Other test frameworks can preserve their syntax or provide another adapter.
+The official migration workflow is published from `packages/agent-plugin` as
+`@rxjs/agent-plugin`. It combines the portable `migrate-rxjs-7-to-9` Skill with
+the source-content-only read-only MCP accepted by D-060 and D-065. The final
+`@rxjs/migrate@9.0.0-beta.1` preserves its framework-neutral semantic
+transform, caller-supplied capability map, dry-run-first CLI, bundled legacy
+Skill, and Mocha/Chai-to-Vitest adapter for existing users. Other test
+frameworks can preserve their syntax or provide another adapter.
 
-Repository-specific revision discovery, dispositions, native/polyfill mode
-launching, and reviewed baselines remain outside the package. The static
+Repository-specific revision discovery, platform-promotion proof,
+native/polyfill mode launching, and reviewed baselines remain outside the MCP.
+The static
 `migration-report.json` preserves source-to-owned-file identity without making
 the migration tool part of normal test execution.

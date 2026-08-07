@@ -5,6 +5,7 @@ import {
   capabilityRegistrySchemaVersion,
   capabilityRegistryVersion,
   defaultCapabilityRegistry,
+  defaultMigrationSurfaceCatalog,
   migrationContractManifestSchema,
   migrationContractSchemaVersion,
   migrationEngineVersion,
@@ -27,7 +28,7 @@ export const sourceFileSchema = z
 export const batchSchema = z
   .object({
     files: z.array(sourceFileSchema).min(1).max(MAX_FILES),
-    mode: z.enum(['cold', 'platform']).optional(),
+    mode: z.enum(['cold', 'platform']).default('cold'),
     framework: z.enum(['preserve', 'mocha-chai-to-vitest']).default('preserve'),
     provenance: z
       .object({
@@ -66,6 +67,16 @@ export function migrationCapabilities() {
     sourceRevision: 'e5351d02e225e275ac0e497c7b66eaa5f0c88791',
     targetVersion: '9.0.0-beta.1',
     limits: limits(),
+    lifecyclePolicy: defaultMigrationSurfaceCatalog.lifecyclePolicy,
+    coverage: {
+      schemaVersion: defaultMigrationSurfaceCatalog.schemaVersion,
+      catalogVersion: defaultMigrationSurfaceCatalog.catalogVersion,
+      counts: defaultMigrationSurfaceCatalog.counts,
+      surfaces: defaultMigrationSurfaceCatalog.surfaces,
+      crossCutting: defaultMigrationSurfaceCatalog.crossCutting,
+    },
+    mechanicalCapabilities: defaultCapabilityRegistry.capabilities,
+    // Retained for clients of the beta.1 preview contract.
     capabilities: defaultCapabilityRegistry.capabilities,
   };
 }
@@ -84,7 +95,20 @@ export function analyzeMigration(input: BatchInput) {
         testSchedulerVariables: analysis.testSchedulerVariables,
         helpers: analysis.helpers,
         importedOperators: analysis.importedOperators,
-        unsupportedConstructs: analysis.missingCapabilities,
+        importedSurfaces: analysis.importedSurfaces,
+        importFindings: analysis.importFindings,
+        subscriberTopology: analysis.subscriberTopology,
+        sharingIndicators: analysis.sharingIndicators,
+        lifecycleRecommendation: analysis.lifecycleRecommendation,
+        mechanicalGaps: analysis.missingCapabilities,
+        unsupportedConstructs: [
+          ...analysis.importedSurfaces
+            .filter(({ migration }) => migration?.disposition === 'unsupported')
+            .map(({ importPath, importedName }) => `${importPath}:${importedName}`),
+          ...analysis.importFindings
+            .filter(({ code }) => code === 'deep-import' || code === 'default-import' || code === 'unknown-public-surface')
+            .map(({ importPath, importedName }) => `${importPath}:${importedName ?? '*'}`),
+        ],
         reviewFlags: analysis.reviewFlags,
         status: preview.status,
         diagnostics: preview.diagnostics,
@@ -160,7 +184,7 @@ function migrationOptions(batch: z.output<typeof batchSchema>, path: string) {
     ? { repository: batch.provenance.repository ?? '', sha: batch.provenance.sha ?? '', path }
     : undefined;
   return {
-    mode: batch.mode as MigrationMode | undefined,
+    mode: batch.mode as MigrationMode,
     fileName: path,
     provenance,
     frameworkAdapter: batch.framework === 'mocha-chai-to-vitest' ? mochaChaiToVitestAdapter : undefined,

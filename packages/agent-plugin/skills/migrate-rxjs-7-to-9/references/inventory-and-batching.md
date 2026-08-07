@@ -22,8 +22,8 @@ Add focused characterization tests when the suite does not prove:
 
 Search for:
 
-- imports from `rxjs`, `rxjs/operators`, `rxjs/testing`, and deep/internal
-  paths;
+- imports from `rxjs`, `rxjs/operators`, `rxjs/ajax`, `rxjs/fetch`,
+  `rxjs/webSocket`, `rxjs/testing`, and deep/internal paths;
 - `.pipe`, standalone `pipe`, and operator factories;
 - every direct `subscribe`, stored `Subscription`, `unsubscribe`, and `add`;
 - `firstValueFrom`, `lastValueFrom`, `forEach`, and async boundaries;
@@ -38,6 +38,9 @@ Search for:
 
 Build migration units around behavior, then associate source files. This
 prevents a mechanical file batch from hiding a cross-file shared lifetime.
+Compare the inventory with the complete `migration_capabilities` catalog so an
+uncommon public function, type, specialty package, deprecated alias, or interop
+surface cannot disappear merely because it lacks a mechanical rewrite.
 
 ## Choose MCP batches for reviewability
 

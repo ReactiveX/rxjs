@@ -101,7 +101,7 @@ Agent and migration tooling are not runtime dependencies of `rxjs`.
 | `packages/rxjs/src/testing`    | Contains obsolete exploratory fake timers and an experimental `ScheduledObservable`                                                                                                                              | Retained only as prototype history until removed                                                               | Superseded by the accepted `@rxjs/test` boundary                          |
 | `packages/test`                | Provides `rxTest`, marble factories/assertions, virtual host scheduling, and explicit cold/hot/platform source models                                                                                            | Implementation-neutral framework testing that consumes an already active realm Observable                      | Published at beta.0; add prominent plugin guidance and synchronize beta.1 |
 | `packages/agent-plugin`        | Phase 7 package containing Agent Plugins manifests, twelve Skills, generated knowledge, prebuilt MCP, validation, and Claude adapter generation                                                                  | Official RxJS 7 and RxJS 9 agent experience                                                                    | Deepen expert guidance and qualify deterministically for beta.1           |
-| `packages/migrate`             | Provides the current deterministic engine, canonical migration Skill, structured CLIs, schemas, fixtures, and historical Codex qualification records                                                             | One final functional beta.1 release; engine and reusable fixtures move into the plugin                         | Deprecate after registry verification, then remove in P7.9                |
+| `packages/migrate`             | Provides the current deterministic engine, canonical migration Skill, structured CLIs, schemas, fixtures, and historical Codex qualification records                                                             | One final functional beta.1 release; engine and reusable fixtures move into the plugin                         | Deprecate after registry verification, then remove in P7.11               |
 | `apps/rxjs.dev`                | Existing RxJS documentation site                                                                                                                                                                                 | Prominent public discovery surface for the official agent plugin                                               | Add announcement, navigation, installation guidance, and dedicated page   |
 
 ## Platform Observable lifecycle
@@ -814,8 +814,10 @@ behavior, missing characterization evidence, and lifecycle-sensitive choices
 remain visible escalation points rather than transform defaults.
 
 The deterministic engine may parse source, apply reviewed capability mappings,
-adapt framework syntax, and return diagnostics. It must not choose lifecycle
-semantics, manufacture missing evidence, or declare a project migrated. A
+adapt framework syntax, and return diagnostics. Under D-065 it may select the
+behavior-preserving `ColdObservable` default for ordinary RxJS 7 sources, but
+it must not infer platform promotion, manufacture missing evidence, or declare
+a project migrated. A
 mechanical fixture lane proves transform, diagnostics, source and target type
 checks, pinned RxJS 7 and RxJS 9 behavior, idempotence, imports, refusal safety,
 and packed publication properties. The MCP validates a complete input batch
@@ -823,6 +825,23 @@ before processing, accepts no more than 25 files, 512 KiB per file, or 2 MiB
 total, and never reads or writes repository paths. D-062 makes deterministic
 package, schema, protocol, compilation, and discovery checks the release gate;
 no model-backed qualification run is required.
+
+The migration MCP exposes two deliberately different capability layers. The
+generated full-surface catalog joins the pinned RxJS 7.8.2 public declarations
+for all six public entrypoints with the parity and unsupported-surface records;
+every operator, function, value, class, type, scheduler concern, interop
+boundary, and deprecated alias receives an explicit disposition. The
+deterministic registry remains the smaller fixture-proved rewrite set. Full
+coverage therefore prevents silent omissions without turning manual or
+unsupported work into false automatic claims.
+
+Analysis reports direct-subscription topology and explicit sharing indicators.
+Existing `share`/multicast behavior or a repository-wide one-subscriber
+guarantee can justify review for platform promotion, but file-local syntax
+cannot prove either. Cold-mode output uses exact Symbols so `[create]`
+continues to produce `ColdObservable`; explicit platform mode uses proved
+native methods, including sequential `flatMap`, where doing so removes an
+extension import without changing semantics.
 
 The 2026-08-01 qualification snapshot ran four pinned RxJS 7 repositories
 through Codex `0.146.0-alpha.3.1` with `gpt-5.6-sol` at medium reasoning. All
@@ -1251,7 +1270,8 @@ These invariants should become automated fitness functions:
    types and cannot be reached accidentally through the platform entry point.
 10. Every public package entry builds, type-checks, imports, and executes in each
     supported environment and module system.
-11. Every RxJS 7 migration mapping identifies its behavioral evidence,
+11. Every pinned RxJS 7 public surface has a migration disposition. Every
+    mechanical mapping additionally identifies its behavioral evidence,
     required source change, and any documented divergence without implying a
     runtime compatibility product.
 12. Standards conformance work records the exact specification and WPT
@@ -1261,9 +1281,11 @@ These invariants should become automated fitness functions:
     proof.
 14. Architecture changes update the decision log and project documents in the
     same change.
-15. Migration tooling never infers lifecycle intent: a migration begins from a
-    reviewed contract manifest, uses versioned plugin knowledge, and passes
-    deterministic mechanical gates before a host agent applies any preview.
+15. Migration tooling defaults ordinary RxJS 7 sources to the behavior-
+    preserving `ColdObservable` contract and never infers platform promotion.
+    A promoted unit records sharing or repository-wide single-subscriber
+    evidence, uses versioned plugin knowledge, and passes deterministic
+    mechanical gates before a host agent applies any preview.
 16. The plugin MCP has no repository filesystem authority and rejects an
     invalid batch before returning partial transformation output.
 17. Universal and Claude artifacts have identical Skill, MCP, version, and
@@ -1271,36 +1293,37 @@ These invariants should become automated fitness functions:
 
 ## Initial fitness-function scorecard
 
-| Characteristic         | Check                                                                                                                               | Target enforcement                                                        |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                                 | Unit and package-import tests                                             |
-| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL                           | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
-| Extension safety       | Snapshot string properties; verify each module installs only its exported exact Symbol and leaves platform string methods untouched | Unit tests and CI                                                         |
-| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                                           | Shared platform test suite                                                |
-| Native/fallback parity | Run the same operator cases against both implementations                                                                            | CI matrix                                                                 |
-| Package integrity      | Build, type, ESM and Node `require(esm)` import, browser/Webpack bundle, runtime-matrix, and duplicate-copy fixtures                | Package and release CI                                                    |
-| Migration evidence     | RxJS 7 mappings backed by tests or accepted-divergence records without runtime-emulation claims                                     | Migration review and generated-ledger checks                              |
-| Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior                  | Package CI and pre-release gate                                           |
-| Agent plugin           | Manifests, Skills, references, digests, containment, MCP protocol, and representative examples validate without model calls         | Package CI and pre-release gate                                           |
+| Characteristic         | Check                                                                                                                                 | Target enforcement                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Native-first           | Import fallback with a sentinel native constructor and assert identity is unchanged                                                   | Unit and package-import tests                                             |
+| Conformance harness    | Observable WPT at `6a009d73f0d315941b90cac13a9523a2a08c631b`, with exact bundle identity attested per URL                             | Blocking strict `test:wpt` job plus a complete-result baseline diagnostic |
+| Extension safety       | Snapshot string properties; verify each module installs only its exported exact Symbol and leaves platform string methods untouched   | Unit tests and CI                                                         |
+| Lifecycle              | Multi-observer, ref-count, abort, synchronous reentrancy, error, and teardown-order cases                                             | Shared platform test suite                                                |
+| Native/fallback parity | Run the same operator cases against both implementations                                                                              | CI matrix                                                                 |
+| Package integrity      | Build, type, ESM and Node `require(esm)` import, browser/Webpack bundle, runtime-matrix, and duplicate-copy fixtures                  | Package and release CI                                                    |
+| Migration evidence     | Complete RxJS 7 public-surface coverage plus fixture-proved mappings and accepted-divergence records without runtime-emulation claims | Declaration/catalog, migration review, and generated-ledger checks        |
+| Mechanical migration   | Deterministic fixtures prove diagnostics, containment, dry-run/write equivalence, idempotence, build, and behavior                    | Package CI and pre-release gate                                           |
+| Agent plugin           | Manifests, Skills, references, digests, containment, MCP protocol, and representative examples validate without model calls           | Package CI and pre-release gate                                           |
 
 ## Known architectural risks
 
-| Risk                                                             | Impact                                                            | Mitigation direction                                                                                                         |
-| ---------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Living platform proposal changes                                 | Polyfill and operators drift from browsers                        | Pin revisions, track upstream, and advance deliberately                                                                      |
-| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically  | D-041's conditional transaction, package fixtures, and P0.4's shared lifecycle contract cover the selected base constructor  |
-| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them          | D-048 documents distinct public keys; package fixtures prove coexistence and consumers use the Symbol from their module copy |
-| Prototype patching is restricted                                 | Extensions cannot install in hardened or unusual realms           | Keep those realms unclaimed; direct assignment may surface native errors or partial paired installation                      |
-| RxJS 7 tests encode different producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics    | Classify tests and keep cold evidence distinct from platform claims                                                          |
-| Migration evidence is mistaken for runtime compatibility         | Users depend on unsupported RxJS 7 imports or lifecycle behavior  | State migration actions and unsupported surfaces without publishing an emulation package                                     |
-| Mechanical output is mistaken for a complete migration           | Lifecycle-sensitive changes pass syntax checks but alter behavior | Require a reviewed contract manifest, characterization evidence, and agent-outcome gates                                     |
-| Universal and Claude plugin artifacts drift                      | Different clients receive materially different advice or tools    | Generate the Claude adapter and compare Skills, MCP, version, and knowledge digests                                          |
-| MCP input expands into filesystem authority                      | A migration tool reads or writes unreviewed project data          | Accept explicit source text only; validate limits before processing; host agent owns edits                                   |
-| Paid agent qualification becomes a hidden release dependency     | Contributors or CI incur unpredictable cost                       | D-062 permits only deterministic free release gates; skip model-backed and paid-auth commands                                |
-| Package metadata or exports regress                              | Builds pass locally but published artifacts are unusable          | Keep package build, pack, import, and type fixtures as release gates                                                         |
-| Minimal tests allow semantic regressions                         | Prototype behavior becomes accidental policy                      | Add lifecycle and extension-kernel safety rails before expanding operators                                                   |
-| Browser-native Observable leaks into a fallback WPT realm        | Results falsely appear to prove the RxJS implementation           | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns  |
-| WPT/browser downloads make conformance impractical               | Contributors skip or inconsistently run the gate                  | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver             |
+| Risk                                                             | Impact                                                            | Mitigation direction                                                                                                           |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Living platform proposal changes                                 | Polyfill and operators drift from browsers                        | Pin revisions, track upstream, and advance deliberately                                                                        |
+| Global mutation and load order                                   | Native behavior is replaced or imports fail nondeterministically  | D-041's conditional transaction, package fixtures, and P0.4's shared lifecycle contract cover the selected base constructor    |
+| Duplicate packages create different Symbols                      | Extensions appear missing even though code imported them          | D-048 documents distinct public keys; package fixtures prove coexistence and consumers use the Symbol from their module copy   |
+| Prototype patching is restricted                                 | Extensions cannot install in hardened or unusual realms           | Keep those realms unclaimed; direct assignment may surface native errors or partial paired installation                        |
+| RxJS 7 tests encode different producer-per-subscription behavior | False failures lead contributors to corrupt platform semantics    | Classify tests and keep cold evidence distinct from platform claims                                                            |
+| Migration evidence is mistaken for runtime compatibility         | Users depend on unsupported RxJS 7 imports or lifecycle behavior  | State migration actions and unsupported surfaces without publishing an emulation package                                       |
+| Mechanical output is mistaken for a complete migration           | Lifecycle-sensitive changes pass syntax checks but alter behavior | Separate full catalog coverage from fixture-proved automation; require a reviewed contract, characterization, and verification |
+| File-local subscriber counts are mistaken for global topology    | A platform promotion silently changes concurrent consumers        | Treat one local subscriber or sharing syntax only as a candidate; require repository-wide or behavioral proof                  |
+| Universal and Claude plugin artifacts drift                      | Different clients receive materially different advice or tools    | Generate the Claude adapter and compare Skills, MCP, version, and knowledge digests                                            |
+| MCP input expands into filesystem authority                      | A migration tool reads or writes unreviewed project data          | Accept explicit source text only; validate limits before processing; host agent owns edits                                     |
+| Paid agent qualification becomes a hidden release dependency     | Contributors or CI incur unpredictable cost                       | D-062 permits only deterministic free release gates; skip model-backed and paid-auth commands                                  |
+| Package metadata or exports regress                              | Builds pass locally but published artifacts are unusable          | Keep package build, pack, import, and type fixtures as release gates                                                           |
+| Minimal tests allow semantic regressions                         | Prototype behavior becomes accidental policy                      | Add lifecycle and extension-kernel safety rails before expanding operators                                                     |
+| Browser-native Observable leaks into a fallback WPT realm        | Results falsely appear to prove the RxJS implementation           | Exact reference-and-bundle attestation per URL, unsuppressible report audit, negative controls, and reviewed realm patterns    |
+| WPT/browser downloads make conformance impractical               | Contributors skip or inconsistently run the gate                  | Vendor the small approved test closure and checksum-cache the sparse runner, pinned browser, and matching driver               |
 
 ## Evidence and references
 

@@ -2,10 +2,13 @@
 
 ## Mechanical registry boundary
 
-Call `migration_capabilities` for the versioned mapping ids, source name,
-target invocation and Symbol/module when applicable, argument adapter, supported arity, preconditions,
-evidence classification, and review notes. The generated capability reference
-is a human-readable mirror checked against the runtime registry.
+Call `migration_capabilities` for two related surfaces:
+
+- the complete RxJS 7 public catalog, where every operator, function, value,
+  type, specialty package, scheduler concern, interop boundary, and deprecated
+  alias has a migration disposition; and
+- the much smaller deterministic registry, whose mappings have exact fixture,
+  arity, precondition, diagnostic, type, behavior, and idempotence evidence.
 
 The engine handles only direct `.pipe(...)` calls whose entries are direct,
 unshadowed imported operator calls and whose whole pipeline is supported. It
@@ -15,7 +18,7 @@ unsupported overloads, scheduler arguments, and malformed input.
 Do not copy a capability list into handwritten instructions. The registry and
 generated reference are the mutable authority.
 
-## Platform-first target
+## Cold-preserving target, then platform optimization
 
 ```ts
 // RxJS 7
@@ -25,15 +28,22 @@ const names = users.pipe(
   map((user) => user.name)
 );
 
-// RxJS 9, platform lifecycle
-const names = users.filter((user) => user.active).map((user) => user.name);
+// RxJS 9 default: preserve ColdObservable construction.
+import { filter } from 'rxjs/filter';
+import { map } from 'rxjs/map';
+
+const names = users[filter]((user) => user.active)[map]((user) => user.name);
+
+// After the unit is explicitly promoted to the platform lifecycle:
+const platformNames = users.filter((user) => user.active).map((user) => user.name);
 ```
 
-The platform form avoids extension imports and browser bundle bytes. It is not
-mechanically interchangeable with exact `[map]`/`[filter]`: use Symbols when a
-contract differs or a `ColdObservable` result must preserve its lifecycle.
-The migration registry records which invocation it has deterministically
-proved. In particular, `[takeUntil]` remains exact because platform
+The platform form avoids extension imports and browser bundle bytes, but a
+native string method on `ColdObservable` deliberately crosses its result to the
+platform lifecycle. Use it only after platform promotion. In platform mode,
+proved mappings prefer `.map()`, `.filter()`, sequential `.flatMap()`, and
+`.switchMap()` where applicable. In cold mode, the same registry emits exact
+Symbols. `[takeUntil]` remains exact in either mode because platform
 `.takeUntil()` handles notifier errors differently.
 
 ## Unified capabilities need readable review
@@ -73,8 +83,9 @@ When a pipeline is outside the registry:
 1. preserve the RxJS 7 source until its behavior is characterized;
 2. find the public RxJS 9 capability and read its actual signature/tests;
 3. choose receiver lifecycle and input adapters;
-4. prefer platform methods and use exact Symbol composition only where required,
-   following `write-rxjs-9` guidance;
+4. retain exact Symbol composition for the cold default; after an explicit
+   platform promotion, prefer platform methods where the catalog records a
+   semantic candidate, following `write-rxjs-9` guidance;
 5. compare notification, cancellation, error, completion, and timing behavior;
 6. document intentional differences; and
 7. add it to the engine only with deterministic fixtures and evidence.

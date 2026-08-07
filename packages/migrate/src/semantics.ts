@@ -92,23 +92,7 @@ export function migrateTestSchedulerSemantics(source: string, options: SemanticM
     return { status: 'refused', code: source, diagnostics, imports: [] };
   }
 
-  if (schedulerIdentifiers.size > 0 && options.mode === undefined) {
-    const firstScheduler = findFirstIdentifier(sourceFile, schedulerIdentifiers) ?? sourceFile;
-    diagnostics.push(
-      diagnosticForNode(sourceFile, firstScheduler, {
-        code: 'lifecycle-review',
-        message: 'TestScheduler migration requires an explicit cold or platform lifecycle selection.',
-        severity: 'error',
-        disposition: 'refused',
-        refusalScope: 'file',
-        classification: 'compatibility-only',
-        nextAction: { code: 'choose-lifecycle', message: 'Classify the test as cold or platform before running the transform.' },
-      })
-    );
-    return { status: 'refused', code: source, diagnostics, imports: [] };
-  }
-
-  collectLifecycleDiagnostics(sourceFile, diagnostics);
+  collectLifecycleDiagnostics(sourceFile, diagnostics, options.mode ?? 'cold');
   if (diagnostics.some(({ disposition }) => disposition === 'refused')) {
     return { status: 'refused', code: source, diagnostics: sortDiagnostics(diagnostics), imports: [] };
   }
@@ -177,6 +161,7 @@ export function migrateTestSchedulerSemantics(source: string, options: SemanticM
             sourceFile,
             factory,
             visit,
+            mode: options.mode ?? 'cold',
           });
           if (converted !== node) changed = true;
           return converted;
@@ -370,16 +355,6 @@ function collectTestSchedulerIdentifiers(sourceFile: ts.SourceFile, typeLocals: 
   return result;
 }
 
-function findFirstIdentifier(sourceFile: ts.SourceFile, names: ReadonlySet<string>): ts.Identifier | undefined {
-  let result: ts.Identifier | undefined;
-  const visit = (node: ts.Node): void => {
-    if (!result && ts.isIdentifier(node) && names.has(node.text)) result = node;
-    if (!result) ts.forEachChild(node, visit);
-  };
-  visit(sourceFile);
-  return result;
-}
-
 function retainNonTestSchedulerImports(node: ts.ImportDeclaration): ts.ImportDeclaration | undefined {
   const clause = node.importClause;
   const bindings = clause?.namedBindings;
@@ -527,6 +502,7 @@ interface ConvertPipelineContext {
   readonly sourceFile: ts.SourceFile;
   readonly factory: ts.NodeFactory;
   readonly visit: ts.Visitor;
+  readonly mode: 'cold' | 'platform';
 }
 
 function convertPipeline(context: ConvertPipelineContext): ts.Expression {
@@ -616,16 +592,17 @@ function convertPipeline(context: ConvertPipelineContext): ts.Expression {
 
   let current = ts.visitNode(node.expression.expression, visit) as ts.Expression;
   for (const { call, local, mapping } of entries) {
-    if (mapping.target !== 'platform-method') {
+    const usePlatformMethod = mapping.target === 'platform-method' && context.mode === 'platform';
+    if (!usePlatformMethod) {
       addImport(context.imports, `rxjs/${mapping.module}`, mapping.symbolName);
     }
     context.convertedOperatorLocals.add(local);
     current = factory.createCallExpression(
-      mapping.target === 'platform-method'
-        ? factory.createPropertyAccessExpression(current, mapping.symbolName)
+      usePlatformMethod
+        ? factory.createPropertyAccessExpression(current, mapping.platformMethod ?? mapping.symbolName)
         : factory.createElementAccessExpression(current, factory.createIdentifier(mapping.symbolName)),
       call.typeArguments,
-      adaptArguments(mapping.argumentAdapter, call.arguments, factory, visit)
+      adaptArguments(mapping.argumentAdapter, call.arguments, factory, visit, usePlatformMethod)
     );
   }
   return current;
@@ -672,7 +649,8 @@ function adaptArguments(
   adapter: ArgumentAdapter,
   argumentsList: ts.NodeArray<ts.Expression>,
   factory: ts.NodeFactory,
-  visit: ts.Visitor
+  visit: ts.Visitor,
+  usePlatformMethod: boolean
 ): readonly ts.Expression[] {
   const args = argumentsList.map((argument) => ts.visitNode(argument, visit) as ts.Expression);
   switch (adapter) {
@@ -695,11 +673,24 @@ function adaptArguments(
       ];
     }
     case 'concat-map':
+      if (usePlatformMethod) return args.slice(0, 1);
       return [
         ...(args[0] ? [args[0]] : []),
         factory.createObjectLiteralExpression([factory.createPropertyAssignment('concurrent', factory.createNumericLiteral(1))]),
       ];
     case 'concat-all':
+      if (usePlatformMethod) {
+        return [
+          factory.createArrowFunction(
+            undefined,
+            undefined,
+            [factory.createParameterDeclaration(undefined, undefined, 'inner')],
+            undefined,
+            factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+            factory.createIdentifier('inner')
+          ),
+        ];
+      }
       return [
         factory.createArrowFunction(
           undefined,
@@ -735,7 +726,12 @@ function adaptArguments(
   }
 }
 
-function collectLifecycleDiagnostics(sourceFile: ts.SourceFile, diagnostics: MigrationDiagnostic[]): void {
+function collectLifecycleDiagnostics(
+  sourceFile: ts.SourceFile,
+  diagnostics: MigrationDiagnostic[],
+  mode: 'cold' | 'platform'
+): void {
+  if (mode === 'cold') return;
   const observations: ts.CallExpression[] = [];
   const visit = (node: ts.Node): void => {
     if (ts.isCallExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'expectObservable') observations.push(node);

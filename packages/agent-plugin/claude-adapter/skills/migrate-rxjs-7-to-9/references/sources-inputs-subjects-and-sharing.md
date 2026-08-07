@@ -7,8 +7,17 @@ RxJS 9 creation capabilities may be static exact Symbols, platform
 the public subpath and signature; do not infer target syntax from the RxJS 7
 name.
 
-Select platform Observable when concurrent observers share an active producer.
-Select `ColdObservable` when every direct subscription starts independent work.
+Default ordinary RxJS 7 sources and factories to `ColdObservable`. Invoke exact
+static Symbols through `ColdObservable` where available so their `[create]`
+protocol preserves producer-per-direct-subscription behavior. For platform
+conversion forms such as `Observable.from`, wrap activation when necessary
+rather than silently sharing concurrent consumers.
+
+Promote a unit to the ambient platform `Observable` only when tests prove that
+concurrent observers should share the active producer or repository-wide
+inventory proves that only one observer can exist at a time. After promotion,
+prefer platform construction and native methods when their contracts fit to
+reduce browser bundle size.
 
 ## ObservableValue input boundary
 
@@ -57,8 +66,12 @@ Observable implementation and cancellation semantics inside the boundary.
 
 ## Sharing and replay
 
-A platform Observable already shares its active producer. Adding `[share]`
-solely to avoid duplicate concurrent work may be redundant or misleading.
+Existing `share`, `shareReplay`, `publish`, `multicast`, `refCount`, `connect`,
+and `connectable` usage is evidence that platform promotion may be appropriate;
+it is not proof by operator name alone. Compare connector type, replay,
+reset-on-error, reset-on-complete, reset-on-zero-ref-count, manual connection,
+and restart behavior. A platform Observable already shares its active producer,
+so a matching `share()` may become redundant only after that comparison.
 
 A late concurrent platform observer joins the already active derived
 Subscriber. `[shareReplay]` cannot force the derived platform initializer to
@@ -68,6 +81,11 @@ run once for that observer, so it does not transparently reproduce every RxJS
 `[share]` applied to a `ColdObservable` can coordinate its direct subscribers
 through a connector. Review reset on error, completion, and zero ref count;
 retention size/age; synchronous reentrancy; and source disconnect.
+
+A single `.subscribe()` in one file is only a promotion candidate. Search
+templates, framework adapters, helper functions, async iteration, Promise
+consumers, retry/repeat paths, public exports, and downstream libraries before
+claiming a single-subscriber topology.
 
 When every direct observer needs current or retained state, use an intentional
 state/Subject API or expose a normal state read beside changes. Preserve the

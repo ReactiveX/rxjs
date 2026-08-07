@@ -1,6 +1,6 @@
 ---
 name: migrate-rxjs-7-to-9
-description: Migrate an RxJS 7 application, library, or test suite to RxJS 9 through an evidence-first behavioral workflow with explicit platform-versus-producer-per-subscription lifecycle decisions, characterization tests, bounded read-only MCP analysis and preview, platform-method-first authoring, exact Symbols when needed, AbortSignal ownership, safe stops, and post-migration verification. Use only for RxJS 7-to-9 migration or migration planning.
+description: Migrate an RxJS 7 application, library, or test suite to RxJS 9 through an evidence-first behavioral workflow with ColdObservable and exact Symbols as the safe default, evidence-gated platform-native optimization, characterization tests, bounded read-only MCP analysis and preview, AbortSignal ownership, safe stops, and post-migration verification. Use only for RxJS 7-to-9 migration or migration planning.
 ---
 
 # Migrate RxJS 7 to RxJS 9
@@ -12,8 +12,8 @@ guidance to RxJS `7.8.2` and target `9.0.0-beta.1`.
 // RxJS 7 shape
 const result = source.pipe(debounceTime(200), switchMap(load));
 
-// Candidate RxJS 9 syntax; lifecycle and cancellation still require review.
-const result = source[debounce](200).switchMap(load);
+// Conservative RxJS 9 syntax for a ColdObservable receiver.
+const result = source[debounce](200)[switchMap](load);
 ```
 
 Use this sequence:
@@ -24,12 +24,18 @@ Use this sequence:
    sources/operators, scheduler usage, tests, inputs, and public RxJS types.
 3. Add characterization tests where repeated subscriptions, cancellation,
    teardown, timing, replay, errors, or completion are not already protected.
-4. Choose `platform-shared`, `producer-per-direct-subscription`, `subject-hot`,
-   `not-applicable`, `unsupported`, or `unresolved` for every migration unit.
+4. Start ordinary RxJS 7 Observable-producing units at
+   `producer-per-direct-subscription`: `ColdObservable` is the behavior-
+   preserving default. Promote a unit to `platform-shared` only after proving
+   intentional RxJS 7 sharing or a repository-wide single-subscriber
+   topology. Use `subject-hot`, `not-applicable`, `unsupported`, or
+   `unresolved` where those contracts actually apply.
 5. Validate the migration-contract schema separately from readiness. A valid
    but unresolved contract is not permission to transform.
-6. Call `migration_capabilities`, then `analyze_migration` with explicit source
-   text and repository-relative names. Resolve refusals before preview.
+6. Call `migration_capabilities` for the complete public-surface catalog and
+   smaller mechanically proved registry, then call `analyze_migration` with
+   explicit source text and repository-relative names. Review sharing and
+   subscriber-topology candidates before choosing platform mode.
 7. Call `preview_migration` only in reviewed batches. The MCP has no filesystem
    authority; inspect candidate source, imports, and every diagnostic before
    applying with the host agent's ordinary editing tools.
@@ -40,8 +46,8 @@ Use this sequence:
    divergence and unresolved stop.
 
 Never infer an unsupported mapping, delete a scheduler argument without timing
-evidence, or choose shared/cold lifecycle silently. A refusal is a successful
-safe stop, not an invitation to bypass the engine.
+evidence, or silently promote cold-default code to the platform lifecycle. A
+refusal is a successful safe stop, not an invitation to bypass the engine.
 
 ## Load references by migration phase
 
@@ -68,8 +74,8 @@ safe stop, not an invitation to bypass the engine.
 - Use [verification and safe stops](references/verification-and-safe-stops.md)
   for completion criteria and blocker handling.
 - Consult the [generated migration capabilities](references/migration-capabilities.md)
-  for the exact mechanically proved registry. Do not copy that mutable list
-  into prose.
+  for the complete public-surface coverage summary and exact mechanically
+  proved registry. Do not copy either mutable list into prose.
 
 Hand target-code questions to `write-rxjs-9`, reviews to `review-rxjs-9`, and
 test implementation to `write-rxjs-9-tests`.

@@ -32,17 +32,18 @@ new Observable((subscriber) => {
 });
 ```
 
-RxJS 9 registers it:
+RxJS 9 registers it on the behavior-preserving cold default:
 
 ```ts
-new Observable((subscriber) => {
+new ColdObservable((subscriber) => {
   const id = setInterval(() => subscriber.next(Date.now()), 1_000);
   subscriber.addTeardown(() => clearInterval(id));
 });
 ```
 
-Choose platform or `ColdObservable` separately. The constructor change alone
-does not preserve producer multiplicity.
+Promote this unit to the platform `Observable` constructor only after sharing
+or repository-wide single-subscriber evidence permits it. The teardown syntax
+change alone does not preserve producer multiplicity.
 
 ## Underlying resource cancellation
 

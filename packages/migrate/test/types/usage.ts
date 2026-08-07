@@ -30,7 +30,7 @@ void result;
 void frameworkResult;
 void planMigrationFiles(options);
 void migrateTestFiles(options);
-void localSpecOutputName({ sourcePath: 'source.spec.ts', sourceRoot: '.', mode: 'unselected' });
+void localSpecOutputName({ sourcePath: 'source.spec.ts', sourceRoot: '.', mode: 'cold' });
 void runCli(['--help']);
 void inspectSkillIntegrity('skill').then((integrity: SkillIntegrity) => integrity.digest);
 void synchronizeSkillInstallation({

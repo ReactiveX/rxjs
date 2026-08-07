@@ -24,7 +24,7 @@ export interface MigrationCliReport {
   readonly capabilityRegistryVersion: string;
   readonly operation: 'dry-run' | 'write';
   readonly status: 'completed' | 'refused';
-  readonly mode: MigrationMode | null;
+  readonly mode: MigrationMode;
   readonly framework: 'preserve' | 'mocha-chai-vitest';
   readonly files: readonly MigratedFile[];
 }
@@ -74,7 +74,7 @@ export async function createMigrationCliReport(
     capabilityRegistryVersion: (options.capabilityRegistry ?? defaultCapabilityRegistry).registryVersion,
     operation: options.write ? 'write' : 'dry-run',
     status: refused ? 'refused' : 'completed',
-    mode: options.mode ?? null,
+    mode: options.mode ?? 'cold',
     framework,
     files: plan.files,
   };
@@ -196,7 +196,7 @@ function usage(): string {
     'Usage: rxjs-migrate [options] <test files...>',
     '',
     'Required: --source-root <dir> --source-repo <url> --source-sha <sha>',
-    'Options:  --mode cold|platform',
+    'Options:  --mode cold|platform (default: cold)',
     '          --framework preserve|mocha-chai-vitest',
     '          --write --out-dir <dir>',
     '',

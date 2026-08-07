@@ -9,8 +9,13 @@ These are candidate shapes plus required review, not blind replacements.
 import { filter, map } from 'rxjs/operators';
 const labels = values.pipe(filter(isValid), map(toLabel));
 
-// RxJS 9 candidate for platform lifecycle
-const labels = values.filter(isValid).map(toLabel);
+// RxJS 9 behavior-preserving default
+import { filter } from 'rxjs/filter';
+import { map } from 'rxjs/map';
+const labels = values[filter](isValid)[map](toLabel);
+
+// Smaller platform-promoted form after sharing/topology proof
+const platformLabels = values.filter(isValid).map(toLabel);
 ```
 
 Review receiver lifecycle, callback `thisArg`, user callback errors, and tests.
@@ -21,8 +26,12 @@ Review receiver lifecycle, callback `thisArg`, user callback errors, and tests.
 // RxJS 7
 const saved = requests.pipe(concatMap(save));
 
-// RxJS 9 candidate for platform lifecycle
-const saved = requests.flatMap(save);
+// RxJS 9 behavior-preserving default
+import { mergeMap } from 'rxjs/merge-map';
+const saved = requests[mergeMap](save, { concurrent: 1 });
+
+// Smaller platform-promoted form after sharing/topology proof
+const platformSaved = requests.flatMap(save);
 ```
 
 Review queue growth, completion, source input category, cancellation of the
@@ -54,7 +63,7 @@ lifecycle; connect directly when possible.
 const ready = await firstValueFrom(state.pipe(filter(isReady)));
 
 // RxJS 9 candidate
-const ready = await state.filter(isReady)[timeout]({ first: 5_000 }).first({ signal: request.signal });
+const ready = await state[filter](isReady)[timeout]({ first: 5_000 }).first({ signal: request.signal });
 ```
 
 Confirm the timeout and owner signal are actual requirements. Distinguish the
@@ -70,15 +79,18 @@ const ticks = new Observable<number>((subscriber) => {
   return () => clearInterval(id);
 });
 
-// RxJS 9 candidate when sharing one active producer is intended.
-const ticks = new Observable<number>((subscriber) => {
+// RxJS 9 behavior-preserving default.
+const ticks = new ColdObservable<number>((subscriber) => {
   const id = setInterval(() => subscriber.next(Date.now()), 1_000);
   subscriber.addTeardown(() => clearInterval(id));
 });
+
+// Use new Observable(...) instead after a reviewed platform promotion.
 ```
 
-Use `ColdObservable` instead when each direct subscription must own a distinct
-timer. Test both overlapping observers and later restart.
+Use the platform constructor only after proving
+that active sharing is intended or that only one observer can exist. Test both
+overlapping observers and later restart before promotion.
 
 ## Subject state
 
@@ -122,11 +134,12 @@ const legacy = {
 };
 
 // RxJS 9: write an explicit active-realm adapter after defining lifecycle.
-const adapted = new Observable((subscriber) => {
+const adapted = new ColdObservable((subscriber) => {
   const handle = subscribeLegacy(legacy, subscriber);
   subscriber.addTeardown(() => handle.dispose());
 });
 ```
 
 Do not use this sketch until setup errors, terminal forwarding, signals, and
-producer sharing are specified.
+producer sharing are specified. A platform adapter is a later optimization
+when the same promotion evidence is present.

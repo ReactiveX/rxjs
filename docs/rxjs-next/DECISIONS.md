@@ -1630,3 +1630,54 @@ Status meanings:
 - **Boundary:** Same-named string and Symbol methods are not mechanically
   interchangeable. The author or migration must review semantics and receiver
   lifecycle before choosing the platform form.
+
+## D-065 — Make RxJS 7 migration complete in coverage and cold by default
+
+- **Status:** Accepted
+- **Supersession:** This narrows D-064's migration consequence. Platform-first
+  remains the RxJS 9 authoring rule when the receiver contract fits, but an
+  RxJS 7 migration remains exact-Symbol/cold-first until platform promotion is
+  proved.
+- **Complete coverage:** `@rxjs/agent-plugin` generates a versioned migration
+  surface catalog from the pinned RxJS 7.8.2 public declarations for `rxjs`,
+  `rxjs/operators`, `rxjs/ajax`, `rxjs/fetch`, `rxjs/webSocket`, and
+  `rxjs/testing`. It joins those declarations with the source-pinned parity
+  registry and unsupported-surface categories. Every public operator,
+  function, value, class, and type therefore has an explicit guided,
+  manual-review, replacement, or unsupported disposition. Cross-cutting
+  scheduler arguments, deep imports, interop protocols, and deprecated aliases
+  remain first-class catalog coverage rather than being hidden as unknowns.
+- **Automation boundary:** Complete catalog coverage does not imply complete
+  codemod support. The deterministic registry remains the smaller set of
+  fixture-proved rewrites with exact arity, precondition, diagnostic, type,
+  behavior, and idempotence evidence. A cataloged but unproved surface receives
+  precise guidance or a safe stop; it is never promoted to mechanical output
+  by name similarity.
+- **Lifecycle default:** An ordinary RxJS 7 Observable maps conservatively to
+  `ColdObservable`, because both create producer work per direct subscription.
+  Exact Symbol operators and exact static factories preserve that construction
+  policy. This cold default may be applied without treating lifecycle as
+  unresolved when it preserves the characterized RxJS 7 contract.
+- **Platform promotion:** A unit moves to the platform Observable only after
+  evidence shows either (1) intentional RxJS 7 sharing/multicasting whose
+  connector, replay, reset, and ref-count behavior fits the platform lifecycle,
+  or (2) a repository-wide guarantee that only one subscriber can exist at a
+  time. A single `.subscribe()` call in one file is only a candidate; templates,
+  framework adapters, helpers, retry/repeat paths, exports, async iteration,
+  and indirect consumers remain part of the proof.
+- **Mode-sensitive authoring:** Cold-mode previews use exact Symbols, including
+  for `map`, `filter`, and flattening, because a native string method on
+  `ColdObservable` intentionally crosses to the platform lifecycle. Explicit
+  platform-mode previews prefer proved native `map`, `filter`, sequential
+  `flatMap`, and `switchMap` forms to avoid extension imports and reduce browser
+  bundle size. Operators with different platform semantics, including
+  `takeUntil`, remain exact.
+- **Analysis:** The read-only MCP reports complete import-surface guidance,
+  direct-subscription topology, and sharing indicators. Those findings can
+  nominate a platform candidate but never establish the repository-wide proof
+  by themselves.
+- **Consequence:** The capability registry advances to `1.1.0`. Omitted mode
+  means cold in the plugin MCP and final transition engine/CLI. Architecture
+  rules that previously said tooling never selected any lifecycle are narrowed:
+  tooling may choose the behavior-preserving cold default, but it must never
+  infer or silently apply platform promotion.

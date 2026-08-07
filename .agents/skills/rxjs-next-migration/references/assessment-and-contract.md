@@ -70,6 +70,12 @@ Do not use a blanket “hot” or “cold” label for a platform Observable. Th
 observer starts an active producer, concurrent observers join it, the last
 observer leaving tears it down, and a later observer can start a new run.
 
+An ordinary RxJS 7 Observable maps to the producer-per-direct-subscription
+`ColdObservable` target by default. Platform promotion requires either
+compatible characterized sharing/multicasting behavior or repository-wide
+proof that only one subscriber can exist at a time. Local syntax can nominate
+that review but cannot complete it.
+
 For every unit, record:
 
 1. stable ID and exact source spans;

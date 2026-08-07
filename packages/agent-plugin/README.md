@@ -8,6 +8,20 @@ The package follows Agent Plugins 1.0. Install the package with the plugin mecha
 
 The read-only MCP server exposes `migration_capabilities`, `analyze_migration`, `preview_migration`, and `validate_migration_contract`. Every request supplies source text and repository-relative names. The server has no project filesystem authority and never applies changes.
 
+`migration_capabilities` covers every public export from the pinned RxJS 7
+root, operators, AJAX, fetch, WebSocket, and testing entrypoints, plus
+cross-cutting scheduler, interop, deprecated-alias, import, and type guidance.
+That complete catalog is intentionally larger than the fixture-proved rewrite
+registry: a covered surface may require guided work, manual review,
+replacement, or an explicit unsupported result rather than automatic output.
+
+Ordinary RxJS 7 Observables migrate conservatively to `ColdObservable`, which
+preserves producer-per-direct-subscription behavior. A unit is promoted to the
+platform Observable only after its existing sharing contract fits or a
+repository-wide single-subscriber topology is proved. Platform-promoted
+previews prefer native methods where the mapping is proved, reducing browser
+bundle cost without crossing a cold lifecycle accidentally.
+
 Requests are rejected atomically when they exceed 25 files, 512 KiB per file, or 2 MiB total, or when a name is absolute, escapes the repository, or is duplicated. A host agent can apply reviewed preview output with its ordinary editing tools.
 
 ## Versions

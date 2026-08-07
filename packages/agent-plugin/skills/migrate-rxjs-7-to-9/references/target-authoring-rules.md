@@ -5,11 +5,16 @@ checks. The target must be idiomatic, reviewable RxJS 9 code.
 
 ## Required target shape
 
-- Prefer a platform string method whenever its behavior and receiver lifecycle
-  fit. This avoids unnecessary extension imports and browser bundle bytes.
+- Default ordinary migrated RxJS 7 producers and derived results to
+  `ColdObservable` plus exact Symbols. Promote a reviewed unit to the platform
+  lifecycle only after sharing or single-subscriber evidence.
+- After platform promotion, prefer a platform string method whenever its
+  behavior fits. This avoids unnecessary extension imports and browser bundle
+  bytes.
 - Import each required operator/factory Symbol from its exact public subpath;
   do not manufacture a same-description Symbol or patch string methods.
-- Select platform Observable or `ColdObservable` deliberately.
+- Treat `ColdObservable` as the conservative selection; record the evidence
+  for every platform selection.
 - Use the public `[create]` protocol in low-level custom operators so result
   lifecycle follows the receiver.
 - Own terminal subscriptions with AbortSignals; do not capture a returned
@@ -29,12 +34,14 @@ checks. The target must be idiomatic, reviewable RxJS 9 code.
 
 ```ts
 import { debounce } from 'rxjs/debounce';
-const result = source[debounce](200).switchMap(load);
+import { switchMap } from 'rxjs/switch-map';
+const result = source[debounce](200)[switchMap](load);
 ```
 
-Review whether `source` now shares one active producer, whether `load` accepts
-cancellation, whether replacement is correct, and where request errors should
-be recovered. Correct imports do not answer those questions.
+Review whether `source` remains producer-per-direct-subscription, whether
+`load` accepts cancellation, whether replacement is correct, and where request
+errors should be recovered. If the unit is later platform-promoted, re-review
+the chain before replacing exact Symbols with native methods.
 
 ## Prefer transformations for domain policy
 

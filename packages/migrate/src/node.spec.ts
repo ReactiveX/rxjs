@@ -46,7 +46,7 @@ describe('migration file planning', () => {
     );
   });
 
-  it('does not silently choose cold lifecycle semantics', async () => {
+  it('defaults to the behavior-preserving cold lifecycle', async () => {
     await writeFile(
       join(sourceRoot, 'scheduler.ts'),
       "import { TestScheduler } from 'rxjs/testing';\nconst scheduler = new TestScheduler(() => undefined);\n"
@@ -54,9 +54,9 @@ describe('migration file planning', () => {
 
     const plan = await planMigrationFiles({ ...options(['scheduler.ts']), mode: undefined });
 
-    expect(plan.files[0]?.outputPath).toBe(join(outputRoot, 'scheduler.unselected.spec.ts'));
-    expect(plan.files[0]?.result.status).toBe('refused');
-    expect(plan.files[0]?.result.diagnostics[0]?.code).toBe('lifecycle-review');
+    expect(plan.files[0]?.outputPath).toBe(join(outputRoot, 'scheduler.cold.spec.ts'));
+    expect(plan.files[0]?.result.status).toBe('changed');
+    expect(plan.files[0]?.result.diagnostics).toEqual([]);
   });
 
   it('rejects lexical source and output traversal', async () => {

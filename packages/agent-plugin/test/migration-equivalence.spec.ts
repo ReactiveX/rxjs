@@ -44,9 +44,10 @@ describe('migration engine transfer', () => {
     expect(listed).toEqual(defaultCapabilityRegistry.capabilities.map(({ id }) => id));
   });
 
-  it('prefers proved platform methods without changing exact takeUntil semantics', () => {
+  it('records platform-method candidates without changing the cold default', () => {
     expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'map')?.target).toBe('platform-method');
     expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'filter')?.target).toBe('platform-method');
+    expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'concatMap')?.platformMethod).toBe('flatMap');
     expect(defaultCapabilityRegistry.capabilities.find(({ legacyName }) => legacyName === 'takeUntil')?.target).toBe('exact-symbol');
   });
 });

@@ -49,6 +49,7 @@ export const capabilityMappingSchema = z
     symbolName: nonEmptyString,
     module: nonEmptyString,
     target: z.enum(capabilityTargets).optional(),
+    platformMethod: nonEmptyString.optional(),
     argumentAdapter: z.enum(argumentAdapters),
     status: z.enum(capabilityStatuses),
     arity: z

@@ -21,15 +21,18 @@ affected pipeline must preserve.
    Add characterization tests for repeated subscriptions, sharing, cancellation,
    teardown, late Subject observers, timing, and errors when those behaviors are
    not already protected.
-2. **Inventory affected surfaces.** Find imports from `rxjs`,
-   `rxjs/operators`, `rxjs/testing`, deep imports, scheduler usage, captured
-   `Subscription` values, custom subscribables, and Observable subclasses.
-3. **Choose a lifecycle for every pipeline.** Record one of the target
-   contracts below. Do not infer it from an operator name or from the word
-   “cold.”
-4. **Apply only proven mechanical changes.** The canonical migration Skill and
-   `@rxjs/migrate` can perform the bounded mappings in the engine's versioned
-   registry. Everything else remains a reviewed source change.
+2. **Inventory every public surface.** Find imports from `rxjs`,
+   `rxjs/operators`, `rxjs/ajax`, `rxjs/fetch`, `rxjs/webSocket`, and
+   `rxjs/testing`, plus deep imports, scheduler usage, captured `Subscription`
+   values, custom subscribables, and Observable subclasses.
+3. **Start with the behavior-preserving lifecycle.** An ordinary RxJS 7
+   `Observable` maps one-for-one to an RxJS 9 `ColdObservable`: every direct
+   subscription creates and owns its producer work. Treat the platform
+   lifecycle as a reviewed optimization, not the default.
+4. **Apply only proven mechanical changes.** The plugin catalogs every public
+   RxJS 7 operator, function, type, and value, while its deterministic engine
+   rewrites only the smaller fixture-proved subset. Everything else follows
+   its cataloged guided, replacement, review, or unsupported path.
 5. **Review the semantic boundaries.** Pay particular attention to concurrent
    observers, late joins, last-observer cancellation, restart after ref-count
    closure, host timing, teardown order, and input conversion.
@@ -37,21 +40,33 @@ affected pipeline must preserve.
    behavioral suite. Record every intentional difference and every unsupported
    surface that remains.
 
-For an agent-led repository migration, install and invoke the canonical Skill
-described in
-[`@rxjs/migrate`](https://github.com/ReactiveX/rxjs/tree/master/packages/migrate).
-The deterministic engine
-is deliberately subordinate to the reviewed lifecycle decisions in this
-workflow.
+For an agent-led repository migration, install `@rxjs/agent-plugin` and invoke
+its `migrate-rxjs-7-to-9` skill. Its deterministic engine is deliberately
+subordinate to the reviewed lifecycle decisions in this workflow.
 
 ## Choose the target lifecycle first
 
 | Target                    | Use it when                                                                  | Contract to verify                                                                                                           |
 | ------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Platform Observable       | Concurrent observers should share one active producer                        | The first observer starts work, later observers join it, the final observer aborts it, and a later observer starts a new run |
-| `ColdObservable`          | Every direct `subscribe()` must create independent producer work             | Each direct subscription owns its producer and cancellation; exact RxJS Symbol results retain the cold construction contract |
+| `ColdObservable`          | Default for every ordinary RxJS 7 Observable-producing unit                  | Each direct subscription owns its producer and cancellation; exact RxJS Symbol results retain the cold construction contract |
+| Platform Observable       | Evidence permits one active producer to be shared                            | The first observer starts work, later observers join it, the final observer aborts it, and a later observer starts a new run |
 | Subject family            | The producer exists before observers subscribe                               | Fanout, current or replayed state, terminal behavior, and late observers match the selected intentional Subject API          |
 | Unsupported or unresolved | The required RxJS 7 behavior has no accepted target or insufficient evidence | Stop before target installation or migration writes and ask for a design decision or stronger characterization tests         |
+
+Promotion from `ColdObservable` to the platform `Observable` is reasonable
+when either of these claims is proved:
+
+- the RxJS 7 unit already uses `share`, `shareReplay`, `publish`, `multicast`,
+  `refCount`, or another sharing boundary whose connector, reset, replay, and
+  cancellation behavior fits the platform lifecycle; or
+- the unit has only one subscriber at a time across the whole repository, so
+  producer sharing cannot change observable behavior.
+
+A single `.subscribe()` call in one file is only a candidate, not proof. Check
+templates, framework bindings, helper functions, exported consumers,
+`retry`/`repeat`, and indirect subscriptions. When RxJS 7 sharing is explicit,
+do not mechanically retain or remove it: characterize the sharing contract and
+then decide whether the platform lifecycle replaces that boundary.
 
 The platform Observable should not be labeled permanently hot or cold. Its
 first subscription creates the active producer, concurrent subscriptions join
@@ -61,8 +76,8 @@ properties.
 
 ## Operator imports and composition
 
-RxJS 7 pipeable operators become exact Symbol imports and Symbol-keyed calls.
-The root package does not install the operator catalog.
+On the safe cold path, RxJS 7 pipeable operators become exact Symbol imports
+and Symbol-keyed calls. The root package does not install the operator catalog.
 
 ```ts
 // RxJS 7
@@ -86,6 +101,13 @@ The platform and RxJS forms can coexist. For example,
 `source.map(project)` is the platform contract while
 `source[map](project)` is the RxJS contract. Importing the RxJS Symbol must not
 replace the platform string-named method.
+
+After a receiver has been deliberately promoted to the platform lifecycle,
+prefer a native platform method such as `.map()`, `.filter()`, `.take()`,
+`.drop()`, `.flatMap()`, or `.switchMap()` whenever its semantics fit. Those
+methods avoid an RxJS extension import and can reduce browser bundle size. Do
+not use this optimization on the cold-default path: an exact Symbol is what
+retains `ColdObservable` construction.
 
 RxJS 9 does not accept the RxJS 7 callback `thisArg` parameter on `every`,
 `filter`, `find`, `findIndex`, `map`, or `partition`. Capture state with a
@@ -139,16 +161,19 @@ Inside a producer, register cleanup with `subscriber.addTeardown()` instead of
 returning teardown logic:
 
 ```ts
-const ticks = new Observable<number>((subscriber) => {
+import { ColdObservable } from 'rxjs';
+
+const ticks = new ColdObservable<number>((subscriber) => {
   let value = 0;
   const handle = setInterval(() => subscriber.next(value++), 1000);
   subscriber.addTeardown(() => clearInterval(handle));
 });
 ```
 
-Platform teardown callbacks run in reverse insertion order. The final
-observer's cancellation closes the shared producer; cancelling one of several
-observers does not.
+`ColdObservable` teardown belongs to each direct subscription. Platform
+teardown callbacks run in reverse insertion order; on a platform Observable,
+the final observer's cancellation closes the shared producer while cancelling
+one of several observers does not.
 
 ## Input conversion and realms
 
@@ -184,7 +209,9 @@ arguments. Runtime capabilities use host timers, animation frames, and narrow
 clock providers where documented. Use `@rxjs/test` to virtualize the supported
 host APIs in deterministic tests.
 
-When migrating marble tests, choose the source model explicitly:
+When migrating marble tests, default RxJS 7 cold sources and ordinary
+Observable-producing code to `cold()`. Choose another source model only when
+the migration contract requires it:
 
 - `cold()` creates independent producer work per subscription;
 - `hot()` creates a Subject-like absolute-timeline producer before observers;
@@ -195,16 +222,19 @@ capability and timing claim have already been classified and tested.
 
 ## What may be automated
 
-The `@rxjs/migrate` default registry currently proves a bounded set of direct,
-unshadowed mappings. The engine itself is the versioned authority; its README
-lists the currently supported subset. A migration tool may proceed only when a
-mapping is both:
+The agent plugin's generated migration surface catalog covers every named
+public export from the six RxJS 7.8.2 package entry points listed above. For
+each surface it reports the target, cold and platform paths, disposition,
+lifecycle rule, platform-method candidate, and evidence status. This is
+complete guidance coverage, not a claim that every migration is mechanical.
 
-- a `replace` entry in the unsupported-surface catalog; and
-- backed by a completed entry in the migration-evidence ledger.
-
-It must stop for `manual review`, `unsupported`, `test only`, or `removed`
-entries. A successful transform is not proof of a completed migration.
+The deterministic engine currently proves only a bounded set of direct,
+unshadowed mappings. Its versioned capability registry is authoritative for
+automatic edits. A migration tool may proceed mechanically only when the
+capability is fixture-proved, its arity and overload preconditions match, and
+the relevant evidence-ledger entry is complete. It must stop for manual-review,
+unsupported, test-only, removed, shadowed, or otherwise unproved constructs. A
+successful transform is not proof of a completed migration.
 
 ## Detailed references
 
@@ -214,9 +244,11 @@ entries. A successful transform is not proof of a completed migration.
 - [Unsupported RxJS 7 surfaces](docs/UNSUPPORTED_RXJS_7_SURFACES.md): imports,
   types, schedulers, interop protocols, and deprecated aliases that require
   replacement, manual review, or removal.
+- [`@rxjs/agent-plugin`](https://github.com/ReactiveX/rxjs/tree/master/packages/agent-plugin):
+  the canonical migration skill, complete generated surface catalog,
+  read-only MCP, safe-stop behavior, and supported mechanical subset.
 - [`@rxjs/migrate`](https://github.com/ReactiveX/rxjs/tree/master/packages/migrate):
-  the canonical Skill, deterministic
-  engine, safe-stop behavior, and supported mechanical subset.
+  the final compatible legacy API and CLI during the beta.1 transition.
 - [Compatibility policy](https://github.com/ReactiveX/rxjs/blob/master/docs/rxjs-next/COMPATIBILITY.md):
   the repository
   rules behind the migration evidence and intentional divergences.
@@ -224,7 +256,8 @@ entries. A successful transform is not proof of a completed migration.
 ## Migration completion checklist
 
 - The RxJS 7 baseline and characterization tests were green before migration.
-- Every affected pipeline has an explicit lifecycle target.
+- Every ordinary RxJS 7 Observable-producing unit uses the cold default or has
+  recorded evidence for platform promotion.
 - Imports use supported package roots or exact Symbol subpaths; no deep import
   remains.
 - Cancellation uses `AbortSignal`; no code expects `subscribe()` to return a

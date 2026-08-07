@@ -37,12 +37,12 @@ describe('migration CLI', () => {
       capabilityRegistryVersion: expect.any(String),
       operation: 'dry-run',
       status: 'completed',
-      mode: null,
+      mode: 'cold',
       framework: 'preserve',
       files: apiPlan.files,
     });
     expect(capture.stderr()).toBe('');
-    await expect(access(join(sourceRoot, 'example.unselected.spec.ts'))).rejects.toMatchObject({ code: 'ENOENT' });
+    await expect(access(join(sourceRoot, 'example.cold.spec.ts'))).rejects.toMatchObject({ code: 'ENOENT' });
   });
 
   it('writes only with the explicit flag and reports the exact bytes written', async () => {
@@ -62,28 +62,36 @@ describe('migration CLI', () => {
     expect(await readFile(file.outputPath, 'utf8')).toBe(file.result.code);
   });
 
-  it('does not silently select lifecycle semantics and does not write a refused plan', async () => {
+  it('uses and reports the cold default when no mode is supplied', async () => {
     await writeFile(
       join(sourceRoot, 'scheduler.ts'),
-      "import { TestScheduler } from 'rxjs/testing';\nconst scheduler = new TestScheduler(() => undefined);\n"
+      [
+        "import { TestScheduler } from 'rxjs/testing';",
+        'const scheduler = new TestScheduler(() => undefined);',
+        "scheduler.run(({ cold, expectObservable }) => {",
+        "  const source = cold('-a-|');",
+        "  expectObservable(source).toBe('-a-|');",
+        '});',
+        '',
+      ].join('\n')
     );
     const capture = capturedIo();
 
     const exitCode = await runCli([...baseArguments('scheduler.ts'), '--write', '--out-dir', outputRoot], capture.io);
     const report = JSON.parse(capture.stdout()) as {
       status: string;
-      mode: string | null;
+      mode: string;
       files: Array<{ outputPath: string; result: { status: string; diagnostics: Array<{ code: string }> } }>;
     };
     const file = report.files[0];
     if (!file) throw new Error('Expected one reported file.');
 
-    expect(exitCode).toBe(migrationCliExitCodes.refused);
-    expect(report.status).toBe('refused');
-    expect(report.mode).toBeNull();
-    expect(file.result.status).toBe('refused');
-    expect(file.result.diagnostics[0]?.code).toBe('lifecycle-review');
-    await expect(access(file.outputPath)).rejects.toMatchObject({ code: 'ENOENT' });
+    expect(exitCode).toBe(migrationCliExitCodes.success);
+    expect(report.status).toBe('completed');
+    expect(report.mode).toBe('cold');
+    expect(file.result.status).toBe('changed');
+    expect(file.result.diagnostics).toEqual([]);
+    expect(await readFile(file.outputPath, 'utf8')).toContain('rxTest');
   });
 
   it('gives programmatic callers the same dry-run/write report contract', async () => {

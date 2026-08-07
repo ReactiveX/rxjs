@@ -1,5 +1,12 @@
 # RxJS Next agent-first migration tooling design
 
+> **Historical transition design:** This document records the design through
+> `9.0.0-beta.0`. D-060 and D-065 supersede its product boundary: the official
+> workflow is now `@rxjs/agent-plugin` with a read-only migration MCP, while
+> the final `@rxjs/migrate@9.0.0-beta.1` preserves this API, CLI, adapter, and
+> legacy Skill for current users. The active architecture and release queue
+> live in `docs/rxjs-next`.
+
 ## Executive summary
 
 RxJS 7-to-Next migration is an agent-led engineering workflow, not a codemod
@@ -31,10 +38,9 @@ tools.
 
 ## Status and audience
 
-This document is the controlling product and technical design for P0.M3
-through P0.M5. Its primary audience is RxJS maintainers implementing and
-qualifying the migration experience. Skill authors, framework-adapter authors,
-and release reviewers are secondary audiences.
+This document is preserved design evidence for P0.M3 through P0.M5 rather than
+the controlling beta.1 product design. Its primary audience is maintainers
+reviewing the transitional engine and its historical qualification evidence.
 
 The design distinguishes:
 
@@ -487,7 +493,8 @@ Agent output is not compared as one golden patch. A run passes only when:
 
 - the baseline is established honestly;
 - required risks and weak coverage are surfaced;
-- the agent does not choose an ambiguous lifecycle automatically;
+- the agent defaults ordinary RxJS 7 Observables to the behavior-preserving
+  cold lifecycle and does not choose platform promotion automatically;
 - characterization tests pass on RxJS 7 before dependency/source migration;
 - deterministic transforms are used only for supported inputs;
 - no required test is weakened, skipped, or deleted without approval;

@@ -26,6 +26,8 @@ const plugin = await parse('plugin.json');
 const mcp = await parse('mcp.json');
 const pluginSchema = await parse('schemas/plugin.schema.json');
 const mcpSchema = await parse('schemas/mcp.schema.json');
+const migrationSurfaceCatalog = await parse('dist/migration-surface-catalog.json');
+const knowledgeDigests = await parse('dist/knowledge-digests.json');
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 const errors = [];
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
@@ -46,6 +48,38 @@ for (const [name, schema, value] of [
 }
 if (plugin.name !== 'rxjs' || plugin.version !== '9.0.0-beta.1')
   errors.push('plugin identity/version is not the synchronized beta.1 identity');
+
+if (
+  migrationSurfaceCatalog.source?.version !== '7.8.2' ||
+  migrationSurfaceCatalog.target?.version !== plugin.version ||
+  migrationSurfaceCatalog.lifecyclePolicy?.defaultConstructor !== 'ColdObservable'
+) {
+  errors.push('migration surface catalog must pin RxJS 7.8.2, target beta.1, and default to ColdObservable');
+}
+if (
+  migrationSurfaceCatalog.counts?.operators !== 114 ||
+  migrationSurfaceCatalog.counts?.total !== migrationSurfaceCatalog.surfaces?.length ||
+  migrationSurfaceCatalog.counts?.mechanicallyProved !== 10
+) {
+  errors.push('migration surface catalog does not have the expected complete/operator/mechanical coverage');
+}
+for (const entrypoint of ['rxjs', 'rxjs/operators', 'rxjs/ajax', 'rxjs/fetch', 'rxjs/webSocket', 'rxjs/testing']) {
+  if (!migrationSurfaceCatalog.source?.entrypoints?.includes(entrypoint)) {
+    errors.push(`migration surface catalog is missing the ${entrypoint} entrypoint`);
+  }
+}
+for (const surface of migrationSurfaceCatalog.surfaces ?? []) {
+  if (!surface.migration?.disposition || !surface.migration?.coldTarget || !surface.migration?.platformTarget) {
+    errors.push(`migration surface ${surface.id ?? '<unknown>'} lacks a complete disposition or lifecycle target`);
+  }
+}
+const catalogBytes = await readFile(resolve(root, 'dist/migration-surface-catalog.json'));
+if (
+  knowledgeDigests.migrationSurfaceCatalog?.sha256 !== sha256(catalogBytes) ||
+  knowledgeDigests.migrationSurfaceCatalog?.bytes !== catalogBytes.byteLength
+) {
+  errors.push('migration surface catalog does not match its generated knowledge digest');
+}
 const server = mcp.mcpServers?.['rxjs-migration'];
 if (server?.command !== 'node' || server?.cwd !== '${PLUGIN_ROOT}' || server?.args?.[0] !== '${PLUGIN_ROOT}/dist/mcp-server.cjs') {
   errors.push('mcp.json must start the prebuilt bundle from PLUGIN_ROOT without a shell or installer');

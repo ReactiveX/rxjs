@@ -36,8 +36,9 @@ mutation is not complete until its external result is verified.
 | `DONE`    | P7.6  | Validate the universal artifact and digest-locked Claude adapter                                                                                |
 | `DONE`    | P7.7  | Put the agent plugin front-and-center in package, migration, release, and `rxjs.dev` documentation                                              |
 | `DONE`    | P7.8  | Build a first-class expert knowledge layer with RxJS 7 authoring, concrete examples, common patterns, and deep progressive references           |
-| `NEXT`    | P7.9  | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
-| `PLANNED` | P7.10 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
+| `DONE`    | P7.9  | Complete migration coverage across the full RxJS 7 public surface and make `ColdObservable` the conservative lifecycle default                  |
+| `NEXT`    | P7.10 | Publish and verify the synchronized beta.1 train, then deprecate `@rxjs/migrate` with the replacement message                                   |
+| `PLANNED` | P7.11 | Remove the migration workspace after registry verification and publish the RxJS 7 documentation-only backport                                   |
 
 ## P7.1 — Architecture rollover
 
@@ -172,7 +173,33 @@ Completion evidence must include a reference inventory, example coverage by
 skill, generated-content containment checks, and deterministic skill/package
 validation. Paid or model-backed evaluation remains prohibited.
 
-## P7.9–P7.10 — Release and retirement
+## P7.9 — Complete migration coverage and lifecycle selection
+
+Generate a complete migration catalog from the pinned RxJS 7.8.2 public
+declarations, parity evidence, and unsupported-surface policy. It must cover
+every operator, root function/value/type, AJAX, fetch, WebSocket, testing,
+scheduler, interop, deep-import, and deprecated-alias concern. Each surface has
+an explicit target/disposition even when no mechanical transform is safe.
+
+Keep complete coverage distinct from automatic rewriting. The mechanically
+supported registry remains limited to fixture-proved mappings and refuses
+unproved overloads or syntax. Advance its version when emitted lifecycle or
+invocation policy changes.
+
+Make `ColdObservable` plus exact Symbols the default for ordinary RxJS 7
+Observable-producing code. Permit platform promotion only with characterized
+sharing/multicasting evidence or a repository-wide single-subscriber proof.
+Platform-promoted output prefers proved native methods for bundle size; cold
+output must not cross lifecycle accidentally through a native string method.
+The MCP reports catalog guidance, sharing indicators, and local subscriber
+topology without claiming that file-local syntax proves a global contract.
+
+Completion requires declaration-to-catalog completeness tests, mode-specific
+engine/MCP fixtures, legacy-engine equivalence, updated migration Skills and
+public guidance, package/adapter digest validation, and the deterministic free
+package gate. No model or paid evaluation runs.
+
+## P7.10–P7.11 — Release and retirement
 
 Prepare and publish `9.0.0-beta.1` in this order:
 
@@ -300,3 +327,26 @@ ordinary agent tools.
   cancellation.
 - Deterministic evidence now covers 93 focused references, 39 plugin tests,
   and a 115-file packed artifact. P7.9 remains the sole `NEXT` item.
+
+### 2026-08-07 — P7.9 complete migration coverage
+
+- Generated a digest-locked catalog for all 248 named exports across the six
+  pinned RxJS 7.8.2 public entry points: 114 operator functions, 37 other
+  functions, 70 types, and 27 other runtime values. Every surface records a
+  lifecycle-aware target and disposition; only 10 fixture-proved mappings are
+  mechanical.
+- Recorded D-065 and made `ColdObservable` plus exact Symbols the default.
+  Sharing constructs and a file-local single subscriber are platform
+  candidates only; platform promotion still requires behavioral or
+  repository-wide evidence. Explicit platform mode prefers proved native
+  methods for smaller browser bundles.
+- Advanced both engine copies to capability registry `1.1.0`, retained
+  candidate-output equivalence, and added declaration-completeness, topology,
+  sharing, default-mode, and mode-specific invocation tests.
+- Deterministic evidence: all 46 plugin tests, schema/Skill/framework/type
+  checks, the 116-file packed artifact and MCP lifecycle, all 166 transitional
+  migration tests, migration package build/import/type/package checks, and the
+  RxJS migration-guide type check passed. No model, paid-token, authenticated,
+  or credit-consuming evaluation ran.
+- Marked P7.9 complete and advanced synchronized beta.1 publication and
+  registry verification as the sole `NEXT` item.

@@ -14,6 +14,7 @@ export {
   migrationContractSchemaVersion,
   migrationEngineVersion,
 } from './version.js';
+export { defaultMigrationSurfaceCatalog, findMigrationSurface } from './surface-catalog.js';
 export type {
   ArgumentAdapter,
   DiagnosticDisposition,
@@ -26,3 +27,10 @@ export type {
   RefusalScope,
   SourceProvenance,
 } from './types.js';
+export type {
+  MigrationAutomationLevel,
+  MigrationSurface,
+  MigrationSurfaceCatalog,
+  MigrationSurfaceDisposition,
+  MigrationSurfaceGuidance,
+} from './surface-catalog.js';

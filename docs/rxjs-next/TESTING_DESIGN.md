@@ -653,12 +653,11 @@ action. Clean CI builds the observable-polyfill runtime dependency before the
 audit so source imports resolve through the same package boundary contributors
 use locally.
 
-Reusable authoring support lives in the independently publishable
-`@rxjs/migrate` package. Its semantic transform is independent of test-runner
-syntax; Mocha/Chai-to-Vitest is the first adapter, and callers may preserve or
-replace it. P0.M1 also included a dry-run-first CLI, portable Skill assets, and
-read-only source-content MCP tools. Under D-046, the accepted product is the
-deterministic engine plus one canonical Skill and thin harness adapters; P0.M3
-removes the MCP prototype. None participates in test collection or execution
-after migrated files are accepted. Mechanical fixture evidence and agent
-workflow evidence remain separate gates.
+Reusable agent guidance now lives in `@rxjs/agent-plugin`; its read-only MCP
+owns the source-content analysis and preview boundary accepted by D-060 and
+D-065. The final `@rxjs/migrate@9.0.0-beta.1` preserves the framework-neutral
+semantic transform, dry-run-first CLI, legacy Skill assets, and
+Mocha/Chai-to-Vitest adapter for existing users during the transition. Neither
+package participates in test collection or execution after migrated files are
+accepted. Complete public-surface guidance, fixture-proved mechanical
+rewrites, and historical agent-workflow evidence remain distinct claims.

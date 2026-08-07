@@ -53,6 +53,7 @@ export interface CapabilityMapping {
   readonly symbolName: string;
   readonly module: string;
   readonly target?: CapabilityTarget;
+  readonly platformMethod?: string;
   readonly argumentAdapter: ArgumentAdapter;
   readonly status: CapabilityStatus;
   readonly arity: CapabilityArity;

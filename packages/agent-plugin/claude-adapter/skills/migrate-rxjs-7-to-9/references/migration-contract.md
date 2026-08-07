@@ -34,6 +34,12 @@ units that cannot be reviewed coherently.
 
 ## Lifecycle values
 
+An ordinary RxJS 7 Observable unit begins at
+`producer-per-direct-subscription`. This default does not need special approval
+when it preserves the characterized RxJS 7 behavior. A `platform-shared`
+selection records either intentional RxJS 7 sharing evidence or a repository-
+wide single-subscriber proof.
+
 - `platform-shared`: first observer starts active work, concurrent observers
   join, final observer cancellation tears it down, later observation restarts.
 - `producer-per-direct-subscription`: each direct `subscribe()` creates and

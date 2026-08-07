@@ -15,8 +15,8 @@
       "bytes": 6514
     },
     "skills/migrate-rxjs-7-to-9/references/migration-capabilities.md": {
-      "sha256": "eeba59648592423a9262cc828bc99c7c132a606f1f3296600b48dbab71f0f567",
-      "bytes": 658
+      "sha256": "415b49674b3338cd0df05b0dbd423a0118ff3999c88c9b2ee0eb9605422d8873",
+      "bytes": 1425
     },
     "skills/integrate-rxjs-frameworks/references/framework-versions.md": {
       "sha256": "e25ccb96ca2a35e429b385f36e3af04130799c0d1446ea52e3875ee8df97bc79",
@@ -25,6 +25,20 @@
     "skills/optimize-rxjs-bundles/references/entry-points.md": {
       "sha256": "20707e5bbb71e1d5ee976fa8017b156223049d2dccf8dc2f08ac19706e7d80b2",
       "bytes": 2768
+    }
+  },
+  "migrationSurfaceCatalog": {
+    "path": "dist/migration-surface-catalog.json",
+    "sha256": "990e18b5e5ce45b43349573f04d08b4ac3463d68df9fc26f7cf704ce30297707",
+    "bytes": 241699,
+    "counts": {
+      "total": 248,
+      "operators": 114,
+      "functions": 151,
+      "nonOperatorFunctions": 37,
+      "types": 70,
+      "values": 27,
+      "mechanicallyProved": 10
     }
   },
   "sources": {
@@ -37,23 +51,31 @@
       "bytes": 1125
     },
     "packages/rxjs/MIGRATION.md": {
-      "sha256": "1d4f9687a08608c68a0732eb3935154dc41804525b6a6c79bf9637dea329089b",
-      "bytes": 10662
+      "sha256": "e7879b023bd17c74f81e9e90c31c6363bcb298ad8c48cef89eb25d048f0d6e30",
+      "bytes": 13025
     },
     "packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md": {
       "sha256": "3bcb1770931564751da7e8012286e24a0ba3b01175c075c1e80433fae7e2caa4",
       "bytes": 56367
+    },
+    "packages/rxjs/test/ported/capability-registry.json": {
+      "sha256": "86cf9f345be26f23e80990d494664d28672d36319cba27e5ff236983a4910749",
+      "bytes": 54967
+    },
+    "packages/rxjs/test/ported/unsupported-surface-catalog.json": {
+      "sha256": "1f736a7623c5a7510ffcc2aec62de9b2c8c0a26f4c9da5215d91dd6a8e64df18",
+      "bytes": 14226
     },
     "packages/agent-plugin/package.json": {
       "sha256": "5ac492b031f4f2a57b5635696f2fdaaa6baaac469c0599fdea5a6f9884572edc",
       "bytes": 2148
     },
     "packages/agent-plugin/src/migration/capabilities.ts": {
-      "sha256": "9a163df99c164e071998fb7fbf169243f5ee97e78c4098c2722991549ceec09f",
-      "bytes": 5033
+      "sha256": "83a65dce25db601e9faec6c736c42608f7cacf1fd09a2d55d55a8078077a130f",
+      "bytes": 5315
     },
     "packages/agent-plugin/src/migration/version.ts": {
-      "sha256": "50503d50c1d83a9268fb17b5638a9e20e3048e9eafe76456fd9a36803e00242a",
+      "sha256": "dfb14aa2b55a6159d516938a21ae4ead2f62a40c4da3007acb3e46f47ccd5a99",
       "bytes": 288
     }
   }

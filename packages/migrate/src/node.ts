@@ -6,7 +6,7 @@ import type { MigrationResult, ProjectMigrationOptions, SourceProvenance } from 
 export interface OutputNameContext {
   readonly sourcePath: string;
   readonly sourceRoot: string;
-  readonly mode: 'cold' | 'platform' | 'unselected';
+  readonly mode: 'cold' | 'platform';
 }
 
 export type OutputNamePolicy = (context: OutputNameContext) => string;
@@ -62,7 +62,7 @@ export async function planMigrationFiles(options: MigrateFilesOptions): Promise<
   const canonicalSourceRoot = await canonicalDirectory(sourceRoot, 'sourceRoot');
   const canonicalOutputRoot = await canonicalFutureDirectory(outputRoot, 'outputRoot');
   const outputName = options.outputName ?? localSpecOutputName;
-  const outputMode = options.mode ?? 'unselected';
+  const outputMode = options.mode ?? 'cold';
   const sources: PlannedSource[] = [];
   const canonicalSources = new Set<string>();
 
@@ -112,7 +112,7 @@ export async function planMigrationFiles(options: MigrateFilesOptions): Promise<
     };
     const result = migrateTestSource(plannedSource.source, {
       ...options,
-      mode: options.mode,
+      mode: outputMode,
       provenance,
       fileName: plannedSource.localSourcePath,
     });

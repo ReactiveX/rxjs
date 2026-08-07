@@ -15,9 +15,10 @@ For each `new Observable` or subclass, record:
 - `subscriber.closed` checks and late asynchronous work; and
 - public subclass/constructor assumptions.
 
-Choose platform Observable or `ColdObservable`, replace returned teardown with
-`addTeardown`, pass signals to resources, use `subscriber.active`, and test
-concurrent observers plus reentrancy.
+Default to `ColdObservable`, replace returned teardown with `addTeardown`, pass
+signals to resources, use `subscriber.active`, and test concurrent observers
+plus reentrancy. Promote to a platform Observable only after compatible
+sharing or repository-wide single-subscriber evidence is recorded.
 
 ## Prefer public transformation composition
 
@@ -26,12 +27,15 @@ become an ordinary RxJS 9 source-to-source transformation composed through the
 exact `[pipe]` Symbol:
 
 ```ts
-const valid = () => (source: Observable<Reading>) => source.filter((reading) => reading.valid);
+import { filter } from 'rxjs/filter';
+
+const valid = () => (source: ColdObservable<Reading>) => source[filter]((reading) => reading.valid);
 ```
 
 Do not recreate `.pipe` or the RxJS 7 `OperatorFunction` type family. Prefer
-platform methods inside the transformation when their contracts fit; use an
-exact Symbol when behavior differs or `ColdObservable` lifecycle must persist.
+the exact Symbol while the receiver follows the cold default. After a reviewed
+platform promotion, prefer `source.filter(...)` when its contract fits to
+avoid the extension import.
 
 ## Low-level public operator migration
 

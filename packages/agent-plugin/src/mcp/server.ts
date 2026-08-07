@@ -19,7 +19,7 @@ export function createRxjsMcpServer(): McpServer {
     'migration_capabilities',
     {
       description:
-        'Return versioned RxJS 7-to-9 target invocations, mappings, preconditions, evidence classifications, limits, and engine schemas.',
+        'Return complete RxJS 7 public-surface migration guidance plus the smaller fixture-proved rewrite registry, lifecycle policy, limits, and engine versions.',
       inputSchema: {},
       annotations: readOnlyAnnotations,
     },
@@ -29,7 +29,8 @@ export function createRxjsMcpServer(): McpServer {
   server.registerTool(
     'analyze_migration',
     {
-      description: 'Analyze explicit source contents for lifecycle flags, unsupported constructs, and structured migration diagnostics.',
+      description:
+        'Analyze explicit source contents for complete import-surface guidance, subscriber topology, sharing candidates, lifecycle recommendations, unsupported constructs, and structured diagnostics.',
       inputSchema: batchSchema.shape,
       annotations: readOnlyAnnotations,
     },
@@ -39,7 +40,8 @@ export function createRxjsMcpServer(): McpServer {
   server.registerTool(
     'preview_migration',
     {
-      description: 'Return candidate source, imports, and diagnostics without reading or writing project files.',
+      description:
+        'Return cold-by-default candidate source, imports, and diagnostics without reading or writing project files; platform mode must be selected explicitly.',
       inputSchema: batchSchema.shape,
       annotations: readOnlyAnnotations,
     },

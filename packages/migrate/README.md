@@ -10,7 +10,8 @@ Deterministic source-migration tools used by the RxJS 9 agent-first
 migration workflow. The current well-tested path migrates RxJS 7
 `TestScheduler` marble specs from Mocha/Chai to ordinary Vitest specs that call
 `rxTest` directly. The engine is not a complete migration product and does not
-choose lifecycle semantics; see
+promote code to the platform lifecycle on its own; omitted mode defaults to the
+behavior-preserving `ColdObservable` path. See
 [`docs/MIGRATION_TOOLING_DESIGN.md`](docs/MIGRATION_TOOLING_DESIGN.md).
 
 The package separates two concerns:
@@ -40,6 +41,9 @@ npx rxjs-migrate \
 ```
 
 The command writes nothing unless `--write --out-dir <directory>` is present.
+When `--mode` is omitted, the CLI uses `cold`. Select `platform` only after
+recording evidence that the affected unit intentionally shares producer work
+or has a repository-wide single-subscriber topology.
 Written files are normal, locally named source files. They are meant to be
 reviewed, checked in, and maintained by the destination project; there is no
 runtime generator. Successful and refused batches are emitted as versioned

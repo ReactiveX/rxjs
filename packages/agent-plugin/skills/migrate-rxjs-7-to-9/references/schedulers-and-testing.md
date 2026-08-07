@@ -20,7 +20,8 @@ contract. Do not strip the argument and call the result equivalent.
 
 ## Migrate tests to `@rxjs/test`
 
-Choose the source model explicitly:
+Use `cold()` as the RxJS 7 behavior-preserving default. Choose another source
+model only when the old test proves it:
 
 - `cold()` — independent producer work per subscription;
 - `hot()` — Subject-like absolute-timeline producer that exists before
@@ -40,9 +41,10 @@ order.
 
 ## TestScheduler migration
 
-The engine requires an explicit cold or platform mode for supported
-TestScheduler transformations and refuses ambiguous multiple-observation or
-mixed-setup cases. Treat the refusal as a request for lifecycle evidence.
+The engine defaults supported TestScheduler transformations to cold mode.
+Platform mode remains explicit and refuses ambiguous multiple-observation or
+mixed-setup cases. Treat that refusal as a request for lifecycle evidence, not
+as a reason to change the marble source silently.
 
 Use only deterministic local tests as release gates. Do not invoke model-
 backed, credit-consuming, or authenticated agent evaluations.

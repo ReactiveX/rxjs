@@ -38,6 +38,19 @@ previews, and contract validation. It receives only source text and
 repository-relative names supplied by the host agent. It has no project
 filesystem authority and never applies changes.
 
+Its generated catalog covers every named public RxJS 7.8.2 export from the
+root, operators, AJAX, fetch, WebSocket, and testing entry points, plus
+cross-cutting scheduler, deep-import, interop, and deprecated-alias concerns.
+That complete guidance is intentionally separate from the smaller set of
+fixture-proved automatic rewrites.
+
+Ordinary RxJS 7 Observables migrate to `ColdObservable` by default, preserving
+one producer per direct subscription. Existing `share`-style behavior or a
+repository-wide single-subscriber guarantee can justify promotion to the
+platform Observable after review. A file-local pattern is only a candidate.
+Once promoted, native platform methods are preferred where semantically
+equivalent so browser builds avoid unnecessary RxJS extension imports.
+
 Calls are rejected atomically above 25 files, 512 KiB per file, or 2 MiB total,
 and invalid or traversing paths are refused. Apply a preview only after
 reviewing its diagnostics and lifecycle choices.
