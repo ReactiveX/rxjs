@@ -1,31 +1,80 @@
 # Migration contract
 
-## Required evidence
+The contract makes behavior and evidence reviewable before source changes.
+Schema validity and migration readiness are independent.
 
-- Exact source RxJS version, package manager, TypeScript version, framework,
-  test runners, and green baseline commands.
-- One unit per affected pipeline with repository-relative source spans,
-  behavioral claims, evidence classification, target lifecycle, and approval.
-- Diagnostics, intentional divergences, post-migration verification, and
-  accepted or unresolved blockers.
+## Repository evidence
 
-Schema validity and readiness are separate. Use
-`validate_migration_contract`; a valid manifest can still be incomplete.
+Record:
 
-## Lifecycle decisions
+- exact RxJS source version;
+- package manager, TypeScript, framework, and test-runner versions;
+- green baseline build, type, lint, and behavioral commands;
+- known baseline failures that are unrelated to migration; and
+- source commit or digest that the inventory describes.
+
+## Migration units
+
+Use one unit per affected pipeline or tightly coupled public behavior. Each
+unit should contain:
+
+- stable id and repository-relative source span;
+- source lifecycle and observable behavior claims;
+- evidence classification and exact characterization tests;
+- chosen target lifecycle;
+- cancellation, error, completion, ordering, sharing, and timing decisions;
+- mechanical diagnostics and candidate status;
+- intentional divergences;
+- reviewer approval or unresolved blocker; and
+- post-migration verification evidence.
+
+Do not create one unit per file when unrelated pipelines in the file have
+different lifecycles. Do not split a shared producer and its consumers into
+units that cannot be reviewed coherently.
+
+## Lifecycle values
 
 - `platform-shared`: first observer starts active work, concurrent observers
-  join, last observer cancellation tears it down, later observation restarts.
-- `producer-per-direct-subscription`: use an intentional RxJS 9 cold boundary.
-- `subject-hot`: producer exists before observers; record replay/current and
-  terminal rules.
-- `not-applicable`: no Observable producer lifecycle is involved.
-- `unsupported`: no accepted target exists; stop and record impact.
-- `unresolved`: owner intent or evidence is missing; stop and ask.
+  join, final observer cancellation tears it down, later observation restarts.
+- `producer-per-direct-subscription`: each direct `subscribe()` creates and
+  owns independent work through `ColdObservable` or another accepted boundary.
+- `subject-hot`: producer exists before observers; record live/current/replay,
+  retention, and terminal behavior.
+- `not-applicable`: the unit has no producer lifecycle decision.
+- `unsupported`: evidence shows no accepted RxJS 9 target.
+- `unresolved`: owner intent or behavioral evidence is insufficient.
 
-## MCP boundary
+`unsupported` and `unresolved` are stop states. Do not convert them to a target
+merely to make the manifest look complete.
 
-The MCP accepts source text, never repository paths to read. Its maximum batch
-is 25 files, 512 KiB per file, and 2 MiB total. Malformed or oversized batches
-are refused before any partial result. An agent may apply reviewed preview
-output only with its normal editing authority.
+## Evidence classifications
+
+- `portable`: the behavioral claim remains meaningful across the target
+  lifecycle with an accepted harness.
+- `harness-rewrite`: behavior is retained but test mechanics must change.
+- `compatibility-only`: the source contract belongs to RxJS 7 and needs an
+  explicit target decision.
+- `intentional-divergence`: RxJS 9 deliberately differs; document the new
+  behavior and caller impact.
+- `unsupported-or-obsolete`: no supported target exists or the old surface
+  should be removed.
+
+Classification is not a confidence score. A portable operator can still sit
+inside a pipeline whose producer lifecycle changes.
+
+## Validation boundary
+
+Call `validate_migration_contract` to check structure and version alignment.
+Then inspect readiness diagnostics. A schema-valid manifest may still contain
+unresolved lifecycles, missing evidence, stale source spans, or unapproved
+divergences.
+
+## MCP authority
+
+The MCP receives explicit source text and repository-relative names. It cannot
+read, write, enumerate, or execute repository files. The host agent may apply
+reviewed preview output only through its normal editing authority.
+
+An entire request is refused before processing if malformed, duplicated,
+absolute/escaping, larger than 25 files, larger than 512 KiB for one file, or
+larger than 2 MiB total. There is no partial output for a refused batch.
