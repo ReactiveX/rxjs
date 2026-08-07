@@ -55,3 +55,21 @@ function identity<T>(value: T): T {
 function defaultCompare<T>(previous: T, current: T): boolean {
   return previous === current;
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `distinctUntilChanged` form of the exact-Symbol `[distinctUntilChanged]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[distinctUntilChanged]` to its source.
+ */
+export function pipeableDistinctUntilChanged<T>(comparator?: Comparator<T> | null): (source: Observable<T>) => Observable<T>;
+export function pipeableDistinctUntilChanged<T, K>(comparator: Comparator<K> | null | undefined, keySelector: KeySelector<T, K>): (source: Observable<T>) => Observable<T>;
+export function pipeableDistinctUntilChanged(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[distinctUntilChanged] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

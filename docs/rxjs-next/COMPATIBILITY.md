@@ -234,14 +234,21 @@ support:
   producer-per-subscription Next semantics.
 
 The exact Symbol-addressed `[pipe]` remains an intentional Next API. D-060's
-parallel pilot now adds root `rx`, pipeable `map`, `filter`, `take`, and
-Observable-returning `toArray`, plus
-`UnaryFunction` and `OperatorFunction`. `OperatorFunction<T, T>` replaces the
-redundant `MonoTypeOperatorFunction` alias. These are new Next contracts and do
-not imply that RxJS 7 import paths, scheduler overloads, broad
-`ObservableInput`, or full `Subscription` behavior are restored. The optional
-`subscribe` terminal exposes only `unsubscribe()` and a live `closed` getter
-backed by one AbortSignal.
+parallel experiment now adds root `rx`, 91 source-bound functions, 12 static
+functions, Observable-returning `toArray`, `UnaryFunction`, and
+`OperatorFunction`. `OperatorFunction<T, T>` replaces the redundant
+`MonoTypeOperatorFunction` alias. Six dual static/source capabilities use
+`*With` names for their pipeable forms. These are new Next contracts and do
+not imply that RxJS 7 scheduler overloads, broad `ObservableInput`, or full
+`Subscription` behavior are restored. The optional `subscribe` terminal
+exposes only `unsubscribe()` and a live `closed` getter backed by one
+AbortSignal.
+
+The four async-iteration functions deliberately return `AsyncGenerator`
+instead of Observable. The complete additive import layout exposes
+`rxjs/pipeable`, `rxjs/static`, and `rxjs/symbol` barrels and focused paths;
+established `rxjs/map`-style paths continue to export Symbols until a separate
+breaking package-layout decision is accepted.
 
 The initial `rx` overloads preserve exact types through nine transformations
 and return `unknown` for longer chains. Migration tooling must not hide that

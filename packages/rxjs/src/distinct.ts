@@ -42,3 +42,20 @@ Observable.prototype[distinct] = function <T, K = T>(
     subscribeToSource(flushSource, subscriber, { next: () => keys.clear(), complete: () => void 0 });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `distinct` form of the exact-Symbol `[distinct]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[distinct]` to its source.
+ */
+export function pipeableDistinct<T, K = T>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): (source: Observable<T>) => Observable<T>;
+export function pipeableDistinct(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[distinct] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

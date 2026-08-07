@@ -84,3 +84,20 @@ Observable.prototype[sequenceEqual] = function <T>(
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `sequenceEqual` form of the exact-Symbol `[sequenceEqual]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[sequenceEqual]` to its source.
+ */
+export function pipeableSequenceEqual<T>(other: Observable<T>, comparator?: (left: T, right: T) => boolean): (source: Observable<T>) => Observable<boolean>;
+export function pipeableSequenceEqual(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[sequenceEqual] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

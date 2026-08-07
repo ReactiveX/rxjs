@@ -1516,7 +1516,7 @@ Status meanings:
 
 ## D-060 — Evaluate an all-pipeable beta surface alongside exact Symbols
 
-- **Status:** Proposed
+- **Status:** Proposed; complete catalog experiment implemented for review
 - **Direction under review:** Add ordinary pipeable operator functions at the
   `rxjs` root and compose them with `rx(input, ...functions)`. `rx` converts its
   first input through the active platform `Observable.from` and returns the
@@ -1569,6 +1569,42 @@ Status meanings:
   `rxjs/subscribe` paths plus additive per-operator `rxjs/pipeable/*` and
   `rxjs/symbol/*` aliases for `map`, `filter`, and `take`. Established Symbol
   subpaths are unchanged.
+
+### Complete-catalog review slice
+
+- **Status:** Proposed implementation for review
+- **Maintainer direction:** Expand the experiment to every current
+  source-bound Symbol capability. Where one capability also has a static form,
+  keep the ordinary static name and use a `*With` name for the source-bound
+  function.
+- **Catalog:** The experiment exposes 91 source-bound functions and 12 static
+  functions. Six capabilities occur in both groups, covering all 97 public
+  capability Symbols. The D-037 construction protocol remains Symbol-only.
+- **Static/source-bound names:** `combine`/`combineWith`,
+  `combineLatest`/`combineLatestWith`, `concat`/`concatWith`,
+  `merge`/`mergeWith`, `onErrorResumeNext`/`onErrorResumeNextWith`, and
+  `race`/`raceWith` are deliberately distinct.
+- **Hook rejection:** A private hook on a static function cannot affect
+  `rx(source, merge(other))` because `merge(other)` is evaluated before `rx`.
+  Branding the returned Observable would give one value hidden
+  context-dependent behavior and did not preserve the fixed overloads'
+  generic output or callback contextual typing without substantially more
+  recursive type machinery.
+- **Terminal preservation:** `iterateBufferedValues`, `iterateEachValue`,
+  `iterateLatestValue`, and `iterateNextValue` remain unary terminal functions
+  returning their exact `AsyncGenerator` types.
+- **Implementation seam:** `map` and `take` retain their reviewed shared
+  `operate` callbacks. The broad catalog uses generated, overload-preserving
+  facades over the existing exact-Symbol implementation so runtime behavior
+  and the historical tests remain one seam during evaluation.
+- **Paths:** Add complete `rxjs/pipeable`, `rxjs/static`, and `rxjs/symbol`
+  barrels plus per-capability paths. Existing ordinary Symbol deep imports are
+  retained until the final package-layout decision.
+- **Consequence:** Importing the complete `rxjs` root now loads the shared
+  side-effectful Symbol implementation modules. The previous root-core-only
+  import fixture is replaced by a functional-surface coexistence fixture.
+  Bundle retention and whether implementation modules must be separated from
+  Symbol installation remain explicit final-review gates.
 
 ## D-061 — Name the platform conversion union `ObservableInput`
 

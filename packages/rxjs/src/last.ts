@@ -83,3 +83,24 @@ function lastOperator<T, D>(
 }
 
 Observable.prototype[last] = lastOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `last` form of the exact-Symbol `[last]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[last]` to its source.
+ */
+export function pipeableLast<T>(predicate: BooleanConstructor): (source: Observable<T>) => Observable<TruthyTypesOf<T>>;
+export function pipeableLast<T, D>(predicate: BooleanConstructor, defaultValue: D): (source: Observable<T>) => Observable<TruthyTypesOf<T> | D>;
+export function pipeableLast<T, D = T>(predicate?: null, defaultValue?: D): (source: Observable<T>) => Observable<T | D>;
+export function pipeableLast<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): (source: Observable<T>) => Observable<S>;
+export function pipeableLast<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): (source: Observable<T>) => Observable<T | D>;
+export function pipeableLast(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[last] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

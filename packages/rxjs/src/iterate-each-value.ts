@@ -45,3 +45,20 @@ declare global {
 Observable.prototype[iterateEachValue] = function <T>(this: Observable<T>): AsyncGenerator<T, void, void> {
   return eachValueAsyncGenerator(this);
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `iterateEachValue` form of the exact-Symbol `[iterateEachValue]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The AsyncGenerator result is returned unchanged, preserving the selected AsyncIterable strategy.
+ *
+ * @returns A unary function that applies `[iterateEachValue]` to its source.
+ */
+export function pipeableIterateEachValue<T>(): (source: Observable<T>) => AsyncGenerator<T, void, void>;
+export function pipeableIterateEachValue(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[iterateEachValue] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

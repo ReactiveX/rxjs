@@ -89,3 +89,20 @@ function switchScanOperator<T, R, Input extends ObservableInput<any>>(
 }
 
 Observable.prototype[switchScan] = switchScanOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `switchScan` form of the exact-Symbol `[switchScan]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[switchScan]` to its source.
+ */
+export function pipeableSwitchScan<T, R, Input extends ObservableInput<any>>(accumulator: (accumulator: R, value: T, index: number) => Input, seed: R): (source: Observable<T>) => Observable<ObservedValueOf<Input>>;
+export function pipeableSwitchScan(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[switchScan] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

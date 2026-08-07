@@ -36,8 +36,9 @@
     "test:unit:report": "node test/ported/report.mjs",
     "test:unit:failures:generate": "node test/ported/tools/generate-failure-tracker.mjs",
     "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/fixtures.mjs && node test/import/bundler.mjs",
+    "test:functional-surface": "node ../../scripts/generate-pipeable-surface.mjs --check",
     "test:kernel": "pnpm --filter @rxjs/observable-polyfill build && pnpm run build && node test/kernel/run.mjs",
-    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:migration-contracts && pnpm run test:installations && pnpm run test:imports",
+    "test:package": "pnpm run build && pnpm run test:functional-surface && pnpm run test:types && pnpm run test:migration-contracts && pnpm run test:installations && pnpm run test:imports",
     "test:installations": "node test/import/check-extension-installs.mjs",
     "test:types": "tsc -p test/types/tsconfig.json --noEmit",
     "test:unit:parity:generate": "node test/ported/tools/generate-parity-doc.mjs",
@@ -86,7 +87,6 @@
       "src/**/*.spec.ts"
     ],
     "exports": {
-      "./package.json": "./package.json",
       ".": "./src/index.ts",
       "./animation-frames": "./src/animation-frames.ts",
       "./argument-out-of-range-error": "./src/argument-out-of-range-error.ts",
@@ -100,7 +100,10 @@
       "./combine": "./src/combine.ts",
       "./combine-latest": "./src/combine-latest.ts",
       "./combine-latest-all": "./src/combine-latest-all.ts",
+      "./combine-latest-with": "./src/pipeable/combine-latest-with.ts",
+      "./combine-with": "./src/pipeable/combine-with.ts",
       "./concat": "./src/concat.ts",
+      "./concat-with": "./src/pipeable/concat-with.ts",
       "./connect": "./src/connect.ts",
       "./connectable": "./src/connectable.ts",
       "./count": "./src/count.ts",
@@ -142,6 +145,7 @@
       "./merge": "./src/merge.ts",
       "./merge-map": "./src/merge-map.ts",
       "./merge-scan": "./src/merge-scan.ts",
+      "./merge-with": "./src/pipeable/merge-with.ts",
       "./min": "./src/min.ts",
       "./multicast": "./src/multicast.ts",
       "./never": "./src/never.ts",
@@ -150,21 +154,113 @@
       "./notification": "./src/notification.ts",
       "./observe-on": "./src/observe-on.ts",
       "./on-error-resume-next": "./src/on-error-resume-next.ts",
+      "./on-error-resume-next-with": "./src/pipeable/on-error-resume-next-with.ts",
+      "./package.json": "./package.json",
       "./pairwise": "./src/pairwise.ts",
       "./partition": "./src/partition.ts",
       "./per-subscription-subject-base": "./src/per-subscription-subject-base.ts",
       "./pipe": "./src/pipe.ts",
+      "./pipeable": "./src/pipeable/index.ts",
+      "./pipeable/buffer": "./src/pipeable/buffer.ts",
+      "./pipeable/buffer-time": "./src/pipeable/buffer-time.ts",
+      "./pipeable/buffer-toggle": "./src/pipeable/buffer-toggle.ts",
+      "./pipeable/catch-error": "./src/pipeable/catch-error.ts",
+      "./pipeable/combine-latest-all": "./src/pipeable/combine-latest-all.ts",
+      "./pipeable/combine-latest-with": "./src/pipeable/combine-latest-with.ts",
+      "./pipeable/combine-with": "./src/pipeable/combine-with.ts",
+      "./pipeable/concat-with": "./src/pipeable/concat-with.ts",
+      "./pipeable/connect": "./src/pipeable/connect.ts",
+      "./pipeable/count": "./src/pipeable/count.ts",
+      "./pipeable/debounce": "./src/pipeable/debounce.ts",
+      "./pipeable/default-if-empty": "./src/pipeable/default-if-empty.ts",
+      "./pipeable/delay": "./src/pipeable/delay.ts",
+      "./pipeable/delay-when": "./src/pipeable/delay-when.ts",
+      "./pipeable/dematerialize": "./src/pipeable/dematerialize.ts",
+      "./pipeable/distinct": "./src/pipeable/distinct.ts",
+      "./pipeable/distinct-until-changed": "./src/pipeable/distinct-until-changed.ts",
+      "./pipeable/distinct-until-key-changed": "./src/pipeable/distinct-until-key-changed.ts",
+      "./pipeable/element-at": "./src/pipeable/element-at.ts",
+      "./pipeable/every": "./src/pipeable/every.ts",
+      "./pipeable/exhaust-map": "./src/pipeable/exhaust-map.ts",
+      "./pipeable/expand": "./src/pipeable/expand.ts",
       "./pipeable/filter": "./src/pipeable/filter.ts",
+      "./pipeable/finalize": "./src/pipeable/finalize.ts",
+      "./pipeable/find": "./src/pipeable/find.ts",
+      "./pipeable/find-index": "./src/pipeable/find-index.ts",
+      "./pipeable/first": "./src/pipeable/first.ts",
+      "./pipeable/group-by": "./src/pipeable/group-by.ts",
+      "./pipeable/is-empty": "./src/pipeable/is-empty.ts",
+      "./pipeable/iterate-buffered-values": "./src/pipeable/iterate-buffered-values.ts",
+      "./pipeable/iterate-each-value": "./src/pipeable/iterate-each-value.ts",
+      "./pipeable/iterate-latest-value": "./src/pipeable/iterate-latest-value.ts",
+      "./pipeable/iterate-next-value": "./src/pipeable/iterate-next-value.ts",
+      "./pipeable/last": "./src/pipeable/last.ts",
       "./pipeable/map": "./src/pipeable/map.ts",
+      "./pipeable/materialize": "./src/pipeable/materialize.ts",
+      "./pipeable/max": "./src/pipeable/max.ts",
+      "./pipeable/merge-map": "./src/pipeable/merge-map.ts",
+      "./pipeable/merge-scan": "./src/pipeable/merge-scan.ts",
+      "./pipeable/merge-with": "./src/pipeable/merge-with.ts",
+      "./pipeable/min": "./src/pipeable/min.ts",
+      "./pipeable/multicast": "./src/pipeable/multicast.ts",
+      "./pipeable/observe-on": "./src/pipeable/observe-on.ts",
+      "./pipeable/on-error-resume-next-with": "./src/pipeable/on-error-resume-next-with.ts",
+      "./pipeable/pairwise": "./src/pipeable/pairwise.ts",
+      "./pipeable/pipe": "./src/pipeable/pipe.ts",
+      "./pipeable/pluck": "./src/pipeable/pluck.ts",
+      "./pipeable/publish": "./src/pipeable/publish.ts",
+      "./pipeable/publish-behavior": "./src/pipeable/publish-behavior.ts",
+      "./pipeable/publish-last": "./src/pipeable/publish-last.ts",
+      "./pipeable/publish-replay": "./src/pipeable/publish-replay.ts",
+      "./pipeable/race-with": "./src/pipeable/race-with.ts",
+      "./pipeable/reduce": "./src/pipeable/reduce.ts",
+      "./pipeable/ref-count": "./src/pipeable/ref-count.ts",
+      "./pipeable/repeat": "./src/pipeable/repeat.ts",
+      "./pipeable/repeat-when": "./src/pipeable/repeat-when.ts",
+      "./pipeable/retry": "./src/pipeable/retry.ts",
+      "./pipeable/retry-when": "./src/pipeable/retry-when.ts",
+      "./pipeable/sample": "./src/pipeable/sample.ts",
+      "./pipeable/sample-time": "./src/pipeable/sample-time.ts",
+      "./pipeable/scan": "./src/pipeable/scan.ts",
+      "./pipeable/sequence-equal": "./src/pipeable/sequence-equal.ts",
+      "./pipeable/share": "./src/pipeable/share.ts",
+      "./pipeable/share-replay": "./src/pipeable/share-replay.ts",
+      "./pipeable/single": "./src/pipeable/single.ts",
+      "./pipeable/skip": "./src/pipeable/skip.ts",
+      "./pipeable/skip-last": "./src/pipeable/skip-last.ts",
+      "./pipeable/skip-until": "./src/pipeable/skip-until.ts",
+      "./pipeable/skip-while": "./src/pipeable/skip-while.ts",
+      "./pipeable/start-with": "./src/pipeable/start-with.ts",
       "./pipeable/subscribe": "./src/pipeable/subscribe.ts",
+      "./pipeable/subscribe-on": "./src/pipeable/subscribe-on.ts",
+      "./pipeable/switch-map": "./src/pipeable/switch-map.ts",
+      "./pipeable/switch-scan": "./src/pipeable/switch-scan.ts",
       "./pipeable/take": "./src/pipeable/take.ts",
+      "./pipeable/take-last": "./src/pipeable/take-last.ts",
+      "./pipeable/take-until": "./src/pipeable/take-until.ts",
+      "./pipeable/take-while": "./src/pipeable/take-while.ts",
+      "./pipeable/tap": "./src/pipeable/tap.ts",
+      "./pipeable/throttle": "./src/pipeable/throttle.ts",
+      "./pipeable/throw-if-empty": "./src/pipeable/throw-if-empty.ts",
+      "./pipeable/time-interval": "./src/pipeable/time-interval.ts",
+      "./pipeable/timeout": "./src/pipeable/timeout.ts",
+      "./pipeable/timestamp": "./src/pipeable/timestamp.ts",
       "./pipeable/to-array": "./src/pipeable/to-array.ts",
+      "./pipeable/window": "./src/pipeable/window.ts",
+      "./pipeable/window-count": "./src/pipeable/window-count.ts",
+      "./pipeable/window-time": "./src/pipeable/window-time.ts",
+      "./pipeable/window-toggle": "./src/pipeable/window-toggle.ts",
+      "./pipeable/window-when": "./src/pipeable/window-when.ts",
+      "./pipeable/with-latest-from": "./src/pipeable/with-latest-from.ts",
+      "./pipeable/zip-all": "./src/pipeable/zip-all.ts",
+      "./pipeable/zip-with": "./src/pipeable/zip-with.ts",
       "./pluck": "./src/pluck.ts",
       "./publish": "./src/publish.ts",
       "./publish-behavior": "./src/publish-behavior.ts",
       "./publish-last": "./src/publish-last.ts",
       "./publish-replay": "./src/publish-replay.ts",
       "./race": "./src/race.ts",
+      "./race-with": "./src/pipeable/race-with.ts",
       "./reduce": "./src/reduce.ts",
       "./ref-count": "./src/ref-count.ts",
       "./repeat": "./src/repeat.ts",
@@ -186,14 +282,123 @@
       "./skip-until": "./src/skip-until.ts",
       "./skip-while": "./src/skip-while.ts",
       "./start-with": "./src/start-with.ts",
+      "./static": "./src/static/index.ts",
+      "./static/animation-frames": "./src/static/animation-frames.ts",
+      "./static/combine": "./src/static/combine.ts",
+      "./static/combine-latest": "./src/static/combine-latest.ts",
+      "./static/concat": "./src/static/concat.ts",
+      "./static/fork-join": "./src/static/fork-join.ts",
+      "./static/generate": "./src/static/generate.ts",
+      "./static/interval": "./src/static/interval.ts",
+      "./static/merge": "./src/static/merge.ts",
+      "./static/on-error-resume-next": "./src/static/on-error-resume-next.ts",
+      "./static/partition": "./src/static/partition.ts",
+      "./static/race": "./src/static/race.ts",
+      "./static/timer": "./src/static/timer.ts",
       "./subject": "./src/subject.ts",
       "./subscribe": "./src/pipeable/subscribe.ts",
       "./subscribe-on": "./src/subscribe-on.ts",
-      "./symbol/filter": "./src/filter.ts",
-      "./symbol/map": "./src/map.ts",
-      "./symbol/take": "./src/take.ts",
       "./switch-map": "./src/switch-map.ts",
       "./switch-scan": "./src/switch-scan.ts",
+      "./symbol": "./src/symbol/index.ts",
+      "./symbol/animation-frames": "./src/symbol/animation-frames.ts",
+      "./symbol/buffer": "./src/symbol/buffer.ts",
+      "./symbol/buffer-time": "./src/symbol/buffer-time.ts",
+      "./symbol/buffer-toggle": "./src/symbol/buffer-toggle.ts",
+      "./symbol/catch-error": "./src/symbol/catch-error.ts",
+      "./symbol/combine": "./src/symbol/combine.ts",
+      "./symbol/combine-latest": "./src/symbol/combine-latest.ts",
+      "./symbol/combine-latest-all": "./src/symbol/combine-latest-all.ts",
+      "./symbol/concat": "./src/symbol/concat.ts",
+      "./symbol/connect": "./src/symbol/connect.ts",
+      "./symbol/count": "./src/symbol/count.ts",
+      "./symbol/create": "./src/symbol/create.ts",
+      "./symbol/debounce": "./src/symbol/debounce.ts",
+      "./symbol/default-if-empty": "./src/symbol/default-if-empty.ts",
+      "./symbol/delay": "./src/symbol/delay.ts",
+      "./symbol/delay-when": "./src/symbol/delay-when.ts",
+      "./symbol/dematerialize": "./src/symbol/dematerialize.ts",
+      "./symbol/distinct": "./src/symbol/distinct.ts",
+      "./symbol/distinct-until-changed": "./src/symbol/distinct-until-changed.ts",
+      "./symbol/distinct-until-key-changed": "./src/symbol/distinct-until-key-changed.ts",
+      "./symbol/element-at": "./src/symbol/element-at.ts",
+      "./symbol/every": "./src/symbol/every.ts",
+      "./symbol/exhaust-map": "./src/symbol/exhaust-map.ts",
+      "./symbol/expand": "./src/symbol/expand.ts",
+      "./symbol/filter": "./src/symbol/filter.ts",
+      "./symbol/finalize": "./src/symbol/finalize.ts",
+      "./symbol/find": "./src/symbol/find.ts",
+      "./symbol/find-index": "./src/symbol/find-index.ts",
+      "./symbol/first": "./src/symbol/first.ts",
+      "./symbol/fork-join": "./src/symbol/fork-join.ts",
+      "./symbol/generate": "./src/symbol/generate.ts",
+      "./symbol/group-by": "./src/symbol/group-by.ts",
+      "./symbol/interval": "./src/symbol/interval.ts",
+      "./symbol/is-empty": "./src/symbol/is-empty.ts",
+      "./symbol/iterate-buffered-values": "./src/symbol/iterate-buffered-values.ts",
+      "./symbol/iterate-each-value": "./src/symbol/iterate-each-value.ts",
+      "./symbol/iterate-latest-value": "./src/symbol/iterate-latest-value.ts",
+      "./symbol/iterate-next-value": "./src/symbol/iterate-next-value.ts",
+      "./symbol/last": "./src/symbol/last.ts",
+      "./symbol/map": "./src/symbol/map.ts",
+      "./symbol/materialize": "./src/symbol/materialize.ts",
+      "./symbol/max": "./src/symbol/max.ts",
+      "./symbol/merge": "./src/symbol/merge.ts",
+      "./symbol/merge-map": "./src/symbol/merge-map.ts",
+      "./symbol/merge-scan": "./src/symbol/merge-scan.ts",
+      "./symbol/min": "./src/symbol/min.ts",
+      "./symbol/multicast": "./src/symbol/multicast.ts",
+      "./symbol/observe-on": "./src/symbol/observe-on.ts",
+      "./symbol/on-error-resume-next": "./src/symbol/on-error-resume-next.ts",
+      "./symbol/pairwise": "./src/symbol/pairwise.ts",
+      "./symbol/partition": "./src/symbol/partition.ts",
+      "./symbol/pipe": "./src/symbol/pipe.ts",
+      "./symbol/pluck": "./src/symbol/pluck.ts",
+      "./symbol/publish": "./src/symbol/publish.ts",
+      "./symbol/publish-behavior": "./src/symbol/publish-behavior.ts",
+      "./symbol/publish-last": "./src/symbol/publish-last.ts",
+      "./symbol/publish-replay": "./src/symbol/publish-replay.ts",
+      "./symbol/race": "./src/symbol/race.ts",
+      "./symbol/reduce": "./src/symbol/reduce.ts",
+      "./symbol/ref-count": "./src/symbol/ref-count.ts",
+      "./symbol/repeat": "./src/symbol/repeat.ts",
+      "./symbol/repeat-when": "./src/symbol/repeat-when.ts",
+      "./symbol/retry": "./src/symbol/retry.ts",
+      "./symbol/retry-when": "./src/symbol/retry-when.ts",
+      "./symbol/sample": "./src/symbol/sample.ts",
+      "./symbol/sample-time": "./src/symbol/sample-time.ts",
+      "./symbol/scan": "./src/symbol/scan.ts",
+      "./symbol/sequence-equal": "./src/symbol/sequence-equal.ts",
+      "./symbol/share": "./src/symbol/share.ts",
+      "./symbol/share-replay": "./src/symbol/share-replay.ts",
+      "./symbol/single": "./src/symbol/single.ts",
+      "./symbol/skip": "./src/symbol/skip.ts",
+      "./symbol/skip-last": "./src/symbol/skip-last.ts",
+      "./symbol/skip-until": "./src/symbol/skip-until.ts",
+      "./symbol/skip-while": "./src/symbol/skip-while.ts",
+      "./symbol/start-with": "./src/symbol/start-with.ts",
+      "./symbol/subscribe-on": "./src/symbol/subscribe-on.ts",
+      "./symbol/switch-map": "./src/symbol/switch-map.ts",
+      "./symbol/switch-scan": "./src/symbol/switch-scan.ts",
+      "./symbol/take": "./src/symbol/take.ts",
+      "./symbol/take-last": "./src/symbol/take-last.ts",
+      "./symbol/take-until": "./src/symbol/take-until.ts",
+      "./symbol/take-while": "./src/symbol/take-while.ts",
+      "./symbol/tap": "./src/symbol/tap.ts",
+      "./symbol/throttle": "./src/symbol/throttle.ts",
+      "./symbol/throw-if-empty": "./src/symbol/throw-if-empty.ts",
+      "./symbol/time-interval": "./src/symbol/time-interval.ts",
+      "./symbol/timeout": "./src/symbol/timeout.ts",
+      "./symbol/timer": "./src/symbol/timer.ts",
+      "./symbol/timestamp": "./src/symbol/timestamp.ts",
+      "./symbol/window": "./src/symbol/window.ts",
+      "./symbol/window-count": "./src/symbol/window-count.ts",
+      "./symbol/window-time": "./src/symbol/window-time.ts",
+      "./symbol/window-toggle": "./src/symbol/window-toggle.ts",
+      "./symbol/window-when": "./src/symbol/window-when.ts",
+      "./symbol/with-latest-from": "./src/symbol/with-latest-from.ts",
+      "./symbol/zip-all": "./src/symbol/zip-all.ts",
+      "./symbol/zip-with": "./src/symbol/zip-with.ts",
       "./take": "./src/take.ts",
       "./take-last": "./src/take-last.ts",
       "./take-until": "./src/take-until.ts",
@@ -219,7 +424,6 @@
     }
   },
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "browser": {
         "types": "./dist/esm/index.d.ts",
@@ -454,6 +658,42 @@
         "default": "./dist/esm/combine-latest-all.js"
       }
     },
+    "./combine-latest-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      }
+    },
+    "./combine-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      }
+    },
     "./concat": {
       "browser": {
         "types": "./dist/esm/concat.d.ts",
@@ -470,6 +710,24 @@
       "require": {
         "types": "./dist/esm/concat.d.ts",
         "default": "./dist/esm/concat.js"
+      }
+    },
+    "./concat-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
       }
     },
     "./connect": {
@@ -1210,6 +1468,24 @@
         "default": "./dist/esm/merge-scan.js"
       }
     },
+    "./merge-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      }
+    },
     "./min": {
       "browser": {
         "types": "./dist/esm/min.d.ts",
@@ -1354,6 +1630,25 @@
         "default": "./dist/esm/on-error-resume-next.js"
       }
     },
+    "./on-error-resume-next-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      }
+    },
+    "./package.json": "./package.json",
     "./pairwise": {
       "browser": {
         "types": "./dist/esm/pairwise.d.ts",
@@ -1426,6 +1721,420 @@
         "default": "./dist/esm/pipe.js"
       }
     },
+    "./pipeable": {
+      "browser": {
+        "types": "./dist/esm/pipeable/index.d.ts",
+        "default": "./dist/esm/pipeable/index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/index.d.ts",
+        "default": "./dist/esm/pipeable/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/index.d.ts",
+        "default": "./dist/esm/pipeable/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/index.d.ts",
+        "default": "./dist/esm/pipeable/index.js"
+      }
+    },
+    "./pipeable/buffer": {
+      "browser": {
+        "types": "./dist/esm/pipeable/buffer.d.ts",
+        "default": "./dist/esm/pipeable/buffer.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/buffer.d.ts",
+        "default": "./dist/esm/pipeable/buffer.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/buffer.d.ts",
+        "default": "./dist/esm/pipeable/buffer.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/buffer.d.ts",
+        "default": "./dist/esm/pipeable/buffer.js"
+      }
+    },
+    "./pipeable/buffer-time": {
+      "browser": {
+        "types": "./dist/esm/pipeable/buffer-time.d.ts",
+        "default": "./dist/esm/pipeable/buffer-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/buffer-time.d.ts",
+        "default": "./dist/esm/pipeable/buffer-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/buffer-time.d.ts",
+        "default": "./dist/esm/pipeable/buffer-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/buffer-time.d.ts",
+        "default": "./dist/esm/pipeable/buffer-time.js"
+      }
+    },
+    "./pipeable/buffer-toggle": {
+      "browser": {
+        "types": "./dist/esm/pipeable/buffer-toggle.d.ts",
+        "default": "./dist/esm/pipeable/buffer-toggle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/buffer-toggle.d.ts",
+        "default": "./dist/esm/pipeable/buffer-toggle.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/buffer-toggle.d.ts",
+        "default": "./dist/esm/pipeable/buffer-toggle.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/buffer-toggle.d.ts",
+        "default": "./dist/esm/pipeable/buffer-toggle.js"
+      }
+    },
+    "./pipeable/catch-error": {
+      "browser": {
+        "types": "./dist/esm/pipeable/catch-error.d.ts",
+        "default": "./dist/esm/pipeable/catch-error.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/catch-error.d.ts",
+        "default": "./dist/esm/pipeable/catch-error.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/catch-error.d.ts",
+        "default": "./dist/esm/pipeable/catch-error.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/catch-error.d.ts",
+        "default": "./dist/esm/pipeable/catch-error.js"
+      }
+    },
+    "./pipeable/combine-latest-all": {
+      "browser": {
+        "types": "./dist/esm/pipeable/combine-latest-all.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-all.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/combine-latest-all.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-all.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/combine-latest-all.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-all.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/combine-latest-all.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-all.js"
+      }
+    },
+    "./pipeable/combine-latest-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/combine-latest-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-latest-with.js"
+      }
+    },
+    "./pipeable/combine-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/combine-with.d.ts",
+        "default": "./dist/esm/pipeable/combine-with.js"
+      }
+    },
+    "./pipeable/concat-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/concat-with.d.ts",
+        "default": "./dist/esm/pipeable/concat-with.js"
+      }
+    },
+    "./pipeable/connect": {
+      "browser": {
+        "types": "./dist/esm/pipeable/connect.d.ts",
+        "default": "./dist/esm/pipeable/connect.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/connect.d.ts",
+        "default": "./dist/esm/pipeable/connect.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/connect.d.ts",
+        "default": "./dist/esm/pipeable/connect.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/connect.d.ts",
+        "default": "./dist/esm/pipeable/connect.js"
+      }
+    },
+    "./pipeable/count": {
+      "browser": {
+        "types": "./dist/esm/pipeable/count.d.ts",
+        "default": "./dist/esm/pipeable/count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/count.d.ts",
+        "default": "./dist/esm/pipeable/count.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/count.d.ts",
+        "default": "./dist/esm/pipeable/count.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/count.d.ts",
+        "default": "./dist/esm/pipeable/count.js"
+      }
+    },
+    "./pipeable/debounce": {
+      "browser": {
+        "types": "./dist/esm/pipeable/debounce.d.ts",
+        "default": "./dist/esm/pipeable/debounce.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/debounce.d.ts",
+        "default": "./dist/esm/pipeable/debounce.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/debounce.d.ts",
+        "default": "./dist/esm/pipeable/debounce.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/debounce.d.ts",
+        "default": "./dist/esm/pipeable/debounce.js"
+      }
+    },
+    "./pipeable/default-if-empty": {
+      "browser": {
+        "types": "./dist/esm/pipeable/default-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/default-if-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/default-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/default-if-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/default-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/default-if-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/default-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/default-if-empty.js"
+      }
+    },
+    "./pipeable/delay": {
+      "browser": {
+        "types": "./dist/esm/pipeable/delay.d.ts",
+        "default": "./dist/esm/pipeable/delay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/delay.d.ts",
+        "default": "./dist/esm/pipeable/delay.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/delay.d.ts",
+        "default": "./dist/esm/pipeable/delay.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/delay.d.ts",
+        "default": "./dist/esm/pipeable/delay.js"
+      }
+    },
+    "./pipeable/delay-when": {
+      "browser": {
+        "types": "./dist/esm/pipeable/delay-when.d.ts",
+        "default": "./dist/esm/pipeable/delay-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/delay-when.d.ts",
+        "default": "./dist/esm/pipeable/delay-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/delay-when.d.ts",
+        "default": "./dist/esm/pipeable/delay-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/delay-when.d.ts",
+        "default": "./dist/esm/pipeable/delay-when.js"
+      }
+    },
+    "./pipeable/dematerialize": {
+      "browser": {
+        "types": "./dist/esm/pipeable/dematerialize.d.ts",
+        "default": "./dist/esm/pipeable/dematerialize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/dematerialize.d.ts",
+        "default": "./dist/esm/pipeable/dematerialize.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/dematerialize.d.ts",
+        "default": "./dist/esm/pipeable/dematerialize.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/dematerialize.d.ts",
+        "default": "./dist/esm/pipeable/dematerialize.js"
+      }
+    },
+    "./pipeable/distinct": {
+      "browser": {
+        "types": "./dist/esm/pipeable/distinct.d.ts",
+        "default": "./dist/esm/pipeable/distinct.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/distinct.d.ts",
+        "default": "./dist/esm/pipeable/distinct.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/distinct.d.ts",
+        "default": "./dist/esm/pipeable/distinct.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/distinct.d.ts",
+        "default": "./dist/esm/pipeable/distinct.js"
+      }
+    },
+    "./pipeable/distinct-until-changed": {
+      "browser": {
+        "types": "./dist/esm/pipeable/distinct-until-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-changed.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/distinct-until-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-changed.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/distinct-until-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-changed.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/distinct-until-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-changed.js"
+      }
+    },
+    "./pipeable/distinct-until-key-changed": {
+      "browser": {
+        "types": "./dist/esm/pipeable/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-key-changed.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-key-changed.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-key-changed.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/pipeable/distinct-until-key-changed.js"
+      }
+    },
+    "./pipeable/element-at": {
+      "browser": {
+        "types": "./dist/esm/pipeable/element-at.d.ts",
+        "default": "./dist/esm/pipeable/element-at.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/element-at.d.ts",
+        "default": "./dist/esm/pipeable/element-at.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/element-at.d.ts",
+        "default": "./dist/esm/pipeable/element-at.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/element-at.d.ts",
+        "default": "./dist/esm/pipeable/element-at.js"
+      }
+    },
+    "./pipeable/every": {
+      "browser": {
+        "types": "./dist/esm/pipeable/every.d.ts",
+        "default": "./dist/esm/pipeable/every.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/every.d.ts",
+        "default": "./dist/esm/pipeable/every.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/every.d.ts",
+        "default": "./dist/esm/pipeable/every.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/every.d.ts",
+        "default": "./dist/esm/pipeable/every.js"
+      }
+    },
+    "./pipeable/exhaust-map": {
+      "browser": {
+        "types": "./dist/esm/pipeable/exhaust-map.d.ts",
+        "default": "./dist/esm/pipeable/exhaust-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/exhaust-map.d.ts",
+        "default": "./dist/esm/pipeable/exhaust-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/exhaust-map.d.ts",
+        "default": "./dist/esm/pipeable/exhaust-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/exhaust-map.d.ts",
+        "default": "./dist/esm/pipeable/exhaust-map.js"
+      }
+    },
+    "./pipeable/expand": {
+      "browser": {
+        "types": "./dist/esm/pipeable/expand.d.ts",
+        "default": "./dist/esm/pipeable/expand.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/expand.d.ts",
+        "default": "./dist/esm/pipeable/expand.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/expand.d.ts",
+        "default": "./dist/esm/pipeable/expand.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/expand.d.ts",
+        "default": "./dist/esm/pipeable/expand.js"
+      }
+    },
     "./pipeable/filter": {
       "browser": {
         "types": "./dist/esm/pipeable/filter.d.ts",
@@ -1442,6 +2151,204 @@
       "require": {
         "types": "./dist/esm/pipeable/filter.d.ts",
         "default": "./dist/esm/pipeable/filter.js"
+      }
+    },
+    "./pipeable/finalize": {
+      "browser": {
+        "types": "./dist/esm/pipeable/finalize.d.ts",
+        "default": "./dist/esm/pipeable/finalize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/finalize.d.ts",
+        "default": "./dist/esm/pipeable/finalize.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/finalize.d.ts",
+        "default": "./dist/esm/pipeable/finalize.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/finalize.d.ts",
+        "default": "./dist/esm/pipeable/finalize.js"
+      }
+    },
+    "./pipeable/find": {
+      "browser": {
+        "types": "./dist/esm/pipeable/find.d.ts",
+        "default": "./dist/esm/pipeable/find.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/find.d.ts",
+        "default": "./dist/esm/pipeable/find.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/find.d.ts",
+        "default": "./dist/esm/pipeable/find.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/find.d.ts",
+        "default": "./dist/esm/pipeable/find.js"
+      }
+    },
+    "./pipeable/find-index": {
+      "browser": {
+        "types": "./dist/esm/pipeable/find-index.d.ts",
+        "default": "./dist/esm/pipeable/find-index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/find-index.d.ts",
+        "default": "./dist/esm/pipeable/find-index.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/find-index.d.ts",
+        "default": "./dist/esm/pipeable/find-index.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/find-index.d.ts",
+        "default": "./dist/esm/pipeable/find-index.js"
+      }
+    },
+    "./pipeable/first": {
+      "browser": {
+        "types": "./dist/esm/pipeable/first.d.ts",
+        "default": "./dist/esm/pipeable/first.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/first.d.ts",
+        "default": "./dist/esm/pipeable/first.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/first.d.ts",
+        "default": "./dist/esm/pipeable/first.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/first.d.ts",
+        "default": "./dist/esm/pipeable/first.js"
+      }
+    },
+    "./pipeable/group-by": {
+      "browser": {
+        "types": "./dist/esm/pipeable/group-by.d.ts",
+        "default": "./dist/esm/pipeable/group-by.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/group-by.d.ts",
+        "default": "./dist/esm/pipeable/group-by.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/group-by.d.ts",
+        "default": "./dist/esm/pipeable/group-by.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/group-by.d.ts",
+        "default": "./dist/esm/pipeable/group-by.js"
+      }
+    },
+    "./pipeable/is-empty": {
+      "browser": {
+        "types": "./dist/esm/pipeable/is-empty.d.ts",
+        "default": "./dist/esm/pipeable/is-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/is-empty.d.ts",
+        "default": "./dist/esm/pipeable/is-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/is-empty.d.ts",
+        "default": "./dist/esm/pipeable/is-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/is-empty.d.ts",
+        "default": "./dist/esm/pipeable/is-empty.js"
+      }
+    },
+    "./pipeable/iterate-buffered-values": {
+      "browser": {
+        "types": "./dist/esm/pipeable/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/pipeable/iterate-buffered-values.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/pipeable/iterate-buffered-values.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/pipeable/iterate-buffered-values.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/pipeable/iterate-buffered-values.js"
+      }
+    },
+    "./pipeable/iterate-each-value": {
+      "browser": {
+        "types": "./dist/esm/pipeable/iterate-each-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-each-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/iterate-each-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-each-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/iterate-each-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-each-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/iterate-each-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-each-value.js"
+      }
+    },
+    "./pipeable/iterate-latest-value": {
+      "browser": {
+        "types": "./dist/esm/pipeable/iterate-latest-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-latest-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/iterate-latest-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-latest-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/iterate-latest-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-latest-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/iterate-latest-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-latest-value.js"
+      }
+    },
+    "./pipeable/iterate-next-value": {
+      "browser": {
+        "types": "./dist/esm/pipeable/iterate-next-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-next-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/iterate-next-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-next-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/iterate-next-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-next-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/iterate-next-value.d.ts",
+        "default": "./dist/esm/pipeable/iterate-next-value.js"
+      }
+    },
+    "./pipeable/last": {
+      "browser": {
+        "types": "./dist/esm/pipeable/last.d.ts",
+        "default": "./dist/esm/pipeable/last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/last.d.ts",
+        "default": "./dist/esm/pipeable/last.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/last.d.ts",
+        "default": "./dist/esm/pipeable/last.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/last.d.ts",
+        "default": "./dist/esm/pipeable/last.js"
       }
     },
     "./pipeable/map": {
@@ -1462,6 +2369,636 @@
         "default": "./dist/esm/pipeable/map.js"
       }
     },
+    "./pipeable/materialize": {
+      "browser": {
+        "types": "./dist/esm/pipeable/materialize.d.ts",
+        "default": "./dist/esm/pipeable/materialize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/materialize.d.ts",
+        "default": "./dist/esm/pipeable/materialize.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/materialize.d.ts",
+        "default": "./dist/esm/pipeable/materialize.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/materialize.d.ts",
+        "default": "./dist/esm/pipeable/materialize.js"
+      }
+    },
+    "./pipeable/max": {
+      "browser": {
+        "types": "./dist/esm/pipeable/max.d.ts",
+        "default": "./dist/esm/pipeable/max.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/max.d.ts",
+        "default": "./dist/esm/pipeable/max.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/max.d.ts",
+        "default": "./dist/esm/pipeable/max.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/max.d.ts",
+        "default": "./dist/esm/pipeable/max.js"
+      }
+    },
+    "./pipeable/merge-map": {
+      "browser": {
+        "types": "./dist/esm/pipeable/merge-map.d.ts",
+        "default": "./dist/esm/pipeable/merge-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/merge-map.d.ts",
+        "default": "./dist/esm/pipeable/merge-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/merge-map.d.ts",
+        "default": "./dist/esm/pipeable/merge-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/merge-map.d.ts",
+        "default": "./dist/esm/pipeable/merge-map.js"
+      }
+    },
+    "./pipeable/merge-scan": {
+      "browser": {
+        "types": "./dist/esm/pipeable/merge-scan.d.ts",
+        "default": "./dist/esm/pipeable/merge-scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/merge-scan.d.ts",
+        "default": "./dist/esm/pipeable/merge-scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/merge-scan.d.ts",
+        "default": "./dist/esm/pipeable/merge-scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/merge-scan.d.ts",
+        "default": "./dist/esm/pipeable/merge-scan.js"
+      }
+    },
+    "./pipeable/merge-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/merge-with.d.ts",
+        "default": "./dist/esm/pipeable/merge-with.js"
+      }
+    },
+    "./pipeable/min": {
+      "browser": {
+        "types": "./dist/esm/pipeable/min.d.ts",
+        "default": "./dist/esm/pipeable/min.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/min.d.ts",
+        "default": "./dist/esm/pipeable/min.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/min.d.ts",
+        "default": "./dist/esm/pipeable/min.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/min.d.ts",
+        "default": "./dist/esm/pipeable/min.js"
+      }
+    },
+    "./pipeable/multicast": {
+      "browser": {
+        "types": "./dist/esm/pipeable/multicast.d.ts",
+        "default": "./dist/esm/pipeable/multicast.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/multicast.d.ts",
+        "default": "./dist/esm/pipeable/multicast.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/multicast.d.ts",
+        "default": "./dist/esm/pipeable/multicast.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/multicast.d.ts",
+        "default": "./dist/esm/pipeable/multicast.js"
+      }
+    },
+    "./pipeable/observe-on": {
+      "browser": {
+        "types": "./dist/esm/pipeable/observe-on.d.ts",
+        "default": "./dist/esm/pipeable/observe-on.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/observe-on.d.ts",
+        "default": "./dist/esm/pipeable/observe-on.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/observe-on.d.ts",
+        "default": "./dist/esm/pipeable/observe-on.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/observe-on.d.ts",
+        "default": "./dist/esm/pipeable/observe-on.js"
+      }
+    },
+    "./pipeable/on-error-resume-next-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/on-error-resume-next-with.d.ts",
+        "default": "./dist/esm/pipeable/on-error-resume-next-with.js"
+      }
+    },
+    "./pipeable/pairwise": {
+      "browser": {
+        "types": "./dist/esm/pipeable/pairwise.d.ts",
+        "default": "./dist/esm/pipeable/pairwise.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/pairwise.d.ts",
+        "default": "./dist/esm/pipeable/pairwise.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/pairwise.d.ts",
+        "default": "./dist/esm/pipeable/pairwise.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/pairwise.d.ts",
+        "default": "./dist/esm/pipeable/pairwise.js"
+      }
+    },
+    "./pipeable/pipe": {
+      "browser": {
+        "types": "./dist/esm/pipeable/pipe.d.ts",
+        "default": "./dist/esm/pipeable/pipe.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/pipe.d.ts",
+        "default": "./dist/esm/pipeable/pipe.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/pipe.d.ts",
+        "default": "./dist/esm/pipeable/pipe.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/pipe.d.ts",
+        "default": "./dist/esm/pipeable/pipe.js"
+      }
+    },
+    "./pipeable/pluck": {
+      "browser": {
+        "types": "./dist/esm/pipeable/pluck.d.ts",
+        "default": "./dist/esm/pipeable/pluck.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/pluck.d.ts",
+        "default": "./dist/esm/pipeable/pluck.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/pluck.d.ts",
+        "default": "./dist/esm/pipeable/pluck.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/pluck.d.ts",
+        "default": "./dist/esm/pipeable/pluck.js"
+      }
+    },
+    "./pipeable/publish": {
+      "browser": {
+        "types": "./dist/esm/pipeable/publish.d.ts",
+        "default": "./dist/esm/pipeable/publish.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/publish.d.ts",
+        "default": "./dist/esm/pipeable/publish.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/publish.d.ts",
+        "default": "./dist/esm/pipeable/publish.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/publish.d.ts",
+        "default": "./dist/esm/pipeable/publish.js"
+      }
+    },
+    "./pipeable/publish-behavior": {
+      "browser": {
+        "types": "./dist/esm/pipeable/publish-behavior.d.ts",
+        "default": "./dist/esm/pipeable/publish-behavior.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/publish-behavior.d.ts",
+        "default": "./dist/esm/pipeable/publish-behavior.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/publish-behavior.d.ts",
+        "default": "./dist/esm/pipeable/publish-behavior.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/publish-behavior.d.ts",
+        "default": "./dist/esm/pipeable/publish-behavior.js"
+      }
+    },
+    "./pipeable/publish-last": {
+      "browser": {
+        "types": "./dist/esm/pipeable/publish-last.d.ts",
+        "default": "./dist/esm/pipeable/publish-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/publish-last.d.ts",
+        "default": "./dist/esm/pipeable/publish-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/publish-last.d.ts",
+        "default": "./dist/esm/pipeable/publish-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/publish-last.d.ts",
+        "default": "./dist/esm/pipeable/publish-last.js"
+      }
+    },
+    "./pipeable/publish-replay": {
+      "browser": {
+        "types": "./dist/esm/pipeable/publish-replay.d.ts",
+        "default": "./dist/esm/pipeable/publish-replay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/publish-replay.d.ts",
+        "default": "./dist/esm/pipeable/publish-replay.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/publish-replay.d.ts",
+        "default": "./dist/esm/pipeable/publish-replay.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/publish-replay.d.ts",
+        "default": "./dist/esm/pipeable/publish-replay.js"
+      }
+    },
+    "./pipeable/race-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      }
+    },
+    "./pipeable/reduce": {
+      "browser": {
+        "types": "./dist/esm/pipeable/reduce.d.ts",
+        "default": "./dist/esm/pipeable/reduce.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/reduce.d.ts",
+        "default": "./dist/esm/pipeable/reduce.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/reduce.d.ts",
+        "default": "./dist/esm/pipeable/reduce.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/reduce.d.ts",
+        "default": "./dist/esm/pipeable/reduce.js"
+      }
+    },
+    "./pipeable/ref-count": {
+      "browser": {
+        "types": "./dist/esm/pipeable/ref-count.d.ts",
+        "default": "./dist/esm/pipeable/ref-count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/ref-count.d.ts",
+        "default": "./dist/esm/pipeable/ref-count.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/ref-count.d.ts",
+        "default": "./dist/esm/pipeable/ref-count.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/ref-count.d.ts",
+        "default": "./dist/esm/pipeable/ref-count.js"
+      }
+    },
+    "./pipeable/repeat": {
+      "browser": {
+        "types": "./dist/esm/pipeable/repeat.d.ts",
+        "default": "./dist/esm/pipeable/repeat.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/repeat.d.ts",
+        "default": "./dist/esm/pipeable/repeat.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/repeat.d.ts",
+        "default": "./dist/esm/pipeable/repeat.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/repeat.d.ts",
+        "default": "./dist/esm/pipeable/repeat.js"
+      }
+    },
+    "./pipeable/repeat-when": {
+      "browser": {
+        "types": "./dist/esm/pipeable/repeat-when.d.ts",
+        "default": "./dist/esm/pipeable/repeat-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/repeat-when.d.ts",
+        "default": "./dist/esm/pipeable/repeat-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/repeat-when.d.ts",
+        "default": "./dist/esm/pipeable/repeat-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/repeat-when.d.ts",
+        "default": "./dist/esm/pipeable/repeat-when.js"
+      }
+    },
+    "./pipeable/retry": {
+      "browser": {
+        "types": "./dist/esm/pipeable/retry.d.ts",
+        "default": "./dist/esm/pipeable/retry.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/retry.d.ts",
+        "default": "./dist/esm/pipeable/retry.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/retry.d.ts",
+        "default": "./dist/esm/pipeable/retry.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/retry.d.ts",
+        "default": "./dist/esm/pipeable/retry.js"
+      }
+    },
+    "./pipeable/retry-when": {
+      "browser": {
+        "types": "./dist/esm/pipeable/retry-when.d.ts",
+        "default": "./dist/esm/pipeable/retry-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/retry-when.d.ts",
+        "default": "./dist/esm/pipeable/retry-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/retry-when.d.ts",
+        "default": "./dist/esm/pipeable/retry-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/retry-when.d.ts",
+        "default": "./dist/esm/pipeable/retry-when.js"
+      }
+    },
+    "./pipeable/sample": {
+      "browser": {
+        "types": "./dist/esm/pipeable/sample.d.ts",
+        "default": "./dist/esm/pipeable/sample.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/sample.d.ts",
+        "default": "./dist/esm/pipeable/sample.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/sample.d.ts",
+        "default": "./dist/esm/pipeable/sample.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/sample.d.ts",
+        "default": "./dist/esm/pipeable/sample.js"
+      }
+    },
+    "./pipeable/sample-time": {
+      "browser": {
+        "types": "./dist/esm/pipeable/sample-time.d.ts",
+        "default": "./dist/esm/pipeable/sample-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/sample-time.d.ts",
+        "default": "./dist/esm/pipeable/sample-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/sample-time.d.ts",
+        "default": "./dist/esm/pipeable/sample-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/sample-time.d.ts",
+        "default": "./dist/esm/pipeable/sample-time.js"
+      }
+    },
+    "./pipeable/scan": {
+      "browser": {
+        "types": "./dist/esm/pipeable/scan.d.ts",
+        "default": "./dist/esm/pipeable/scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/scan.d.ts",
+        "default": "./dist/esm/pipeable/scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/scan.d.ts",
+        "default": "./dist/esm/pipeable/scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/scan.d.ts",
+        "default": "./dist/esm/pipeable/scan.js"
+      }
+    },
+    "./pipeable/sequence-equal": {
+      "browser": {
+        "types": "./dist/esm/pipeable/sequence-equal.d.ts",
+        "default": "./dist/esm/pipeable/sequence-equal.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/sequence-equal.d.ts",
+        "default": "./dist/esm/pipeable/sequence-equal.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/sequence-equal.d.ts",
+        "default": "./dist/esm/pipeable/sequence-equal.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/sequence-equal.d.ts",
+        "default": "./dist/esm/pipeable/sequence-equal.js"
+      }
+    },
+    "./pipeable/share": {
+      "browser": {
+        "types": "./dist/esm/pipeable/share.d.ts",
+        "default": "./dist/esm/pipeable/share.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/share.d.ts",
+        "default": "./dist/esm/pipeable/share.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/share.d.ts",
+        "default": "./dist/esm/pipeable/share.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/share.d.ts",
+        "default": "./dist/esm/pipeable/share.js"
+      }
+    },
+    "./pipeable/share-replay": {
+      "browser": {
+        "types": "./dist/esm/pipeable/share-replay.d.ts",
+        "default": "./dist/esm/pipeable/share-replay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/share-replay.d.ts",
+        "default": "./dist/esm/pipeable/share-replay.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/share-replay.d.ts",
+        "default": "./dist/esm/pipeable/share-replay.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/share-replay.d.ts",
+        "default": "./dist/esm/pipeable/share-replay.js"
+      }
+    },
+    "./pipeable/single": {
+      "browser": {
+        "types": "./dist/esm/pipeable/single.d.ts",
+        "default": "./dist/esm/pipeable/single.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/single.d.ts",
+        "default": "./dist/esm/pipeable/single.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/single.d.ts",
+        "default": "./dist/esm/pipeable/single.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/single.d.ts",
+        "default": "./dist/esm/pipeable/single.js"
+      }
+    },
+    "./pipeable/skip": {
+      "browser": {
+        "types": "./dist/esm/pipeable/skip.d.ts",
+        "default": "./dist/esm/pipeable/skip.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/skip.d.ts",
+        "default": "./dist/esm/pipeable/skip.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/skip.d.ts",
+        "default": "./dist/esm/pipeable/skip.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/skip.d.ts",
+        "default": "./dist/esm/pipeable/skip.js"
+      }
+    },
+    "./pipeable/skip-last": {
+      "browser": {
+        "types": "./dist/esm/pipeable/skip-last.d.ts",
+        "default": "./dist/esm/pipeable/skip-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/skip-last.d.ts",
+        "default": "./dist/esm/pipeable/skip-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/skip-last.d.ts",
+        "default": "./dist/esm/pipeable/skip-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/skip-last.d.ts",
+        "default": "./dist/esm/pipeable/skip-last.js"
+      }
+    },
+    "./pipeable/skip-until": {
+      "browser": {
+        "types": "./dist/esm/pipeable/skip-until.d.ts",
+        "default": "./dist/esm/pipeable/skip-until.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/skip-until.d.ts",
+        "default": "./dist/esm/pipeable/skip-until.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/skip-until.d.ts",
+        "default": "./dist/esm/pipeable/skip-until.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/skip-until.d.ts",
+        "default": "./dist/esm/pipeable/skip-until.js"
+      }
+    },
+    "./pipeable/skip-while": {
+      "browser": {
+        "types": "./dist/esm/pipeable/skip-while.d.ts",
+        "default": "./dist/esm/pipeable/skip-while.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/skip-while.d.ts",
+        "default": "./dist/esm/pipeable/skip-while.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/skip-while.d.ts",
+        "default": "./dist/esm/pipeable/skip-while.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/skip-while.d.ts",
+        "default": "./dist/esm/pipeable/skip-while.js"
+      }
+    },
+    "./pipeable/start-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/start-with.d.ts",
+        "default": "./dist/esm/pipeable/start-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/start-with.d.ts",
+        "default": "./dist/esm/pipeable/start-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/start-with.d.ts",
+        "default": "./dist/esm/pipeable/start-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/start-with.d.ts",
+        "default": "./dist/esm/pipeable/start-with.js"
+      }
+    },
     "./pipeable/subscribe": {
       "browser": {
         "types": "./dist/esm/pipeable/subscribe.d.ts",
@@ -1478,6 +3015,60 @@
       "require": {
         "types": "./dist/esm/pipeable/subscribe.d.ts",
         "default": "./dist/esm/pipeable/subscribe.js"
+      }
+    },
+    "./pipeable/subscribe-on": {
+      "browser": {
+        "types": "./dist/esm/pipeable/subscribe-on.d.ts",
+        "default": "./dist/esm/pipeable/subscribe-on.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/subscribe-on.d.ts",
+        "default": "./dist/esm/pipeable/subscribe-on.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/subscribe-on.d.ts",
+        "default": "./dist/esm/pipeable/subscribe-on.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/subscribe-on.d.ts",
+        "default": "./dist/esm/pipeable/subscribe-on.js"
+      }
+    },
+    "./pipeable/switch-map": {
+      "browser": {
+        "types": "./dist/esm/pipeable/switch-map.d.ts",
+        "default": "./dist/esm/pipeable/switch-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/switch-map.d.ts",
+        "default": "./dist/esm/pipeable/switch-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/switch-map.d.ts",
+        "default": "./dist/esm/pipeable/switch-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/switch-map.d.ts",
+        "default": "./dist/esm/pipeable/switch-map.js"
+      }
+    },
+    "./pipeable/switch-scan": {
+      "browser": {
+        "types": "./dist/esm/pipeable/switch-scan.d.ts",
+        "default": "./dist/esm/pipeable/switch-scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/switch-scan.d.ts",
+        "default": "./dist/esm/pipeable/switch-scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/switch-scan.d.ts",
+        "default": "./dist/esm/pipeable/switch-scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/switch-scan.d.ts",
+        "default": "./dist/esm/pipeable/switch-scan.js"
       }
     },
     "./pipeable/take": {
@@ -1498,6 +3089,168 @@
         "default": "./dist/esm/pipeable/take.js"
       }
     },
+    "./pipeable/take-last": {
+      "browser": {
+        "types": "./dist/esm/pipeable/take-last.d.ts",
+        "default": "./dist/esm/pipeable/take-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/take-last.d.ts",
+        "default": "./dist/esm/pipeable/take-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/take-last.d.ts",
+        "default": "./dist/esm/pipeable/take-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/take-last.d.ts",
+        "default": "./dist/esm/pipeable/take-last.js"
+      }
+    },
+    "./pipeable/take-until": {
+      "browser": {
+        "types": "./dist/esm/pipeable/take-until.d.ts",
+        "default": "./dist/esm/pipeable/take-until.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/take-until.d.ts",
+        "default": "./dist/esm/pipeable/take-until.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/take-until.d.ts",
+        "default": "./dist/esm/pipeable/take-until.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/take-until.d.ts",
+        "default": "./dist/esm/pipeable/take-until.js"
+      }
+    },
+    "./pipeable/take-while": {
+      "browser": {
+        "types": "./dist/esm/pipeable/take-while.d.ts",
+        "default": "./dist/esm/pipeable/take-while.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/take-while.d.ts",
+        "default": "./dist/esm/pipeable/take-while.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/take-while.d.ts",
+        "default": "./dist/esm/pipeable/take-while.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/take-while.d.ts",
+        "default": "./dist/esm/pipeable/take-while.js"
+      }
+    },
+    "./pipeable/tap": {
+      "browser": {
+        "types": "./dist/esm/pipeable/tap.d.ts",
+        "default": "./dist/esm/pipeable/tap.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/tap.d.ts",
+        "default": "./dist/esm/pipeable/tap.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/tap.d.ts",
+        "default": "./dist/esm/pipeable/tap.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/tap.d.ts",
+        "default": "./dist/esm/pipeable/tap.js"
+      }
+    },
+    "./pipeable/throttle": {
+      "browser": {
+        "types": "./dist/esm/pipeable/throttle.d.ts",
+        "default": "./dist/esm/pipeable/throttle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/throttle.d.ts",
+        "default": "./dist/esm/pipeable/throttle.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/throttle.d.ts",
+        "default": "./dist/esm/pipeable/throttle.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/throttle.d.ts",
+        "default": "./dist/esm/pipeable/throttle.js"
+      }
+    },
+    "./pipeable/throw-if-empty": {
+      "browser": {
+        "types": "./dist/esm/pipeable/throw-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/throw-if-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/throw-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/throw-if-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/throw-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/throw-if-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/throw-if-empty.d.ts",
+        "default": "./dist/esm/pipeable/throw-if-empty.js"
+      }
+    },
+    "./pipeable/time-interval": {
+      "browser": {
+        "types": "./dist/esm/pipeable/time-interval.d.ts",
+        "default": "./dist/esm/pipeable/time-interval.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/time-interval.d.ts",
+        "default": "./dist/esm/pipeable/time-interval.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/time-interval.d.ts",
+        "default": "./dist/esm/pipeable/time-interval.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/time-interval.d.ts",
+        "default": "./dist/esm/pipeable/time-interval.js"
+      }
+    },
+    "./pipeable/timeout": {
+      "browser": {
+        "types": "./dist/esm/pipeable/timeout.d.ts",
+        "default": "./dist/esm/pipeable/timeout.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/timeout.d.ts",
+        "default": "./dist/esm/pipeable/timeout.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/timeout.d.ts",
+        "default": "./dist/esm/pipeable/timeout.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/timeout.d.ts",
+        "default": "./dist/esm/pipeable/timeout.js"
+      }
+    },
+    "./pipeable/timestamp": {
+      "browser": {
+        "types": "./dist/esm/pipeable/timestamp.d.ts",
+        "default": "./dist/esm/pipeable/timestamp.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/timestamp.d.ts",
+        "default": "./dist/esm/pipeable/timestamp.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/timestamp.d.ts",
+        "default": "./dist/esm/pipeable/timestamp.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/timestamp.d.ts",
+        "default": "./dist/esm/pipeable/timestamp.js"
+      }
+    },
     "./pipeable/to-array": {
       "browser": {
         "types": "./dist/esm/pipeable/to-array.d.ts",
@@ -1514,6 +3267,150 @@
       "require": {
         "types": "./dist/esm/pipeable/to-array.d.ts",
         "default": "./dist/esm/pipeable/to-array.js"
+      }
+    },
+    "./pipeable/window": {
+      "browser": {
+        "types": "./dist/esm/pipeable/window.d.ts",
+        "default": "./dist/esm/pipeable/window.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/window.d.ts",
+        "default": "./dist/esm/pipeable/window.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/window.d.ts",
+        "default": "./dist/esm/pipeable/window.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/window.d.ts",
+        "default": "./dist/esm/pipeable/window.js"
+      }
+    },
+    "./pipeable/window-count": {
+      "browser": {
+        "types": "./dist/esm/pipeable/window-count.d.ts",
+        "default": "./dist/esm/pipeable/window-count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/window-count.d.ts",
+        "default": "./dist/esm/pipeable/window-count.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/window-count.d.ts",
+        "default": "./dist/esm/pipeable/window-count.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/window-count.d.ts",
+        "default": "./dist/esm/pipeable/window-count.js"
+      }
+    },
+    "./pipeable/window-time": {
+      "browser": {
+        "types": "./dist/esm/pipeable/window-time.d.ts",
+        "default": "./dist/esm/pipeable/window-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/window-time.d.ts",
+        "default": "./dist/esm/pipeable/window-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/window-time.d.ts",
+        "default": "./dist/esm/pipeable/window-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/window-time.d.ts",
+        "default": "./dist/esm/pipeable/window-time.js"
+      }
+    },
+    "./pipeable/window-toggle": {
+      "browser": {
+        "types": "./dist/esm/pipeable/window-toggle.d.ts",
+        "default": "./dist/esm/pipeable/window-toggle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/window-toggle.d.ts",
+        "default": "./dist/esm/pipeable/window-toggle.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/window-toggle.d.ts",
+        "default": "./dist/esm/pipeable/window-toggle.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/window-toggle.d.ts",
+        "default": "./dist/esm/pipeable/window-toggle.js"
+      }
+    },
+    "./pipeable/window-when": {
+      "browser": {
+        "types": "./dist/esm/pipeable/window-when.d.ts",
+        "default": "./dist/esm/pipeable/window-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/window-when.d.ts",
+        "default": "./dist/esm/pipeable/window-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/window-when.d.ts",
+        "default": "./dist/esm/pipeable/window-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/window-when.d.ts",
+        "default": "./dist/esm/pipeable/window-when.js"
+      }
+    },
+    "./pipeable/with-latest-from": {
+      "browser": {
+        "types": "./dist/esm/pipeable/with-latest-from.d.ts",
+        "default": "./dist/esm/pipeable/with-latest-from.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/with-latest-from.d.ts",
+        "default": "./dist/esm/pipeable/with-latest-from.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/with-latest-from.d.ts",
+        "default": "./dist/esm/pipeable/with-latest-from.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/with-latest-from.d.ts",
+        "default": "./dist/esm/pipeable/with-latest-from.js"
+      }
+    },
+    "./pipeable/zip-all": {
+      "browser": {
+        "types": "./dist/esm/pipeable/zip-all.d.ts",
+        "default": "./dist/esm/pipeable/zip-all.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/zip-all.d.ts",
+        "default": "./dist/esm/pipeable/zip-all.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/zip-all.d.ts",
+        "default": "./dist/esm/pipeable/zip-all.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/zip-all.d.ts",
+        "default": "./dist/esm/pipeable/zip-all.js"
+      }
+    },
+    "./pipeable/zip-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/zip-with.d.ts",
+        "default": "./dist/esm/pipeable/zip-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/zip-with.d.ts",
+        "default": "./dist/esm/pipeable/zip-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/zip-with.d.ts",
+        "default": "./dist/esm/pipeable/zip-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/zip-with.d.ts",
+        "default": "./dist/esm/pipeable/zip-with.js"
       }
     },
     "./pluck": {
@@ -1622,6 +3519,24 @@
       "require": {
         "types": "./dist/esm/race.d.ts",
         "default": "./dist/esm/race.js"
+      }
+    },
+    "./race-with": {
+      "browser": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/pipeable/race-with.d.ts",
+        "default": "./dist/esm/pipeable/race-with.js"
       }
     },
     "./reduce": {
@@ -2002,6 +3917,240 @@
         "default": "./dist/esm/start-with.js"
       }
     },
+    "./static": {
+      "browser": {
+        "types": "./dist/esm/static/index.d.ts",
+        "default": "./dist/esm/static/index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/index.d.ts",
+        "default": "./dist/esm/static/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/index.d.ts",
+        "default": "./dist/esm/static/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/index.d.ts",
+        "default": "./dist/esm/static/index.js"
+      }
+    },
+    "./static/animation-frames": {
+      "browser": {
+        "types": "./dist/esm/static/animation-frames.d.ts",
+        "default": "./dist/esm/static/animation-frames.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/animation-frames.d.ts",
+        "default": "./dist/esm/static/animation-frames.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/animation-frames.d.ts",
+        "default": "./dist/esm/static/animation-frames.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/animation-frames.d.ts",
+        "default": "./dist/esm/static/animation-frames.js"
+      }
+    },
+    "./static/combine": {
+      "browser": {
+        "types": "./dist/esm/static/combine.d.ts",
+        "default": "./dist/esm/static/combine.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/combine.d.ts",
+        "default": "./dist/esm/static/combine.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/combine.d.ts",
+        "default": "./dist/esm/static/combine.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/combine.d.ts",
+        "default": "./dist/esm/static/combine.js"
+      }
+    },
+    "./static/combine-latest": {
+      "browser": {
+        "types": "./dist/esm/static/combine-latest.d.ts",
+        "default": "./dist/esm/static/combine-latest.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/combine-latest.d.ts",
+        "default": "./dist/esm/static/combine-latest.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/combine-latest.d.ts",
+        "default": "./dist/esm/static/combine-latest.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/combine-latest.d.ts",
+        "default": "./dist/esm/static/combine-latest.js"
+      }
+    },
+    "./static/concat": {
+      "browser": {
+        "types": "./dist/esm/static/concat.d.ts",
+        "default": "./dist/esm/static/concat.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/concat.d.ts",
+        "default": "./dist/esm/static/concat.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/concat.d.ts",
+        "default": "./dist/esm/static/concat.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/concat.d.ts",
+        "default": "./dist/esm/static/concat.js"
+      }
+    },
+    "./static/fork-join": {
+      "browser": {
+        "types": "./dist/esm/static/fork-join.d.ts",
+        "default": "./dist/esm/static/fork-join.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/fork-join.d.ts",
+        "default": "./dist/esm/static/fork-join.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/fork-join.d.ts",
+        "default": "./dist/esm/static/fork-join.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/fork-join.d.ts",
+        "default": "./dist/esm/static/fork-join.js"
+      }
+    },
+    "./static/generate": {
+      "browser": {
+        "types": "./dist/esm/static/generate.d.ts",
+        "default": "./dist/esm/static/generate.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/generate.d.ts",
+        "default": "./dist/esm/static/generate.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/generate.d.ts",
+        "default": "./dist/esm/static/generate.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/generate.d.ts",
+        "default": "./dist/esm/static/generate.js"
+      }
+    },
+    "./static/interval": {
+      "browser": {
+        "types": "./dist/esm/static/interval.d.ts",
+        "default": "./dist/esm/static/interval.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/interval.d.ts",
+        "default": "./dist/esm/static/interval.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/interval.d.ts",
+        "default": "./dist/esm/static/interval.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/interval.d.ts",
+        "default": "./dist/esm/static/interval.js"
+      }
+    },
+    "./static/merge": {
+      "browser": {
+        "types": "./dist/esm/static/merge.d.ts",
+        "default": "./dist/esm/static/merge.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/merge.d.ts",
+        "default": "./dist/esm/static/merge.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/merge.d.ts",
+        "default": "./dist/esm/static/merge.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/merge.d.ts",
+        "default": "./dist/esm/static/merge.js"
+      }
+    },
+    "./static/on-error-resume-next": {
+      "browser": {
+        "types": "./dist/esm/static/on-error-resume-next.d.ts",
+        "default": "./dist/esm/static/on-error-resume-next.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/on-error-resume-next.d.ts",
+        "default": "./dist/esm/static/on-error-resume-next.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/on-error-resume-next.d.ts",
+        "default": "./dist/esm/static/on-error-resume-next.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/on-error-resume-next.d.ts",
+        "default": "./dist/esm/static/on-error-resume-next.js"
+      }
+    },
+    "./static/partition": {
+      "browser": {
+        "types": "./dist/esm/static/partition.d.ts",
+        "default": "./dist/esm/static/partition.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/partition.d.ts",
+        "default": "./dist/esm/static/partition.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/partition.d.ts",
+        "default": "./dist/esm/static/partition.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/partition.d.ts",
+        "default": "./dist/esm/static/partition.js"
+      }
+    },
+    "./static/race": {
+      "browser": {
+        "types": "./dist/esm/static/race.d.ts",
+        "default": "./dist/esm/static/race.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/race.d.ts",
+        "default": "./dist/esm/static/race.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/race.d.ts",
+        "default": "./dist/esm/static/race.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/race.d.ts",
+        "default": "./dist/esm/static/race.js"
+      }
+    },
+    "./static/timer": {
+      "browser": {
+        "types": "./dist/esm/static/timer.d.ts",
+        "default": "./dist/esm/static/timer.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/static/timer.d.ts",
+        "default": "./dist/esm/static/timer.js"
+      },
+      "import": {
+        "types": "./dist/esm/static/timer.d.ts",
+        "default": "./dist/esm/static/timer.js"
+      },
+      "require": {
+        "types": "./dist/esm/static/timer.d.ts",
+        "default": "./dist/esm/static/timer.js"
+      }
+    },
     "./subject": {
       "browser": {
         "types": "./dist/esm/subject.d.ts",
@@ -2056,60 +4205,6 @@
         "default": "./dist/esm/subscribe-on.js"
       }
     },
-    "./symbol/filter": {
-      "browser": {
-        "types": "./dist/esm/filter.d.ts",
-        "default": "./dist/esm/filter.js"
-      },
-      "webpack": {
-        "types": "./dist/esm/filter.d.ts",
-        "default": "./dist/esm/filter.js"
-      },
-      "import": {
-        "types": "./dist/esm/filter.d.ts",
-        "default": "./dist/esm/filter.js"
-      },
-      "require": {
-        "types": "./dist/esm/filter.d.ts",
-        "default": "./dist/esm/filter.js"
-      }
-    },
-    "./symbol/map": {
-      "browser": {
-        "types": "./dist/esm/map.d.ts",
-        "default": "./dist/esm/map.js"
-      },
-      "webpack": {
-        "types": "./dist/esm/map.d.ts",
-        "default": "./dist/esm/map.js"
-      },
-      "import": {
-        "types": "./dist/esm/map.d.ts",
-        "default": "./dist/esm/map.js"
-      },
-      "require": {
-        "types": "./dist/esm/map.d.ts",
-        "default": "./dist/esm/map.js"
-      }
-    },
-    "./symbol/take": {
-      "browser": {
-        "types": "./dist/esm/take.d.ts",
-        "default": "./dist/esm/take.js"
-      },
-      "webpack": {
-        "types": "./dist/esm/take.d.ts",
-        "default": "./dist/esm/take.js"
-      },
-      "import": {
-        "types": "./dist/esm/take.d.ts",
-        "default": "./dist/esm/take.js"
-      },
-      "require": {
-        "types": "./dist/esm/take.d.ts",
-        "default": "./dist/esm/take.js"
-      }
-    },
     "./switch-map": {
       "browser": {
         "types": "./dist/esm/switch-map.d.ts",
@@ -2144,6 +4239,1788 @@
       "require": {
         "types": "./dist/esm/switch-scan.d.ts",
         "default": "./dist/esm/switch-scan.js"
+      }
+    },
+    "./symbol": {
+      "browser": {
+        "types": "./dist/esm/symbol/index.d.ts",
+        "default": "./dist/esm/symbol/index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/index.d.ts",
+        "default": "./dist/esm/symbol/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/index.d.ts",
+        "default": "./dist/esm/symbol/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/index.d.ts",
+        "default": "./dist/esm/symbol/index.js"
+      }
+    },
+    "./symbol/animation-frames": {
+      "browser": {
+        "types": "./dist/esm/symbol/animation-frames.d.ts",
+        "default": "./dist/esm/symbol/animation-frames.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/animation-frames.d.ts",
+        "default": "./dist/esm/symbol/animation-frames.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/animation-frames.d.ts",
+        "default": "./dist/esm/symbol/animation-frames.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/animation-frames.d.ts",
+        "default": "./dist/esm/symbol/animation-frames.js"
+      }
+    },
+    "./symbol/buffer": {
+      "browser": {
+        "types": "./dist/esm/symbol/buffer.d.ts",
+        "default": "./dist/esm/symbol/buffer.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/buffer.d.ts",
+        "default": "./dist/esm/symbol/buffer.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/buffer.d.ts",
+        "default": "./dist/esm/symbol/buffer.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/buffer.d.ts",
+        "default": "./dist/esm/symbol/buffer.js"
+      }
+    },
+    "./symbol/buffer-time": {
+      "browser": {
+        "types": "./dist/esm/symbol/buffer-time.d.ts",
+        "default": "./dist/esm/symbol/buffer-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/buffer-time.d.ts",
+        "default": "./dist/esm/symbol/buffer-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/buffer-time.d.ts",
+        "default": "./dist/esm/symbol/buffer-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/buffer-time.d.ts",
+        "default": "./dist/esm/symbol/buffer-time.js"
+      }
+    },
+    "./symbol/buffer-toggle": {
+      "browser": {
+        "types": "./dist/esm/symbol/buffer-toggle.d.ts",
+        "default": "./dist/esm/symbol/buffer-toggle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/buffer-toggle.d.ts",
+        "default": "./dist/esm/symbol/buffer-toggle.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/buffer-toggle.d.ts",
+        "default": "./dist/esm/symbol/buffer-toggle.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/buffer-toggle.d.ts",
+        "default": "./dist/esm/symbol/buffer-toggle.js"
+      }
+    },
+    "./symbol/catch-error": {
+      "browser": {
+        "types": "./dist/esm/symbol/catch-error.d.ts",
+        "default": "./dist/esm/symbol/catch-error.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/catch-error.d.ts",
+        "default": "./dist/esm/symbol/catch-error.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/catch-error.d.ts",
+        "default": "./dist/esm/symbol/catch-error.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/catch-error.d.ts",
+        "default": "./dist/esm/symbol/catch-error.js"
+      }
+    },
+    "./symbol/combine": {
+      "browser": {
+        "types": "./dist/esm/symbol/combine.d.ts",
+        "default": "./dist/esm/symbol/combine.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/combine.d.ts",
+        "default": "./dist/esm/symbol/combine.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/combine.d.ts",
+        "default": "./dist/esm/symbol/combine.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/combine.d.ts",
+        "default": "./dist/esm/symbol/combine.js"
+      }
+    },
+    "./symbol/combine-latest": {
+      "browser": {
+        "types": "./dist/esm/symbol/combine-latest.d.ts",
+        "default": "./dist/esm/symbol/combine-latest.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/combine-latest.d.ts",
+        "default": "./dist/esm/symbol/combine-latest.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/combine-latest.d.ts",
+        "default": "./dist/esm/symbol/combine-latest.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/combine-latest.d.ts",
+        "default": "./dist/esm/symbol/combine-latest.js"
+      }
+    },
+    "./symbol/combine-latest-all": {
+      "browser": {
+        "types": "./dist/esm/symbol/combine-latest-all.d.ts",
+        "default": "./dist/esm/symbol/combine-latest-all.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/combine-latest-all.d.ts",
+        "default": "./dist/esm/symbol/combine-latest-all.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/combine-latest-all.d.ts",
+        "default": "./dist/esm/symbol/combine-latest-all.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/combine-latest-all.d.ts",
+        "default": "./dist/esm/symbol/combine-latest-all.js"
+      }
+    },
+    "./symbol/concat": {
+      "browser": {
+        "types": "./dist/esm/symbol/concat.d.ts",
+        "default": "./dist/esm/symbol/concat.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/concat.d.ts",
+        "default": "./dist/esm/symbol/concat.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/concat.d.ts",
+        "default": "./dist/esm/symbol/concat.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/concat.d.ts",
+        "default": "./dist/esm/symbol/concat.js"
+      }
+    },
+    "./symbol/connect": {
+      "browser": {
+        "types": "./dist/esm/symbol/connect.d.ts",
+        "default": "./dist/esm/symbol/connect.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/connect.d.ts",
+        "default": "./dist/esm/symbol/connect.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/connect.d.ts",
+        "default": "./dist/esm/symbol/connect.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/connect.d.ts",
+        "default": "./dist/esm/symbol/connect.js"
+      }
+    },
+    "./symbol/count": {
+      "browser": {
+        "types": "./dist/esm/symbol/count.d.ts",
+        "default": "./dist/esm/symbol/count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/count.d.ts",
+        "default": "./dist/esm/symbol/count.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/count.d.ts",
+        "default": "./dist/esm/symbol/count.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/count.d.ts",
+        "default": "./dist/esm/symbol/count.js"
+      }
+    },
+    "./symbol/create": {
+      "browser": {
+        "types": "./dist/esm/symbol/create.d.ts",
+        "default": "./dist/esm/symbol/create.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/create.d.ts",
+        "default": "./dist/esm/symbol/create.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/create.d.ts",
+        "default": "./dist/esm/symbol/create.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/create.d.ts",
+        "default": "./dist/esm/symbol/create.js"
+      }
+    },
+    "./symbol/debounce": {
+      "browser": {
+        "types": "./dist/esm/symbol/debounce.d.ts",
+        "default": "./dist/esm/symbol/debounce.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/debounce.d.ts",
+        "default": "./dist/esm/symbol/debounce.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/debounce.d.ts",
+        "default": "./dist/esm/symbol/debounce.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/debounce.d.ts",
+        "default": "./dist/esm/symbol/debounce.js"
+      }
+    },
+    "./symbol/default-if-empty": {
+      "browser": {
+        "types": "./dist/esm/symbol/default-if-empty.d.ts",
+        "default": "./dist/esm/symbol/default-if-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/default-if-empty.d.ts",
+        "default": "./dist/esm/symbol/default-if-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/default-if-empty.d.ts",
+        "default": "./dist/esm/symbol/default-if-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/default-if-empty.d.ts",
+        "default": "./dist/esm/symbol/default-if-empty.js"
+      }
+    },
+    "./symbol/delay": {
+      "browser": {
+        "types": "./dist/esm/symbol/delay.d.ts",
+        "default": "./dist/esm/symbol/delay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/delay.d.ts",
+        "default": "./dist/esm/symbol/delay.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/delay.d.ts",
+        "default": "./dist/esm/symbol/delay.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/delay.d.ts",
+        "default": "./dist/esm/symbol/delay.js"
+      }
+    },
+    "./symbol/delay-when": {
+      "browser": {
+        "types": "./dist/esm/symbol/delay-when.d.ts",
+        "default": "./dist/esm/symbol/delay-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/delay-when.d.ts",
+        "default": "./dist/esm/symbol/delay-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/delay-when.d.ts",
+        "default": "./dist/esm/symbol/delay-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/delay-when.d.ts",
+        "default": "./dist/esm/symbol/delay-when.js"
+      }
+    },
+    "./symbol/dematerialize": {
+      "browser": {
+        "types": "./dist/esm/symbol/dematerialize.d.ts",
+        "default": "./dist/esm/symbol/dematerialize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/dematerialize.d.ts",
+        "default": "./dist/esm/symbol/dematerialize.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/dematerialize.d.ts",
+        "default": "./dist/esm/symbol/dematerialize.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/dematerialize.d.ts",
+        "default": "./dist/esm/symbol/dematerialize.js"
+      }
+    },
+    "./symbol/distinct": {
+      "browser": {
+        "types": "./dist/esm/symbol/distinct.d.ts",
+        "default": "./dist/esm/symbol/distinct.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/distinct.d.ts",
+        "default": "./dist/esm/symbol/distinct.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/distinct.d.ts",
+        "default": "./dist/esm/symbol/distinct.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/distinct.d.ts",
+        "default": "./dist/esm/symbol/distinct.js"
+      }
+    },
+    "./symbol/distinct-until-changed": {
+      "browser": {
+        "types": "./dist/esm/symbol/distinct-until-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-changed.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/distinct-until-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-changed.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/distinct-until-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-changed.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/distinct-until-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-changed.js"
+      }
+    },
+    "./symbol/distinct-until-key-changed": {
+      "browser": {
+        "types": "./dist/esm/symbol/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-key-changed.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-key-changed.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-key-changed.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/distinct-until-key-changed.d.ts",
+        "default": "./dist/esm/symbol/distinct-until-key-changed.js"
+      }
+    },
+    "./symbol/element-at": {
+      "browser": {
+        "types": "./dist/esm/symbol/element-at.d.ts",
+        "default": "./dist/esm/symbol/element-at.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/element-at.d.ts",
+        "default": "./dist/esm/symbol/element-at.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/element-at.d.ts",
+        "default": "./dist/esm/symbol/element-at.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/element-at.d.ts",
+        "default": "./dist/esm/symbol/element-at.js"
+      }
+    },
+    "./symbol/every": {
+      "browser": {
+        "types": "./dist/esm/symbol/every.d.ts",
+        "default": "./dist/esm/symbol/every.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/every.d.ts",
+        "default": "./dist/esm/symbol/every.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/every.d.ts",
+        "default": "./dist/esm/symbol/every.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/every.d.ts",
+        "default": "./dist/esm/symbol/every.js"
+      }
+    },
+    "./symbol/exhaust-map": {
+      "browser": {
+        "types": "./dist/esm/symbol/exhaust-map.d.ts",
+        "default": "./dist/esm/symbol/exhaust-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/exhaust-map.d.ts",
+        "default": "./dist/esm/symbol/exhaust-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/exhaust-map.d.ts",
+        "default": "./dist/esm/symbol/exhaust-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/exhaust-map.d.ts",
+        "default": "./dist/esm/symbol/exhaust-map.js"
+      }
+    },
+    "./symbol/expand": {
+      "browser": {
+        "types": "./dist/esm/symbol/expand.d.ts",
+        "default": "./dist/esm/symbol/expand.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/expand.d.ts",
+        "default": "./dist/esm/symbol/expand.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/expand.d.ts",
+        "default": "./dist/esm/symbol/expand.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/expand.d.ts",
+        "default": "./dist/esm/symbol/expand.js"
+      }
+    },
+    "./symbol/filter": {
+      "browser": {
+        "types": "./dist/esm/symbol/filter.d.ts",
+        "default": "./dist/esm/symbol/filter.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/filter.d.ts",
+        "default": "./dist/esm/symbol/filter.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/filter.d.ts",
+        "default": "./dist/esm/symbol/filter.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/filter.d.ts",
+        "default": "./dist/esm/symbol/filter.js"
+      }
+    },
+    "./symbol/finalize": {
+      "browser": {
+        "types": "./dist/esm/symbol/finalize.d.ts",
+        "default": "./dist/esm/symbol/finalize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/finalize.d.ts",
+        "default": "./dist/esm/symbol/finalize.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/finalize.d.ts",
+        "default": "./dist/esm/symbol/finalize.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/finalize.d.ts",
+        "default": "./dist/esm/symbol/finalize.js"
+      }
+    },
+    "./symbol/find": {
+      "browser": {
+        "types": "./dist/esm/symbol/find.d.ts",
+        "default": "./dist/esm/symbol/find.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/find.d.ts",
+        "default": "./dist/esm/symbol/find.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/find.d.ts",
+        "default": "./dist/esm/symbol/find.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/find.d.ts",
+        "default": "./dist/esm/symbol/find.js"
+      }
+    },
+    "./symbol/find-index": {
+      "browser": {
+        "types": "./dist/esm/symbol/find-index.d.ts",
+        "default": "./dist/esm/symbol/find-index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/find-index.d.ts",
+        "default": "./dist/esm/symbol/find-index.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/find-index.d.ts",
+        "default": "./dist/esm/symbol/find-index.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/find-index.d.ts",
+        "default": "./dist/esm/symbol/find-index.js"
+      }
+    },
+    "./symbol/first": {
+      "browser": {
+        "types": "./dist/esm/symbol/first.d.ts",
+        "default": "./dist/esm/symbol/first.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/first.d.ts",
+        "default": "./dist/esm/symbol/first.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/first.d.ts",
+        "default": "./dist/esm/symbol/first.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/first.d.ts",
+        "default": "./dist/esm/symbol/first.js"
+      }
+    },
+    "./symbol/fork-join": {
+      "browser": {
+        "types": "./dist/esm/symbol/fork-join.d.ts",
+        "default": "./dist/esm/symbol/fork-join.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/fork-join.d.ts",
+        "default": "./dist/esm/symbol/fork-join.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/fork-join.d.ts",
+        "default": "./dist/esm/symbol/fork-join.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/fork-join.d.ts",
+        "default": "./dist/esm/symbol/fork-join.js"
+      }
+    },
+    "./symbol/generate": {
+      "browser": {
+        "types": "./dist/esm/symbol/generate.d.ts",
+        "default": "./dist/esm/symbol/generate.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/generate.d.ts",
+        "default": "./dist/esm/symbol/generate.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/generate.d.ts",
+        "default": "./dist/esm/symbol/generate.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/generate.d.ts",
+        "default": "./dist/esm/symbol/generate.js"
+      }
+    },
+    "./symbol/group-by": {
+      "browser": {
+        "types": "./dist/esm/symbol/group-by.d.ts",
+        "default": "./dist/esm/symbol/group-by.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/group-by.d.ts",
+        "default": "./dist/esm/symbol/group-by.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/group-by.d.ts",
+        "default": "./dist/esm/symbol/group-by.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/group-by.d.ts",
+        "default": "./dist/esm/symbol/group-by.js"
+      }
+    },
+    "./symbol/interval": {
+      "browser": {
+        "types": "./dist/esm/symbol/interval.d.ts",
+        "default": "./dist/esm/symbol/interval.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/interval.d.ts",
+        "default": "./dist/esm/symbol/interval.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/interval.d.ts",
+        "default": "./dist/esm/symbol/interval.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/interval.d.ts",
+        "default": "./dist/esm/symbol/interval.js"
+      }
+    },
+    "./symbol/is-empty": {
+      "browser": {
+        "types": "./dist/esm/symbol/is-empty.d.ts",
+        "default": "./dist/esm/symbol/is-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/is-empty.d.ts",
+        "default": "./dist/esm/symbol/is-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/is-empty.d.ts",
+        "default": "./dist/esm/symbol/is-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/is-empty.d.ts",
+        "default": "./dist/esm/symbol/is-empty.js"
+      }
+    },
+    "./symbol/iterate-buffered-values": {
+      "browser": {
+        "types": "./dist/esm/symbol/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/symbol/iterate-buffered-values.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/symbol/iterate-buffered-values.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/symbol/iterate-buffered-values.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/iterate-buffered-values.d.ts",
+        "default": "./dist/esm/symbol/iterate-buffered-values.js"
+      }
+    },
+    "./symbol/iterate-each-value": {
+      "browser": {
+        "types": "./dist/esm/symbol/iterate-each-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-each-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/iterate-each-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-each-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/iterate-each-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-each-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/iterate-each-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-each-value.js"
+      }
+    },
+    "./symbol/iterate-latest-value": {
+      "browser": {
+        "types": "./dist/esm/symbol/iterate-latest-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-latest-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/iterate-latest-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-latest-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/iterate-latest-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-latest-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/iterate-latest-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-latest-value.js"
+      }
+    },
+    "./symbol/iterate-next-value": {
+      "browser": {
+        "types": "./dist/esm/symbol/iterate-next-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-next-value.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/iterate-next-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-next-value.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/iterate-next-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-next-value.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/iterate-next-value.d.ts",
+        "default": "./dist/esm/symbol/iterate-next-value.js"
+      }
+    },
+    "./symbol/last": {
+      "browser": {
+        "types": "./dist/esm/symbol/last.d.ts",
+        "default": "./dist/esm/symbol/last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/last.d.ts",
+        "default": "./dist/esm/symbol/last.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/last.d.ts",
+        "default": "./dist/esm/symbol/last.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/last.d.ts",
+        "default": "./dist/esm/symbol/last.js"
+      }
+    },
+    "./symbol/map": {
+      "browser": {
+        "types": "./dist/esm/symbol/map.d.ts",
+        "default": "./dist/esm/symbol/map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/map.d.ts",
+        "default": "./dist/esm/symbol/map.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/map.d.ts",
+        "default": "./dist/esm/symbol/map.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/map.d.ts",
+        "default": "./dist/esm/symbol/map.js"
+      }
+    },
+    "./symbol/materialize": {
+      "browser": {
+        "types": "./dist/esm/symbol/materialize.d.ts",
+        "default": "./dist/esm/symbol/materialize.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/materialize.d.ts",
+        "default": "./dist/esm/symbol/materialize.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/materialize.d.ts",
+        "default": "./dist/esm/symbol/materialize.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/materialize.d.ts",
+        "default": "./dist/esm/symbol/materialize.js"
+      }
+    },
+    "./symbol/max": {
+      "browser": {
+        "types": "./dist/esm/symbol/max.d.ts",
+        "default": "./dist/esm/symbol/max.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/max.d.ts",
+        "default": "./dist/esm/symbol/max.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/max.d.ts",
+        "default": "./dist/esm/symbol/max.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/max.d.ts",
+        "default": "./dist/esm/symbol/max.js"
+      }
+    },
+    "./symbol/merge": {
+      "browser": {
+        "types": "./dist/esm/symbol/merge.d.ts",
+        "default": "./dist/esm/symbol/merge.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/merge.d.ts",
+        "default": "./dist/esm/symbol/merge.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/merge.d.ts",
+        "default": "./dist/esm/symbol/merge.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/merge.d.ts",
+        "default": "./dist/esm/symbol/merge.js"
+      }
+    },
+    "./symbol/merge-map": {
+      "browser": {
+        "types": "./dist/esm/symbol/merge-map.d.ts",
+        "default": "./dist/esm/symbol/merge-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/merge-map.d.ts",
+        "default": "./dist/esm/symbol/merge-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/merge-map.d.ts",
+        "default": "./dist/esm/symbol/merge-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/merge-map.d.ts",
+        "default": "./dist/esm/symbol/merge-map.js"
+      }
+    },
+    "./symbol/merge-scan": {
+      "browser": {
+        "types": "./dist/esm/symbol/merge-scan.d.ts",
+        "default": "./dist/esm/symbol/merge-scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/merge-scan.d.ts",
+        "default": "./dist/esm/symbol/merge-scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/merge-scan.d.ts",
+        "default": "./dist/esm/symbol/merge-scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/merge-scan.d.ts",
+        "default": "./dist/esm/symbol/merge-scan.js"
+      }
+    },
+    "./symbol/min": {
+      "browser": {
+        "types": "./dist/esm/symbol/min.d.ts",
+        "default": "./dist/esm/symbol/min.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/min.d.ts",
+        "default": "./dist/esm/symbol/min.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/min.d.ts",
+        "default": "./dist/esm/symbol/min.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/min.d.ts",
+        "default": "./dist/esm/symbol/min.js"
+      }
+    },
+    "./symbol/multicast": {
+      "browser": {
+        "types": "./dist/esm/symbol/multicast.d.ts",
+        "default": "./dist/esm/symbol/multicast.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/multicast.d.ts",
+        "default": "./dist/esm/symbol/multicast.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/multicast.d.ts",
+        "default": "./dist/esm/symbol/multicast.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/multicast.d.ts",
+        "default": "./dist/esm/symbol/multicast.js"
+      }
+    },
+    "./symbol/observe-on": {
+      "browser": {
+        "types": "./dist/esm/symbol/observe-on.d.ts",
+        "default": "./dist/esm/symbol/observe-on.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/observe-on.d.ts",
+        "default": "./dist/esm/symbol/observe-on.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/observe-on.d.ts",
+        "default": "./dist/esm/symbol/observe-on.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/observe-on.d.ts",
+        "default": "./dist/esm/symbol/observe-on.js"
+      }
+    },
+    "./symbol/on-error-resume-next": {
+      "browser": {
+        "types": "./dist/esm/symbol/on-error-resume-next.d.ts",
+        "default": "./dist/esm/symbol/on-error-resume-next.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/on-error-resume-next.d.ts",
+        "default": "./dist/esm/symbol/on-error-resume-next.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/on-error-resume-next.d.ts",
+        "default": "./dist/esm/symbol/on-error-resume-next.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/on-error-resume-next.d.ts",
+        "default": "./dist/esm/symbol/on-error-resume-next.js"
+      }
+    },
+    "./symbol/pairwise": {
+      "browser": {
+        "types": "./dist/esm/symbol/pairwise.d.ts",
+        "default": "./dist/esm/symbol/pairwise.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/pairwise.d.ts",
+        "default": "./dist/esm/symbol/pairwise.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/pairwise.d.ts",
+        "default": "./dist/esm/symbol/pairwise.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/pairwise.d.ts",
+        "default": "./dist/esm/symbol/pairwise.js"
+      }
+    },
+    "./symbol/partition": {
+      "browser": {
+        "types": "./dist/esm/symbol/partition.d.ts",
+        "default": "./dist/esm/symbol/partition.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/partition.d.ts",
+        "default": "./dist/esm/symbol/partition.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/partition.d.ts",
+        "default": "./dist/esm/symbol/partition.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/partition.d.ts",
+        "default": "./dist/esm/symbol/partition.js"
+      }
+    },
+    "./symbol/pipe": {
+      "browser": {
+        "types": "./dist/esm/symbol/pipe.d.ts",
+        "default": "./dist/esm/symbol/pipe.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/pipe.d.ts",
+        "default": "./dist/esm/symbol/pipe.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/pipe.d.ts",
+        "default": "./dist/esm/symbol/pipe.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/pipe.d.ts",
+        "default": "./dist/esm/symbol/pipe.js"
+      }
+    },
+    "./symbol/pluck": {
+      "browser": {
+        "types": "./dist/esm/symbol/pluck.d.ts",
+        "default": "./dist/esm/symbol/pluck.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/pluck.d.ts",
+        "default": "./dist/esm/symbol/pluck.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/pluck.d.ts",
+        "default": "./dist/esm/symbol/pluck.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/pluck.d.ts",
+        "default": "./dist/esm/symbol/pluck.js"
+      }
+    },
+    "./symbol/publish": {
+      "browser": {
+        "types": "./dist/esm/symbol/publish.d.ts",
+        "default": "./dist/esm/symbol/publish.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/publish.d.ts",
+        "default": "./dist/esm/symbol/publish.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/publish.d.ts",
+        "default": "./dist/esm/symbol/publish.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/publish.d.ts",
+        "default": "./dist/esm/symbol/publish.js"
+      }
+    },
+    "./symbol/publish-behavior": {
+      "browser": {
+        "types": "./dist/esm/symbol/publish-behavior.d.ts",
+        "default": "./dist/esm/symbol/publish-behavior.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/publish-behavior.d.ts",
+        "default": "./dist/esm/symbol/publish-behavior.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/publish-behavior.d.ts",
+        "default": "./dist/esm/symbol/publish-behavior.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/publish-behavior.d.ts",
+        "default": "./dist/esm/symbol/publish-behavior.js"
+      }
+    },
+    "./symbol/publish-last": {
+      "browser": {
+        "types": "./dist/esm/symbol/publish-last.d.ts",
+        "default": "./dist/esm/symbol/publish-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/publish-last.d.ts",
+        "default": "./dist/esm/symbol/publish-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/publish-last.d.ts",
+        "default": "./dist/esm/symbol/publish-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/publish-last.d.ts",
+        "default": "./dist/esm/symbol/publish-last.js"
+      }
+    },
+    "./symbol/publish-replay": {
+      "browser": {
+        "types": "./dist/esm/symbol/publish-replay.d.ts",
+        "default": "./dist/esm/symbol/publish-replay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/publish-replay.d.ts",
+        "default": "./dist/esm/symbol/publish-replay.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/publish-replay.d.ts",
+        "default": "./dist/esm/symbol/publish-replay.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/publish-replay.d.ts",
+        "default": "./dist/esm/symbol/publish-replay.js"
+      }
+    },
+    "./symbol/race": {
+      "browser": {
+        "types": "./dist/esm/symbol/race.d.ts",
+        "default": "./dist/esm/symbol/race.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/race.d.ts",
+        "default": "./dist/esm/symbol/race.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/race.d.ts",
+        "default": "./dist/esm/symbol/race.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/race.d.ts",
+        "default": "./dist/esm/symbol/race.js"
+      }
+    },
+    "./symbol/reduce": {
+      "browser": {
+        "types": "./dist/esm/symbol/reduce.d.ts",
+        "default": "./dist/esm/symbol/reduce.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/reduce.d.ts",
+        "default": "./dist/esm/symbol/reduce.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/reduce.d.ts",
+        "default": "./dist/esm/symbol/reduce.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/reduce.d.ts",
+        "default": "./dist/esm/symbol/reduce.js"
+      }
+    },
+    "./symbol/ref-count": {
+      "browser": {
+        "types": "./dist/esm/symbol/ref-count.d.ts",
+        "default": "./dist/esm/symbol/ref-count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/ref-count.d.ts",
+        "default": "./dist/esm/symbol/ref-count.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/ref-count.d.ts",
+        "default": "./dist/esm/symbol/ref-count.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/ref-count.d.ts",
+        "default": "./dist/esm/symbol/ref-count.js"
+      }
+    },
+    "./symbol/repeat": {
+      "browser": {
+        "types": "./dist/esm/symbol/repeat.d.ts",
+        "default": "./dist/esm/symbol/repeat.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/repeat.d.ts",
+        "default": "./dist/esm/symbol/repeat.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/repeat.d.ts",
+        "default": "./dist/esm/symbol/repeat.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/repeat.d.ts",
+        "default": "./dist/esm/symbol/repeat.js"
+      }
+    },
+    "./symbol/repeat-when": {
+      "browser": {
+        "types": "./dist/esm/symbol/repeat-when.d.ts",
+        "default": "./dist/esm/symbol/repeat-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/repeat-when.d.ts",
+        "default": "./dist/esm/symbol/repeat-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/repeat-when.d.ts",
+        "default": "./dist/esm/symbol/repeat-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/repeat-when.d.ts",
+        "default": "./dist/esm/symbol/repeat-when.js"
+      }
+    },
+    "./symbol/retry": {
+      "browser": {
+        "types": "./dist/esm/symbol/retry.d.ts",
+        "default": "./dist/esm/symbol/retry.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/retry.d.ts",
+        "default": "./dist/esm/symbol/retry.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/retry.d.ts",
+        "default": "./dist/esm/symbol/retry.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/retry.d.ts",
+        "default": "./dist/esm/symbol/retry.js"
+      }
+    },
+    "./symbol/retry-when": {
+      "browser": {
+        "types": "./dist/esm/symbol/retry-when.d.ts",
+        "default": "./dist/esm/symbol/retry-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/retry-when.d.ts",
+        "default": "./dist/esm/symbol/retry-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/retry-when.d.ts",
+        "default": "./dist/esm/symbol/retry-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/retry-when.d.ts",
+        "default": "./dist/esm/symbol/retry-when.js"
+      }
+    },
+    "./symbol/sample": {
+      "browser": {
+        "types": "./dist/esm/symbol/sample.d.ts",
+        "default": "./dist/esm/symbol/sample.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/sample.d.ts",
+        "default": "./dist/esm/symbol/sample.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/sample.d.ts",
+        "default": "./dist/esm/symbol/sample.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/sample.d.ts",
+        "default": "./dist/esm/symbol/sample.js"
+      }
+    },
+    "./symbol/sample-time": {
+      "browser": {
+        "types": "./dist/esm/symbol/sample-time.d.ts",
+        "default": "./dist/esm/symbol/sample-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/sample-time.d.ts",
+        "default": "./dist/esm/symbol/sample-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/sample-time.d.ts",
+        "default": "./dist/esm/symbol/sample-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/sample-time.d.ts",
+        "default": "./dist/esm/symbol/sample-time.js"
+      }
+    },
+    "./symbol/scan": {
+      "browser": {
+        "types": "./dist/esm/symbol/scan.d.ts",
+        "default": "./dist/esm/symbol/scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/scan.d.ts",
+        "default": "./dist/esm/symbol/scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/scan.d.ts",
+        "default": "./dist/esm/symbol/scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/scan.d.ts",
+        "default": "./dist/esm/symbol/scan.js"
+      }
+    },
+    "./symbol/sequence-equal": {
+      "browser": {
+        "types": "./dist/esm/symbol/sequence-equal.d.ts",
+        "default": "./dist/esm/symbol/sequence-equal.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/sequence-equal.d.ts",
+        "default": "./dist/esm/symbol/sequence-equal.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/sequence-equal.d.ts",
+        "default": "./dist/esm/symbol/sequence-equal.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/sequence-equal.d.ts",
+        "default": "./dist/esm/symbol/sequence-equal.js"
+      }
+    },
+    "./symbol/share": {
+      "browser": {
+        "types": "./dist/esm/symbol/share.d.ts",
+        "default": "./dist/esm/symbol/share.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/share.d.ts",
+        "default": "./dist/esm/symbol/share.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/share.d.ts",
+        "default": "./dist/esm/symbol/share.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/share.d.ts",
+        "default": "./dist/esm/symbol/share.js"
+      }
+    },
+    "./symbol/share-replay": {
+      "browser": {
+        "types": "./dist/esm/symbol/share-replay.d.ts",
+        "default": "./dist/esm/symbol/share-replay.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/share-replay.d.ts",
+        "default": "./dist/esm/symbol/share-replay.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/share-replay.d.ts",
+        "default": "./dist/esm/symbol/share-replay.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/share-replay.d.ts",
+        "default": "./dist/esm/symbol/share-replay.js"
+      }
+    },
+    "./symbol/single": {
+      "browser": {
+        "types": "./dist/esm/symbol/single.d.ts",
+        "default": "./dist/esm/symbol/single.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/single.d.ts",
+        "default": "./dist/esm/symbol/single.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/single.d.ts",
+        "default": "./dist/esm/symbol/single.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/single.d.ts",
+        "default": "./dist/esm/symbol/single.js"
+      }
+    },
+    "./symbol/skip": {
+      "browser": {
+        "types": "./dist/esm/symbol/skip.d.ts",
+        "default": "./dist/esm/symbol/skip.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/skip.d.ts",
+        "default": "./dist/esm/symbol/skip.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/skip.d.ts",
+        "default": "./dist/esm/symbol/skip.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/skip.d.ts",
+        "default": "./dist/esm/symbol/skip.js"
+      }
+    },
+    "./symbol/skip-last": {
+      "browser": {
+        "types": "./dist/esm/symbol/skip-last.d.ts",
+        "default": "./dist/esm/symbol/skip-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/skip-last.d.ts",
+        "default": "./dist/esm/symbol/skip-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/skip-last.d.ts",
+        "default": "./dist/esm/symbol/skip-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/skip-last.d.ts",
+        "default": "./dist/esm/symbol/skip-last.js"
+      }
+    },
+    "./symbol/skip-until": {
+      "browser": {
+        "types": "./dist/esm/symbol/skip-until.d.ts",
+        "default": "./dist/esm/symbol/skip-until.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/skip-until.d.ts",
+        "default": "./dist/esm/symbol/skip-until.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/skip-until.d.ts",
+        "default": "./dist/esm/symbol/skip-until.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/skip-until.d.ts",
+        "default": "./dist/esm/symbol/skip-until.js"
+      }
+    },
+    "./symbol/skip-while": {
+      "browser": {
+        "types": "./dist/esm/symbol/skip-while.d.ts",
+        "default": "./dist/esm/symbol/skip-while.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/skip-while.d.ts",
+        "default": "./dist/esm/symbol/skip-while.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/skip-while.d.ts",
+        "default": "./dist/esm/symbol/skip-while.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/skip-while.d.ts",
+        "default": "./dist/esm/symbol/skip-while.js"
+      }
+    },
+    "./symbol/start-with": {
+      "browser": {
+        "types": "./dist/esm/symbol/start-with.d.ts",
+        "default": "./dist/esm/symbol/start-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/start-with.d.ts",
+        "default": "./dist/esm/symbol/start-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/start-with.d.ts",
+        "default": "./dist/esm/symbol/start-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/start-with.d.ts",
+        "default": "./dist/esm/symbol/start-with.js"
+      }
+    },
+    "./symbol/subscribe-on": {
+      "browser": {
+        "types": "./dist/esm/symbol/subscribe-on.d.ts",
+        "default": "./dist/esm/symbol/subscribe-on.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/subscribe-on.d.ts",
+        "default": "./dist/esm/symbol/subscribe-on.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/subscribe-on.d.ts",
+        "default": "./dist/esm/symbol/subscribe-on.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/subscribe-on.d.ts",
+        "default": "./dist/esm/symbol/subscribe-on.js"
+      }
+    },
+    "./symbol/switch-map": {
+      "browser": {
+        "types": "./dist/esm/symbol/switch-map.d.ts",
+        "default": "./dist/esm/symbol/switch-map.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/switch-map.d.ts",
+        "default": "./dist/esm/symbol/switch-map.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/switch-map.d.ts",
+        "default": "./dist/esm/symbol/switch-map.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/switch-map.d.ts",
+        "default": "./dist/esm/symbol/switch-map.js"
+      }
+    },
+    "./symbol/switch-scan": {
+      "browser": {
+        "types": "./dist/esm/symbol/switch-scan.d.ts",
+        "default": "./dist/esm/symbol/switch-scan.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/switch-scan.d.ts",
+        "default": "./dist/esm/symbol/switch-scan.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/switch-scan.d.ts",
+        "default": "./dist/esm/symbol/switch-scan.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/switch-scan.d.ts",
+        "default": "./dist/esm/symbol/switch-scan.js"
+      }
+    },
+    "./symbol/take": {
+      "browser": {
+        "types": "./dist/esm/symbol/take.d.ts",
+        "default": "./dist/esm/symbol/take.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/take.d.ts",
+        "default": "./dist/esm/symbol/take.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/take.d.ts",
+        "default": "./dist/esm/symbol/take.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/take.d.ts",
+        "default": "./dist/esm/symbol/take.js"
+      }
+    },
+    "./symbol/take-last": {
+      "browser": {
+        "types": "./dist/esm/symbol/take-last.d.ts",
+        "default": "./dist/esm/symbol/take-last.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/take-last.d.ts",
+        "default": "./dist/esm/symbol/take-last.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/take-last.d.ts",
+        "default": "./dist/esm/symbol/take-last.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/take-last.d.ts",
+        "default": "./dist/esm/symbol/take-last.js"
+      }
+    },
+    "./symbol/take-until": {
+      "browser": {
+        "types": "./dist/esm/symbol/take-until.d.ts",
+        "default": "./dist/esm/symbol/take-until.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/take-until.d.ts",
+        "default": "./dist/esm/symbol/take-until.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/take-until.d.ts",
+        "default": "./dist/esm/symbol/take-until.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/take-until.d.ts",
+        "default": "./dist/esm/symbol/take-until.js"
+      }
+    },
+    "./symbol/take-while": {
+      "browser": {
+        "types": "./dist/esm/symbol/take-while.d.ts",
+        "default": "./dist/esm/symbol/take-while.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/take-while.d.ts",
+        "default": "./dist/esm/symbol/take-while.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/take-while.d.ts",
+        "default": "./dist/esm/symbol/take-while.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/take-while.d.ts",
+        "default": "./dist/esm/symbol/take-while.js"
+      }
+    },
+    "./symbol/tap": {
+      "browser": {
+        "types": "./dist/esm/symbol/tap.d.ts",
+        "default": "./dist/esm/symbol/tap.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/tap.d.ts",
+        "default": "./dist/esm/symbol/tap.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/tap.d.ts",
+        "default": "./dist/esm/symbol/tap.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/tap.d.ts",
+        "default": "./dist/esm/symbol/tap.js"
+      }
+    },
+    "./symbol/throttle": {
+      "browser": {
+        "types": "./dist/esm/symbol/throttle.d.ts",
+        "default": "./dist/esm/symbol/throttle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/throttle.d.ts",
+        "default": "./dist/esm/symbol/throttle.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/throttle.d.ts",
+        "default": "./dist/esm/symbol/throttle.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/throttle.d.ts",
+        "default": "./dist/esm/symbol/throttle.js"
+      }
+    },
+    "./symbol/throw-if-empty": {
+      "browser": {
+        "types": "./dist/esm/symbol/throw-if-empty.d.ts",
+        "default": "./dist/esm/symbol/throw-if-empty.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/throw-if-empty.d.ts",
+        "default": "./dist/esm/symbol/throw-if-empty.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/throw-if-empty.d.ts",
+        "default": "./dist/esm/symbol/throw-if-empty.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/throw-if-empty.d.ts",
+        "default": "./dist/esm/symbol/throw-if-empty.js"
+      }
+    },
+    "./symbol/time-interval": {
+      "browser": {
+        "types": "./dist/esm/symbol/time-interval.d.ts",
+        "default": "./dist/esm/symbol/time-interval.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/time-interval.d.ts",
+        "default": "./dist/esm/symbol/time-interval.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/time-interval.d.ts",
+        "default": "./dist/esm/symbol/time-interval.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/time-interval.d.ts",
+        "default": "./dist/esm/symbol/time-interval.js"
+      }
+    },
+    "./symbol/timeout": {
+      "browser": {
+        "types": "./dist/esm/symbol/timeout.d.ts",
+        "default": "./dist/esm/symbol/timeout.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/timeout.d.ts",
+        "default": "./dist/esm/symbol/timeout.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/timeout.d.ts",
+        "default": "./dist/esm/symbol/timeout.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/timeout.d.ts",
+        "default": "./dist/esm/symbol/timeout.js"
+      }
+    },
+    "./symbol/timer": {
+      "browser": {
+        "types": "./dist/esm/symbol/timer.d.ts",
+        "default": "./dist/esm/symbol/timer.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/timer.d.ts",
+        "default": "./dist/esm/symbol/timer.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/timer.d.ts",
+        "default": "./dist/esm/symbol/timer.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/timer.d.ts",
+        "default": "./dist/esm/symbol/timer.js"
+      }
+    },
+    "./symbol/timestamp": {
+      "browser": {
+        "types": "./dist/esm/symbol/timestamp.d.ts",
+        "default": "./dist/esm/symbol/timestamp.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/timestamp.d.ts",
+        "default": "./dist/esm/symbol/timestamp.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/timestamp.d.ts",
+        "default": "./dist/esm/symbol/timestamp.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/timestamp.d.ts",
+        "default": "./dist/esm/symbol/timestamp.js"
+      }
+    },
+    "./symbol/window": {
+      "browser": {
+        "types": "./dist/esm/symbol/window.d.ts",
+        "default": "./dist/esm/symbol/window.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/window.d.ts",
+        "default": "./dist/esm/symbol/window.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/window.d.ts",
+        "default": "./dist/esm/symbol/window.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/window.d.ts",
+        "default": "./dist/esm/symbol/window.js"
+      }
+    },
+    "./symbol/window-count": {
+      "browser": {
+        "types": "./dist/esm/symbol/window-count.d.ts",
+        "default": "./dist/esm/symbol/window-count.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/window-count.d.ts",
+        "default": "./dist/esm/symbol/window-count.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/window-count.d.ts",
+        "default": "./dist/esm/symbol/window-count.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/window-count.d.ts",
+        "default": "./dist/esm/symbol/window-count.js"
+      }
+    },
+    "./symbol/window-time": {
+      "browser": {
+        "types": "./dist/esm/symbol/window-time.d.ts",
+        "default": "./dist/esm/symbol/window-time.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/window-time.d.ts",
+        "default": "./dist/esm/symbol/window-time.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/window-time.d.ts",
+        "default": "./dist/esm/symbol/window-time.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/window-time.d.ts",
+        "default": "./dist/esm/symbol/window-time.js"
+      }
+    },
+    "./symbol/window-toggle": {
+      "browser": {
+        "types": "./dist/esm/symbol/window-toggle.d.ts",
+        "default": "./dist/esm/symbol/window-toggle.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/window-toggle.d.ts",
+        "default": "./dist/esm/symbol/window-toggle.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/window-toggle.d.ts",
+        "default": "./dist/esm/symbol/window-toggle.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/window-toggle.d.ts",
+        "default": "./dist/esm/symbol/window-toggle.js"
+      }
+    },
+    "./symbol/window-when": {
+      "browser": {
+        "types": "./dist/esm/symbol/window-when.d.ts",
+        "default": "./dist/esm/symbol/window-when.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/window-when.d.ts",
+        "default": "./dist/esm/symbol/window-when.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/window-when.d.ts",
+        "default": "./dist/esm/symbol/window-when.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/window-when.d.ts",
+        "default": "./dist/esm/symbol/window-when.js"
+      }
+    },
+    "./symbol/with-latest-from": {
+      "browser": {
+        "types": "./dist/esm/symbol/with-latest-from.d.ts",
+        "default": "./dist/esm/symbol/with-latest-from.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/with-latest-from.d.ts",
+        "default": "./dist/esm/symbol/with-latest-from.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/with-latest-from.d.ts",
+        "default": "./dist/esm/symbol/with-latest-from.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/with-latest-from.d.ts",
+        "default": "./dist/esm/symbol/with-latest-from.js"
+      }
+    },
+    "./symbol/zip-all": {
+      "browser": {
+        "types": "./dist/esm/symbol/zip-all.d.ts",
+        "default": "./dist/esm/symbol/zip-all.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/zip-all.d.ts",
+        "default": "./dist/esm/symbol/zip-all.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/zip-all.d.ts",
+        "default": "./dist/esm/symbol/zip-all.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/zip-all.d.ts",
+        "default": "./dist/esm/symbol/zip-all.js"
+      }
+    },
+    "./symbol/zip-with": {
+      "browser": {
+        "types": "./dist/esm/symbol/zip-with.d.ts",
+        "default": "./dist/esm/symbol/zip-with.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/symbol/zip-with.d.ts",
+        "default": "./dist/esm/symbol/zip-with.js"
+      },
+      "import": {
+        "types": "./dist/esm/symbol/zip-with.d.ts",
+        "default": "./dist/esm/symbol/zip-with.js"
+      },
+      "require": {
+        "types": "./dist/esm/symbol/zip-with.d.ts",
+        "default": "./dist/esm/symbol/zip-with.js"
       }
     },
     "./take": {

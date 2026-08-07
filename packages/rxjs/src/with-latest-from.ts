@@ -62,3 +62,21 @@ function withLatestFromImpl(
     }
   });
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `withLatestFrom` form of the exact-Symbol `[withLatestFrom]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[withLatestFrom]` to its source.
+ */
+export function pipeableWithLatestFrom<T, const Sources extends readonly ObservableInput<any>[]>(sources: Sources): (source: Observable<T>) => Observable<[T, ...ObservableArrayToValueArray<Sources>]>;
+export function pipeableWithLatestFrom<T, const Sources extends readonly ObservableInput<any>[], Result>(sources: Sources, project: (value: T, ...latestValues: ObservableArrayToValueArray<Sources>) => Result): (source: Observable<T>) => Observable<Result>;
+export function pipeableWithLatestFrom(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[withLatestFrom] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

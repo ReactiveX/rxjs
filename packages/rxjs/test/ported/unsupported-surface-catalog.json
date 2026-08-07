@@ -10,8 +10,8 @@
         "id": "imports:pipeable-functions",
         "surfaces": ["rxjs/operators", "root-imported operator functions", "source.pipe(...)"],
         "disposition": "replace",
-        "replacement": "Use exact Symbols for the complete reviewed catalog. The D-060 pilot also offers root rx composition for its small reviewed operator subset.",
-        "rationale": "RxJS Next does not preserve the complete RxJS 7 pipeable-function catalog or the string-named .pipe surface.",
+        "replacement": "Use exact Symbols for the accepted migration target, or review the D-060 root rx and complete functional experiment capability by capability.",
+        "rationale": "The experiment provides functions for the current Next catalog, but does not preserve rxjs/operators, the string-named .pipe surface, removed aliases, or RxJS 7 lifecycle semantics.",
         "decisions": ["D-003", "D-039", "D-050", "D-060"]
       },
       {
@@ -194,16 +194,16 @@
         "id": "aliases:projection-to",
         "surfaces": ["mapTo", "concatMapTo", "mergeMapTo", "switchMapTo", "pluck"],
         "disposition": "replace",
-        "replacement": "Use map with a constant or property projection, or the corresponding canonical flattening Symbol with an explicit projection.",
-        "rationale": "Migration may preserve behavior through exact mappings, but the deprecated pipeable function/import shape is not supported.",
+        "replacement": "Use the root map, mergeMap, switchMap, or pluck function with an explicit projection, or use the corresponding exact Symbol.",
+        "rationale": "The deprecated *To names are not restored; the canonical Next function and Symbol names remain lifecycle-reviewed mappings.",
         "decisions": ["D-003", "D-039"]
       },
       {
         "id": "aliases:combination-operators",
         "surfaces": ["pipeable combineLatest", "pipeable concat", "pipeable merge", "pipeable race", "pipeable zip", "onErrorResumeNextWith"],
         "disposition": "replace",
-        "replacement": "Use the accepted unified or With-form exact Symbol and its documented source-array/result-selector mapping.",
-        "rationale": "Legacy pipeable aliases are migration inputs, not preserved function exports.",
+        "replacement": "Use combineLatestWith, concatWith, mergeWith, raceWith, zipWith, or onErrorResumeNextWith from the root functional experiment, or the corresponding accepted exact Symbol.",
+        "rationale": "The functional names exist, but their Next source-array and lifecycle contracts are not a claim of unchanged RxJS 7 overloads or behavior.",
         "decisions": ["D-003", "D-039", "D-049"]
       },
       {
@@ -226,7 +226,7 @@
         "id": "aliases:async-iteration",
         "surfaces": ["eachValueFrom", "bufferedValuesFrom"],
         "disposition": "replace",
-        "replacement": "Use one of iterateEachValue, iterateBufferedValues, iterateLatestValue, or iterateNextValue from its exact Symbol subpath.",
+        "replacement": "Use the root iterateEachValue, iterateBufferedValues, iterateLatestValue, or iterateNextValue terminal, or its exact Symbol form.",
         "rationale": "The exploratory standalone helpers were removed so buffering and dropping policy stays explicit.",
         "decisions": ["D-038", "D-039"]
       }

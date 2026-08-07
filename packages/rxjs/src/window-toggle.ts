@@ -196,3 +196,20 @@ Observable.prototype[windowToggle] = function <T, Opening>(
     }
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `windowToggle` form of the exact-Symbol `[windowToggle]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[windowToggle]` to its source.
+ */
+export function pipeableWindowToggle<T, Opening>(openings: ObservableInput<Opening>, closingSelector: (opening: Opening) => ObservableInput<unknown>): (source: Observable<T>) => Observable<Observable<T>>;
+export function pipeableWindowToggle(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[windowToggle] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

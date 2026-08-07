@@ -58,3 +58,20 @@ Observable.prototype[mergeMap] = function <T, R>(
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `mergeMap` form of the exact-Symbol `[mergeMap]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[mergeMap]` to its source.
+ */
+export function pipeableMergeMap<T, R>(mapper: (value: T, index: number) => ObservableInput<R>, options?: { concurrent?: number }): (source: Observable<T>) => Observable<R>;
+export function pipeableMergeMap(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[mergeMap] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

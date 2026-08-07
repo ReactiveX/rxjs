@@ -38,3 +38,20 @@ function isEmptyOperator<T>(this: Observable<T>): Observable<boolean> {
 }
 
 Observable.prototype[isEmpty] = isEmptyOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `isEmpty` form of the exact-Symbol `[isEmpty]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[isEmpty]` to its source.
+ */
+export function pipeableIsEmpty<T>(): (source: Observable<T>) => Observable<boolean>;
+export function pipeableIsEmpty(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[isEmpty] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

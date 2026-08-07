@@ -49,3 +49,22 @@ Observable.prototype[exhaustMap] = function <T, R>(
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `exhaustMap` form of the exact-Symbol `[exhaustMap]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[exhaustMap]` to its source.
+ */
+export function pipeableExhaustMap<T, R>(mapper: (value: T, index: number) => ObservableInput<R>, options?: {
+        concurrent?: number;
+      }): (source: Observable<T>) => Observable<R>;
+export function pipeableExhaustMap(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[exhaustMap] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

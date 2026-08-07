@@ -133,3 +133,27 @@ function createResultObject(keys: readonly string[], values: readonly any[]): Re
   }
   return result;
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Calls the static exact-Symbol `Observable[forkJoin]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticForkJoin<T extends AnyCatcher>(arg: T): Observable<unknown>;
+export function staticForkJoin(): Observable<never>;
+export function staticForkJoin(sources: readonly []): Observable<never>;
+export function staticForkJoin<const Sources extends readonly ObservableInput<any>[]>(sources: Sources): Observable<ForkJoinTuple<Sources>>;
+export function staticForkJoin<const Sources extends readonly ObservableInput<any>[], Result>(sources: Sources, resultSelector: (...values: ForkJoinTuple<Sources>) => Result): Observable<Result>;
+export function staticForkJoin(sourcesObject: Record<string, never>): Observable<never>;
+export function staticForkJoin<Sources extends Record<string, ObservableInput<any>>>(sourcesObject: Sources): Observable<ForkJoinObject<Sources>>;
+export function staticForkJoin(source: null | undefined): Observable<never>;
+export function staticForkJoin<const Sources extends readonly ObservableInput<any>[]>(...sources: Sources): Observable<ForkJoinTuple<Sources>>;
+export function staticForkJoin<const Sources extends readonly ObservableInput<any>[], Result>(...sourcesAndResultSelector: [...Sources, (...values: ForkJoinTuple<Sources>) => Result]): Observable<Result>;
+export function staticForkJoin(...args: any[]): any {
+  return Reflect.apply(Observable[forkJoin] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

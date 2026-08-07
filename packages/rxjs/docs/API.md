@@ -1,8 +1,9 @@
 # RxJS 9 API and import guide
 
 RxJS 9 separates the platform Observable contract from RxJS capabilities.
-This branch also contains a review-gated pipeable pilot at the root; the
-existing Symbol catalog remains available from its current subpaths.
+This branch also contains a review-gated complete functional facade at the
+root; the existing Symbol catalog remains available from its current subpaths
+and the complete `rxjs/symbol` boundary.
 
 ## Root exports
 
@@ -30,13 +31,13 @@ The root also exports notifications and public errors, including
 `PerSubscriptionSubjectBase` when it needs observer-local setup without
 claiming that a Subject is cold.
 
-Importing `rxjs` conditionally initializes the platform Observable surface. It
-does not install every Symbol operator. The experimental `map`, `filter`,
-`take`, and `toArray` root exports are ordinary pipeable functions and do not
-patch operator keys. The experimental `subscribe` export is a terminal
-composition function.
+Importing `rxjs` conditionally initializes the platform Observable surface and
+loads the implementation modules for the complete functional facade. Most of
+those modules also install their exact Symbols; `map`, `filter`, and `take`
+retain their separately reviewed function implementations. The experimental
+`subscribe` export is a terminal composition function.
 
-## Pipeable pilot
+## Complete functional experiment
 
 ```ts
 import { filter, map, rx } from 'rxjs';
@@ -71,20 +72,18 @@ The ambient platform declarations expose `ObservableInput`; the root exports
 [all-pipeable experiment](PIPEABLE_EXPERIMENT.md) for the overload horizon,
 checking-cost tradeoffs, and unresolved import layout.
 
-The pilot exposes additive deep imports at `rxjs/rx`, `rxjs/to-array`, and
-`rxjs/subscribe`. Operators whose ordinary subpaths still name exact Symbols
-are also available under `rxjs/pipeable/map`, `rxjs/pipeable/filter`, and
-`rxjs/pipeable/take`. Matching additive Symbol aliases exist at
-`rxjs/symbol/map`, `rxjs/symbol/filter`, and `rxjs/symbol/take`; the established
-Symbol subpaths remain unchanged while the final layout is under review.
+The complete source-bound catalog is available from `rxjs/pipeable` and
+per-capability paths such as `rxjs/pipeable/map` and
+`rxjs/pipeable/merge-with`. Static functions are available from `rxjs/static`
+and paths such as `rxjs/static/merge`. Exact Symbols are available from
+`rxjs/symbol` and paths such as `rxjs/symbol/map`. Established Symbol subpaths
+remain unchanged while the final ordinary-deep-import layout is under review.
 
 ## Symbol operators
 
 ```ts
 import 'rxjs';
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
-import { switchMap } from 'rxjs/switch-map';
+import { filter, map, switchMap } from 'rxjs/symbol';
 
 const result = source[filter]((value) => value.active)[map]((value) => value.id);
 ```
@@ -111,28 +110,34 @@ in the [generated ledger](MIGRATION_EVIDENCE_LEDGER.md).
 
 ## Factories and composition
 
-Factories such as `timer` are static Symbols:
+Factories such as `timer` are ordinary root functions in the experiment and
+remain static Symbols through the separate Symbol boundary:
 
 ```ts
-import { timer } from 'rxjs/timer';
+import { timer } from 'rxjs';
+import { timer as timerSymbol } from 'rxjs/symbol';
 
-Observable[timer](1000).subscribe(console.log);
+timer(1000).subscribe(console.log);
+Observable[timerSymbol](1000).subscribe(console.log);
 ```
 
-The `pipe` Symbol supports instance and static composition:
+The root `pipe` function creates a reusable source-bound composition, while the
+exact `pipe` Symbol retains instance and static composition:
 
 ```ts
-import { map } from 'rxjs/map';
-import { pipe } from 'rxjs/pipe';
+import { map, pipe } from 'rxjs';
+import { map as mapSymbol, pipe as pipeSymbol } from 'rxjs/symbol';
 
-const doubled = source[pipe]((values) => values[map]((value) => value * 2));
-const normalized = Observable[pipe]([1, 2], (values) => values[map](String));
+const double = pipe(map((value: number) => value * 2));
+const doubled = double(source);
+const normalized = Observable[pipeSymbol]([1, 2], (values) => values[mapSymbol](String));
 ```
 
-The existing Symbol form does not install `.pipe`. The review-gated root pilot
-does publish `rx`, three pipeable source operators, Observable-returning
-`toArray`, a lite `subscribe` terminal, and `OperatorFunction`; it does not yet
-convert the full catalog.
+Neither form installs `.pipe`. The review-gated root experiment publishes the
+complete current source-bound catalog, static functions,
+Observable-returning `toArray`, a lite `subscribe` terminal, and
+`OperatorFunction`. Six dual capabilities use `*With` source-operator names;
+the four async-iteration terminals retain exact `AsyncGenerator` results.
 
 ## Construction and input boundaries
 

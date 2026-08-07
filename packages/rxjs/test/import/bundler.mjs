@@ -11,13 +11,13 @@ const temporaryRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'rxjs-extension-bu
 
 try {
   await buildAndRun({
-    label: 'root-core-only',
+    label: 'root-functional-surface',
     source: `
       import 'rxjs';
       const constructorSymbols = Object.getOwnPropertySymbols(globalThis.Observable).map((symbol) => symbol.description);
       const prototypeSymbols = Object.getOwnPropertySymbols(globalThis.Observable.prototype).map((symbol) => symbol.description);
-      if (constructorSymbols.includes('map') || prototypeSymbols.includes('map')) {
-        throw new Error('The bundled root import installed the map capability');
+      if (!prototypeSymbols.includes('buffer') || !constructorSymbols.includes('merge')) {
+        throw new Error('The bundled root import did not retain the functional surface implementations');
       }
     `,
   });

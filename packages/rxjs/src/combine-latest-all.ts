@@ -49,3 +49,21 @@ function combineLatestAllOperator<V, R>(this: Observable<ObservableInput<V>>, pr
 }
 
 Observable.prototype[combineLatestAll] = combineLatestAllOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `combineLatestAll` form of the exact-Symbol `[combineLatestAll]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[combineLatestAll]` to its source.
+ */
+export function pipeableCombineLatestAll<T extends ObservableInput<any>>(): (source: Observable<T>) => Observable<Array<ObservedValueOf<T>>>;
+export function pipeableCombineLatestAll<T extends ObservableInput<any>, Result>(project: (...values: ProjectValues<T>) => Result): (source: Observable<T>) => Observable<Result>;
+export function pipeableCombineLatestAll(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[combineLatestAll] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

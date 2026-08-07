@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 const scenarios = [
   'missing-global-subpath',
-  'root-core-only',
+  'root-functional-surface',
   'foreign-constructor',
   'earlier-version',
   'event-target-when',

@@ -46,3 +46,20 @@ declare global {
 Observable.prototype[iterateBufferedValues] = function <T>(this: Observable<T>): AsyncGenerator<T[], void, void> {
   return bufferedValuesAsyncGenerator(this);
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `iterateBufferedValues` form of the exact-Symbol `[iterateBufferedValues]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The AsyncGenerator result is returned unchanged, preserving the selected AsyncIterable strategy.
+ *
+ * @returns A unary function that applies `[iterateBufferedValues]` to its source.
+ */
+export function pipeableIterateBufferedValues<T>(): (source: Observable<T>) => AsyncGenerator<T[], void, void>;
+export function pipeableIterateBufferedValues(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[iterateBufferedValues] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

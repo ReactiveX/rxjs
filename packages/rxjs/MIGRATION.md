@@ -3,9 +3,9 @@
 RxJS 9 is a new platform-based generation of RxJS. It extends the active
 web-platform `Observable` with exact Symbol-keyed capabilities instead of
 shipping the RxJS 7 Observable or scheduler runtime. This branch also contains
-a review-gated pipeable pilot and a minimal AbortSignal-backed subscription
-handle; neither restores the complete RxJS 7 surface. The first planned
-prerelease is `9.0.0-beta.0`.
+a review-gated complete functional facade and a minimal AbortSignal-backed
+subscription handle; neither restores the complete RxJS 7 surface. The first
+planned prerelease is `9.0.0-beta.0`.
 
 This is a semantic migration, not a package-version bump. Before changing
 imports, decide which producer, sharing, cancellation, and timing behavior each
@@ -57,8 +57,9 @@ properties.
 
 ## Operator imports and composition
 
-The complete reviewed migration target remains exact Symbol imports and
-Symbol-keyed calls. The root package does not install the Symbol catalog.
+The accepted migration target remains exact Symbol imports and Symbol-keyed
+calls. The branch experiment additionally exposes a complete functional
+surface; root imports currently load its shared Symbol implementation modules.
 
 ```ts
 // RxJS 7
@@ -72,8 +73,7 @@ const names = users.pipe(
 
 ```ts
 // RxJS 9
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
+import { filter, map } from 'rxjs/symbol';
 
 const names = users[filter]((user) => user.active)[map]((user) => user.name);
 ```
@@ -83,8 +83,8 @@ The platform and RxJS forms can coexist. For example,
 `source[map](project)` is the RxJS contract. Importing the RxJS Symbol must not
 replace the platform string-named method.
 
-The experimental branch also supports ordinary composition for its reviewed
-subset:
+The experimental branch also supports ordinary composition across the current
+catalog:
 
 ```ts
 import { filter, map, rx } from 'rxjs';
@@ -96,9 +96,9 @@ const names = rx(
 );
 ```
 
-This familiar syntax does not restore the entire RxJS 7 operator catalog,
-`.pipe`, scheduler overloads, or producer-per-subscription behavior. Review
-the target lifecycle before choosing it as a migration destination.
+This familiar syntax does not restore removed RxJS 7 aliases, `.pipe`,
+scheduler overloads, or producer-per-subscription behavior. Review the target
+lifecycle before choosing it as a migration destination.
 
 RxJS 9 does not accept the RxJS 7 callback `thisArg` parameter on `every`,
 `filter`, `find`, `findIndex`, `map`, or `partition`. Capture state with a
@@ -114,15 +114,14 @@ Use the exact `pipe` Symbol only when deliberate multi-step composition is
 clearer than direct Symbol chaining:
 
 ```ts
-import { map } from 'rxjs/map';
-import { pipe } from 'rxjs/pipe';
+import { map, pipe } from 'rxjs/symbol';
 
 const names = users[pipe]((source) => source[map]((user) => user.name));
 ```
 
-RxJS 9 does not publish `.pipe`. The pilot publishes a small pipeable subset,
-`UnaryFunction`, and `OperatorFunction`; it is not yet a full compatibility
-surface.
+RxJS 9 does not publish `.pipe`. The experiment publishes the complete current
+source-bound catalog, `UnaryFunction`, and `OperatorFunction`; it is still not
+an RxJS 7 compatibility surface.
 
 ## Cancellation and teardown
 

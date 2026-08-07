@@ -60,3 +60,18 @@ function animationFramesImpl(this: ObservableCtor, timestampProvider?: Animation
     run();
   });
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Calls the static exact-Symbol `Observable[animationFrames]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticAnimationFrames(timestampProvider?: AnimationFrameTimestampProvider): Observable<AnimationFrameInfo>;
+export function staticAnimationFrames(...args: any[]): any {
+  return Reflect.apply(Observable[animationFrames] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

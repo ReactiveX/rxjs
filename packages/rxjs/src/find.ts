@@ -57,3 +57,21 @@ function findOperator<T>(
 }
 
 Observable.prototype[find] = findOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `find` form of the exact-Symbol `[find]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[find]` to its source.
+ */
+export function pipeableFind<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): (source: Observable<T>) => Observable<S | undefined>;
+export function pipeableFind<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): (source: Observable<T>) => Observable<T | undefined>;
+export function pipeableFind(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[find] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

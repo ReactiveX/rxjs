@@ -169,3 +169,28 @@ function pluckOperator<T>(this: Observable<T>, ...properties: PluckKey[]): Obser
 }
 
 Observable.prototype[pluck] = pluckOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `pluck` form of the exact-Symbol `[pluck]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[pluck]` to its source.
+ */
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>>(k1: K1): (source: Observable<T>) => Observable<PluckedValue<T, K1>>;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>>(k1: K1, k2: K2): (source: Observable<T>) => Observable<
+    PluckedValue<PluckedValue<T, K1>, K2>
+  >;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>, K3 extends keyof NonNullable<PluckedValue<PluckedValue<T, K1>, K2>>>(k1: K1, k2: K2, k3: K3): (source: Observable<T>) => Observable<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>>;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>, K3 extends keyof NonNullable<PluckedValue<PluckedValue<T, K1>, K2>>, K4 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>>>(k1: K1, k2: K2, k3: K3, k4: K4): (source: Observable<T>) => Observable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>>;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>, K3 extends keyof NonNullable<PluckedValue<PluckedValue<T, K1>, K2>>, K4 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>>, K5 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>>>(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5): (source: Observable<T>) => Observable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>, K5>>;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>, K3 extends keyof NonNullable<PluckedValue<PluckedValue<T, K1>, K2>>, K4 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>>, K5 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>>, K6 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>, K5>>>(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5, k6: K6): (source: Observable<T>) => Observable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>, K5>, K6>>;
+export function pipeablePluck<T, K1 extends keyof NonNullable<T>, K2 extends keyof NonNullable<PluckedValue<T, K1>>, K3 extends keyof NonNullable<PluckedValue<PluckedValue<T, K1>, K2>>, K4 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>>, K5 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>>, K6 extends keyof NonNullable<PluckedValue<PluckedValue<PluckedValue<PluckedValue<PluckedValue<T, K1>, K2>, K3>, K4>, K5>>>(k1: K1, k2: K2, k3: K3, k4: K4, k5: K5, k6: K6, k7: PluckKey, ...rest: PluckKey[]): (source: Observable<T>) => Observable<unknown>;
+export function pipeablePluck(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[pluck] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

@@ -1,12 +1,18 @@
 # All-pipeable beta experiment
 
 This branch evaluates an all-pipeable RxJS 9 surface alongside the existing
-exact-Symbol surface. It is deliberately small: the first review slice contains
-`rx`, pipeable `map` and `filter`, the public composition types, and an internal
-`operate` helper. After the first maintainer review, a second small slice adds
-pipeable `take`, Observable-returning `toArray`, and the optional lite
-`subscribe` terminal. The rest of the catalog and final Symbol import move
-remain gated on maintainer review.
+exact-Symbol surface. Two review slices established `rx`, the composition
+types, `operate`, `map`, `filter`, `take`, Observable-returning `toArray`, and
+the lite `subscribe` terminal. The maintainer then approved expanding the
+experiment across the current catalog and using `*With` names where one
+capability has both static and source-bound forms.
+
+The complete experiment contains 91 source-bound functions and 12 ordinary
+static functions. Six capabilities occur in both groups, so together they
+cover all 97 public capability Symbols. The package-private construction
+protocol remains a Symbol only. The four async-iteration terminals retain
+their exact `AsyncGenerator` results instead of being normalized to an
+Observable.
 
 The experiment does not change the platform foundation. `rx` converts its
 first argument with the active realm's `Observable.from`; pipeable operators
@@ -36,8 +42,7 @@ return type.
 
 ```ts
 import 'rxjs';
-import { filter } from 'rxjs/filter';
-import { map } from 'rxjs/map';
+import { filter, map } from 'rxjs/symbol';
 
 const source = Observable.from([1, 2, 3, 4]);
 const result = source[filter]((value) => value % 2 === 0)[map]((value, index) => `${index}: ${value * 10}`);
@@ -45,11 +50,11 @@ const result = source[filter]((value) => value % 2 === 0)[map]((value, index) =>
 result.subscribe(console.log); // '0: 20', '1: 40'
 ```
 
-The current deep imports still export Symbols. The proposed eventual shape is
-for ordinary deep imports to export pipeable functions and for exact Symbols
-to move under a clearly separate `rxjs/symbol` boundary. This pilot does not
-perform that move because it would answer package-layout and barrel-versus-
-per-operator questions before the implementation pattern is reviewed.
+The established `rxjs/map`-style deep imports still export Symbols during the
+experiment. Exact Symbols are also available from the complete `rxjs/symbol`
+barrel and from per-capability paths such as `rxjs/symbol/map`. This preserves
+existing evidence while allowing the eventual ordinary-deep-import move to be
+reviewed separately.
 
 ## Platform method form
 
@@ -70,19 +75,19 @@ separate Observable-returning contracts.
 
 ## Critical comparison
 
-| Concern              | `rx` plus pipeable functions                                                                                       | Exact Symbol chaining                                                                                | Platform methods                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Visual flow          | Reads left-to-right as a list of transformations and keeps punctuation light                                       | Reads left-to-right on the value, but bracket access is unfamiliar and visually dense                | Familiar method chaining with the least import ceremony                          |
-| Catalog uniformity   | One syntax can cover every RxJS operator, factory adapter, and terminal Observable                                 | One syntax can cover the full RxJS catalog without taking string names                               | Limited to the standardized platform catalog                                     |
-| Type inference       | Strong within the declared overload horizon; depends on contextual typing across one overloaded call               | Each receiver call is inferred independently with no chain-length horizon                            | Each receiver call is inferred independently                                     |
-| Long chains          | This pilot preserves nine transformations and returns `unknown` beyond that point                                  | No fixed composition overload limit                                                                  | No fixed composition overload limit                                              |
-| Type-error locality  | An incompatibility can be reported at an overload boundary or later argument instead of exactly at the bad handoff | Usually points at the exact Symbol call whose receiver type is incompatible                          | Usually points at the exact method call                                          |
-| TypeScript work      | More overloads increase declaration size and overload-resolution work at every call site                           | Work grows one ordinary call at a time                                                               | Work grows one ordinary call at a time                                           |
-| Runtime mutation     | Pipeable functions do not install operator properties                                                              | Importing a capability patches its exact Symbol onto the active constructor or prototype             | Owned by the native implementation or fallback                                   |
-| Collision behavior   | Ordinary lexical imports; no global property collision                                                             | Exact module-owned Symbols isolate unrelated libraries and package copies                            | String names belong to the platform contract                                     |
-| Tree shaking         | A function import can be removed when unused if the module remains side-effect-free                                | Capability imports are side effects and must be retained even when the Symbol binding appears unused | No RxJS operator module is needed                                                |
-| Native overlap       | RxJS owns a distinct function contract even when the platform has the same familiar name                           | The distinct exact key makes the boundary explicit at the call site                                  | Always selects the platform contract                                             |
-| Agent-generated code | Common JavaScript functional-composition syntax is easy to synthesize and refactor                                 | Exact keys are unambiguous but require less familiar syntax                                          | Familiar, but agents must know which names return Promises or lack RxJS behavior |
+| Concern              | `rx` plus pipeable functions                                                                                                | Exact Symbol chaining                                                                                | Platform methods                                                                 |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Visual flow          | Reads left-to-right as a list of transformations and keeps punctuation light                                                | Reads left-to-right on the value, but bracket access is unfamiliar and visually dense                | Familiar method chaining with the least import ceremony                          |
+| Catalog uniformity   | One syntax can cover every RxJS operator, factory adapter, and terminal Observable                                          | One syntax can cover the full RxJS catalog without taking string names                               | Limited to the standardized platform catalog                                     |
+| Type inference       | Strong within the declared overload horizon; depends on contextual typing across one overloaded call                        | Each receiver call is inferred independently with no chain-length horizon                            | Each receiver call is inferred independently                                     |
+| Long chains          | This pilot preserves nine transformations and returns `unknown` beyond that point                                           | No fixed composition overload limit                                                                  | No fixed composition overload limit                                              |
+| Type-error locality  | An incompatibility can be reported at an overload boundary or later argument instead of exactly at the bad handoff          | Usually points at the exact Symbol call whose receiver type is incompatible                          | Usually points at the exact method call                                          |
+| TypeScript work      | More overloads increase declaration size and overload-resolution work at every call site                                    | Work grows one ordinary call at a time                                                               | Work grows one ordinary call at a time                                           |
+| Runtime mutation     | The complete facade currently imports the shared Symbol implementations, so a root import installs those exact keys         | Importing a capability patches its exact Symbol onto the active constructor or prototype             | Owned by the native implementation or fallback                                   |
+| Collision behavior   | Ordinary lexical imports; no global property collision                                                                      | Exact module-owned Symbols isolate unrelated libraries and package copies                            | String names belong to the platform contract                                     |
+| Tree shaking         | Root re-exports share side-effectful implementation modules in this experiment; use focused deep imports for smaller graphs | Capability imports are side effects and must be retained even when the Symbol binding appears unused | No RxJS operator module is needed                                                |
+| Native overlap       | RxJS owns a distinct function contract even when the platform has the same familiar name                                    | The distinct exact key makes the boundary explicit at the call site                                  | Always selects the platform contract                                             |
+| Agent-generated code | Common JavaScript functional-composition syntax is easy to synthesize and refactor                                          | Exact keys are unambiguous but require less familiar syntax                                          | Familiar, but agents must know which names return Promises or lack RxJS behavior |
 
 Readability is subjective, but the tradeoffs are not. Pipeable syntax removes
 the brackets users objected to and matches existing RxJS experience. Symbol
@@ -107,6 +112,56 @@ This keeps cancellation, sharing, error forwarding, and later Observable
 composition inside the same graph. It does not wrap the platform Promise; it
 collects source values through `operate` and emits only on completion.
 
+## AsyncIterable terminal forms
+
+Async-iteration is a real composition boundary rather than an Observable
+operator result. All four strategies retain their exact generator types:
+
+```ts
+import { iterateEachValue, map, rx } from 'rxjs';
+
+const values = rx(
+  [1, 2, 3],
+  map((value) => value * 10),
+  iterateEachValue()
+);
+
+for await (const value of values) {
+  console.log(value); // 10, 20, 30
+}
+```
+
+`iterateBufferedValues`, `iterateLatestValue`, and `iterateNextValue` follow
+the same rule. Because `rx` composes arbitrary unary functions, no special
+AsyncIterable overload or result coercion is required.
+
+## Static functions and source-bound `*With` operators
+
+A static creator and a source-bound operator cannot safely share one call
+syntax. Static `merge` and pipeable `mergeWith` therefore remain distinct:
+
+```ts
+import { merge, mergeWith, rx } from 'rxjs';
+
+const created = merge([[1, 2], ['three']]);
+const extended = rx([1, 2], mergeWith([['three']]));
+```
+
+The same split applies to `combine`/`combineWith`,
+`combineLatest`/`combineLatestWith`, `concat`/`concatWith`,
+`onErrorResumeNext`/`onErrorResumeNextWith`, and `race`/`raceWith`. Pure static
+creators such as `timer`, `interval`, `forkJoin`, and `generate` remain
+ordinary functions and are not presented as source operators.
+
+The rejected private-hook proposal had a runtime problem before its typing
+problem: JavaScript evaluates `merge(other)` before calling `rx`, so `rx`
+receives the returned Observable and cannot inspect a hook on `merge`.
+Branding that returned Observable would introduce hidden context-dependent
+behavior. It also caused the generic source/output relationship to collapse
+toward `Observable<unknown>` in fixed `rx` overloads; recursive conditional
+alternatives degraded the contextual callback inference those overloads exist
+to preserve. The explicit `*With` functions avoid both failures.
+
 ## Lite subscription terminal
 
 ```ts
@@ -125,14 +180,17 @@ errors.
 
 ## Provisional deep imports
 
-New names without collisions use `rxjs/rx`, `rxjs/to-array`, and
-`rxjs/subscribe`. While `rxjs/map`, `rxjs/filter`, and `rxjs/take` retain their
-exact Symbols, the pilot functions are available at `rxjs/pipeable/map`,
-`rxjs/pipeable/filter`, and `rxjs/pipeable/take`. Additive aliases at
-`rxjs/symbol/map`, `rxjs/symbol/filter`, and `rxjs/symbol/take` exercise the
-per-operator Symbol direction without moving or removing the established
-subpaths. These aliases are evidence for the final layout, not a decision that
-the complete catalog must use this exact arrangement.
+The complete functional surface is available from `rxjs` and the
+`rxjs/pipeable` barrel. Every source-bound capability also has a focused path,
+for example `rxjs/pipeable/buffer` or `rxjs/pipeable/merge-with`. Static
+functions have `rxjs/static` and `rxjs/static/merge` forms. Exact Symbols have
+both `rxjs/symbol` and `rxjs/symbol/merge` forms.
+
+Direct non-colliding paths such as `rxjs/rx`, `rxjs/to-array`,
+`rxjs/subscribe`, and `rxjs/merge-with` remain available. Established paths
+such as `rxjs/map` still expose Symbols in this experiment so the existing
+test and migration corpus remains executable. Whether those ordinary paths
+switch to functions before beta remains a final review decision.
 
 ## TypeScript limits and checking cost
 
@@ -162,7 +220,7 @@ callback parameter type restores that information. Symbol and platform method
 calls start from a concrete receiver type, so they are less exposed to that
 particular failure mode.
 
-## Initial implementation pattern
+## Implementation pattern
 
 Pipeable operators are built with internal `operate(init)`. It returns an
 `OperatorFunction<T, R>` that creates its result through the source's versioned
@@ -181,6 +239,28 @@ pass that callback through `operate`, so the two public forms share lifecycle,
 index, cancellation, and callback-error behavior without making either form
 delegate through the other's public API.
 
+`takeOperator(count)` follows the same shared-callback pattern. For the broad
+catalog experiment, generated typed facades delegate to the already-tested
+exact-Symbol implementation in the same module. This is a branch-by-
+abstraction seam: overloads and runtime behavior stay aligned while both
+surfaces are evaluated. A generator preserves every overload and emits the
+root, pipeable, static, and Symbol inventories; a `--check` fitness gate fails
+when the catalog and generated surface drift.
+
+The delegation means importing the complete root currently installs the
+shared exact-Symbol implementations. That is materially different from the
+small pilot's root-isolation property and can increase side effects and bundle
+retention. It is recorded as experiment evidence, not silently treated as a
+free consequence of familiar syntax.
+
+The existing Webpack release fixture makes that cost concrete: its production
+bundle grows from the accepted 22,000-byte ceiling to 64,874 bytes when it
+consumes the experimental root. The failure is expected evidence for this
+branch, not a proposed budget increase. Focused `rxjs/pipeable/*` paths remain
+available for bounded graphs, but the root cannot ship in this form unless the
+shared implementations are separated from exact-Symbol installation or the
+maintainer explicitly accepts the retention cost.
+
 ## First maintainer review
 
 The first review approved continued work with four API corrections:
@@ -197,19 +277,18 @@ used by both the pipeable and exact-Symbol forms, beginning with `mapOperator`.
 This resolves the implementation-sharing question for the next pilot slice;
 it does not yet settle the package-path move for the complete catalog.
 
-## Review gates before expanding the catalog
+## Review gates after the catalog expansion
 
-The pilot intentionally leaves these decisions open:
+The complete implementation leaves these decisions open:
 
-1. Whether pipeable deep imports should be `rxjs/map` and Symbols should be a
-   `rxjs/symbol` barrel, per-operator `rxjs/symbol/map` paths, or both.
+1. Whether ordinary `rxjs/map` paths should switch to functions now that both
+   the `rxjs/pipeable` and `rxjs/symbol` barrel/per-capability layouts exist.
 2. Whether nine transformations is the right overload horizon and which
    representative projects should supply type-check performance evidence.
 3. Whether `operate` remains internal or becomes an advanced public API.
-4. Whether the Observable-returning `toArray` and live AbortSignal-backed lite
-   `subscribe` contracts should become accepted public APIs after the pilot.
-
-The first implementation has now been reviewed. The next slice may add only a
-small representative set covering an ordinary operator, an
-Observable-returning terminal consumer, and the optional lite subscription
-facade before returning for another review.
+4. Whether the Observable-returning `toArray`, live AbortSignal-backed lite
+   `subscribe`, and generated Symbol-delegation seam should become accepted
+   public architecture after the experiment.
+5. Whether root-import side effects and bundle retention are acceptable, or
+   shared implementations must be split from Symbol installation before the
+   pipeable surface can ship.

@@ -126,3 +126,20 @@ Observable.prototype[windowTime] = function <T>(
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `windowTime` form of the exact-Symbol `[windowTime]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[windowTime]` to its source.
+ */
+export function pipeableWindowTime<T>(span: number, creationInterval?: number | null, maxWindowSize?: number): (source: Observable<T>) => Observable<Observable<T>>;
+export function pipeableWindowTime(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[windowTime] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

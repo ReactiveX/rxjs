@@ -95,3 +95,21 @@ Observable[generate] = function generateImpl<T, S>(
     }
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Calls the static exact-Symbol `Observable[generate]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticGenerate<S>(initialState: S, condition: (state: S) => boolean, iterate: (state: S) => S): Observable<S>;
+export function staticGenerate<T, S>(initialState: S, condition: (state: S) => boolean, iterate: (state: S) => S, resultSelector: (state: S) => T): Observable<T>;
+export function staticGenerate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
+export function staticGenerate<S>(options: GenerateBaseOptions<S>): Observable<S>;
+export function staticGenerate(...args: any[]): any {
+  return Reflect.apply(Observable[generate] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

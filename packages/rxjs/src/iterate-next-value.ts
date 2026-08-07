@@ -47,3 +47,20 @@ declare global {
 Observable.prototype[iterateNextValue] = function <T>(this: Observable<T>): AsyncGenerator<T, void, void> {
   return nextValueAsyncGenerator(this);
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `iterateNextValue` form of the exact-Symbol `[iterateNextValue]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The AsyncGenerator result is returned unchanged, preserving the selected AsyncIterable strategy.
+ *
+ * @returns A unary function that applies `[iterateNextValue]` to its source.
+ */
+export function pipeableIterateNextValue<T>(): (source: Observable<T>) => AsyncGenerator<T, void, void>;
+export function pipeableIterateNextValue(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[iterateNextValue] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

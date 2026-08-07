@@ -52,3 +52,31 @@ function onErrorResumeNextImpl<Sources extends readonly ObservableInput<any>[]>(
     subscribeNext();
   });
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `onErrorResumeNextWith` form of the exact-Symbol `[onErrorResumeNext]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[onErrorResumeNext]` to its source.
+ */
+export function pipeableOnErrorResumeNext<T, Sources extends readonly ObservableInput<any>[]>(sources: Sources): (source: Observable<T>) => Observable<T | ObservableArrayToValueUnion<Sources>>;
+export function pipeableOnErrorResumeNext(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[onErrorResumeNext] as (...values: any[]) => any, source, args);
+}
+
+/**
+ * Calls the static exact-Symbol `Observable[onErrorResumeNext]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticOnErrorResumeNext<Sources extends readonly ObservableInput<any>[]>(sources: Sources): Observable<ObservableArrayToValueUnion<Sources>>;
+export function staticOnErrorResumeNext(...args: any[]): any {
+  return Reflect.apply(Observable[onErrorResumeNext] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

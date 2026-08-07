@@ -153,3 +153,20 @@ Observable.prototype[bufferToggle] = function <T, Opening>(
     }
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `bufferToggle` form of the exact-Symbol `[bufferToggle]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[bufferToggle]` to its source.
+ */
+export function pipeableBufferToggle<T, Opening>(openings: ObservableInput<Opening>, closingSelector: (opening: Opening) => ObservableInput<unknown>): (source: Observable<T>) => Observable<T[]>;
+export function pipeableBufferToggle(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[bufferToggle] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

@@ -83,9 +83,11 @@ truthful status signals and security automation and validated their first live
 GitHub results. The user then explicitly prioritized P6.11, which removed
 inherited callback `thisArg` parameters and their hot-path dispatch cost. The
 user has now paused first-beta publication to evaluate an all-pipeable public
-surface alongside the exact-Symbol surface. P6.12 is the sole `NEXT` item and
-is review-gated after a small pilot; P6.10 returns to `PLANNED` until that beta
-architecture is settled.
+surface alongside the exact-Symbol surface. After two bounded review slices,
+the maintainer approved a complete-catalog experiment with `*With` names for
+dual static/source capabilities. P6.12 is the sole `NEXT` item and remains
+review-gated on the complete evidence; P6.10 returns to `PLANNED` until that
+beta architecture is settled.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1689,28 +1691,26 @@ review`. This completes P6.9; the later P6.10 ruleset migration must preserve
 
 #### P6.12 completion bar
 
-- A dedicated branch adds `rx`, a typed `operate` foundation, and only two
-  representative pipeable operators without removing or changing the existing
-  exact-Symbol implementations or their tests.
-- The pipeable APIs are available from the `rxjs` root, accept platform
-  `ObservableInput` through `Observable.from`, construct through the accepted
-  D-037 creation protocol, and preserve signal-owned source cancellation and
-  stream error forwarding.
-- Focused runtime tests cover composition, shared activation, cancellation,
-  restart, callback errors, and coexistence with the existing Symbol forms;
-  public declaration tests cover inference and the initial overload boundary.
-- Documentation records the experiment separately from the accepted Symbol
-  architecture, including TypeScript overload limits and checking cost. No
-  Symbol file move, full-catalog conversion, Promise-consumer replacement, or
-  compatibility `subscribe` facade is attempted before maintainer review.
-- Stop after presenting the pilot implementation and evidence to the user.
-  Any broader file layout, export, helper, or operator-family structure remains
-  gated on that review.
-- The first maintainer review permits one follow-up slice: apply the requested
-  type cleanup, share map implementation logic, then add only pipeable `take`,
-  Observable-returning `toArray`, and the optional live AbortSignal-backed
-  `subscribe` facade with additive pilot deep imports. Return for review before
-  expanding the catalog or moving established Symbol paths.
+- A dedicated branch adds `rx`, the typed `operate` foundation, all 91 current
+  source-bound capability functions, and all 12 ordinary static functions
+  without removing the exact-Symbol implementations or their behavioral tests.
+- Dual static/source capabilities use reviewed `*With` operator names. The
+  private-hook alternative is rejected with runtime and TypeScript evidence;
+  all four async-iteration terminals retain exact `AsyncGenerator` results.
+- The complete functions are available from the `rxjs` root and through
+  `rxjs/pipeable`, `rxjs/static`, and focused paths. Exact Symbols are available
+  through a complete `rxjs/symbol` barrel and focused paths while established
+  Symbol deep imports remain executable for the experiment.
+- Generated declarations preserve catalog overloads, type guards, tuple
+  results, and receiver restrictions. A freshness gate reconciles every
+  operator, static function, and Symbol export.
+- Runtime, public declaration, built-package, and import tests cover
+  composition, shared activation, cancellation, restart, callback errors,
+  static/`*With` separation, AsyncIterable terminals, and coexistence with the
+  existing Symbol forms.
+- Documentation records TypeScript limits, checking cost, package-layout
+  choices, root-import side effects, and bundle-retention risk. Stop after
+  presenting the complete experiment and evidence for final maintainer review.
 
 #### P6.1 completion bar
 
@@ -3808,3 +3808,34 @@ conformance implementation depends on a runnable harness.
   three passed alone and the complete serial run was green.
 - P6.12 remains `NEXT`; stop after this second slice for maintainer review
   before converting more operators or moving established Symbol subpaths.
+
+### 2026-08-06 — P6.12 complete-catalog experiment
+
+- Expanded the reviewed pilot to all 91 source-bound capabilities and all 12
+  ordinary statics. The six dual capabilities use `combineWith`,
+  `combineLatestWith`, `concatWith`, `mergeWith`, `onErrorResumeNextWith`, and
+  `raceWith`; the four async-iteration terminals retain exact
+  `AsyncGenerator` results.
+- Added an AST-backed generator and freshness gate that preserve overloads,
+  type guards, tuple results, conditional results, and receiver restrictions
+  while reconciling root, `rxjs/pipeable`, `rxjs/static`, `rxjs/symbol`, and
+  focused package paths. All 97 public capability Symbols remain installed and
+  independently importable.
+- Rejected the private static-to-pipeable hook: JavaScript evaluates the static
+  call before `rx` can inspect the function, while branding returned
+  Observables or recursively typing the handoff either hides behavior or loses
+  the generic source/output and callback-context relationships. Separate
+  `*With` names preserve those relationships without context-sensitive calls.
+- Passed 114 source files and 780 tests, the complete package/build/type/import
+  gate, functional-surface freshness, migration-document freshness, all 97
+  installation audits, and lint with zero errors. The strict executable audits
+  retained exactly 2,299/2,338 cold passes and 2,321/2,343 polyfill-mode passes;
+  the latter includes five passing platform-lifecycle cases beyond the
+  source-pinned 2,316/2,338 baseline.
+- The production Webpack fixture emits 64,874 bytes against its 22,000-byte
+  release ceiling because the experimental root re-exports side-effectful
+  shared Symbol modules. This expected failure is recorded as the decisive
+  root-retention review cost rather than weakening the budget.
+- P6.12 remains the sole `NEXT` item for final maintainer review. Ordinary
+  `rxjs/map`-style paths still expose Symbols, and no release architecture or
+  bundle-budget change is accepted by this experiment alone.

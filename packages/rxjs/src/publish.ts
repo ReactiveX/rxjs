@@ -26,3 +26,20 @@ Observable.prototype[publish] = function <T, Selected extends ObservableInput<un
   // manually connectable result.
   return this[multicast](new Subject<T>());
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `publish` form of the exact-Symbol `[publish]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. Any non-Observable result is returned unchanged.
+ *
+ * @returns A unary function that applies `[publish]` to its source.
+ */
+export function pipeablePublish<T>(): (source: Observable<T>) => ConnectableObservable<T>;
+export function pipeablePublish(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[publish] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

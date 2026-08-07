@@ -85,3 +85,20 @@ Observable.prototype[windowCount] = function <T>(this: Observable<T>, windowSize
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `windowCount` form of the exact-Symbol `[windowCount]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[windowCount]` to its source.
+ */
+export function pipeableWindowCount<T>(windowSize: number, startWindowEvery?: number): (source: Observable<T>) => Observable<Observable<T>>;
+export function pipeableWindowCount(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[windowCount] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

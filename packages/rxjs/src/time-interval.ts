@@ -40,3 +40,20 @@ Observable.prototype[timeInterval] = function <T>(
     });
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `timeInterval` form of the exact-Symbol `[timeInterval]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[timeInterval]` to its source.
+ */
+export function pipeableTimeInterval<T>(timestampProvider?: TimeIntervalProvider): (source: Observable<T>) => Observable<TimeInterval<T>>;
+export function pipeableTimeInterval(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[timeInterval] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

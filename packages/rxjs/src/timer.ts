@@ -33,3 +33,19 @@ function timerFactory(this: ObservableCtor, delay: number, interval?: number): O
 }
 
 Observable[timer] = timerFactory;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Calls the static exact-Symbol `Observable[timer]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticTimer(delay: number): Observable<number>;
+export function staticTimer(delay: number, interval: number): Observable<number>;
+export function staticTimer(...args: any[]): any {
+  return Reflect.apply(Observable[timer] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

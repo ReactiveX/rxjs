@@ -94,3 +94,35 @@ function combineLatestImpl<Sources extends readonly ObservableInput<any>[] | { [
 function isSourceArray(sources: any): sources is readonly ObservableInput<any>[] {
   return Array.isArray(sources);
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `combineLatestWith` form of the exact-Symbol `[combineLatest]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[combineLatest]` to its source.
+ */
+export function pipeableCombineLatest<T, Sources extends readonly ObservableInput<any>[]>(sources: Sources, config?: { requireAllValues?: boolean }): (source: Observable<T>) => Observable<
+        [T, ...CombineLatestArrayValues<Sources>]
+      >;
+export function pipeableCombineLatest<T, Sources extends readonly ObservableInput<any>[], Result>(sources: Sources, project: (value: T, ...values: CombineLatestArrayValues<Sources>) => Result): (source: Observable<T>) => Observable<Result>;
+export function pipeableCombineLatest(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[combineLatest] as (...values: any[]) => any, source, args);
+}
+
+/**
+ * Calls the static exact-Symbol `Observable[combineLatest]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticCombineLatest<Sources extends readonly ObservableInput<any>[] | { [key: string]: ObservableInput<any> }>(sources: Sources, config?: { requireAllValues?: boolean }): Observable<CombineLatestValues<Sources>>;
+export function staticCombineLatest<Sources extends readonly ObservableInput<any>[], Result>(sources: Sources, project: (...values: CombineLatestArrayValues<Sources>) => Result): Observable<Result>;
+export function staticCombineLatest(...args: any[]): any {
+  return Reflect.apply(Observable[combineLatest] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

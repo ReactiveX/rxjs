@@ -306,3 +306,29 @@ function groupByOperator<T, K, E = T>(
 }
 
 Observable.prototype[groupBy] = groupByOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `groupBy` form of the exact-Symbol `[groupBy]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[groupBy]` to its source.
+ */
+export function pipeableGroupBy<T, K extends T>(keySelector: (value: T) => value is K): (source: Observable<T>) => Observable<
+        KeyedGroupObservable<true, K> | KeyedGroupObservable<false, Exclude<T, K>>
+      >;
+export function pipeableGroupBy<T, K>(keySelector: (value: T) => K): (source: Observable<T>) => Observable<KeyedGroupObservable<K, T>>;
+export function pipeableGroupBy<T, K>(keySelector: (value: T) => K, options: GroupByOptions<K, T, T>): (source: Observable<T>) => Observable<KeyedGroupObservable<K, T>>;
+export function pipeableGroupBy<T, K, E>(keySelector: (value: T) => K, options: GroupByOptions<K, T, E> & { element: (value: T) => E }): (source: Observable<T>) => Observable<
+        KeyedGroupObservable<K, E>
+      >;
+export function pipeableGroupBy<T, K, E>(keySelector: (value: T) => K, element: (value: T) => E, duration?: (group: KeyedGroupObservable<K, E>) => ObservableInput<unknown>, connector?: () => SubjectLike<E>): (source: Observable<T>) => Observable<KeyedGroupObservable<K, E>>;
+export function pipeableGroupBy<T, K>(keySelector: (value: T) => K, element: undefined, duration: (group: KeyedGroupObservable<K, T>) => ObservableInput<unknown>, connector?: () => SubjectLike<T>): (source: Observable<T>) => Observable<KeyedGroupObservable<K, T>>;
+export function pipeableGroupBy(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[groupBy] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

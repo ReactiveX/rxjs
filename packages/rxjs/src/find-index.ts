@@ -49,3 +49,20 @@ function findIndexOperator<T>(
 }
 
 Observable.prototype[findIndex] = findIndexOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `findIndex` form of the exact-Symbol `[findIndex]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[findIndex]` to its source.
+ */
+export function pipeableFindIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean): (source: Observable<T>) => Observable<number>;
+export function pipeableFindIndex(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[findIndex] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

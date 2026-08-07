@@ -131,3 +131,20 @@ Observable.prototype[delayWhen] = function <T>(
     );
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `delayWhen` form of the exact-Symbol `[delayWhen]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[delayWhen]` to its source.
+ */
+export function pipeableDelayWhen<T>(durationSelector: (value: T, index: number) => ObservableInput<any>, subscriptionDelay?: Observable<any>): (source: Observable<T>) => Observable<T>;
+export function pipeableDelayWhen(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[delayWhen] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

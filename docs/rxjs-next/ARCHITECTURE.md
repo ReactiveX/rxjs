@@ -560,16 +560,17 @@ consequences of that split.
 ## Proposed all-pipeable beta experiment
 
 D-060 proposes exposing ordinary pipeable functions from the `rxjs` root while
-retaining exact Symbols during beta. The first review slice is intentionally
-smaller than the proposed destination:
+retaining exact Symbols during beta. After two bounded review slices, the
+maintainer approved expanding the experiment across the current catalog:
 
 - `rx(input, ...functions)` converts `input` through the active platform
   `Observable.from` and applies unary functions from left to right;
 - the ambient `ObservableInput` union names the platform conversion boundary;
   public `UnaryFunction<In, Out>` and `OperatorFunction<In, Out>` type aliases
   describe composition without a redundant mono-type alias;
-- pipeable `map`, `filter`, and `take` are root exports and use an internal
-  `operate` helper;
+- 91 source-bound functions are root exports; six dual static/source
+  capabilities use `*With` operator names, while 12 static forms retain their
+  ordinary names;
 - `operate` creates through the source's D-037 `[create]` protocol and catches
   synchronous connection failures, while `subscribeToSource` continues to own
   signal propagation and notification-callback safety;
@@ -581,23 +582,34 @@ apply the same `mapOperator(project)` callback through `operate`; neither public
 surface delegates through the other. The second slice applies the same pattern
 to `takeOperator(count)`.
 
-The post-review slice also adds two terminal shapes. RxJS `toArray()` is an
+The post-review slices also add terminal shapes. RxJS `toArray()` is an
 `OperatorFunction<In, In[]>` that emits one array on source completion instead
 of returning the Promise produced by the platform string method. The optional
 `subscribe(observer)` terminal returns a minimal AbortSignal-backed
 `Subscription` with `unsubscribe()` and a live `closed` getter; it is not an
-RxJS 7 Subscription tree.
+RxJS 7 Subscription tree. The four async-iteration terminals return their
+exact `AsyncGenerator` types, so `rx(source, iterateEachValue())` crosses out of
+the Observable graph without result coercion.
 
-The pilot does not settle the package layout. In particular, `rxjs/map` and
-`rxjs/filter` still export their existing Symbols even though the root exports
-pipeable functions with those names. Moving exact Symbols to an
-`rxjs/symbol` boundary and making ordinary deep imports pipeable would alter
-public exports and package side effects and remains gated on maintainer review.
-The pilot now exposes additive `rxjs/pipeable/{map,filter,take}` and
-`rxjs/symbol/{map,filter,take}` aliases so both per-operator directions can be
-tested without changing the established paths. `rxjs/rx`, `rxjs/to-array`, and
-`rxjs/subscribe` are direct deep imports because they have no legacy Symbol
-collision.
+The complete additive layout has `rxjs/pipeable`, `rxjs/static`, and
+`rxjs/symbol` barrels plus per-capability paths. Existing `rxjs/map`-style
+paths still export their Symbols; switching those paths remains a separate
+breaking decision. `rxjs/rx`, `rxjs/to-array`, `rxjs/subscribe`, and the six
+new `*With` names also have direct paths.
+
+The broad facade is generated from the ambient instance/static Symbol
+signatures, preserving overloads, type guards, tuple results, and explicit
+`this` receiver restrictions. `map` and `take` keep their reviewed shared
+`operate` callbacks. Other generated functions delegate to the corresponding
+exact-Symbol implementation as a branch-by-abstraction seam. A freshness gate
+reconciles 91 operators, 12 statics, and all 98 exported Symbols including the
+package-private D-037 construction protocol.
+
+That seam changes root import behavior: the root re-exports load the shared
+side-effectful Symbol modules, so the prior root-core-only installation
+contract no longer holds on this branch. Focused deep imports remain available,
+and final acceptance requires explicit bundle-retention evidence or a further
+split between implementation and Symbol installation.
 
 The initial `rx` declaration uses explicit overloads through nine
 transformations and an `unknown` fallback after that point. This makes the
@@ -1025,8 +1037,11 @@ and none of these contracts creates an RxJS 7 compatibility claim. See
   `@rxjs/observable-polyfill`.
 - Every public `rxjs` source entry reaches the conditional initializer before
   reading or extending `Observable`.
-- The root source exports the approved non-operator core. Each public source
-  subpath has one ESM runtime and declaration export.
+- The P6.12 experiment exports the complete functional catalog from the root
+  alongside the approved non-operator core. Because most generated facades
+  currently share their exact-Symbol modules, evaluating that root installs
+  those exact keys. Each public source subpath still has one ESM runtime and
+  declaration export.
 - The polyfill's ambient declarations are emitted from its package entry.
 - All four release packages build one ESM output without self-links or source
   specs in the packed artifact. Browser, Webpack, `import`, and Node
@@ -1042,7 +1057,7 @@ The published runtime map has three products:
 | Package                     | Accepted responsibility                                                                            |
 | --------------------------- | -------------------------------------------------------------------------------------------------- |
 | `@rxjs/observable-polyfill` | Independently publishable conditional fallback and owner of the base ambient platform declarations |
-| `rxjs`                      | Symbol extensions plus intentional non-operator RxJS Next classes and values                       |
+| `rxjs`                      | Symbol extensions, experimental functional facades, and intentional RxJS Next classes and values   |
 | `@rxjs/test`                | Implementation-neutral test harness that consumes an already initialized realm                     |
 
 `@rxjs/observable` has no target role and is removed. No runtime
@@ -1050,10 +1065,21 @@ compatibility package replaces it.
 
 `rxjs` declares a runtime dependency on `@rxjs/observable-polyfill`. Every
 public root or subpath import first evaluates the conditional initializer. The
-root exports non-operator core values—cold, Subject, connectable, notification,
-and public-error primitives—without installing the operator and factory
-catalog. An operator or factory subpath installs only its exported exact Symbol
-capability and internal kernel dependencies.
+accepted pre-P6.12 root exported non-operator core values—cold, Subject,
+connectable, notification, and public-error primitives—without installing the
+operator and factory catalog. The P6.12 branch deliberately replaces that
+property for review: root functional re-exports share most exact-Symbol
+implementation modules and therefore install the catalog as they evaluate.
+Focused exact-Symbol subpaths retain their established behavior, while focused
+`rxjs/pipeable/*` and `rxjs/static/*` paths bound the requested functional
+graph.
+
+This is not yet accepted release architecture. The production Webpack fixture
+emits 64,874 bytes against its 22,000-byte ceiling with the experimental root.
+That expected failure quantifies the root-retention risk; it is not permission
+to raise the release budget. P6.12 remains review-gated on either separating
+shared implementations from installation or explicitly accepting a different
+root contract and its measured cost.
 
 The polyfill package owns the ambient TypeScript declarations for
 `Observable`, `Subscriber`, `ObservableInput`, and `EventTarget.when`.

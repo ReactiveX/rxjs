@@ -35,7 +35,7 @@ if (scenario === 'missing-global-subpath') {
     },
     { configurable: false, enumerable: false, writable: false }
   );
-} else if (scenario === 'root-core-only') {
+} else if (scenario === 'root-functional-surface') {
   Reflect.deleteProperty(globalThis, 'Observable');
   Reflect.deleteProperty(globalThis, 'Subscriber');
   Reflect.deleteProperty(EventTarget.prototype, 'when');
@@ -48,6 +48,9 @@ if (scenario === 'missing-global-subpath') {
   assert.equal(typeof root.rx, 'function');
   assert.equal(typeof root.map, 'function');
   assert.equal(typeof root.filter, 'function');
+  assert.equal(typeof root.merge, 'function');
+  assert.equal(typeof root.mergeWith, 'function');
+  assert.equal(typeof root.iterateEachValue, 'function');
   const values = [];
   root
     .rx(
@@ -57,8 +60,18 @@ if (scenario === 'missing-global-subpath') {
     )
     .subscribe((value) => values.push(value));
   assert.deepEqual(values, [20, 30]);
-  assert.deepEqual(constructorDescriptions, ['rxjs.observable.polyfill.info.v1', 'rxjs.kernel.create.v1']);
-  assert.deepEqual(prototypeDescriptions, ['Symbol.toStringTag', 'rxjs.kernel.create.v1']);
+  const symbolCatalog = await import('rxjs/symbol');
+  const independentlyImplementedPipeables = new Set(['filter', 'map', 'take']);
+  for (const symbol of Object.values(symbolCatalog)) {
+    assert.equal(typeof symbol, 'symbol');
+    if (independentlyImplementedPipeables.has(symbol.description)) {
+      continue;
+    }
+    assert.ok(
+      constructorDescriptions.includes(symbol.description) || prototypeDescriptions.includes(symbol.description),
+      `root import did not install ${symbol.description}`
+    );
+  }
 } else if (scenario === 'foreign-constructor') {
   class ForeignObservable {}
   class ForeignSubscriber {}

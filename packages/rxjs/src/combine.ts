@@ -78,3 +78,31 @@ function combineImpl<Config extends readonly CombineItem<any>[]>(
     }
   });
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `combineWith` form of the exact-Symbol `[combine]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[combine]` to its source.
+ */
+export function pipeableCombine<T, Config extends readonly CombineItem<any>[]>(config: Config): (source: Observable<T>) => Observable<[T, ...CombineValues<Config>]>;
+export function pipeableCombine(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[combine] as (...values: any[]) => any, source, args);
+}
+
+/**
+ * Calls the static exact-Symbol `Observable[combine]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticCombine<Config extends readonly CombineItem<any>[]>(config: Config): Observable<CombineValues<Config>>;
+export function staticCombine(...args: any[]): any {
+  return Reflect.apply(Observable[combine] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

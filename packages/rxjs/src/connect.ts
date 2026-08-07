@@ -111,3 +111,20 @@ Observable.prototype[connect] = function <T, Selected extends ObservableInput<un
     );
   });
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `connect` form of the exact-Symbol `[connect]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[connect]` to its source.
+ */
+export function pipeableConnect<T, Selected extends ObservableInput<unknown>>(selector: (shared: Observable<T>) => Selected, config?: ConnectConfig<T>): (source: Observable<T>) => Observable<ObservedValueOf<Selected>>;
+export function pipeableConnect(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[connect] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

@@ -1,9 +1,10 @@
 # `rxjs` 9 beta
 
 RxJS 9 extends the web-platform Observable with exact Symbol-keyed operators
-and factories, plus a small set of intentional RxJS primitives. It uses a
-native `Observable` when one exists and otherwise initializes the separately
-published `@rxjs/observable-polyfill` fallback.
+and factories, plus an experimental complete functional facade and a small set
+of intentional RxJS primitives. It uses a native `Observable` when one exists
+and otherwise initializes the separately published
+`@rxjs/observable-polyfill` fallback.
 
 This is prerelease software. Install the current beta with:
 
@@ -21,7 +22,7 @@ finalized. RxJS 9 is a new platform-based generation, not a release of that
 paused implementation. The version communicates that architectural break and
 prevents the old RxJS 8 work from being mistaken for this product.
 
-## Try the pipeable pilot
+## Try the complete pipeable experiment
 
 ```ts
 import { filter, map, rx, subscribe, take, toArray } from 'rxjs';
@@ -38,11 +39,12 @@ const subscription = rx(
 console.log(subscription.closed); // true after synchronous completion
 ```
 
-This branch is evaluating the root-level pipeable surface alongside the
-existing exact-Symbol catalog. After the first review, the pilot contains
-`rx`, `map`, `filter`, `take`, Observable-returning `toArray`, and the optional
-AbortSignal-backed `subscribe` compatibility terminal. Existing operator
-subpaths still export their exact Symbols and install only those capabilities.
+This branch is evaluating 91 root-level source operators and 12 static
+functions alongside the existing exact-Symbol catalog. Dual static/source
+capabilities use names such as `merge` and `mergeWith`. Async-iteration
+terminals remain `AsyncGenerator` results. Complete `rxjs/pipeable`,
+`rxjs/static`, and `rxjs/symbol` barrels and focused deep imports are available;
+established Symbol subpaths remain unchanged during final review.
 
 ## Choose the lifecycle deliberately
 
@@ -69,7 +71,7 @@ and Node's `require(esm)` bridge resolve the same files and exact Symbols.
 
 ```js
 const { ColdObservable } = require('rxjs');
-const { map } = require('rxjs/map');
+const { map } = require('rxjs/pipeable/map');
 ```
 
 The bridge requires Node 22.13 or newer. It is not a CommonJS build and does

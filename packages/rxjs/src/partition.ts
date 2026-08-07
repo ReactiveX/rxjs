@@ -48,3 +48,22 @@ function partitionImpl<T>(this: ObservableCtor, source: ObservableInput<T>, pred
 }
 
 Observable[partition] = partitionImpl;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Calls the static exact-Symbol `Observable[partition]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticPartition<T, U extends T>(source: ObservableInput<T>, predicate: (value: T, index: number) => value is U): [
+    Observable<U>,
+    Observable<Exclude<T, U>>
+  ];
+export function staticPartition<T>(source: ObservableInput<T>, predicate: (value: T, index: number) => boolean): [Observable<T>, Observable<T>];
+export function staticPartition(...args: any[]): any {
+  return Reflect.apply(Observable[partition] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

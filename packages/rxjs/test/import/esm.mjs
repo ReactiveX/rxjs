@@ -1,5 +1,19 @@
 import assert from 'node:assert/strict';
-import { ColdObservable, Subject, TimeoutError, filter, map, rx, subscribe, take, toArray } from 'rxjs';
+import {
+  ColdObservable,
+  Subject,
+  TimeoutError,
+  filter,
+  iterateEachValue,
+  map,
+  merge,
+  mergeWith,
+  rx,
+  subscribe,
+  take,
+  toArray,
+} from 'rxjs';
+import { buffer as barrelBuffer } from 'rxjs/pipeable';
 import * as deepMapModule from 'rxjs/pipeable/map';
 import * as deepTakeModule from 'rxjs/pipeable/take';
 import { rx as deepRx } from 'rxjs/rx';
@@ -7,6 +21,8 @@ import { subscribe as deepSubscribe } from 'rxjs/subscribe';
 import { filter as filterSymbol } from 'rxjs/symbol/filter';
 import { map as mapSymbol } from 'rxjs/symbol/map';
 import { take as takeSymbol } from 'rxjs/symbol/take';
+import * as symbolCatalog from 'rxjs/symbol';
+import { merge as staticMerge } from 'rxjs/static';
 import { toArray as deepToArray } from 'rxjs/to-array';
 import { pipe } from 'rxjs/pipe';
 import { scan } from 'rxjs/scan';
@@ -24,6 +40,12 @@ assert.equal(typeof filter, 'function');
 assert.equal(typeof take, 'function');
 assert.equal(typeof toArray, 'function');
 assert.equal(typeof subscribe, 'function');
+assert.equal(typeof merge, 'function');
+assert.equal(typeof mergeWith, 'function');
+assert.equal(typeof iterateEachValue, 'function');
+assert.equal(typeof barrelBuffer, 'function');
+assert.equal(typeof staticMerge, 'function');
+assert.equal(typeof symbolCatalog.merge, 'symbol');
 assert.equal(typeof deepMapModule.map, 'function');
 assert.equal(typeof deepTakeModule.take, 'function');
 assert.equal('mapOperator' in deepMapModule, false);
@@ -48,3 +70,7 @@ for (const symbol of [pipe, timer]) {
   assert.equal(typeof globalThis.Observable[symbol], 'function');
   assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable, symbol).enumerable, true);
 }
+
+const asyncValues = rx([1, 2], iterateEachValue());
+assert.deepEqual(await asyncValues.next(), { done: false, value: 1 });
+await asyncValues.return();

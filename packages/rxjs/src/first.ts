@@ -86,3 +86,25 @@ function firstOperator<T, D>(
 }
 
 Observable.prototype[first] = firstOperator;
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `first` form of the exact-Symbol `[first]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[first]` to its source.
+ */
+export function pipeableFirst<T, D = T>(predicate?: null, defaultValue?: D): (source: Observable<T>) => Observable<T | D>;
+export function pipeableFirst<T>(predicate: BooleanConstructor): (source: Observable<T>) => Observable<TruthyTypesOf<T>>;
+export function pipeableFirst<T, D>(predicate: BooleanConstructor, defaultValue: D): (source: Observable<T>) => Observable<TruthyTypesOf<T> | D>;
+export function pipeableFirst<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): (source: Observable<T>) => Observable<S>;
+export function pipeableFirst<T, S extends T, D>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue: D): (source: Observable<T>) => Observable<S | D>;
+export function pipeableFirst<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): (source: Observable<T>) => Observable<T | D>;
+export function pipeableFirst(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[first] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

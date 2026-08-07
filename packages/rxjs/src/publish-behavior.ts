@@ -15,3 +15,20 @@ Observable.prototype[publishBehavior] = function <T>(this: Observable<T>, initia
   // same instance across manual disconnects and terminal notifications.
   return this[multicast](behaviorSubject(initialValue));
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `publishBehavior` form of the exact-Symbol `[publishBehavior]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. Any non-Observable result is returned unchanged.
+ *
+ * @returns A unary function that applies `[publishBehavior]` to its source.
+ */
+export function pipeablePublishBehavior<T>(initialValue: T): (source: Observable<T>) => ConnectableObservable<T>;
+export function pipeablePublishBehavior(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[publishBehavior] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

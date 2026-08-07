@@ -45,3 +45,20 @@ declare global {
 Observable.prototype[iterateLatestValue] = function <T>(this: Observable<T>): AsyncGenerator<T, void, void> {
   return latestValueAsyncGenerator(this);
 };
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `iterateLatestValue` form of the exact-Symbol `[iterateLatestValue]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The AsyncGenerator result is returned unchanged, preserving the selected AsyncIterable strategy.
+ *
+ * @returns A unary function that applies `[iterateLatestValue]` to its source.
+ */
+export function pipeableIterateLatestValue<T>(): (source: Observable<T>) => AsyncGenerator<T, void, void>;
+export function pipeableIterateLatestValue(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[iterateLatestValue] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

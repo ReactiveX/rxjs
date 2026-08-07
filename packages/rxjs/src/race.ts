@@ -73,3 +73,31 @@ function raceImpl<Sources extends readonly ObservableInput<any>[]>(
     }
   });
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `raceWith` form of the exact-Symbol `[race]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[race]` to its source.
+ */
+export function pipeableRace<T, Sources extends readonly ObservableInput<any>[]>(sources: Sources): (source: Observable<T>) => Observable<T | ObservableArrayToValueUnion<Sources>>;
+export function pipeableRace(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[race] as (...values: any[]) => any, source, args);
+}
+
+/**
+ * Calls the static exact-Symbol `Observable[race]` capability as an ordinary function.
+ *
+ * Construction, conversion, error forwarding, and cancellation remain owned
+ * by the installed Symbol implementation.
+ */
+export function staticRace<Sources extends readonly ObservableInput<any>[]>(sources: Sources): Observable<ObservableArrayToValueUnion<Sources>>;
+export function staticRace(...args: any[]): any {
+  return Reflect.apply(Observable[race] as (...values: any[]) => any, Observable, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE

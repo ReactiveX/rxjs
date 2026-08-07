@@ -112,3 +112,25 @@ Observable.prototype[timeout] = timeoutOperator;
 function timeoutErrorFactory(info: TimeoutInfo<any, any>): never {
   throw new TimeoutError(info);
 }
+
+// BEGIN GENERATED FUNCTIONAL SURFACE
+
+/**
+ * Creates the pipeable `timeout` form of the exact-Symbol `[timeout]` capability.
+ *
+ * The source is supplied when the returned unary function is composed with
+ * `rx`, `pipe`, or another function-composition helper. The result uses the same construction, error-forwarding, and AbortSignal cancellation behavior as the Symbol form.
+ *
+ * @returns A unary function that applies `[timeout]` to its source.
+ */
+export function pipeableTimeout<T, M, W>(config: {
+      each?: number;
+      first?: number | Date;
+      with?: (info: TimeoutInfo<T, M>) => ObservableInput<W>;
+      meta?: M;
+    }): (source: Observable<T>) => Observable<T | W>;
+export function pipeableTimeout(...args: any[]): any {
+  return (source: Observable<any>) => Reflect.apply(source[timeout] as (...values: any[]) => any, source, args);
+}
+
+// END GENERATED FUNCTIONAL SURFACE
