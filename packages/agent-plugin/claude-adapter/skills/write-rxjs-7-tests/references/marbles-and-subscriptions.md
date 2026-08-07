@@ -21,6 +21,32 @@ Whitespace in run-mode marble strings is ignored so diagrams can be aligned in
 fixed-width columns. Use that feature deliberately. Align diagrams by semantic
 role and use domain names in value maps.
 
+## Span long virtual durations compactly
+
+Inside `TestScheduler.run`, use `ms`, `s`, or `m` time annotations instead of
+writing thousands of dashes. Separate an annotation from the rest of the
+diagram with whitespace. The whitespace is ignored, while each literal `-`
+still advances virtual time by one frame, which is one virtual millisecond in
+run mode. The annotation and surrounding dashes are additive, so the next
+notification in `--- 10s ---a` occurs at `10_006ms`.
+
+```ts
+scheduler.run(({ cold, expectObservable }) => {
+  const sourceMarbles = '   --- 10s ---a--b--|';
+  const expectedMarbles = ' --- 10s ---x--y--|';
+  const source = cold(sourceMarbles, { a: 1, b: 2 });
+
+  expectObservable(source.pipe(map((value) => value * 10))).toBe(expectedMarbles, {
+    x: 10,
+    y: 20,
+  });
+});
+```
+
+Duration annotations compress elapsed time; their character width is not a
+visual scale. Use leading spaces to align the timeline segments that should be
+compared vertically.
+
 ## Assert subscription windows
 
 Values do not prove cancellation:

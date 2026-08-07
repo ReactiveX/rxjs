@@ -12,7 +12,10 @@ await rxTest(({ cold, expectObservable, expectSubscriptions }) => {
   const firstExpected = '             --a--|';
   const secondWindow = '              ---^------!';
   const secondExpected = '            -----a--|';
-  const producerWindows = ['          ^----!', '   ---^----!'];
+  const producerWindows = [
+    '                                 ^----!', // First direct subscription.
+    '                                 ---^----!', // Second direct subscription.
+  ];
   const source = cold(sourceMarbles);
 
   expectObservable(source).toBe(firstExpected);
@@ -52,7 +55,10 @@ await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
   const firstExpected = '       --a';
   const restartWindow = '       -----^------!';
   const restartExpected = '     -------a--|';
-  const producerWindows = ['    ^--!', '     -----^----!'];
+  const producerWindows = [
+    '                           ^--!', // Initial active-producer period.
+    '                           -----^----!', // Restarted producer.
+  ];
   const source = observable(sourceMarbles);
 
   expectObservable(source, firstWindow).toBe(firstExpected);

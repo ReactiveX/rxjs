@@ -89,6 +89,8 @@ for (const [path, requiredText] of [
   ['skills/write-rxjs-9/references/fundamentals-and-lifecycle.md', 'Prefer platform methods'],
   ['skills/write-rxjs-9/references/custom-operators.md', 'Why `Symbol.for()` is dangerous'],
   ['skills/write-rxjs-9-tests/SKILL.md', 'Declare every marble string together'],
+  ['skills/write-rxjs-7-tests/references/marbles-and-subscriptions.md', '--- 10s ---a'],
+  ['skills/write-rxjs-9-tests/references/marbles-and-assertions.md', '--- 10s ---a'],
   ['skills/design-rxjs-library-apis/references/controller-api-shapes.md', 'Readonly tuple'],
   ['skills/integrate-rxjs-frameworks/references/angular-22.md', '^6.5.3 || ^7.4.0'],
   ['skills/optimize-rxjs-bundles/references/rxjs-9-platform-methods-and-symbol-modules.md', 'Prefer the platform surface'],
@@ -104,6 +106,9 @@ for (const skillName of ['write-rxjs-7-tests', 'write-rxjs-9-tests']) {
     const contents = await readFile(resolve(referenceRoot, entry.name), 'utf8');
     if (/(?:cold|hot|observable)\(\s*['"]/.test(contents)) {
       errors.push(`${skillName}/${entry.name}: declare marble strings as aligned variables before creating sources`);
+    }
+    if (/\[[^\]\n]*['"][^'"\n]*[\^!][^'"\n]*['"][^\]\n]*,\s*['"]/.test(contents)) {
+      errors.push(`${skillName}/${entry.name}: put each marble diagram in an array on its own line`);
     }
   }
 }

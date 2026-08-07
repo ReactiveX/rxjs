@@ -42,6 +42,34 @@ describe('version-specific testing skill examples', () => {
     });
   });
 
+  it('supports aligned long-duration annotations in RxJS 7 and RxJS 9', async () => {
+    const scheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    scheduler.run(({ cold, expectObservable }) => {
+      const sourceMarbles = '   --- 10s ---a--b--|';
+      const expectedMarbles = ' --- 10s ---x--y--|';
+      const source = cold(sourceMarbles, { a: 1, b: 2 });
+
+      expectObservable(source.pipe(map7((value) => value * 10))).toBe(expectedMarbles, {
+        x: 10,
+        y: 20,
+      });
+    });
+
+    await rxTest(({ observable, expectObservable }) => {
+      const sourceMarbles = '   --- 10s ---a--b--|';
+      const expectedMarbles = ' --- 10s ---x--y--|';
+      const source = observable(sourceMarbles, { a: 1, b: 2 });
+
+      expectObservable(source.map((value) => value * 10)).toBe(expectedMarbles, {
+        x: 10,
+        y: 20,
+      });
+    });
+  });
+
   it('models an RxJS 9 owner abort with subscription marbles', async () => {
     await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
       const sourceMarbles = '       -a-b-c-d-|';
@@ -63,7 +91,10 @@ describe('version-specific testing skill examples', () => {
       const sharedExpected = '          --a--|';
       const coldSecondExpected = '      ---a--|';
       const sharedProducer = '          ^----!';
-      const coldProducers = ['          ^----!', ' -^----!'];
+      const coldProducers = [
+        '                               ^----!',
+        '                               -^----!',
+      ];
       const sharedSource = observable(sourceMarbles);
       const coldSource = cold(sourceMarbles);
 

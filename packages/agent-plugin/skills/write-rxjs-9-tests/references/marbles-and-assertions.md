@@ -19,6 +19,28 @@ await rxTest(({ observable, expectObservable, expectSubscriptions }) => {
 });
 ```
 
+## Span long virtual durations compactly
+
+Use `ms`, `s`, or `m` time annotations instead of writing thousands of
+dashes. Separate an annotation from the rest of the diagram with whitespace.
+The whitespace is ignored, while each literal `-` still advances virtual time
+by one millisecond. The annotation and surrounding dashes are additive, so the
+next notification in `--- 10s ---a` occurs at `10_006ms`.
+
+```ts
+await rxTest(({ observable, expectObservable }) => {
+  const sourceMarbles = '   --- 10s ---a--b--|';
+  const expectedMarbles = ' --- 10s ---x--y--|';
+  const source = observable(sourceMarbles, { a: 1, b: 2 });
+
+  expectObservable(source.map((value) => value * 10)).toBe(expectedMarbles, { x: 10, y: 20 });
+});
+```
+
+Duration annotations compress elapsed time; their character width is not a
+visual scale. Use leading spaces to align the timeline segments that should be
+compared vertically.
+
 ## Available comparisons
 
 - `expectObservable(actual).toBe(marbles, values, error)` compares notifications.

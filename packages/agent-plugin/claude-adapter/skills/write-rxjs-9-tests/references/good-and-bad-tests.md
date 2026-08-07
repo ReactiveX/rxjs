@@ -23,7 +23,10 @@ const firstWindow = '           ^------!';
 const secondWindow = '          -^------!';
 const firstExpected = '         --a--|';
 const secondExpected = '        ---a--|';
-const producerWindows = ['      ^----!', ' -^----!'];
+const producerWindows = [
+  '                             ^----!', // First direct subscription.
+  '                             -^----!', // Second direct subscription.
+];
 const source = cold(sourceMarbles);
 
 expectObservable(source, firstWindow).toBe(firstExpected);
@@ -62,7 +65,10 @@ rxTest(({ cold, expectObservable }) => {
 
 ```ts
 // Good when restart is the claim.
-const producerWindows = ['^--!', '-----^----!'];
+const producerWindows = [
+  '                             ^--!', // Initial producer.
+  '                             -----^----!', // Restarted producer.
+];
 expectSubscriptions(source.subscriptions).toBe(producerWindows);
 ```
 
