@@ -27,6 +27,7 @@ packages/**/CODE_OF_CONDUCT.md
 
 # Misc
 npm-debug.log
+pnpm-debug.log*
 .DS_STORE
 *.tgz
 .eslintcache
@@ -36,4 +37,10 @@ integration/import/**/rx.json
 integration/import/**/operators.json
 
 
-.nx/cache
+.nx/
+
+# Generated Observable WPT runner, browser, shadow tree, and reports
+.cache/rxjs-wpt/
+
+# Reusable published-version bundle maps
+.cache/rxjs-bundle-analysis/

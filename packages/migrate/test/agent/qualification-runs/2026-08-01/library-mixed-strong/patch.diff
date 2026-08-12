@@ -1,0 +1,170 @@
+diff --git a/package.json b/package.json
+index 2682f97..e643831 100644
+--- a/package.json
++++ b/package.json
+@@ -8,12 +8,18 @@
+     "test": "pnpm run build && node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand"
+   },
+   "dependencies": {
+-    "rxjs": "7.8.1"
++    "@rxjs/observable-polyfill": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz",
++    "rxjs": "file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz"
+   },
+   "devDependencies": {
+     "@jest/globals": "29.7.0",
+     "@rxjs/migrate": "file:.qualification/packages/rxjs-migrate-8.0.0-alpha.14.tgz",
+     "jest": "29.7.0",
+     "typescript": "5.7.3"
++  },
++  "pnpm": {
++    "overrides": {
++      "@rxjs/observable-polyfill": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz"
++    }
+   }
+ }
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index 74efd31..23120ee 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -4,13 +4,19 @@ settings:
+   autoInstallPeers: true
+   excludeLinksFromLockfile: false
+ 
++overrides:
++  '@rxjs/observable-polyfill': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++
+ importers:
+ 
+   .:
+     dependencies:
++      '@rxjs/observable-polyfill':
++        specifier: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+       rxjs:
+-        specifier: 7.8.1
+-        version: 7.8.1
++        specifier: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
+     devDependencies:
+       '@jest/globals':
+         specifier: 29.7.0
+@@ -287,6 +293,10 @@ packages:
+     version: 8.0.0-alpha.14
+     hasBin: true
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz':
++    resolution: {integrity: sha512-IK2uj+dLiY3kplu68HeT8KI8FkKccU18pqSg+SZuRvjad3NrY9TQbAttdhHDAico82p4Y5B6i++cW4xub2jGWw==, tarball: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
++
+   '@sinclair/typebox@0.27.12':
+     resolution: {integrity: sha512-hhyNJ+nbR6ZR7pToHvllEFun9TL0sbL+tk/ON75lo+Xas054uez98qRbsuNt7MBCyZKK4+8Yli/OAGZhmfBZ/g==}
+ 
+@@ -970,8 +980,9 @@ packages:
+     engines: {node: '>= 0.4'}
+     hasBin: true
+ 
+-  rxjs@7.8.1:
+-    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
++    resolution: {integrity: sha512-7qiXQw+TgyHRmGTof+TpYlHNZYhrajxZ/DFdj4XYgVkw0KZkyYdq4Vv9oUEDCYJ9zOSn8T7iXX0zWHmUA8m+uQ==, tarball: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
+ 
+   semver@6.3.1:
+     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
+@@ -1061,9 +1072,6 @@ packages:
+     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
+     engines: {node: '>=8.0'}
+ 
+-  tslib@2.8.1:
+-    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+-
+   type-detect@4.0.8:
+     resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
+     engines: {node: '>=4'}
+@@ -1518,6 +1526,8 @@ snapshots:
+       typescript: 5.7.3
+       zod: 3.25.76
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz': {}
++
+   '@sinclair/typebox@0.27.12': {}
+ 
+   '@sinonjs/commons@3.0.1':
+@@ -2361,9 +2371,9 @@ snapshots:
+       path-parse: 1.0.7
+       supports-preserve-symlinks-flag: 1.0.0
+ 
+-  rxjs@7.8.1:
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
+     dependencies:
+-      tslib: 2.8.1
++      '@rxjs/observable-polyfill': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+ 
+   semver@6.3.1: {}
+ 
+@@ -2437,8 +2447,6 @@ snapshots:
+     dependencies:
+       is-number: 7.0.0
+ 
+-  tslib@2.8.1: {}
+-
+   type-detect@4.0.8: {}
+ 
+   type-fest@0.21.3: {}
+diff --git a/src/index.ts b/src/index.ts
+index c329a1b..803c5ad 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -1,16 +1,15 @@
+-import { Observable, from, map, windowTime } from 'rxjs';
++// Migrated from https://qualification.local/library-mixed-strong @ 6dde871f4813f53a94fca0b292a5eca46d84f78d
++// Source: src/index.ts
++import 'rxjs';
++import { map } from 'rxjs/map';
++import { windowTime } from 'rxjs/window-time';
+ 
+-export const doubled = (values: Iterable<number>) => from(values).pipe(map((value) => value * 2));
++export const doubled = (values: Iterable<number>) => Observable.from(values)[map]((value) => value * 2);
+ 
+ export const windowed = (source: Observable<number>) =>
+-  source.pipe(
+-    map((value) => value + 1),
+-    windowTime(10)
+-  );
++  source[map]((value) => value + 1)[windowTime](10);
+ 
+ export const selectorFailure = () =>
+-  from([1]).pipe(
+-    map(() => {
+-      throw new Error('selector failed');
+-    })
+-  );
++  Observable.from([1])[map](() => {
++    throw new Error('selector failed');
++  });
+diff --git a/test/index.test-source.ts b/test/index.test-source.ts
+index d1e5f87..a378c1e 100644
+--- a/test/index.test-source.ts
++++ b/test/index.test-source.ts
+@@ -1,15 +1,17 @@
++// Migrated from https://qualification.local/library-mixed-strong @ 6dde871f4813f53a94fca0b292a5eca46d84f78d
++// Source: test/index.test-source.ts
+ import { expect, test } from '@jest/globals';
+-import { firstValueFrom, of, toArray } from 'rxjs';
++import 'rxjs';
+ import { doubled, selectorFailure, windowed } from '../src/index.js';
+ 
+ test('PT-MIXED-ERROR preserves selector errors', async () => {
+-  await expect(firstValueFrom(selectorFailure())).rejects.toThrow('selector failed');
++  await expect(selectorFailure().first()).rejects.toThrow('selector failed');
+ });
+ 
+ test('PT-MIXED-INPUT converts iterable input', async () => {
+-  await expect(firstValueFrom(doubled([1, 2]).pipe(toArray()))).resolves.toEqual([2, 4]);
++  await expect(doubled([1, 2]).toArray()).resolves.toEqual([2, 4]);
+ });
+ 
+ test('PT-MIXED-PIPELINE retains unsupported work between supported segments', async () => {
+-  await expect(firstValueFrom(windowed(of(1)))).resolves.toBeDefined();
++  await expect(windowed(Observable.from([1])).first()).resolves.toBeDefined();
+ });

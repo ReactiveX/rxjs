@@ -1,0 +1,26 @@
+name: Extended property fuzzing
+
+on:
+  schedule:
+    - cron: '23 6 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    name: Observable and release-policy properties
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with: { node-version: '24.12.0' }
+      - name: Run extended properties; fast-check reports the reproduction seed on failure
+        env: { RXJS_FUZZ_RUNS: 5000 }
+        run: |
+          pnpm --filter @rxjs/observable-polyfill exec vitest --run src/lifecycle.fuzz.spec.ts
+          node --test scripts/release/authorize-stage.test.mjs scripts/release/install-pinned-npm.test.mjs scripts/release/release-policy.test.mjs scripts/release/release-candidate.test.mjs scripts/release/stage-release.test.mjs

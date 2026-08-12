@@ -1,0 +1,792 @@
+{
+  "schemaVersion": 1,
+  "wptCommit": "6a009d73f0d315941b90cac13a9523a2a08c631b",
+  "browserVersion": "150.0.7871.126",
+  "results": {
+    "/dom/observable/tentative/crashtests/observable-gc.any.html": {
+      "status": "OK",
+      "subtests": {
+        "every(): does not crash on observable being GCed": "PASS",
+        "find(): does not crash on observable being GCed": "PASS",
+        "first(): does not crash on observable being GCed": "PASS",
+        "forEach(): does not crash on observable being GCed": "PASS",
+        "last(): does not crash on observable being GCed": "PASS",
+        "reduce(): does not crash on observable being GCed": "PASS",
+        "some(): does not crash on observable being GCed": "PASS",
+        "toArray(): does not crash on observable being GCed": "PASS"
+      }
+    },
+    "/dom/observable/tentative/crashtests/observable-gc.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "every(): does not crash on observable being GCed": "PASS",
+        "find(): does not crash on observable being GCed": "PASS",
+        "first(): does not crash on observable being GCed": "PASS",
+        "forEach(): does not crash on observable being GCed": "PASS",
+        "last(): does not crash on observable being GCed": "PASS",
+        "reduce(): does not crash on observable being GCed": "PASS",
+        "some(): does not crash on observable being GCed": "PASS",
+        "toArray(): does not crash on observable being GCed": "PASS"
+      }
+    },
+    "/dom/observable/tentative/crashtests/observable-takeUntil-toArray.any.html": {
+      "status": "OK",
+      "subtests": {
+        "takeUntil correctly passes error on inner observable to outer observables": "PASS"
+      }
+    },
+    "/dom/observable/tentative/crashtests/observable-takeUntil-toArray.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "takeUntil correctly passes error on inner observable to outer observables": "PASS"
+      }
+    },
+    "/dom/observable/tentative/idlharness.html": {
+      "status": "OK",
+      "subtests": {
+        "idl_test setup": "PASS",
+        "idl_test validation": "PASS",
+        "Observable interface object length": "PASS",
+        "Observable interface object name": "PASS",
+        "Observable interface: calling subscribe(optional ObserverUnion, optional SubscribeOptions) on new Observable(() => {}) with too few arguments must throw TypeError": "PASS",
+        "Observable interface: existence and properties of interface object": "PASS",
+        "Observable interface: existence and properties of interface prototype object": "PASS",
+        "Observable interface: existence and properties of interface prototype object's \"constructor\" property": "PASS",
+        "Observable interface: existence and properties of interface prototype object's @@unscopables property": "PASS",
+        "Observable interface: new Observable(() => {}) must inherit property \"subscribe(optional ObserverUnion, optional SubscribeOptions)\" with the proper type": "PASS",
+        "Observable interface: operation subscribe(optional ObserverUnion, optional SubscribeOptions)": "PASS",
+        "Observable must be primary interface of new Observable(() => {})": "PASS",
+        "Stringification of (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })()": "PASS",
+        "Stringification of new Observable(() => {})": "PASS",
+        "Subscriber interface object length": "PASS",
+        "Subscriber interface object name": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"active\" with the proper type": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"addTeardown(VoidFunction)\" with the proper type": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"complete()\" with the proper type": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"error(any)\" with the proper type": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"next(any)\" with the proper type": "PASS",
+        "Subscriber interface: (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() must inherit property \"signal\" with the proper type": "PASS",
+        "Subscriber interface: attribute active": "PASS",
+        "Subscriber interface: attribute signal": "PASS",
+        "Subscriber interface: calling addTeardown(VoidFunction) on (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() with too few arguments must throw TypeError": "PASS",
+        "Subscriber interface: calling error(any) on (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() with too few arguments must throw TypeError": "PASS",
+        "Subscriber interface: calling next(any) on (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })() with too few arguments must throw TypeError": "PASS",
+        "Subscriber interface: existence and properties of interface object": "PASS",
+        "Subscriber interface: existence and properties of interface prototype object": "PASS",
+        "Subscriber interface: existence and properties of interface prototype object's \"constructor\" property": "PASS",
+        "Subscriber interface: existence and properties of interface prototype object's @@unscopables property": "PASS",
+        "Subscriber interface: operation addTeardown(VoidFunction)": "PASS",
+        "Subscriber interface: operation complete()": "PASS",
+        "Subscriber interface: operation error(any)": "PASS",
+        "Subscriber interface: operation next(any)": "PASS",
+        "Subscriber must be primary interface of (() => { let s = null; new Observable(_s => s = _s).subscribe({}); return s })()": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-catch.any.html": {
+      "status": "OK",
+      "subtests": {
+        "catch(): Abort order between outer AbortSignal and inner CatchHandler subscriber's AbortSignal": "PASS",
+        "catch(): CatchHandler can return a Promise": "PASS",
+        "catch(): CatchHandler can return an empty iterable": "PASS",
+        "catch(): CatchHandler emits an error if the value returned is not convertible to an Observable": "PASS",
+        "catch(): CatchHandler returns an Observable that throws immediately on subscription": "PASS",
+        "catch(): Errors thrown in the catch() callback are sent to the consumer's error handler": "PASS",
+        "catch(): Handle errors from source and flatten to a new Observable": "PASS",
+        "catch(): Returns an Observable that is a pass-through for next()/complete()": "PASS",
+        "catch(): should handle returning an async iterable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-catch.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "catch(): Abort order between outer AbortSignal and inner CatchHandler subscriber's AbortSignal": "PASS",
+        "catch(): CatchHandler can return a Promise": "PASS",
+        "catch(): CatchHandler can return an empty iterable": "PASS",
+        "catch(): CatchHandler emits an error if the value returned is not convertible to an Observable": "PASS",
+        "catch(): CatchHandler returns an Observable that throws immediately on subscription": "PASS",
+        "catch(): Errors thrown in the catch() callback are sent to the consumer's error handler": "PASS",
+        "catch(): Handle errors from source and flatten to a new Observable": "PASS",
+        "catch(): Returns an Observable that is a pass-through for next()/complete()": "PASS",
+        "catch(): should handle returning an async iterable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-constructor.any.html": {
+      "status": "OK",
+      "subtests": {
+        "Aborting a subscription should stop emitting values": "PASS",
+        "Calling subscribe should never throw an error synchronously, initializer throws error": "PASS",
+        "Calling subscribe should never throw an error synchronously, subscriber pushes error": "PASS",
+        "Completing or nexting a subscriber after an error does nothing": "PASS",
+        "Errors pushed by initializer function after subscriber is closed by error are reported": "PASS",
+        "Errors pushed to the subscriber that are not handled by the subscription are reported to the global": "PASS",
+        "Errors thrown by initializer function after subscriber is closed by completion are reported": "PASS",
+        "Errors thrown by initializer function after subscriber is closed by error are reported": "PASS",
+        "Errors thrown in the initializer that are not handled by the subscription are reported to the global": "PASS",
+        "Multiple subscriptions share the same producer and teardown runs only after last subscription abort": "PASS",
+        "New subscription after complete creates new producer": "PASS",
+        "Observable constructor": "PASS",
+        "Observable constructor calls initializer on subscribe": "PASS",
+        "Observable error path called synchronously": "PASS",
+        "Observable should error if initializer throws": "PASS",
+        "Producer-initiated unsubscription in a downstream Observable fires abort events before each teardown, in downstream->upstream order": "PASS",
+        "Subscribe with just a function as the next handler": "PASS",
+        "subscribe() can be called with no arguments": "PASS",
+        "Subscriber active is readonly": "PASS",
+        "Subscriber complete() will set active to false, and abort signal": "PASS",
+        "Subscriber interface is not constructible": "PASS",
+        "Subscriber iterates over a snapshot of its internal observers": "PASS",
+        "Subscriber must have receiver": "PASS",
+        "Subscriber next & error must recieve argument": "PASS",
+        "Subscriber signal is readonly": "PASS",
+        "Subscriber#complete() cannot re-entrantly invoke itself": "PASS",
+        "Subscriber#error() cannot re-entrantly invoke itself": "PASS",
+        "Subscriber#error() value is stored as Subscriber's AbortSignal's reason": "PASS",
+        "Subscriber#signal is not the same AbortSignal as the one passed into `subscribe()`": "PASS",
+        "Subscription does not emit values after completion": "PASS",
+        "Subscription does not emit values after error": "PASS",
+        "Subscription is inactive after complete()": "PASS",
+        "Subscription is inactive after error()": "PASS",
+        "Subscription is inactive when aborted signal is passed in": "PASS",
+        "Subscription reports errors that are pushed after subscriber is closed by completion": "PASS",
+        "Teardown runs after last unsubscribe regardless of unsubscription order": "PASS",
+        "Teardown should be called when subscription is aborted": "PASS",
+        "Teardowns are called in downstream->upstream order on consumer-initiated unsubscription with pre-aborted Signal": "PASS",
+        "Teardowns are called in upstream->downstream order on consumer-initiated unsubscription": "PASS",
+        "Teardowns should be called synchronously during addTeardown() if the subscription is inactive": "PASS",
+        "Teardowns should be called when subscription is closed by completion": "PASS",
+        "Teardowns should be called when subscription is closed by subscriber pushing an error": "PASS",
+        "Teardowns should be called when subscription is closed by subscriber throwing error": "PASS",
+        "Unsubscription lifecycle": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-constructor.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "Aborting a subscription should stop emitting values": "PASS",
+        "Calling subscribe should never throw an error synchronously, initializer throws error": "PASS",
+        "Calling subscribe should never throw an error synchronously, subscriber pushes error": "PASS",
+        "Completing or nexting a subscriber after an error does nothing": "PASS",
+        "Errors pushed by initializer function after subscriber is closed by error are reported": "PASS",
+        "Errors pushed to the subscriber that are not handled by the subscription are reported to the global": "PASS",
+        "Errors thrown by initializer function after subscriber is closed by completion are reported": "PASS",
+        "Errors thrown by initializer function after subscriber is closed by error are reported": "PASS",
+        "Errors thrown in the initializer that are not handled by the subscription are reported to the global": "PASS",
+        "Multiple subscriptions share the same producer and teardown runs only after last subscription abort": "PASS",
+        "New subscription after complete creates new producer": "PASS",
+        "Observable constructor": "PASS",
+        "Observable constructor calls initializer on subscribe": "PASS",
+        "Observable error path called synchronously": "PASS",
+        "Observable should error if initializer throws": "PASS",
+        "Producer-initiated unsubscription in a downstream Observable fires abort events before each teardown, in downstream->upstream order": "PASS",
+        "Subscribe with just a function as the next handler": "PASS",
+        "subscribe() can be called with no arguments": "PASS",
+        "Subscriber active is readonly": "PASS",
+        "Subscriber complete() will set active to false, and abort signal": "PASS",
+        "Subscriber interface is not constructible": "PASS",
+        "Subscriber iterates over a snapshot of its internal observers": "PASS",
+        "Subscriber must have receiver": "PASS",
+        "Subscriber next & error must recieve argument": "PASS",
+        "Subscriber signal is readonly": "PASS",
+        "Subscriber#complete() cannot re-entrantly invoke itself": "PASS",
+        "Subscriber#error() cannot re-entrantly invoke itself": "PASS",
+        "Subscriber#error() value is stored as Subscriber's AbortSignal's reason": "PASS",
+        "Subscriber#signal is not the same AbortSignal as the one passed into `subscribe()`": "PASS",
+        "Subscription does not emit values after completion": "PASS",
+        "Subscription does not emit values after error": "PASS",
+        "Subscription is inactive after complete()": "PASS",
+        "Subscription is inactive after error()": "PASS",
+        "Subscription is inactive when aborted signal is passed in": "PASS",
+        "Subscription reports errors that are pushed after subscriber is closed by completion": "PASS",
+        "Teardown runs after last unsubscribe regardless of unsubscription order": "PASS",
+        "Teardown should be called when subscription is aborted": "PASS",
+        "Teardowns are called in downstream->upstream order on consumer-initiated unsubscription with pre-aborted Signal": "PASS",
+        "Teardowns are called in upstream->downstream order on consumer-initiated unsubscription": "PASS",
+        "Teardowns should be called synchronously during addTeardown() if the subscription is inactive": "PASS",
+        "Teardowns should be called when subscription is closed by completion": "PASS",
+        "Teardowns should be called when subscription is closed by subscriber pushing an error": "PASS",
+        "Teardowns should be called when subscription is closed by subscriber throwing error": "PASS",
+        "Unsubscription lifecycle": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-constructor.window.html": {
+      "status": "OK",
+      "subtests": {
+        "Cannot subscribe to an Observable in a detached document": "PASS",
+        "No observer handlers can be invoked in detached document": "PASS",
+        "Observable from EventTarget does not get notified for events in detached documents": "PASS",
+        "Subscriber.error() does not \"report the exception\" even when an `error()` handler is not present, when it is invoked in a detached document": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-drop.any.html": {
+      "status": "OK",
+      "subtests": {
+        "drop(): A drop amount of 0 simply mirrors the source Observable": "PASS",
+        "drop(): Observable passes through completions from source observable even before drop count is met": "PASS",
+        "drop(): Observable passes through errors from source Observable": "PASS",
+        "drop(): Observable passes through errors from source observable even before drop count is met": "PASS",
+        "drop(): Observable should skip the first n values from the source observable, then pass through the rest of the values and completion": "PASS",
+        "drop(): Passing negative value wraps to maximum value ": "PASS",
+        "drop(): Unsubscribing from the Observable returned by drop() also unsubscribes from the source Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-drop.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "drop(): A drop amount of 0 simply mirrors the source Observable": "PASS",
+        "drop(): Observable passes through completions from source observable even before drop count is met": "PASS",
+        "drop(): Observable passes through errors from source Observable": "PASS",
+        "drop(): Observable passes through errors from source observable even before drop count is met": "PASS",
+        "drop(): Observable should skip the first n values from the source observable, then pass through the rest of the values and completion": "PASS",
+        "drop(): Passing negative value wraps to maximum value ": "PASS",
+        "drop(): Unsubscribing from the Observable returned by drop() also unsubscribes from the source Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-event-target.any.html": {
+      "status": "OK",
+      "subtests": {
+        "Aborting the subscription should stop the emission of events": "PASS",
+        "EventTarget Observables can multicast subscriptions for event handling": "PASS",
+        "EventTarget.when() returns an Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-event-target.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "Aborting the subscription should stop the emission of events": "PASS",
+        "EventTarget Observables can multicast subscriptions for event handling": "PASS",
+        "EventTarget.when() returns an Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-event-target.window.html": {
+      "status": "OK",
+      "subtests": {
+        "EventTarget Observables can be 'passive'": "PASS",
+        "EventTarget Observables can listen for events in the capturing or bubbling phase": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-every.any.html": {
+      "status": "OK",
+      "subtests": {
+        "every(): Abort the subscription to the source if the predicate does not pass": "PASS",
+        "every(): Index is passed into the predicate": "PASS",
+        "every(): Lifecycle checks when all values pass the predicate": "PASS",
+        "every(): Lifecycle checks when any value fails the predicate": "PASS",
+        "every(): Promise resolves to false if any value fails the predicate": "PASS",
+        "every(): Promise resolves to true if all values pass the predicate": "PASS",
+        "every(): Rejects with a DOMException if the source Observable is aborted": "PASS",
+        "every(): Rejects with any error emitted from the source observable": "PASS",
+        "every(): Rejects with any error thrown from the predicate": "PASS",
+        "every(): Resolves with true if the observable completes without emitting a value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-every.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "every(): Abort the subscription to the source if the predicate does not pass": "PASS",
+        "every(): Index is passed into the predicate": "PASS",
+        "every(): Lifecycle checks when all values pass the predicate": "PASS",
+        "every(): Lifecycle checks when any value fails the predicate": "PASS",
+        "every(): Promise resolves to false if any value fails the predicate": "PASS",
+        "every(): Promise resolves to true if all values pass the predicate": "PASS",
+        "every(): Rejects with a DOMException if the source Observable is aborted": "PASS",
+        "every(): Rejects with any error emitted from the source observable": "PASS",
+        "every(): Rejects with any error thrown from the predicate": "PASS",
+        "every(): Resolves with true if the observable completes without emitting a value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-filter.any.html": {
+      "status": "OK",
+      "subtests": {
+        "filter(): Errors thrown in filter predicate are emitted to Observer error() handler": "PASS",
+        "filter(): Index is passed correctly to predicate": "PASS",
+        "filter(): Passes complete() through from source Observable": "PASS",
+        "filter(): Passes error() through from source Observable": "PASS",
+        "filter(): Returned Observable filters out results based on predicate": "PASS",
+        "filter(): Upon source completion, source Observable teardown sequence happens after downstream filter complete() is called": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-filter.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "filter(): Errors thrown in filter predicate are emitted to Observer error() handler": "PASS",
+        "filter(): Index is passed correctly to predicate": "PASS",
+        "filter(): Passes complete() through from source Observable": "PASS",
+        "filter(): Passes error() through from source Observable": "PASS",
+        "filter(): Returned Observable filters out results based on predicate": "PASS",
+        "filter(): Upon source completion, source Observable teardown sequence happens after downstream filter complete() is called": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-finally.any.html": {
+      "status": "OK",
+      "subtests": {
+        "finally(): Callback handler fires BEFORE the source observable completes": "PASS",
+        "finally(): Callback handler fires BEFORE the source observable errors": "PASS",
+        "finally(): Callback is run before next inner subscription in flatMap()": "PASS",
+        "finally(): Callback is run before next inner subscription in switchMap()": "PASS",
+        "finally(): Callback is run if consumer aborts the subscription": "PASS",
+        "finally(): Errors thrown in the finally handler (during Subscriber#complete()) are reported to the global immediately": "PASS",
+        "finally(): Errors thrown in the finally handler (during Subscriber#error()) are reported to the global immediately": "PASS",
+        "finally(): Handlers run in composition order": "PASS",
+        "finally(): Mirrors all values and completions from source": "PASS",
+        "finally(): Mirrors all values and errors from the source": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-finally.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "finally(): Callback handler fires BEFORE the source observable completes": "PASS",
+        "finally(): Callback handler fires BEFORE the source observable errors": "PASS",
+        "finally(): Callback is run before next inner subscription in flatMap()": "PASS",
+        "finally(): Callback is run before next inner subscription in switchMap()": "PASS",
+        "finally(): Callback is run if consumer aborts the subscription": "PASS",
+        "finally(): Errors thrown in the finally handler (during Subscriber#complete()) are reported to the global immediately": "PASS",
+        "finally(): Errors thrown in the finally handler (during Subscriber#error()) are reported to the global immediately": "PASS",
+        "finally(): Handlers run in composition order": "PASS",
+        "finally(): Mirrors all values and completions from source": "PASS",
+        "finally(): Mirrors all values and errors from the source": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-find.any.html": {
+      "status": "OK",
+      "subtests": {
+        "find(): Passes the index of the value to the predicate": "PASS",
+        "find(): Promise rejects with any error thrown from the predicate": "PASS",
+        "find(): Promise rejects with the error emitted from the source Observable": "PASS",
+        "find(): Promise resolves with the first value that passes the predicate": "PASS",
+        "find(): Promise resolves with undefined if no value passes the predicate": "PASS",
+        "find(): Rejects with AbortError when the signal is aborted": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-find.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "find(): Passes the index of the value to the predicate": "PASS",
+        "find(): Promise rejects with any error thrown from the predicate": "PASS",
+        "find(): Promise rejects with the error emitted from the source Observable": "PASS",
+        "find(): Promise resolves with the first value that passes the predicate": "PASS",
+        "find(): Promise resolves with undefined if no value passes the predicate": "PASS",
+        "find(): Rejects with AbortError when the signal is aborted": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-first.any.html": {
+      "status": "OK",
+      "subtests": {
+        "first(): Aborting a signal rejects the Promise with an AbortError DOMException": "PASS",
+        "first(): Lifecycle": "PASS",
+        "first(): Promise rejects with RangeError when source Observable completes without emitting any values": "PASS",
+        "first(): Promise rejects with the error emitted from the source Observable": "PASS",
+        "first(): Promise resolves with the first value from the source Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-first.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "first(): Aborting a signal rejects the Promise with an AbortError DOMException": "PASS",
+        "first(): Lifecycle": "PASS",
+        "first(): Promise rejects with RangeError when source Observable completes without emitting any values": "PASS",
+        "first(): Promise rejects with the error emitted from the source Observable": "PASS",
+        "first(): Promise resolves with the first value from the source Observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-flatMap.any.html": {
+      "status": "OK",
+      "subtests": {
+        "flatMap(): Flattens simple source Observable properly": "PASS",
+        "flatMap(): Outer Subscription synchronously becomes inactive when an 'inner' Observable emits an error": "PASS",
+        "flatMap(): Outer Subscription synchronously becomes inactive when an 'inner' Observable throws an error": "PASS",
+        "flatMap(): result Observable does not complete after source Observable completes while there are still queued inner Observables to process Observables all complete": "PASS",
+        "flatMap(): result Observable does not complete until source and inner Observables all complete": "PASS",
+        "flatMap(): Returned Observable passes through source Observable errors": "PASS",
+        "flatMap(): source and inner active Observables are both unsubscribed from once the outer subscription signal is aborted": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-flatMap.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "flatMap(): Flattens simple source Observable properly": "PASS",
+        "flatMap(): Outer Subscription synchronously becomes inactive when an 'inner' Observable emits an error": "PASS",
+        "flatMap(): Outer Subscription synchronously becomes inactive when an 'inner' Observable throws an error": "PASS",
+        "flatMap(): result Observable does not complete after source Observable completes while there are still queued inner Observables to process Observables all complete": "PASS",
+        "flatMap(): result Observable does not complete until source and inner Observables all complete": "PASS",
+        "flatMap(): Returned Observable passes through source Observable errors": "PASS",
+        "flatMap(): source and inner active Observables are both unsubscribed from once the outer subscription signal is aborted": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-forEach.any.html": {
+      "status": "OK",
+      "subtests": {
+        "Errors pushed by Observable reject the returned promise": "PASS",
+        "Errors thrown by Observable reject the returned promise": "PASS",
+        "Errors thrown in the visitor callback reject the promise and unsubscribe from the source": "PASS",
+        "forEach visitor callback rejection microtask ordering": "PASS",
+        "forEach() promise resolves with undefined": "PASS",
+        "forEach(): Visitor callback called synchronously for each value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-forEach.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "Errors pushed by Observable reject the returned promise": "PASS",
+        "Errors thrown by Observable reject the returned promise": "PASS",
+        "Errors thrown in the visitor callback reject the promise and unsubscribe from the source": "PASS",
+        "forEach visitor callback rejection microtask ordering": "PASS",
+        "forEach() promise resolves with undefined": "PASS",
+        "forEach(): Visitor callback called synchronously for each value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-forEach.window.html": {
+      "status": "OK",
+      "subtests": {
+        "forEach()'s internal observer's next steps do not crash in a detached document": "PASS",
+        "forEach()'s internal observer's next steps do not crash when visitor callback detaches the document": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-from.any.html": {
+      "status": "OK",
+      "subtests": {
+        "from(): [Symbol.iterator] is not cached": "PASS",
+        "from(): [Symbol.iterator] next() throws error": "PASS",
+        "from(): [Symbol.iterator] not callable": "PASS",
+        "from(): [Symbol.iterator] not callable AFTER SUBSCRIBE throws": "PASS",
+        "from(): [Symbol.iterator] returns null AFTER SUBSCRIBE throws": "PASS",
+        "from(): [Symbol.iterator] side-effects (many observables)": "PASS",
+        "from(): [Symbol.iterator] side-effects (one observable)": "PASS",
+        "from(): Abort after complete does NOT call IteratorRecord#return()": "PASS",
+        "from(): Aborting an async iterable subscription stops subsequent next() calls, but old next() Promise reactions are web-observable": "PASS",
+        "from(): Aborting async iterable midway through iteration both stops iteration and invokes `IteratorRecord#return()": "PASS",
+        "from(): Aborting sync iterable midway through iteration both stops iteration and invokes `IteratorRecord#return()": "PASS",
+        "from(): Async generator finally block run when Observable errors": "PASS",
+        "from(): Async generator finally block run when subscription is aborted": "PASS",
+        "from(): Async generator finally block runs when Observable completes": "PASS",
+        "from(): Async iterable protocol null, converts as iterator": "PASS",
+        "from(): Async iterable: `Iterator#return()` must return an Object, or a Promise rejects asynchronously": "PASS",
+        "from(): Async iterable: error thrown from IteratorRecord#return() is wrapped in rejected Promise": "PASS",
+        "from(): Asynchronous generator conversion: can only be used once": "PASS",
+        "from(): Asynchronous iterable conversion": "PASS",
+        "from(): Asynchronous iterable conversion, with synchronous iterable fallback": "PASS",
+        "from(): Asynchronous iterable multiple in-flight subscriptions": "PASS",
+        "from(): Converts Promise to Observable": "PASS",
+        "from(): Converts rejected Promise to Observable. No `unhandledrejection` event when error is handled by subscription": "PASS",
+        "from(): Errors thrown in async iterator's next() are propagated in a microtask": "PASS",
+        "from(): Errors thrown in async iterator's next() GETTER are propagated in a microtask": "PASS",
+        "from(): Errors thrown in Symbol.asyncIterator() are propagated synchronously": "PASS",
+        "from(): Failed conversions": "PASS",
+        "from(): Generator finally block run when Observable completes": "PASS",
+        "from(): Generator finally block run when Observable errors": "PASS",
+        "from(): Generator finally block runs when subscription is aborted": "PASS",
+        "from(): Given an array": "PASS",
+        "from(): Given an observable, it returns that exact observable": "PASS",
+        "from(): Iterable converts to Observable": "PASS",
+        "from(): Observable that implements @@iterator protocol gets converted as an Observable, not iterator": "PASS",
+        "from(): Observable.from() is a function": "PASS",
+        "from(): Promise that implements @@iterator protocol gets converted as an iterable, not Promise": "PASS",
+        "from(): Promise whose [Symbol.iterator] returns null converts as Promise": "PASS",
+        "from(): Promise-wrapping semantics of IteratorResult interface": "PASS",
+        "from(): Rejections not handled by subscription are reported to the global, and still not sent as an unhandledrejection event": "PASS",
+        "from(): Rethrows the error when Converting an object whose @@iterator method *getter* throws an error": "PASS",
+        "from(): Subscribing to an iterable Observable with an aborted signal does not call next()": "PASS",
+        "from(): Sync iterable multiple in-flight subscriptions": "PASS",
+        "from(): Sync iterable: `Iterator#return()` must return an Object, or an error is thrown": "PASS",
+        "from(): Sync iterable: error thrown from IteratorRecord#return() can be synchronously caught": "PASS",
+        "from(): When iterable conversion aborts the subscription, next() is never called": "PASS",
+        "Invalid async iterator protocol error is surfaced before Subscriber#signal is consulted": "PASS",
+        "Invalid iterator protocol error is surfaced before Subscriber#signal is consulted": "PASS",
+        "No error is reported when aborting a subscription to a sync iterator that has no `return()` implementation": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-from.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "from(): [Symbol.iterator] is not cached": "PASS",
+        "from(): [Symbol.iterator] next() throws error": "PASS",
+        "from(): [Symbol.iterator] not callable": "PASS",
+        "from(): [Symbol.iterator] not callable AFTER SUBSCRIBE throws": "PASS",
+        "from(): [Symbol.iterator] returns null AFTER SUBSCRIBE throws": "PASS",
+        "from(): [Symbol.iterator] side-effects (many observables)": "PASS",
+        "from(): [Symbol.iterator] side-effects (one observable)": "PASS",
+        "from(): Abort after complete does NOT call IteratorRecord#return()": "PASS",
+        "from(): Aborting an async iterable subscription stops subsequent next() calls, but old next() Promise reactions are web-observable": "PASS",
+        "from(): Aborting async iterable midway through iteration both stops iteration and invokes `IteratorRecord#return()": "PASS",
+        "from(): Aborting sync iterable midway through iteration both stops iteration and invokes `IteratorRecord#return()": "PASS",
+        "from(): Async generator finally block run when Observable errors": "PASS",
+        "from(): Async generator finally block run when subscription is aborted": "PASS",
+        "from(): Async generator finally block runs when Observable completes": "PASS",
+        "from(): Async iterable protocol null, converts as iterator": "PASS",
+        "from(): Async iterable: `Iterator#return()` must return an Object, or a Promise rejects asynchronously": "PASS",
+        "from(): Async iterable: error thrown from IteratorRecord#return() is wrapped in rejected Promise": "PASS",
+        "from(): Asynchronous generator conversion: can only be used once": "PASS",
+        "from(): Asynchronous iterable conversion": "PASS",
+        "from(): Asynchronous iterable conversion, with synchronous iterable fallback": "PASS",
+        "from(): Asynchronous iterable multiple in-flight subscriptions": "PASS",
+        "from(): Converts Promise to Observable": "PASS",
+        "from(): Converts rejected Promise to Observable. No `unhandledrejection` event when error is handled by subscription": "PASS",
+        "from(): Errors thrown in async iterator's next() are propagated in a microtask": "PASS",
+        "from(): Errors thrown in async iterator's next() GETTER are propagated in a microtask": "PASS",
+        "from(): Errors thrown in Symbol.asyncIterator() are propagated synchronously": "PASS",
+        "from(): Failed conversions": "PASS",
+        "from(): Generator finally block run when Observable completes": "PASS",
+        "from(): Generator finally block run when Observable errors": "PASS",
+        "from(): Generator finally block runs when subscription is aborted": "PASS",
+        "from(): Given an array": "PASS",
+        "from(): Given an observable, it returns that exact observable": "PASS",
+        "from(): Iterable converts to Observable": "PASS",
+        "from(): Observable that implements @@iterator protocol gets converted as an Observable, not iterator": "PASS",
+        "from(): Observable.from() is a function": "PASS",
+        "from(): Promise that implements @@iterator protocol gets converted as an iterable, not Promise": "PASS",
+        "from(): Promise whose [Symbol.iterator] returns null converts as Promise": "PASS",
+        "from(): Promise-wrapping semantics of IteratorResult interface": "PASS",
+        "from(): Rejections not handled by subscription are reported to the global, and still not sent as an unhandledrejection event": "PASS",
+        "from(): Rethrows the error when Converting an object whose @@iterator method *getter* throws an error": "PASS",
+        "from(): Subscribing to an iterable Observable with an aborted signal does not call next()": "PASS",
+        "from(): Sync iterable multiple in-flight subscriptions": "PASS",
+        "from(): Sync iterable: `Iterator#return()` must return an Object, or an error is thrown": "PASS",
+        "from(): Sync iterable: error thrown from IteratorRecord#return() can be synchronously caught": "PASS",
+        "from(): When iterable conversion aborts the subscription, next() is never called": "PASS",
+        "Invalid async iterator protocol error is surfaced before Subscriber#signal is consulted": "PASS",
+        "Invalid iterator protocol error is surfaced before Subscriber#signal is consulted": "PASS",
+        "No error is reported when aborting a subscription to a sync iterator that has no `return()` implementation": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-inspect.any.html": {
+      "status": "OK",
+      "subtests": {
+        "inspect(): Error handler does not stop error from being reported to the global, when subscriber does not pass error handler": "PASS",
+        "inspect(): Errors thrown from inspect()'s abort() handler are caught and reported to the global, because the subscription is already closed by the time the handler runs": "PASS",
+        "inspect(): Errors thrown in subscribe() Inspector handler subscribe handler are caught and sent to error callback": "PASS",
+        "inspect(): Inspector abort() handler is not called if the source completes before the result is unsubscribed from": "PASS",
+        "inspect(): ObserverCallback passed in": "PASS",
+        "inspect(): Provides a pre-subscription subscribe callback": "PASS",
+        "inspect(): Provides a way to tap into the moment a source observable is unsubscribed from": "PASS",
+        "inspect(): Provides a way to tap into the values and completions of the source observable using an observer": "PASS",
+        "inspect(): Provides a way to tap into the values and errors of the source observable using an observer. Errors are passed through": "PASS",
+        "inspect(): Throwing an error in the next handler function in do should be caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer complete handler is caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer error handler in inspect() is caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer next handler is caught and sent to the error callback of the result observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-inspect.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "inspect(): Error handler does not stop error from being reported to the global, when subscriber does not pass error handler": "PASS",
+        "inspect(): Errors thrown from inspect()'s abort() handler are caught and reported to the global, because the subscription is already closed by the time the handler runs": "PASS",
+        "inspect(): Errors thrown in subscribe() Inspector handler subscribe handler are caught and sent to error callback": "PASS",
+        "inspect(): Inspector abort() handler is not called if the source completes before the result is unsubscribed from": "PASS",
+        "inspect(): ObserverCallback passed in": "PASS",
+        "inspect(): Provides a pre-subscription subscribe callback": "PASS",
+        "inspect(): Provides a way to tap into the moment a source observable is unsubscribed from": "PASS",
+        "inspect(): Provides a way to tap into the values and completions of the source observable using an observer": "PASS",
+        "inspect(): Provides a way to tap into the values and errors of the source observable using an observer. Errors are passed through": "PASS",
+        "inspect(): Throwing an error in the next handler function in do should be caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer complete handler is caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer error handler in inspect() is caught and sent to the error callback of the result observable": "PASS",
+        "inspect(): Throwing an error in the observer next handler is caught and sent to the error callback of the result observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-last.any.html": {
+      "status": "OK",
+      "subtests": {
+        "last(): Aborting a signal rejects the Promise with an AbortError DOMException": "PASS",
+        "last(): Lifecycle": "PASS",
+        "last(): Promise rejects with emitted error": "PASS",
+        "last(): Promise rejects with RangeError when source Observable completes without emitting any values": "PASS",
+        "last(): Promise resolves to last value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-last.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "last(): Aborting a signal rejects the Promise with an AbortError DOMException": "PASS",
+        "last(): Lifecycle": "PASS",
+        "last(): Promise rejects with emitted error": "PASS",
+        "last(): Promise rejects with RangeError when source Observable completes without emitting any values": "PASS",
+        "last(): Promise resolves to last value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-map.any.html": {
+      "status": "OK",
+      "subtests": {
+        "map(): Map observable unsubscription causes source Observable unsubscription. Mapper Observer's complete()/error() are not called": "PASS",
+        "map(): Mapper errors are emitted to Observer error() handler": "PASS",
+        "map(): Maps values correctly": "PASS",
+        "map(): Passes complete() through from source Observable": "PASS",
+        "map(): Passes error() through from source Observable": "PASS",
+        "map(): Upon source completion, source Observable teardown sequence happens before downstream mapper complete() is called": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-map.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "map(): Map observable unsubscription causes source Observable unsubscription. Mapper Observer's complete()/error() are not called": "PASS",
+        "map(): Mapper errors are emitted to Observer error() handler": "PASS",
+        "map(): Maps values correctly": "PASS",
+        "map(): Passes complete() through from source Observable": "PASS",
+        "map(): Passes error() through from source Observable": "PASS",
+        "map(): Upon source completion, source Observable teardown sequence happens before downstream mapper complete() is called": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-map.window.html": {
+      "status": "OK",
+      "subtests": {
+        "map()'s internal observer's next steps do not crash in a detached document": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-reduce.any.html": {
+      "status": "OK",
+      "subtests": {
+        "reduce(): Errors thrown in reducer reject the promise and abort the source": "PASS",
+        "reduce(): Reduces the values for different objects": "PASS",
+        "reduce(): Reduces the values of the Observable, starting with the initial seed value": "PASS",
+        "reduce(): Reject with an AbortError if the subscription is aborted before the source completes": "PASS",
+        "reduce(): Rejects if the source observable emits an error": "PASS",
+        "reduce(): Seeds with the first value of the source, if no initial value is provided": "PASS",
+        "reduce(): When source is empty, AND no seed value is provided, the promise rejects with a TypeError": "PASS",
+        "reduce(): When source is empty, promise resolves with initial value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-reduce.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "reduce(): Errors thrown in reducer reject the promise and abort the source": "PASS",
+        "reduce(): Reduces the values for different objects": "PASS",
+        "reduce(): Reduces the values of the Observable, starting with the initial seed value": "PASS",
+        "reduce(): Reject with an AbortError if the subscription is aborted before the source completes": "PASS",
+        "reduce(): Rejects if the source observable emits an error": "PASS",
+        "reduce(): Seeds with the first value of the source, if no initial value is provided": "PASS",
+        "reduce(): When source is empty, AND no seed value is provided, the promise rejects with a TypeError": "PASS",
+        "reduce(): When source is empty, promise resolves with initial value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-some.any.html": {
+      "status": "OK",
+      "subtests": {
+        "observable-some": "PASS",
+        "observable-some 1": "PASS",
+        "some(): subscriber is inactive after the first value that passes the predicate, because the source was unsubscribed from": "PASS",
+        "some(): The return promise rejects with a DOMException if the signal is aborted": "PASS",
+        "some(): The returned promise rejects with an error if the predicate errors": "PASS",
+        "some(): The returned promise rejects with an error if the source observable errors": "PASS",
+        "some(): The returned promise resolves as false if the source observable completes without emitting a value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-some.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "observable-some": "PASS",
+        "observable-some 1": "PASS",
+        "some(): subscriber is inactive after the first value that passes the predicate, because the source was unsubscribed from": "PASS",
+        "some(): The return promise rejects with a DOMException if the signal is aborted": "PASS",
+        "some(): The returned promise rejects with an error if the predicate errors": "PASS",
+        "some(): The returned promise rejects with an error if the source observable errors": "PASS",
+        "some(): The returned promise resolves as false if the source observable completes without emitting a value": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-switchMap.any.html": {
+      "status": "OK",
+      "subtests": {
+        "switchMap(): result does not complete when the source observable completes, if the inner observable is still active": "PASS",
+        "switchMap(): result emits an error if Mapper callback throws an error": "PASS",
+        "switchMap(): result emits an error if the inner observable emits an error": "PASS",
+        "switchMap(): result emits an error if the source observable emits an error": "PASS",
+        "switchMap(): result subscribes to one inner observable at a time, unsubscribing from the previous active one when a new one replaces it": "PASS",
+        "switchMap(): should unsubscribe in the correct order when user aborts the subscription": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-switchMap.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "switchMap(): result does not complete when the source observable completes, if the inner observable is still active": "PASS",
+        "switchMap(): result emits an error if Mapper callback throws an error": "PASS",
+        "switchMap(): result emits an error if the inner observable emits an error": "PASS",
+        "switchMap(): result emits an error if the source observable emits an error": "PASS",
+        "switchMap(): result subscribes to one inner observable at a time, unsubscribing from the previous active one when a new one replaces it": "PASS",
+        "switchMap(): should unsubscribe in the correct order when user aborts the subscription": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-take.any.html": {
+      "status": "OK",
+      "subtests": {
+        "take(): Forwards complete()s that happen before the take count is met, and unsubscribes from source Observable": "PASS",
+        "take(): Negative count is treated as maximum value": "PASS",
+        "take(): No crash when take(1) unsubscribes from its source when next() is called, and the Subscriber iterates over the rest of the Observables": "PASS",
+        "take(): Should forward errors from the source observable": "PASS",
+        "take(): take(0) should not subscribe to the source observable, and should return an observable that immediately completes": "PASS",
+        "take(): Takes the first N values from the source observable, then completes": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-take.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "take(): Forwards complete()s that happen before the take count is met, and unsubscribes from source Observable": "PASS",
+        "take(): Negative count is treated as maximum value": "PASS",
+        "take(): No crash when take(1) unsubscribes from its source when next() is called, and the Subscriber iterates over the rest of the Observables": "PASS",
+        "take(): Should forward errors from the source observable": "PASS",
+        "take(): take(0) should not subscribe to the source observable, and should return an observable that immediately completes": "PASS",
+        "take(): Takes the first N values from the source observable, then completes": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-takeUntil.any.html": {
+      "status": "OK",
+      "subtests": {
+        "takeUntil subscribes to notifier": "PASS",
+        "takeUntil subscribes to source Observable and mirrors it uninterrupted": "PASS",
+        "takeUntil: notifier calls `Subscriber#error()` twice; second goes to global error handler": "PASS",
+        "takeUntil: notifier error() unsubscribes from notifier": "PASS",
+        "takeUntil: notifier next() unsubscribes from notifier": "PASS",
+        "takeUntil: notifier next() unsubscribes from notifier & source observable": "PASS",
+        "takeUntil: notifier throw Error unsubscribes from notifier": "PASS",
+        "takeUntil: source is uninterrupted when notifier completes, even synchronously": "PASS",
+        "takeUntil: source never subscribed to when notifier synchronously emits a value": "PASS",
+        "takeUntil: source never subscribed to when notifier synchronously emits error": "PASS",
+        "takeUntil() mirrors the source Observable until its first next() value": "PASS",
+        "takeUntil()'s AbortSignal unsubscribes from notifier & source observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-takeUntil.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "takeUntil subscribes to notifier": "PASS",
+        "takeUntil subscribes to source Observable and mirrors it uninterrupted": "PASS",
+        "takeUntil: notifier calls `Subscriber#error()` twice; second goes to global error handler": "PASS",
+        "takeUntil: notifier error() unsubscribes from notifier": "PASS",
+        "takeUntil: notifier next() unsubscribes from notifier": "PASS",
+        "takeUntil: notifier next() unsubscribes from notifier & source observable": "PASS",
+        "takeUntil: notifier throw Error unsubscribes from notifier": "PASS",
+        "takeUntil: source is uninterrupted when notifier completes, even synchronously": "PASS",
+        "takeUntil: source never subscribed to when notifier synchronously emits a value": "PASS",
+        "takeUntil: source never subscribed to when notifier synchronously emits error": "PASS",
+        "takeUntil() mirrors the source Observable until its first next() value": "PASS",
+        "takeUntil()'s AbortSignal unsubscribes from notifier & source observable": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-takeUntil.window.html": {
+      "status": "OK",
+      "subtests": {
+        "takeUntil(): notifier Observable detaches document before source Observable would be subscribed to": "PASS",
+        "takeUntil(): Source and notifier internal observers do not crash in a detached document": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-toArray.any.html": {
+      "status": "OK",
+      "subtests": {
+        "Operator Promise abort ordering": "PASS",
+        "toArray(): Aborting the passed-in signal rejects the returned promise": "PASS",
+        "toArray(): basic next/complete": "PASS",
+        "toArray(): complete() resolves promise; subsequent error()s report the exceptions": "PASS",
+        "toArray(): first error() rejects promise; subsequent error()s report the exceptions": "PASS",
+        "toArray(): Subscribing with an aborted signal returns an immediately rejected promise": "PASS"
+      }
+    },
+    "/dom/observable/tentative/observable-toArray.any.worker.html": {
+      "status": "OK",
+      "subtests": {
+        "Operator Promise abort ordering": "PASS",
+        "toArray(): Aborting the passed-in signal rejects the returned promise": "PASS",
+        "toArray(): basic next/complete": "PASS",
+        "toArray(): complete() resolves promise; subsequent error()s report the exceptions": "PASS",
+        "toArray(): first error() rejects promise; subsequent error()s report the exceptions": "PASS",
+        "toArray(): Subscribing with an aborted signal returns an immediately rejected promise": "PASS"
+      }
+    }
+  }
+}

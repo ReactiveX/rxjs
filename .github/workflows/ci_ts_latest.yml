@@ -3,6 +3,8 @@ name: CI (ts@latest)
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read
@@ -12,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['20']
+        node: ['24']
 
     name: ts@latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Dependencies
         uses: ./.github/actions/install-dependencies
@@ -26,5 +28,6 @@ jobs:
 
       - name: build
         run: |
-          yarn workspace rxjs add typescript@latest @types/node@latest --peer --no-save
-          yarn nx compile rxjs
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs add --save-dev --lockfile=false typescript@latest
+          pnpm --filter rxjs run build

@@ -1,0 +1,18 @@
+{
+  "name": "fixture-library-mixed-strong",
+  "private": true,
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "pnpm run build && node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.config.cjs --runInBand"
+  },
+  "dependencies": {
+    "rxjs": "7.8.1"
+  },
+  "devDependencies": {
+    "@jest/globals": "29.7.0",
+    "jest": "29.7.0",
+    "typescript": "5.7.3"
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/web-platform-tests/wpt.git",
+  "commit": "6a009d73f0d315941b90cac13a9523a2a08c631b",
+  "imports": [
+    "dom/observable/tentative",
+    "LICENSE.md",
+    "common/gc.js",
+    "interfaces/dom.idl",
+    "interfaces/observable.tentative.idl",
+    "resources/idlharness.js",
+    "resources/testharness.js",
+    "resources/testharnessreport.js",
+    "resources/webidl2/lib/webidl2.js"
+  ],
+  "files": [
+    {
+      "path": "common/gc.js",
+      "mode": "100644",
+      "gitBlob": "ac43a4cfaf7735a08dfd1be177918167f815e800",
+      "sha256": "186144288438fb6d520defdc16a6a86fff193184a30fe04e901fe93febe3f8c4",
+      "bytes": 1604
+    },
+    {
+      "path": "dom/observable/tentative/crashtests/observable-gc.any.js",
+      "mode": "100644",
+      "gitBlob": "4402641b8669a60e1888c8af291d091abaf76f29",
+      "sha256": "3eafdcd68687eed8b5ae0845dbaf98bd5d57a997862058733d3c292be1632a60",
+      "bytes": 2011
+    },
+    {
+      "path": "dom/observable/tentative/crashtests/observable-takeUntil-toArray.any.js",
+      "mode": "100644",
+      "gitBlob": "df877d944456967365b754de2487167294325ff9",
+      "sha256": "8aeed161507e26ba01d015cc8200d51b86a43ec589fd759baca1b4d6b6161ca9",
+      "bytes": 340
+    },
+    {
+      "path": "dom/observable/tentative/idlharness.html",
+      "mode": "100644",
+      "gitBlob": "ea8743528f67ac0bc9154f82b3c391bbc96eb20f",
+      "sha256": "ad844485117cac5cd95cad715db9ea180ae6194d3826da6d8e94898f9cc9147c",
+      "bytes": 721
+    },
+    {
+      "path": "dom/observable/tentative/observable-catch.any.js",
+      "mode": "100644",
+      "gitBlob": "a1555225b46a57e3f84f8a4a5b3c8fa134576fd3",
+      "sha256": "67797e131a8df0e81fc5207347f65d296e43f04d418825468c38ac8b6afe9c28",
+      "bytes": 8046
+    },
+    {
+      "path": "dom/observable/tentative/observable-constructor.any.js",
+      "mode": "100644",
+      "gitBlob": "a080e0201c4f1d31b0cdbd62f7d3e220ed5308ca",
+      "sha256": "066bc2296f2dc17a9affb24f7f3e56dde7d139d1cdbb379fac8c6f11e514ea42",
+      "bytes": 41606
+    },
+    {
+      "path": "dom/observable/tentative/observable-constructor.window.js",
+      "mode": "100644",
+      "gitBlob": "878fc456c102873b0985fbfb9b34a98ce9ed6438",
+      "sha256": "81ee56bb9f80b7bec7d55b0beece391945a64c18e80cdb08c549a11320ab175a",
+      "bytes": 4674
+    },
+    {
+      "path": "dom/observable/tentative/observable-drop.any.js",
+      "mode": "100644",
+      "gitBlob": "4b15fedfd33b36090929dd6704285fc3fc6d90ed",
+      "sha256": "7f84198eaba31b248a2762618c55a8a5249726b3651980742ec2b5c69122dcef",
+      "bytes": 4062
+    },
+    {
+      "path": "dom/observable/tentative/observable-event-target.any.js",
+      "mode": "100644",
+      "gitBlob": "9f5d5541a039c4dce5ebdebc8b9b17c3a130c61f",
+      "sha256": "c93949066e7be23fa1265be14828e5b8409206004d660c5395239e255229ef15",
+      "bytes": 2306
+    },
+    {
+      "path": "dom/observable/tentative/observable-event-target.window.js",
+      "mode": "100644",
+      "gitBlob": "fa3ae1d3b020e1f626e130fb62dbd9ff820c526e",
+      "sha256": "db71a89e90d40a3fe2f2b3910c453c3fc31e74cef098fe80bc5e0ccff358adaf",
+      "bytes": 1460
+    },
+    {
+      "path": "dom/observable/tentative/observable-every.any.js",
+      "mode": "100644",
+      "gitBlob": "74a344b8f78559ad9d23247a4d2dc87cf095320d",
+      "sha256": "91666da9a48e40ab9f29c72dce9a9a14207053546de13bdfe7f0a0696e80bd12",
+      "bytes": 7608
+    },
+    {
+      "path": "dom/observable/tentative/observable-filter.any.js",
+      "mode": "100644",
+      "gitBlob": "0a2aa36658499f30ee35d03f28536f122387d93c",
+      "sha256": "7ec05270a290e7156e82ab851fa6d724038e1d215563dec6dc1849cfef4b7087",
+      "bytes": 3535
+    },
+    {
+      "path": "dom/observable/tentative/observable-finally.any.js",
+      "mode": "100644",
+      "gitBlob": "298907b1b4ca8c39f1403fc31fe55e75b3f8d6fc",
+      "sha256": "e982b118d6250df2c301597354693109b7acb773a7d4a22914f7f665dd082e0f",
+      "bytes": 6947
+    },
+    {
+      "path": "dom/observable/tentative/observable-find.any.js",
+      "mode": "100644",
+      "gitBlob": "0e09060fc5ac199f976f952b50e048546627b850",
+      "sha256": "52e9308bae0faed706a7dec4f5944b91456b6fbf0a8cb59bccbe5314d1e49c36",
+      "bytes": 2876
+    },
+    {
+      "path": "dom/observable/tentative/observable-first.any.js",
+      "mode": "100644",
+      "gitBlob": "e6551ed3783b5cb003e768f98f8a025e17d22a92",
+      "sha256": "48dccc32fd0c8d9ed11c9ee579022bfdc63b2e4fb22bd494d936442db328bcfe",
+      "bytes": 2848
+    },
+    {
+      "path": "dom/observable/tentative/observable-flatMap.any.js",
+      "mode": "100644",
+      "gitBlob": "7cbfa6cb604393f5e716cb75fcab5a581983a11e",
+      "sha256": "50f851b069dedfd0b94b2e77108cf6350d3b6b9d5a137ad86f1a9b66d8820edc",
+      "bytes": 9201
+    },
+    {
+      "path": "dom/observable/tentative/observable-forEach.any.js",
+      "mode": "100644",
+      "gitBlob": "d0948b295e8d11018b0a83a2148e7e182c891606",
+      "sha256": "02cdbf95d23eb16ef867aa9d82bf2de7ad01b832c43deb92d645745bf22ba929",
+      "bytes": 6184
+    },
+    {
+      "path": "dom/observable/tentative/observable-forEach.window.js",
+      "mode": "100644",
+      "gitBlob": "71c2e1730393807c7cb4ca2e55ef7099d9afa837",
+      "sha256": "7b7eb80e214eb37dfa1789fc5bef2cf3969c4db19a582b628cb98f224fa1026f",
+      "bytes": 1676
+    },
+    {
+      "path": "dom/observable/tentative/observable-from.any.js",
+      "mode": "100644",
+      "gitBlob": "20b2c8010ccf3b870bfb9d731b2e0273bdc2384c",
+      "sha256": "d5c27db461ce88cd79e0f22930025bd8eefe5bcd0734c3212fc2a975149c3d20",
+      "bytes": 52280
+    },
+    {
+      "path": "dom/observable/tentative/observable-inspect.any.js",
+      "mode": "100644",
+      "gitBlob": "24a7a5c8d4841d370bf9915a04a01ac8d4041709",
+      "sha256": "188946de74814954ae5907d3340618b2e1f58db147424446c57f720792b1348e",
+      "bytes": 11471
+    },
+    {
+      "path": "dom/observable/tentative/observable-last.any.js",
+      "mode": "100644",
+      "gitBlob": "0acdafed92ec6a949c7ef6ff212a93820e368674",
+      "sha256": "1223306c8c8f41a62bb668109c0f5bc2a0d6eeff7733bc57ec5dda4d4e8f0444",
+      "bytes": 2560
+    },
+    {
+      "path": "dom/observable/tentative/observable-map.any.js",
+      "mode": "100644",
+      "gitBlob": "a61c818bc16539f57e246126daaed64e0537638b",
+      "sha256": "da0b81ddcdf6be7ca772013b6d3e3f98b3e2b00edd40c9eb58e8c3718b0a4a67",
+      "bytes": 5165
+    },
+    {
+      "path": "dom/observable/tentative/observable-map.window.js",
+      "mode": "100644",
+      "gitBlob": "06bf2e26b544184ba0df858fbfb0ff3adf9daa85",
+      "sha256": "6a24f39e43d59680dedb15a47f577a1766d435d6963735249658af74da2cd083",
+      "bytes": 1304
+    },
+    {
+      "path": "dom/observable/tentative/observable-reduce.any.js",
+      "mode": "100644",
+      "gitBlob": "18f91e34fca244505cff8f1d858192eb57ddcbe9",
+      "sha256": "30bd9bb1a26c971667cea3a322384e66eda197f401882ab8e9500af33c8294a3",
+      "bytes": 4454
+    },
+    {
+      "path": "dom/observable/tentative/observable-some.any.js",
+      "mode": "100644",
+      "gitBlob": "b692610df329c601d38b3407eac1b242b62f9b05",
+      "sha256": "630e85c4572997f52685d98165b90b5cf46b794519f9b6a94ad7396130681520",
+      "bytes": 3233
+    },
+    {
+      "path": "dom/observable/tentative/observable-switchMap.any.js",
+      "mode": "100644",
+      "gitBlob": "577ce2b748cd0c668a1d305d92462f47c8a894e7",
+      "sha256": "03464103135e24a42cacb5f38689443081f42faa3c86cf301e8d2531080eb88b",
+      "bytes": 6909
+    },
+    {
+      "path": "dom/observable/tentative/observable-take.any.js",
+      "mode": "100644",
+      "gitBlob": "736a08abe31ae6eaf0780e745d1dbedeb5e4d834",
+      "sha256": "0686233a09967ba57ce1cc19431ecd6830c2ff7fa0ea1065091f77888262ef7c",
+      "bytes": 4186
+    },
+    {
+      "path": "dom/observable/tentative/observable-takeUntil.any.js",
+      "mode": "100644",
+      "gitBlob": "c71f92e276a0f0bb6fbc1753eaad2a1bc21f92d3",
+      "sha256": "eda6ea28dd0c00f80a356e72f52fac7f643ce5ed1793f128478e5f112fb7a5b6",
+      "bytes": 12668
+    },
+    {
+      "path": "dom/observable/tentative/observable-takeUntil.window.js",
+      "mode": "100644",
+      "gitBlob": "e4906d5f165c103c564a1b4900ddeb338faea95e",
+      "sha256": "2d29e6f2fbe7ccadfc1afff58c6ebfa7e65c20afab998e5fe6f67d957223e93c",
+      "bytes": 2203
+    },
+    {
+      "path": "dom/observable/tentative/observable-toArray.any.js",
+      "mode": "100644",
+      "gitBlob": "582bc67453ecbe03d39759f17d661485f5b688d3",
+      "sha256": "b59cc1445448998f454510584a5d3e68b2cd3e9460523b56b6f32e6ac0fb16c2",
+      "bytes": 6537
+    },
+    {
+      "path": "interfaces/dom.idl",
+      "mode": "100644",
+      "gitBlob": "1ddc084b949df64f36041f3a0c533468765dceb0",
+      "sha256": "3628b688fdcdb6904b4f69ca692e2dc030dfb4340478d879aa8fac41896c4086",
+      "bytes": 23163
+    },
+    {
+      "path": "interfaces/observable.tentative.idl",
+      "mode": "100644",
+      "gitBlob": "3ccd486a202a981b6f88c8746fb3250ee4a29f16",
+      "sha256": "195038ab34b28d6205f6f9804fa952973f9ad5f2c0fea3003752f465a4ef7b72",
+      "bytes": 820
+    },
+    {
+      "path": "LICENSE.md",
+      "mode": "100644",
+      "gitBlob": "39c46d03ac2988226f949ee7ab3c7347d5481bd8",
+      "sha256": "5fac07febb0e2a97fb0d7b0def149ec08b642e1ba4b9c345283ab1cbd2af6570",
+      "bytes": 1500
+    },
+    {
+      "path": "resources/idlharness.js",
+      "mode": "100644",
+      "gitBlob": "57cefedc22a182704076f3d3bde7eb2592a733d5",
+      "sha256": "cd84c41e82cc9fb71af5b02f789c4b40e166deb59c300cc2fb6cf3364eaf0d54",
+      "bytes": 145966
+    },
+    {
+      "path": "resources/testharness.js",
+      "mode": "100644",
+      "gitBlob": "c7ce4f51e1db075809f861255417c27478b2c179",
+      "sha256": "d2399236c2a09c429804ff2299ad6629e17e2b53f17a74dd341e936adb11ae3e",
+      "bytes": 198291
+    },
+    {
+      "path": "resources/testharnessreport.js",
+      "mode": "100644",
+      "gitBlob": "405a2d8b06f00fe8292e0e9d5b917e193cfd416c",
+      "sha256": "3777176fc736b0a78cf7617b9613b220f635daae7536ec7ebb99c61dbb525aae",
+      "bytes": 1231
+    },
+    {
+      "path": "resources/webidl2/lib/webidl2.js",
+      "mode": "100644",
+      "gitBlob": "bae0b2047595d0742f58384f01a6af5f69c3519e",
+      "sha256": "954444f6daf0f8068d2fce513eac8e6a5d53189a910b9a5675e8d8e8a2808070",
+      "bytes": 125228
+    }
+  ]
+}

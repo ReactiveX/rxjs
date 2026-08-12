@@ -1,0 +1,1275 @@
+{
+  "schemaVersion": 2,
+  "operators": {
+    "audit": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "audit",
+      "mapping": "source[throttle](durationSelector, { leading: false, trailing: true, restartOnTrailing: false })",
+      "status": "Present; parity verified",
+      "note": "Adapts audit's duration-next boundary, non-emitting duration completion, source terminal behavior, and cancellation without restarting a duration after a trailing value."
+    },
+    "auditTime": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "auditTime",
+      "mapping": "source[throttle](milliseconds, { leading: false, trailing: true, restartOnTrailing: false })",
+      "status": "Partial unified mapping",
+      "note": "Numeric duration lifecycle is verified; scheduler arguments are not represented."
+    },
+    "buffer": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "buffer",
+      "mapping": "source[buffer]({delay:()=>closingNotifier,emitEmpty:true,emitRemainingOnError:false,restartDelay:false})",
+      "status": "Present; parity verified",
+      "note": "Adapts the persistent RxJS 7 closing notifier, completion remainder, error policy, and cancellation lifecycle."
+    },
+    "bufferCount": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "bufferCount",
+      "mapping": "source[buffer]({ maxSize: bufferSize, startEvery: startBufferEvery ?? bufferSize, emitRemainingOnError: false })",
+      "status": "Partial unified mapping",
+      "note": "Adapts count-sized buffers, including overlapping and gapped startBufferEvery windows, completion partials, and RxJS 7 error behavior."
+    },
+    "bufferToggle": {
+      "symbol": "bufferToggle",
+      "module": "buffer-toggle",
+      "adapter": "identity",
+      "mapping": "source[bufferToggle](openings, closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Supports overlapping buffers, closes on the first closing value but not closing completion, and flushes live buffers in opening order on source completion."
+    },
+    "bufferTime": {
+      "symbol": "bufferTime",
+      "module": "buffer-time",
+      "adapter": "bufferTimeExact",
+      "mapping": "source[bufferTime](span, creationInterval ?? null, maxBufferSize ?? Infinity)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Preserves tumbling and overlapping host-time windows plus max-size closure. The adapter drops only a recognized trailing SchedulerLike fourth argument."
+    },
+    "bufferWhen": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "bufferWhen",
+      "mapping": "source[buffer]({ delay: closingSelector, emitEmpty: true, emitRemainingOnError: false })",
+      "status": "Partial unified mapping",
+      "note": "Uses the unified buffer delay selector and discards the active partial buffer when the source errors."
+    },
+    "catchError": {
+      "symbol": "catchError",
+      "module": "catch-error",
+      "adapter": "identity",
+      "mapping": "source[catchError](selector)",
+      "status": "Present; parity unverified",
+      "note": "Replaces source errors with any ObservableValue, preserves caught-source retry identity, and trampolines synchronous retries."
+    },
+    "combineLatest": {
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "sourcesArrayWithProjection",
+      "mapping": "source[combineLatest]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form; projection overloads remain unrepresented."
+    },
+    "combineLatestAll": {
+      "symbol": "combineLatestAll",
+      "module": "combine-latest-all",
+      "adapter": "identity",
+      "mapping": "source[combineLatestAll](project?)",
+      "status": "Present; parity unverified",
+      "note": "Collects inner sources until outer completion, then delegates combination to the exact static combineLatest Symbol and projection to map."
+    },
+    "combineLatestWith": {
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "sourcesArrayWithProjection",
+      "mapping": "source[combineLatest]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified combineLatest Symbol."
+    },
+    "connect": {
+      "symbol": "connect",
+      "module": "connect",
+      "adapter": "identity",
+      "mapping": "source[connect](selector, config?)",
+      "status": "Present; parity unverified",
+      "note": "Creates one connector per active result run, establishes the selector result before source activation, and owns selector/source cancellation through the result signal."
+    },
+    "concat": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "sourcesArray",
+      "mapping": "source[concat]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form."
+    },
+    "concatAll": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatAll",
+      "mapping": "source[mergeMap](identity, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through mergeMap with concurrency one."
+    },
+    "concatMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatMap",
+      "mapping": "source[mergeMap](project, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "concatMapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "concatMapTo",
+      "mapping": "source[mergeMap](() => innerSource, { concurrent: 1 })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "concatWith": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "sourcesArray",
+      "mapping": "source[concat]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified concat Symbol."
+    },
+    "count": {
+      "symbol": "count",
+      "module": "count",
+      "adapter": "identity",
+      "mapping": "source[count](predicate?)",
+      "status": "Present; parity unverified",
+      "note": "Counts all values or predicate matches and emits the total only after successful completion."
+    },
+    "debounce": {
+      "symbol": "debounce",
+      "module": "debounce",
+      "adapter": "identity",
+      "mapping": "source[debounce](durationSelector)",
+      "status": "Present; parity unverified",
+      "note": "Exact selector behavior remains test-driven."
+    },
+    "debounceTime": {
+      "symbol": "debounce",
+      "module": "debounce",
+      "adapter": "firstArgument",
+      "mapping": "source[debounce](milliseconds)",
+      "status": "Partial unified mapping",
+      "note": "Numeric delays reset a host timer, flush on completion, and cancel via AbortSignal. Scheduler arguments are not represented."
+    },
+    "delay": {
+      "symbol": "delay",
+      "module": "delay",
+      "adapter": "dropSchedulerSecondArgument",
+      "mapping": "source[delay](due)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses host time virtualized by @rxjs/test. The compatibility adapter drops only a recognized legacy SchedulerLike second argument and rejects other extra values."
+    },
+    "delayWhen": {
+      "symbol": "delayWhen",
+      "module": "delay-when",
+      "adapter": "identity",
+      "mapping": "source[delayWhen](durationSelector, subscriptionDelay?)",
+      "status": "Present; parity unverified",
+      "note": "Releases each value on its duration's first next, swallows it on empty duration completion, and supports the deprecated subscription-delay gate."
+    },
+    "dematerialize": {
+      "symbol": "dematerialize",
+      "module": "dematerialize",
+      "adapter": "identity",
+      "mapping": "source[dematerialize]()",
+      "status": "Present; parity unverified",
+      "note": "Converts next, error, and completion notification shapes back into their represented Observable signals."
+    },
+    "defaultIfEmpty": {
+      "symbol": "defaultIfEmpty",
+      "module": "default-if-empty",
+      "adapter": "identity",
+      "mapping": "source[defaultIfEmpty](defaultValue)",
+      "status": "Present; parity unverified",
+      "note": "Exact type and lifecycle parity remain test-driven."
+    },
+    "distinct": {
+      "symbol": "distinct",
+      "module": "distinct",
+      "adapter": "identity",
+      "mapping": "source[distinct](keySelector?, flushes?)",
+      "status": "Present; parity unverified",
+      "note": "Uses Set equality, optional key selection, and an optional flush source that clears remembered keys."
+    },
+    "distinctUntilChanged": {
+      "symbol": "distinctUntilChanged",
+      "module": "distinct-until-changed",
+      "adapter": "identity",
+      "mapping": "source[distinctUntilChanged](comparator?, keySelector?)",
+      "status": "Present; parity unverified",
+      "note": "Uses strict equality by default and compares selected keys against the last emitted key."
+    },
+    "distinctUntilKeyChanged": {
+      "symbol": "distinctUntilKeyChanged",
+      "module": "distinct-until-key-changed",
+      "adapter": "identity",
+      "mapping": "source[distinctUntilKeyChanged](key, comparator?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates property-key comparison to the exact distinctUntilChanged Symbol contract."
+    },
+    "elementAt": {
+      "symbol": "elementAt",
+      "module": "element-at",
+      "adapter": "elementAt",
+      "mapping": "source[elementAt](index, defaultValue?)",
+      "status": "Present; partial empty behavior",
+      "note": "The default-value overload is present; the no-default out-of-range error remains compatibility evidence."
+    },
+    "every": {
+      "symbol": "every",
+      "module": "every",
+      "adapter": "identity",
+      "mapping": "source[every](predicate)",
+      "status": "Present; parity unverified",
+      "note": "Evaluates value, index, and source and cancels upstream before emitting the first false result."
+    },
+    "endWith": {
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "endWith",
+      "mapping": "source[concat]([values])",
+      "status": "Partial unified mapping",
+      "note": "Adapts trailing values to one iterable concat source; a trailing SchedulerLike is retained as an explicit unsupported-overload failure."
+    },
+    "exhaust": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[exhaustMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Legacy flattening alias maps to exhaustMap."
+    },
+    "exhaustAll": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[exhaustMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through exhaustMap."
+    },
+    "exhaustMap": {
+      "symbol": "exhaustMap",
+      "module": "exhaust-map",
+      "adapter": "firstArgument",
+      "mapping": "source[exhaustMap](project)",
+      "status": "Present; parity unverified",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "expand": {
+      "symbol": "expand",
+      "module": "expand",
+      "adapter": "expand",
+      "mapping": "source[expand](project, { concurrent })",
+      "status": "Present; scheduler overload deferred",
+      "note": "Adapts legacy numeric concurrency to the options contract. Scheduler arguments are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
+    },
+    "finalize": {
+      "symbol": "finalize",
+      "module": "finalize",
+      "adapter": "identity",
+      "mapping": "source[finalize](callback)",
+      "status": "Present; parity unverified",
+      "note": "Runs once after completion, error, or last-observer cancellation without replacing the platform finally method."
+    },
+    "filter": {
+      "symbol": "filter",
+      "module": "filter",
+      "adapter": "identity",
+      "mapping": "source[filter](predicate)",
+      "status": "Present; parity unverified",
+      "note": "The RxJS Symbol form preserves predicate index, type guards, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
+    },
+    "find": {
+      "symbol": "find",
+      "module": "find",
+      "adapter": "identity",
+      "mapping": "source[find](predicate)",
+      "status": "Present; parity unverified",
+      "note": "Emits the first matching value or undefined with predicate index, source identity, and early cancellation, without replacing the platform find() Promise consumer; callback receivers must use closures or Function.prototype.bind."
+    },
+    "findIndex": {
+      "symbol": "findIndex",
+      "module": "find-index",
+      "adapter": "identity",
+      "mapping": "source[findIndex](predicate)",
+      "status": "Present; parity unverified",
+      "note": "Emits the first matching index or -1 with predicate source identity, errors, and early cancellation; callback receivers must use closures or Function.prototype.bind."
+    },
+    "flatMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMap",
+      "mapping": "source[mergeMap](project, options?)",
+      "status": "Partial unified mapping",
+      "note": "RxJS 7 flatMap is an alias of mergeMap."
+    },
+    "first": {
+      "symbol": "first",
+      "module": "first",
+      "adapter": "identity",
+      "mapping": "source[first](predicate?, defaultValue?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves predicate, default-value arity, EmptyError, early cancellation, and the distinct RxJS Symbol contract without replacing the platform first() Promise consumer."
+    },
+    "groupBy": {
+      "symbol": "groupBy",
+      "module": "group-by",
+      "adapter": "identity",
+      "mapping": "source[groupBy](keySelector, optionsOrElement?, duration?, connector?)",
+      "status": "Present; scheduler-internal cases deferred",
+      "note": "Emits hot read-only keyed group views with options and deprecated positional selector forms; active group observers may retain source work after outer cancellation."
+    },
+    "ignoreElements": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "ignoreElements",
+      "mapping": "source[mergeMap](() => Observable.from([]))",
+      "status": "Partial unified mapping",
+      "note": "Maps each input to an ambient empty Observable while retaining source completion and error behavior."
+    },
+    "isEmpty": {
+      "symbol": "isEmpty",
+      "module": "is-empty",
+      "adapter": "identity",
+      "mapping": "source[isEmpty]()",
+      "status": "Present; parity unverified",
+      "note": "Emits false and cancels upstream on the first value, or emits true after successful empty completion."
+    },
+    "last": {
+      "symbol": "last",
+      "module": "last",
+      "adapter": "identity",
+      "mapping": "source[last](predicate?, defaultValue?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves predicate, default-value arity, EmptyError, completion-time selection, and the distinct RxJS Symbol contract without replacing the platform last() Promise consumer."
+    },
+    "map": {
+      "symbol": "map",
+      "module": "map",
+      "adapter": "identity",
+      "mapping": "source[map](project)",
+      "status": "Present; parity unverified",
+      "note": "The RxJS Symbol form preserves projection index, errors, and cancellation without replacing the platform string method; callback receivers must use closures or Function.prototype.bind."
+    },
+    "mapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mapTo",
+      "mapping": "source[mergeMap](() => Observable.from([value]))",
+      "status": "Partial unified mapping",
+      "note": "Expresses constant projection through mergeMap and an ambient single-value Observable."
+    },
+    "materialize": {
+      "symbol": "materialize",
+      "module": "materialize",
+      "adapter": "identity",
+      "mapping": "source[materialize]()",
+      "status": "Present; parity unverified",
+      "note": "Converts every source signal into a Notification next value and completes after materialized error or completion."
+    },
+    "max": {
+      "symbol": "max",
+      "module": "max",
+      "adapter": "identity",
+      "mapping": "source[max](comparer?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates unseeded maximum selection and lifecycle behavior to the exact reduce Symbol."
+    },
+    "merge": {
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "mergeSources",
+      "mapping": "source[merge]([otherSources], { concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources and the numeric concurrency overload."
+    },
+    "mergeAll": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeAll",
+      "mapping": "source[mergeMap](identity, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through mergeMap."
+    },
+    "mergeMap": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMap",
+      "mapping": "source[mergeMap](project, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts numeric concurrency; result-selector overloads remain unrepresented."
+    },
+    "mergeMapTo": {
+      "symbol": "mergeMap",
+      "module": "merge-map",
+      "adapter": "mergeMapTo",
+      "mapping": "source[mergeMap](() => innerSource, { concurrent: concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Result-selector overloads remain unrepresented."
+    },
+    "mergeScan": {
+      "symbol": "mergeScan",
+      "module": "merge-scan",
+      "adapter": "identity",
+      "mapping": "source[mergeScan](accumulator, seed, concurrent?)",
+      "status": "Present; parity unverified",
+      "note": "Updates shared accumulator state from concurrent inner emissions, queues source values at the concurrency limit, and drains before completion."
+    },
+    "mergeWith": {
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "sourcesArray",
+      "mapping": "source[merge]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified merge Symbol."
+    },
+    "min": {
+      "symbol": "min",
+      "module": "min",
+      "adapter": "identity",
+      "mapping": "source[min](comparer?)",
+      "status": "Present; parity unverified",
+      "note": "Delegates unseeded minimum selection and lifecycle behavior to the exact reduce Symbol."
+    },
+    "multicast": {
+      "symbol": "multicast",
+      "module": "multicast",
+      "adapter": "identity",
+      "mapping": "source[multicast](subjectOrFactory, selector?)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected compatibility Observable without a selector, or delegates selector forms to the exact Symbol-keyed connect contract."
+    },
+    "observeOn": {
+      "symbol": "observeOn",
+      "module": "observe-on",
+      "adapter": "portedTestSchedulerDelay",
+      "mapping": "source[observeOn](delay?)",
+      "status": "Partial scheduler mapping",
+      "note": "The exact Symbol uses virtualizable host timers and AbortSignal cancellation. Ported RxJS 7 evidence adapts only its rxTest TestScheduler argument; other SchedulerLike implementations remain unsupported."
+    },
+    "onErrorResumeNext": {
+      "symbol": "onErrorResumeNext",
+      "module": "on-error-resume-next",
+      "adapter": "sourcesArrayOrSingleArray",
+      "mapping": "source[onErrorResumeNext]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic or single-array source arguments to the current array form."
+    },
+    "pairwise": {
+      "symbol": "pairwise",
+      "module": "pairwise",
+      "adapter": "identity",
+      "mapping": "source[pairwise]()",
+      "status": "Present; parity unverified",
+      "note": "Emits consecutive value tuples from the second value onward with shared activation state and cancellation."
+    },
+    "pluck": {
+      "symbol": "pluck",
+      "module": "pluck",
+      "adapter": "identity",
+      "mapping": "source[pluck](...properties)",
+      "status": "Present; parity unverified",
+      "note": "Traverses one or more string, number, or Symbol keys through the exact map Symbol and returns undefined after a nullish path segment."
+    },
+    "publish": {
+      "symbol": "publish",
+      "module": "publish",
+      "adapter": "identity",
+      "mapping": "source[publish](selector?)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected retained-Subject result without a selector, or a fresh selector-scoped Subject for each active platform run."
+    },
+    "publishBehavior": {
+      "symbol": "publishBehavior",
+      "module": "publish-behavior",
+      "adapter": "identity",
+      "mapping": "source[publishBehavior](initialValue)",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected result backed by one retained BehaviorSubject with the requested initial value."
+    },
+    "publishLast": {
+      "symbol": "publishLast",
+      "module": "publish-last",
+      "adapter": "identity",
+      "mapping": "source[publishLast]()",
+      "status": "Compatibility-only",
+      "note": "Returns a manually connected result backed by one retained AsyncSubject that emits only the final value after completion."
+    },
+    "publishReplay": {
+      "symbol": "publishReplay",
+      "module": "publish-replay",
+      "adapter": "identity",
+      "mapping": "source[publishReplay](bufferSize?, windowTime?, selector?, scheduler?)",
+      "status": "Compatibility-only",
+      "note": "Uses a retained replay connector for manual results and a fresh connector for selector runs. Defined scheduler arguments are not a public platform contract; their ported timing claims use explicit test-harness rewrites."
+    },
+    "race": {
+      "symbol": "race",
+      "module": "race",
+      "adapter": "sourcesArrayOrSingleArray",
+      "mapping": "source[race]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic or single-array sources to the current array form."
+    },
+    "raceWith": {
+      "symbol": "race",
+      "module": "race",
+      "adapter": "sourcesArray",
+      "mapping": "source[race]([otherSources])",
+      "status": "Partial unified mapping",
+      "note": "Maps the With variant to the unified race Symbol."
+    },
+    "reduce": {
+      "symbol": "reduce",
+      "module": "reduce",
+      "adapter": "identity",
+      "mapping": "source[reduce](accumulator, seed?)",
+      "status": "Present; parity unverified",
+      "note": "Distinguishes omitted and explicitly undefined seeds and emits accumulated state only on successful completion."
+    },
+    "refCount": {
+      "symbol": "refCount",
+      "module": "ref-count",
+      "adapter": "identity",
+      "mapping": "source[refCount]()",
+      "status": "Compatibility-only",
+      "note": "Connects a concrete ConnectableObservable on its first active platform producer run and disconnects after the final run ends."
+    },
+    "repeat": {
+      "symbol": "repeat",
+      "module": "repeat",
+      "adapter": "countOrConfig",
+      "mapping": "source[repeat](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts the legacy numeric count to a config object."
+    },
+    "repeatWhen": {
+      "symbol": "repeatWhen",
+      "module": "repeat-when",
+      "adapter": "identity",
+      "mapping": "source[repeatWhen](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Creates one hot completion stream and one notifier per shared activation; repeats are sequential and notifier completion or error controls the shared result."
+    },
+    "retry": {
+      "symbol": "retry",
+      "module": "retry",
+      "adapter": "retryCountOrConfig",
+      "mapping": "source[retry](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts legacy numeric and config inputs while preserving the RxJS 7 resetOnSuccess default."
+    },
+    "retryWhen": {
+      "symbol": "retryWhen",
+      "module": "retry-when",
+      "adapter": "identity",
+      "mapping": "source[retryWhen](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Creates one hot error stream and one notifier per shared activation; retries are sequential and notifier completion or error controls the shared result."
+    },
+    "sample": {
+      "symbol": "sample",
+      "module": "sample",
+      "adapter": "identity",
+      "mapping": "source[sample](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Samples the latest unseen source value on notifier emissions; notifier completion does not complete or flush the result."
+    },
+    "sampleTime": {
+      "symbol": "sampleTime",
+      "module": "sample-time",
+      "adapter": "hostTimeFirstArgument",
+      "mapping": "source[sampleTime](period)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a host interval virtualized by @rxjs/test; the generator marks the legacy TestScheduler argument for this adapter and other scheduler arguments remain unsupported."
+    },
+    "scan": {
+      "symbol": "scan",
+      "module": "scan",
+      "adapter": "identity",
+      "mapping": "source[scan](accumulator, seed?)",
+      "status": "Present; parity unverified",
+      "note": "Exact overload and no-seed behavior remain test-driven."
+    },
+    "sequenceEqual": {
+      "symbol": "sequenceEqual",
+      "module": "sequence-equal",
+      "adapter": "sequenceEqual",
+      "mapping": "source[sequenceEqual](otherSource, comparator?)",
+      "status": "Present; parity verified",
+      "note": "Supports strict equality by default and the RxJS 7 comparator overload."
+    },
+    "share": {
+      "symbol": "share",
+      "module": "share",
+      "adapter": "identity",
+      "mapping": "source[share](config?)",
+      "status": "Present; platform lifecycle review required",
+      "note": "Shares one connector and source connection per active run with configurable reset behavior. A late observer joining an already-active platform result bypasses operator initialization, so a replaying custom connector cannot replay history to that observer; ColdObservable compatibility fanout retains that behavior."
+    },
+    "shareReplay": {
+      "symbol": "shareReplay",
+      "module": "share-replay",
+      "adapter": "identity",
+      "mapping": "source[shareReplay](configOrBufferSize?, windowTime?)",
+      "status": "Present; platform lifecycle review required",
+      "note": "Uses share with a size/host-time-bounded replay connector, persistent successful terminal cache, error reset, and optional ref-count reset. Active platform late observers cannot receive connector history; ColdObservable and post-terminal activations can. Defined scheduler arguments are not a public platform contract; their ported timing claims use explicit test-harness rewrites."
+    },
+    "single": {
+      "symbol": "single",
+      "module": "single",
+      "adapter": "identity",
+      "mapping": "source[single](predicate?)",
+      "status": "Present; parity unverified",
+      "note": "Requires exactly one value or predicate match and preserves RxJS 7 EmptyError, NotFoundError, and SequenceError outcomes."
+    },
+    "skip": {
+      "symbol": "skip",
+      "module": "skip",
+      "adapter": "identity",
+      "mapping": "source[skip](count)",
+      "status": "Present; parity unverified",
+      "note": "Suppresses the first count values while preserving completion, errors, and cancellation."
+    },
+    "skipLast": {
+      "symbol": "skipLast",
+      "module": "skip-last",
+      "adapter": "identity",
+      "mapping": "source[skipLast](count)",
+      "status": "Present; parity unverified",
+      "note": "Exact edge-case parity remains test-driven."
+    },
+    "skipUntil": {
+      "symbol": "skipUntil",
+      "module": "skip-until",
+      "adapter": "identity",
+      "mapping": "source[skipUntil](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Subscribes to the notifier first, opens after its first value, ignores notifier-only completion, and cancels both inputs through the shared result lifecycle."
+    },
+    "skipWhile": {
+      "symbol": "skipWhile",
+      "module": "skip-while",
+      "adapter": "identity",
+      "mapping": "source[skipWhile](predicate)",
+      "status": "Present; parity unverified",
+      "note": "Exact predicate parity remains test-driven."
+    },
+    "startWith": {
+      "symbol": "startWith",
+      "module": "start-with",
+      "adapter": "startWith",
+      "mapping": "source[startWith](...values)",
+      "status": "Present; scheduler overload deferred",
+      "note": "Synchronously emits configured prefix values before source activation. Legacy trailing scheduler overloads are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
+    },
+    "subscribeOn": {
+      "symbol": "subscribeOn",
+      "module": "subscribe-on",
+      "adapter": "portedTestSchedulerDelay",
+      "mapping": "source[subscribeOn](delay?)",
+      "status": "Partial scheduler mapping",
+      "note": "The exact Symbol delays source activation with a virtualizable host timer and AbortSignal cancellation. Ported RxJS 7 evidence adapts only its rxTest TestScheduler argument; other SchedulerLike implementations remain unsupported."
+    },
+    "switchAll": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "flattenIdentity",
+      "mapping": "source[switchMap](identity)",
+      "status": "Partial unified mapping",
+      "note": "Flattening is expressed through switchMap."
+    },
+    "switchMap": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "firstArgument",
+      "mapping": "source[switchMap](project)",
+      "status": "Present; parity unverified",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "switchMapTo": {
+      "symbol": "switchMap",
+      "module": "switch-map",
+      "adapter": "switchMapTo",
+      "mapping": "source[switchMap](() => innerSource)",
+      "status": "Partial unified mapping",
+      "note": "Legacy result-selector overloads are not represented."
+    },
+    "switchScan": {
+      "symbol": "switchScan",
+      "module": "switch-scan",
+      "adapter": "identity",
+      "mapping": "source[switchScan](accumulator, seed)",
+      "status": "Present; parity unverified",
+      "note": "Carries inner emissions as accumulator state, cancels the prior inner on each source value, and waits for the current inner after source completion."
+    },
+    "tap": {
+      "symbol": "tap",
+      "module": "tap",
+      "adapter": "identity",
+      "mapping": "source[tap](observerOrNext, error?, complete?)",
+      "status": "Present; parity unverified",
+      "note": "Preserves notification side-effect ordering plus subscribe, unsubscribe, and finalize lifecycle hooks."
+    },
+    "take": {
+      "symbol": "take",
+      "module": "take",
+      "adapter": "identity",
+      "mapping": "source[take](count)",
+      "status": "Present; parity unverified",
+      "note": "Completes after the requested count and cancels upstream through the derived subscriber signal; nonpositive counts do not activate the source."
+    },
+    "takeLast": {
+      "symbol": "takeLast",
+      "module": "take-last",
+      "adapter": "identity",
+      "mapping": "source[takeLast](count)",
+      "status": "Present; parity unverified",
+      "note": "Exact edge-case parity remains test-driven."
+    },
+    "takeUntil": {
+      "symbol": "takeUntil",
+      "module": "take-until",
+      "adapter": "identity",
+      "mapping": "source[takeUntil](notifier)",
+      "status": "Present; parity unverified",
+      "note": "Subscribes to the notifier first, completes on its first value, ignores notifier-only completion, and cancels both inputs through the shared result lifecycle."
+    },
+    "takeWhile": {
+      "symbol": "takeWhile",
+      "module": "take-while",
+      "adapter": "takeWhile",
+      "mapping": "source[takeWhile](predicate, inclusive ? { includeLast: true } : undefined)",
+      "status": "Present; parity unverified",
+      "note": "Normalizes the RxJS 7 inclusive boolean to the RxJS Next configuration form."
+    },
+    "throttle": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "identity",
+      "mapping": "source[throttle](durationSelector, config?)",
+      "status": "Present; parity unverified",
+      "note": "Exact leading/trailing behavior remains test-driven."
+    },
+    "throttleTime": {
+      "symbol": "throttle",
+      "module": "throttle",
+      "adapter": "throttleTime",
+      "mapping": "source[throttle](milliseconds, config?)",
+      "status": "Partial unified mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "throwIfEmpty": {
+      "symbol": "throwIfEmpty",
+      "module": "throw-if-empty",
+      "adapter": "identity",
+      "mapping": "source[throwIfEmpty](errorFactory?)",
+      "status": "Present; parity unverified",
+      "note": "Forwards nonempty sources and errors an empty completion with a fresh EmptyError or the configured factory result."
+    },
+    "timeInterval": {
+      "symbol": "timeInterval",
+      "module": "time-interval",
+      "adapter": "hostTimestampProvider",
+      "mapping": "source[timeInterval]({ now: hostVirtualNow })",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a now-only provider. The port harness maps the legacy TestScheduler argument to @rxjs/test's virtual host clock and rejects other scheduler arguments."
+    },
+    "timeout": {
+      "symbol": "timeout",
+      "module": "timeout",
+      "adapter": "timeout",
+      "mapping": "source[timeout](config)",
+      "status": "Partial unified mapping",
+      "note": "Adapts legacy numeric and Date due arguments; scheduler arguments are not represented."
+    },
+    "timeoutWith": {
+      "symbol": "timeout",
+      "module": "timeout",
+      "adapter": "timeoutWith",
+      "mapping": "source[timeout]({ first/each: due, with: () => fallback })",
+      "status": "Partial unified mapping",
+      "note": "Maps fallback behavior to the unified timeout configuration; scheduler arguments are not represented."
+    },
+    "timestamp": {
+      "symbol": "timestamp",
+      "module": "timestamp",
+      "adapter": "hostTimestampProvider",
+      "mapping": "source[timestamp]({ now: hostVirtualNow })",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Uses a now-only provider. The port harness maps the legacy TestScheduler argument to @rxjs/test's virtual host clock and rejects other scheduler arguments."
+    },
+    "toArray": {
+      "symbol": "buffer",
+      "module": "buffer",
+      "adapter": "toArray",
+      "mapping": "source[buffer]({ emitEmpty: true, emitRemainingOnError: false })",
+      "status": "Partial unified mapping",
+      "note": "Uses one unbounded buffer and emits it only on successful completion."
+    },
+    "window": {
+      "symbol": "window",
+      "module": "window",
+      "adapter": "identity",
+      "mapping": "source[window](boundaries)",
+      "status": "Present; parity unverified",
+      "note": "Emits read-only hot windows, activates source before boundaries, rotates on boundary values, and silently releases the live window on outer cancellation."
+    },
+    "windowCount": {
+      "symbol": "windowCount",
+      "module": "window-count",
+      "adapter": "identity",
+      "mapping": "source[windowCount](windowSize, startWindowEvery?)",
+      "status": "Present; parity unverified",
+      "note": "Emits read-only count windows with tumbling, overlapping, or gapped cadence. Source completion completes live windows, source errors error them, and outer cancellation silently releases them."
+    },
+    "windowTime": {
+      "symbol": "windowTime",
+      "module": "window-time",
+      "adapter": "windowTimeExact",
+      "mapping": "source[windowTime](span, creationInterval ?? null, maxWindowSize ?? Infinity)",
+      "status": "Present; scheduler adapted to host timing",
+      "note": "Preserves tumbling and overlapping host-time windows plus max-size closure. The adapter removes recognized legacy SchedulerLike objects from optional argument positions without changing numeric arguments."
+    },
+    "windowToggle": {
+      "symbol": "windowToggle",
+      "module": "window-toggle",
+      "adapter": "identity",
+      "mapping": "source[windowToggle](openings, closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Emits overlapping read-only windows, closes each window on the first closing value, and silently releases live windows on outer cancellation. This cancellation behavior intentionally does not reproduce RxJS 7's disposed-Subject ObjectUnsubscribedError."
+    },
+    "windowWhen": {
+      "symbol": "windowWhen",
+      "module": "window-when",
+      "adapter": "identity",
+      "mapping": "source[windowWhen](closingSelector)",
+      "status": "Present; parity unverified",
+      "note": "Emits consecutive read-only windows and rotates on the first closing value or completion. Synchronous closing rotation is iterative, and outer cancellation silently releases the live window."
+    },
+    "withLatestFrom": {
+      "symbol": "withLatestFrom",
+      "module": "with-latest-from",
+      "adapter": "withLatestFromSourcesArrayWithProjection",
+      "mapping": "source[withLatestFrom]([otherSources], project?)",
+      "status": "Unified mapping",
+      "note": "Adapts variadic other sources to the current array form and preserves the optional projection overload."
+    },
+    "zipAll": {
+      "symbol": "zipAll",
+      "module": "zip-all",
+      "adapter": "identity",
+      "mapping": "source[zipAll](project?)",
+      "status": "Present; parity unverified",
+      "note": "Collects inner sources until outer completion, then delegates tuple formation to hardened zip and projection to the exact map Symbol."
+    },
+    "zip": {
+      "symbol": "zipWith",
+      "module": "zip-with",
+      "adapter": "zipSourcesWithProjection",
+      "mapping": "source[zipWith](...otherSources)[map](project?)",
+      "status": "Compatibility alias",
+      "note": "Normalizes the deprecated RxJS 7 zip operator to the exact zipWith Symbol and applies its optional result selector through the exact map Symbol."
+    },
+    "zipWith": {
+      "symbol": "zipWith",
+      "module": "zip-with",
+      "adapter": "identity",
+      "mapping": "source[zipWith](...otherSources)",
+      "status": "Present; parity unverified",
+      "note": "Delegates receiver-first variadic tuple formation to the hardened standalone zip contract."
+    }
+  },
+  "staticFactories": {
+    "animationFrames": {
+      "kind": "symbol",
+      "symbol": "animationFrames",
+      "module": "animation-frames",
+      "adapter": "identity",
+      "mapping": "Observable[animationFrames]()",
+      "status": "Present; parity unverified",
+      "note": "Legacy scheduler arguments are not represented."
+    },
+    "combineLatest": {
+      "kind": "symbol",
+      "symbol": "combineLatest",
+      "module": "combine-latest",
+      "adapter": "staticCombineLatest",
+      "mapping": "Observable[combineLatest](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to an array; projection overloads remain unrepresented."
+    },
+    "concat": {
+      "kind": "symbol",
+      "symbol": "concat",
+      "module": "concat",
+      "adapter": "staticSourcesArray",
+      "mapping": "Observable[concat](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources to the current array form; scheduler arguments are not represented."
+    },
+    "defer": {
+      "kind": "platform",
+      "adapter": "defer",
+      "mapping": "new Observable(subscriber => Observable.from(factory()).subscribe(subscriber))",
+      "status": "Partial platform mapping",
+      "note": "Uses the ambient Observable constructor and defers the factory until subscription."
+    },
+    "empty": {
+      "kind": "standalone",
+      "value": "EMPTY",
+      "module": "empty",
+      "adapter": "standaloneConstant",
+      "mapping": "() => EMPTY",
+      "status": "Partial standalone mapping",
+      "note": "Uses the current EMPTY singleton; the deprecated scheduler overload is not represented."
+    },
+    "from": {
+      "kind": "platform",
+      "adapter": "from",
+      "mapping": "Observable.from(input)",
+      "status": "Platform mapping",
+      "note": "Scheduler arguments and the complete RxJS 7 input matrix remain test-driven."
+    },
+    "fromEvent": {
+      "kind": "platform",
+      "adapter": "fromEvent",
+      "mapping": "target.when(eventName, booleanOptions ? { capture: booleanOptions } : capturePassiveOptions)",
+      "status": "Partial platform string mapping",
+      "note": "Maps EventTarget inputs to the platform when() surface, normalizing boolean capture options; once, unsupported option keys, non-EventTarget inputs, and third- or fourth-argument result-selector overloads fail explicitly."
+    },
+    "forkJoin": {
+      "kind": "symbol",
+      "symbol": "forkJoin",
+      "module": "fork-join",
+      "adapter": "identity",
+      "mapping": "Observable[forkJoin](...inputs)",
+      "status": "Present; parity unverified",
+      "note": "Supports array, object, deprecated rest, empty-input, and result-selector forms while preserving last-value and early-empty cancellation behavior."
+    },
+    "generate": {
+      "kind": "symbol",
+      "symbol": "generate",
+      "module": "generate",
+      "adapter": "generate",
+      "mapping": "Observable[generate](options | initialState, condition, iterate, resultSelector?)",
+      "status": "Present; scheduler overload deferred",
+      "note": "Supports synchronous positional and options-object generation. Scheduler fields and trailing scheduler arguments are not a public platform contract; their ported behavioral claims use explicit test-harness timing rewrites."
+    },
+    "iif": {
+      "kind": "platform",
+      "adapter": "iif",
+      "mapping": "new Observable(subscriber => Observable.from(condition() ? trueSource : falseSource).subscribe(subscriber))",
+      "status": "Partial platform mapping",
+      "note": "Expressed as an ambient Observable with subscription-time source selection."
+    },
+    "interval": {
+      "kind": "symbol",
+      "symbol": "interval",
+      "module": "interval",
+      "adapter": "firstArgument",
+      "mapping": "Observable[interval](milliseconds)",
+      "status": "Present; parity unverified",
+      "note": "Scheduler arguments are not represented."
+    },
+    "merge": {
+      "kind": "symbol",
+      "symbol": "merge",
+      "module": "merge",
+      "adapter": "staticMerge",
+      "mapping": "Observable[merge](sources, { concurrency })",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic sources and the numeric concurrency overload."
+    },
+    "never": {
+      "kind": "standalone",
+      "value": "NEVER",
+      "module": "never",
+      "adapter": "standaloneConstant",
+      "mapping": "() => NEVER",
+      "status": "Partial standalone mapping",
+      "note": "Uses the current NEVER singleton."
+    },
+    "onErrorResumeNext": {
+      "kind": "symbol",
+      "symbol": "onErrorResumeNext",
+      "module": "on-error-resume-next",
+      "adapter": "staticSourcesArrayOrSingleArray",
+      "mapping": "Observable[onErrorResumeNext](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic or single-array source arguments to the current array form."
+    },
+    "of": {
+      "kind": "platform",
+      "adapter": "of",
+      "mapping": "Observable.from(values)",
+      "status": "Partial platform mapping",
+      "note": "Adapts variadic values to the platform Observable.from contract."
+    },
+    "pairs": {
+      "kind": "platform",
+      "adapter": "pairs",
+      "mapping": "Observable.from(Object.entries(object))",
+      "status": "Partial platform mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "partition": {
+      "kind": "symbol",
+      "symbol": "partition",
+      "module": "partition",
+      "adapter": "identity",
+      "mapping": "Observable[partition](source, predicate)",
+      "status": "Present; parity unverified",
+      "note": "Returns matching and rejected branches with independent predicate state over the platform source's shared, ref-counted activation."
+    },
+    "race": {
+      "kind": "symbol",
+      "symbol": "race",
+      "module": "race",
+      "adapter": "staticSourcesArrayOrSingleArray",
+      "mapping": "Observable[race](sources)",
+      "status": "Partial unified mapping",
+      "note": "Adapts variadic or single-array sources to the current array form."
+    },
+    "range": {
+      "kind": "platform",
+      "adapter": "range",
+      "mapping": "Observable.from(Array.from({ length: count }, (_, i) => start + i))",
+      "status": "Partial platform mapping",
+      "note": "Scheduler arguments are not represented."
+    },
+    "throwError": {
+      "kind": "platform",
+      "adapter": "throwError",
+      "mapping": "new Observable(subscriber => subscriber.error(errorFactory()))",
+      "status": "Partial platform mapping",
+      "note": "Supports factory and legacy direct-error forms; scheduler arguments are not represented."
+    },
+    "timer": {
+      "kind": "symbol",
+      "symbol": "timer",
+      "module": "timer",
+      "adapter": "timer",
+      "mapping": "Observable[timer](delay, interval?)",
+      "status": "Partial unified mapping",
+      "note": "Adapts an absolute Date to a relative delay; scheduler arguments are not represented."
+    }
+  },
+  "values": {
+    "ArgumentOutOfRangeError": {
+      "module": "argument-out-of-range-error",
+      "adapter": "identity",
+      "mapping": "ArgumentOutOfRangeError",
+      "status": "Present; parity verified",
+      "note": "Uses the public RxJS 7-compatible missing-index error value."
+    },
+    "AsyncSubject": {
+      "module": "async-subject",
+      "adapter": "identity",
+      "mapping": "AsyncSubject",
+      "status": "Compatibility-only",
+      "note": "Provides the RxJS 7 final-value Subject contract with current, late, error, cancellation, and reentrant observer behavior."
+    },
+    "BehaviorSubject": {
+      "module": "behavior-subject",
+      "adapter": "behaviorSubjectConstructor",
+      "mapping": "new BehaviorSubject(initialValue) → behaviorSubject(initialValue)",
+      "status": "Partial standalone mapping",
+      "note": "Adapts the current factory to the RxJS 7 constructor call shape; lifecycle parity is unverified."
+    },
+    "ColdObservable": {
+      "module": "cold-observable",
+      "adapter": "identity",
+      "mapping": "ColdObservable",
+      "status": "Compatibility-only",
+      "note": "Producer-per-subscription compatibility test surface; not a platform Observable parity claim."
+    },
+    "connectable": {
+      "module": "connectable",
+      "adapter": "identity",
+      "mapping": "connectable(source, config?)",
+      "status": "Present; parity unverified",
+      "note": "Creates a manually connected Observable with a stable AbortController-backed connection facade and configurable connector reset."
+    },
+    "ConnectableObservable": {
+      "module": "connectable",
+      "adapter": "identity",
+      "mapping": "ConnectableObservable",
+      "status": "Compatibility-only",
+      "note": "Provides the concrete manually connected compatibility class used by standalone connectable and legacy multicasting operators."
+    },
+    "config": {
+      "module": "global",
+      "adapter": "portedConfig",
+      "mapping": "ported runtime unhandled-error hook",
+      "status": "Test compatibility fixture",
+      "note": "Captures the RxJS 7 onUnhandledError test hook and routes platform reportError calls through it for the lifetime of one rxTest run."
+    },
+    "EMPTY": {
+      "module": "empty",
+      "adapter": "identity",
+      "mapping": "EMPTY",
+      "status": "Present; parity unverified",
+      "note": "Uses the current standalone empty Observable singleton."
+    },
+    "EmptyError": {
+      "module": "empty-error",
+      "adapter": "identity",
+      "mapping": "EmptyError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible empty-sequence error value."
+    },
+    "firstValueFrom": {
+      "module": "global",
+      "adapter": "platformConsumer",
+      "method": "first",
+      "mapping": "source.first()",
+      "status": "Partial platform mapping",
+      "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
+    },
+    "fromEventPattern": {
+      "module": "from-event-pattern",
+      "adapter": "identity",
+      "mapping": "fromEventPattern(addHandler, removeHandler?, resultSelector?)",
+      "status": "Present; parity unverified",
+      "note": "Registers one stable handler per active platform run and removes it with the exact registration token on final cancellation."
+    },
+    "identity": {
+      "module": "identity",
+      "adapter": "identity",
+      "mapping": "identity",
+      "status": "Present; parity verified",
+      "note": "Uses the public generic identity utility."
+    },
+    "lastValueFrom": {
+      "module": "global",
+      "adapter": "platformConsumer",
+      "method": "last",
+      "mapping": "source.last()",
+      "status": "Partial platform mapping",
+      "note": "Maps Promise conversion to the platform consumer; the RxJS 7 defaultValue configuration is not represented."
+    },
+    "Observable": {
+      "module": "global",
+      "adapter": "identity",
+      "mapping": "globalThis.Observable",
+      "status": "Platform mapping",
+      "note": "Uses the active native or fallback platform constructor."
+    },
+    "NEVER": {
+      "module": "never",
+      "adapter": "identity",
+      "mapping": "NEVER",
+      "status": "Present; parity unverified",
+      "note": "Uses the current standalone never Observable singleton."
+    },
+    "NotFoundError": {
+      "module": "not-found-error",
+      "adapter": "identity",
+      "mapping": "NotFoundError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible missing-match error value."
+    },
+    "Notification": {
+      "module": "notification",
+      "adapter": "identity",
+      "mapping": "Notification",
+      "status": "Compatibility-only",
+      "note": "Provides the deprecated RxJS 7 Notification class, its shared completion instance, dispatch helpers, and Observable conversion."
+    },
+    "ObservableNotification": {
+      "module": "notification",
+      "adapter": "typeOnly",
+      "mapping": "ObservableNotification<T>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased RxJS 7 notification union import."
+    },
+    "Observer": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Observer<T>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel exists only so mechanically migrated tests can retain the erased platform Observer import."
+    },
+    "Operator": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Operator<T, R>",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel retains the erased custom-Observable operator annotation in migrated lift evidence."
+    },
+    "noop": {
+      "module": "noop",
+      "adapter": "identity",
+      "mapping": "noop",
+      "status": "Present; parity verified",
+      "note": "Uses the public no-operation callback utility."
+    },
+    "ReplaySubject": {
+      "module": "replay-subject",
+      "adapter": "replaySubjectConstructor",
+      "mapping": "new ReplaySubject(bufferSize, windowTime) → replaySubject({ size: bufferSize, maxAge: windowTime })",
+      "status": "Partial standalone mapping",
+      "note": "Adapts bufferSize and windowTime to the current factory. The exact port harness accepts only its rxTest virtual-clock marker as the third argument, relying on virtualized host Date.now/setTimeout; every other timestamp-provider or scheduler fails explicitly."
+    },
+    "SequenceError": {
+      "module": "sequence-error",
+      "adapter": "identity",
+      "mapping": "SequenceError",
+      "status": "Present; parity unverified",
+      "note": "Uses the public RxJS 7-compatible invalid-sequence error value."
+    },
+    "Subject": {
+      "module": "subject",
+      "adapter": "identity",
+      "mapping": "Subject",
+      "status": "Present; observable view verified",
+      "note": "Uses the current exploratory Subject class. Subject.asObservable() returns a distinct non-mutating Observable view without patching the platform Observable prototype."
+    },
+    "Subscription": {
+      "module": "global",
+      "adapter": "typeOnly",
+      "mapping": "Subscription",
+      "status": "Type-only compatibility",
+      "note": "The runtime sentinel retains erased annotations for the connection returned by connect(); migrated cases invoke unsubscribe() on the actual connection value."
+    },
+    "TimeInterval": {
+      "module": "time-interval",
+      "adapter": "identity",
+      "mapping": "TimeInterval",
+      "status": "Compatibility-only",
+      "note": "Provides the legacy value class used by exact timeInterval expectations without reviving scheduler internals."
+    },
+    "TimeoutError": {
+      "module": "timeout",
+      "adapter": "identity",
+      "mapping": "TimeoutError",
+      "status": "Present; parity verified",
+      "note": "Uses the public RxJS 7-compatible timeout error value and metadata shape."
+    },
+    "pipe": {
+      "module": "pipe",
+      "adapter": "operatorComposition",
+      "mapping": "Observable[pipe](source, ...operatorFunctions)",
+      "status": "Partial unified mapping",
+      "note": "Adapts RxJS 7 standalone operator composition to the current static pipe Symbol."
+    },
+    "zip": {
+      "module": "zip",
+      "adapter": "standaloneSourcesArrayWithProjection",
+      "mapping": "zip(sources)",
+      "status": "Partial standalone mapping",
+      "note": "Adapts variadic and single-array source forms plus the trailing RxJS 7 result selector to the current source-array function."
+    }
+  }
+}

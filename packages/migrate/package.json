@@ -1,0 +1,144 @@
+{
+  "name": "@rxjs/migrate",
+  "version": "9.0.0-beta.0",
+  "description": "One-time source migrations from RxJS 7 to RxJS 9",
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/migrate#readme",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "skill",
+    "README.md",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "bin": {
+    "rxjs-migrate": "./dist/esm/cli.js",
+    "rxjs-migrate-skill": "./dist/esm/skill-cli.js"
+  },
+  "scripts": {
+    "build": "tshy && node ../../scripts/finalize-esm-package.mjs",
+    "lint": "eslint ./src",
+    "test": "vitest --run",
+    "test:agent": "vitest --run test/agent",
+    "test:watch": "vitest",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs",
+    "test:types": "tsc -p test/types/tsconfig.json --noEmit",
+    "test:pack": "node test/package/pack.mjs",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports && pnpm run test:pack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReactiveX/rxjs.git",
+    "directory": "packages/migrate"
+  },
+  "keywords": [
+    "rxjs",
+    "migration",
+    "codemod",
+    "marble-testing",
+    "vitest"
+  ],
+  "dependencies": {
+    "typescript": "~5.7.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@rxjs/observable-polyfill": "9.0.0-beta.0",
+    "@types/node": "20.11.0",
+    "vitest": "4.1.10"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [],
+        "outputs": [
+          "{projectRoot}/dist/esm"
+        ]
+      }
+    }
+  },
+  "tshy": {
+    "selfLink": false,
+    "dialects": [
+      "esm"
+    ],
+    "exclude": [
+      "src/**/*.spec.ts"
+    ],
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts",
+      "./adapters/mocha-chai-vitest": "./src/mocha-chai-vitest.ts",
+      "./node": "./src/node.ts",
+      "./cli": "./src/cli.ts",
+      "./skill": "./src/skill.ts",
+      "./skill-cli": "./src/skill-cli.ts"
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    },
+    "./adapters/mocha-chai-vitest": {
+      "import": {
+        "types": "./dist/esm/mocha-chai-vitest.d.ts",
+        "default": "./dist/esm/mocha-chai-vitest.js"
+      },
+      "require": {
+        "types": "./dist/esm/mocha-chai-vitest.d.ts",
+        "default": "./dist/esm/mocha-chai-vitest.js"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/esm/node.d.ts",
+        "default": "./dist/esm/node.js"
+      },
+      "require": {
+        "types": "./dist/esm/node.d.ts",
+        "default": "./dist/esm/node.js"
+      }
+    },
+    "./cli": {
+      "import": {
+        "types": "./dist/esm/cli.d.ts",
+        "default": "./dist/esm/cli.js"
+      },
+      "require": {
+        "types": "./dist/esm/cli.d.ts",
+        "default": "./dist/esm/cli.js"
+      }
+    },
+    "./skill": {
+      "import": {
+        "types": "./dist/esm/skill.d.ts",
+        "default": "./dist/esm/skill.js"
+      },
+      "require": {
+        "types": "./dist/esm/skill.d.ts",
+        "default": "./dist/esm/skill.js"
+      }
+    },
+    "./skill-cli": {
+      "import": {
+        "types": "./dist/esm/skill-cli.d.ts",
+        "default": "./dist/esm/skill-cli.js"
+      },
+      "require": {
+        "types": "./dist/esm/skill-cli.d.ts",
+        "default": "./dist/esm/skill-cli.js"
+      }
+    }
+  }
+}

@@ -3,43 +3,90 @@ name: CI
 on:
   pull_request:
     types: ['opened', 'reopened', 'synchronize']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ['18', '20']
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-    name: Node ${{ matrix.node }} build
+jobs:
+  evidence:
+    name: RxJS 9 migration evidence and repository checks (Node 24)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install Dependencies
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+
+      - name: Build migration-audit runtime dependency
+        run: pnpm --filter @rxjs/observable-polyfill run build
+
+      - name: Run exact cold and polyfill audit baselines
+        run: pnpm --filter rxjs run test:unit:audit:check
+
+      - name: Test bundle-analysis tooling
+        run: pnpm run test:bundle-analysis
+
+      - name: Test SafariDriver contracts
+        run: pnpm run test:release:safari
+
+      - name: Parse and format-check active workflows
+        run: pnpm run test:workflows
+
+  packages:
+    name: Node ${{ matrix.node }} package gates${{ matrix.advisory && ' (advisory)' || '' }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.advisory }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - node: '22.13.0'
+            advisory: false
+          - node: '24'
+            advisory: false
+          - node: '26'
+            advisory: true
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Fetch the RxJS 7 migration-evidence source
+        run: git fetch --no-tags --depth=1 origin 7.x:7.x
+
+      - name: Install dependencies
         uses: ./.github/actions/install-dependencies
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Build, test and lint all projects (except website)
-        run: yarn nx run-many -t build lint test --exclude=rxjs.dev
+      - name: Check release coherence
+        run: pnpm run release:check
 
-      - name: rxjs lint
-        run: yarn workspace rxjs lint
-      - name: rxjs build
-        run: yarn workspace rxjs build
-      - name: rxjs test
-        run: yarn workspace rxjs test
-      - name: rxjs dtslint
-        run: yarn workspace rxjs dtslint
-      - name: rxjs test:import
-        run: yarn workspace rxjs test:import
-      - name: rxjs test:esm
-        run: yarn workspace rxjs test:esm
-      - name: rxjs.dev build
-        run: yarn workspace rxjs.dev build --prod
-      - name: rxjs.dev test
-        run: yarn workspace rxjs.dev test --watch=false --browsers=ChromeHeadless
+      - name: Lint release packages
+        run: pnpm --filter rxjs --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run lint
+
+      - name: Build release packages
+        run: |
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs run build
+          pnpm --filter @rxjs/test --filter @rxjs/migrate run build
+
+      - name: Test release packages
+        run: |
+          pnpm --filter @rxjs/observable-polyfill --filter @rxjs/test --filter @rxjs/migrate run test
+          pnpm --filter rxjs exec vitest --run src
+
+      - name: Build, type-check, and exercise package imports
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs --filter @rxjs/test --filter @rxjs/migrate run test:package
+
+      - name: Run runtime contract
+        run: pnpm run test:release:runtime

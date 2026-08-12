@@ -1,26 +1,19 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": true,
+    "jsx": "react",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "noImplicitReturns": true,
-    "moduleResolution": "node",
-    "stripInternal": true,
-    "noEmit": true,
-    "lib": ["esnext", "dom"],
-    "target": "esnext",
-    "baseUrl": ".",
-    "paths": {
-      "@rxjs/observable": ["../observable/src/index"],
-      "rxjs": ["./src/index"],
-      "rxjs/operators": ["./src/operators/index"],
-      "rxjs/testing": ["./src/testing/index"],
-      "rxjs/ajax": ["./src/ajax/index"],
-      "rxjs/webSocket": ["./src/webSocket/index"],
-      "rxjs/fetch": ["./src/fetch/index"],
-      "rxjs/internal/*": ["./src/internal/*"]
-    }
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext"
   }
 }

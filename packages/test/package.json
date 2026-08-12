@@ -1,0 +1,89 @@
+{
+  "name": "@rxjs/test",
+  "version": "9.0.0-beta.0",
+  "description": "Virtual-time and marble testing for RxJS 9 Observable contracts",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ReactiveX/RxJS/issues"
+  },
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/test#readme",
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tshy && node ../../scripts/finalize-esm-package.mjs --browser",
+    "lint": "eslint ./src",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/no-observable.mjs",
+    "test:types": "tsc -p test/types/tsconfig.json --noEmit",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReactiveX/rxjs.git",
+    "directory": "packages/test"
+  },
+  "keywords": [
+    "RxJS",
+    "testing",
+    "marbles",
+    "virtual time"
+  ],
+  "peerDependencies": {
+    "rxjs": "9.0.0-beta.0"
+  },
+  "devDependencies": {
+    "@rxjs/observable-polyfill": "9.0.0-beta.0"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "dependsOn": [],
+        "outputs": [
+          "{projectRoot}/dist/esm"
+        ]
+      }
+    }
+  },
+  "tshy": {
+    "selfLink": false,
+    "dialects": [
+      "esm"
+    ],
+    "exclude": [
+      "src/**/*.spec.ts"
+    ],
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "browser": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    }
+  }
+}

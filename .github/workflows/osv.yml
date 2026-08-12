@@ -1,0 +1,53 @@
+name: OSV vulnerability policy
+
+on:
+  pull_request:
+    branches: ['master']
+  push:
+    branches: ['master']
+  schedule:
+    - cron: '41 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: osv-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: No unreviewed release-reachable vulnerabilities
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1 # v4.2.0
+        with: { version: 10.34.5, run_install: false }
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with: { node-version: '24.12.0', package-manager-cache: false }
+      - run: pnpm install --frozen-lockfile
+      - name: Reject expired, unowned, untracked, or overlong exceptions
+        run: node scripts/security/check-osv-exceptions.mjs
+      - run: mkdir -p .security
+      - name: Run full OSV scan with only reviewed docs-tooling exceptions
+        uses: google/osv-scanner-action/osv-scanner-action@9a498708959aeaef5ef730655706c5a1df1edbc2 # v2.3.8
+        with:
+          scan-args: |-
+            --config=osv-scanner.toml
+            --format=json
+            --output-file=.security/osv-root.json
+            --lockfile=pnpm-lock.yaml
+      - name: Prove every remaining npm advisory path is isolated to apps/rxjs.dev
+        run: |
+          pnpm audit --json > .security/pnpm-audit.json || true
+          node scripts/security/check-osv-exceptions.mjs .security/pnpm-audit.json
+      - name: Preserve scan evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: osv-evidence-${{ github.run_id }}
+          path: .security
+          if-no-files-found: warn
+          retention-days: 30

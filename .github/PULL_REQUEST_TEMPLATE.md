@@ -1,6 +1,10 @@
 <!--
 Thank you very much for your pull request!
 
+Use a Conventional Commit pull-request title because the squash-merge title
+selects the release version. Examples: `fix(core): repair teardown`,
+`feat(test): add scheduler helper`, or `feat(api)!: remove legacy behavior`.
+
 If your PR is the addition of a new operator, please make sure all these boxes are ticked with an x:
 
 - [ ] Add the operator to Rx

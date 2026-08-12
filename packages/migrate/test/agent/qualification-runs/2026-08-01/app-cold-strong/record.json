@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "runId": "app-cold-strong--codex",
+  "scenarioId": "app-cold-strong",
+  "host": {
+    "harness": "codex",
+    "harnessVersion": "0.146.0-alpha.3.1",
+    "model": "gpt-5.6-sol",
+    "modelConfiguration": { "reasoning": "medium" }
+  },
+  "sourceIdentity": {
+    "revision": "npm:rxjs@7.8.1",
+    "seedTreeSha256": "a7564614ff08fbaa76cbc3740224ccf4f145a9f76540fb80ffdd9eaaf62daeb0",
+    "lockPath": "pnpm-lock.yaml",
+    "lockSha256": "69332dbccd6a2cfa97fbe4800f70d40f33682e106cc1d0e2e74276eab1bd51fb"
+  },
+  "skillIdentity": {
+    "version": "8.0.0-alpha.14",
+    "digest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa"
+  },
+  "engineIdentity": { "version": "8.0.0-alpha.14" },
+  "authority": {
+    "allowedTools": ["read", "write", "exec", "install"],
+    "network": "disabled",
+    "writeScopes": ["src", "test", "package.json", "pnpm-lock.yaml", "migration-contract.json", "MIGRATION_REPORT.md", ".qualification/results"]
+  },
+  "evaluation": {
+    "schemaVersion": 1,
+    "scenarioId": "app-cold-strong",
+    "expectedConclusion": "completed",
+    "compilation": [
+      {
+        "id": "next-build",
+        "command": "pnpm run build",
+        "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "8.0.0-alpha.14" },
+        "status": "passed",
+        "exitCode": 0,
+        "summary": "TypeScript compiled successfully against RxJS Next."
+      }
+    ],
+    "baseline": {
+      "capturedBeforeChanges": true,
+      "results": [
+        {
+          "id": "rxjs7-build",
+          "command": "pnpm run build",
+          "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "7.8.1", "network": "disabled" },
+          "status": "passed",
+          "exitCode": 0,
+          "summary": "TypeScript compiled against RxJS 7.8.1 before migration."
+        },
+        {
+          "id": "rxjs7-tests",
+          "command": "pnpm test",
+          "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "7.8.1", "framework": "vitest 1.2.1" },
+          "status": "passed",
+          "exitCode": 0,
+          "summary": "All three protected tests passed before migration."
+        }
+      ],
+      "acceptedFailures": []
+    },
+    "chronology": {
+      "baselineCompletedAt": "2026-08-01T01:40:00Z",
+      "characterizationRequired": false,
+      "migrationStartedAt": "2026-08-01T01:45:00Z"
+    },
+    "manifestReadiness": { "state": "ready", "findingCodes": [], "unsupportedUnitIds": [], "acceptedBlockers": [] },
+    "diagnostics": {
+      "requiredIds": ["control:cold-sharing-drift", "control:cancellation-ownership", "control:teardown-order-drift"],
+      "observed": [
+        { "id": "control:cold-sharing-drift", "resolution": "resolved" },
+        { "id": "control:cancellation-ownership", "resolution": "resolved" },
+        { "id": "control:teardown-order-drift", "resolution": "resolved" }
+      ]
+    },
+    "intentionalDivergences": [],
+    "testChanges": [
+      { "testId": "PT-COLD-INDEPENDENT", "kind": "strengthened" },
+      { "testId": "PT-COLD-CANCELLATION", "kind": "equivalent" },
+      { "testId": "PT-COLD-TEARDOWN", "kind": "equivalent" }
+    ],
+    "engineActions": [
+      { "id": "cold-dry-run", "required": true, "used": true, "expectedOutcome": "changed", "observedOutcome": "changed" },
+      { "id": "cold-reviewed-write", "required": true, "used": true, "expectedOutcome": "changed", "observedOutcome": "changed" }
+    ],
+    "manifestConsistency": {
+      "implemented": [{ "unitId": "request-cold-producer", "lifecycle": "producer-per-direct-subscription" }],
+      "declared": [{ "unitId": "request-cold-producer", "lifecycle": "producer-per-direct-subscription" }]
+    },
+    "artifacts": {
+      "requiredIds": ["conversation", "contract-manifest", "patch", "command-results", "final-report"],
+      "captured": [
+        { "id": "conversation", "sha256": "5cf57596396537a2f0c668d5f38af67243627d634800f7a7c0fbae9f6c7c7912" },
+        { "id": "contract-manifest", "sha256": "0cd383632ef99d4b9124126c57c99cb5713974d70e58549be6b771d3589f4fcf" },
+        { "id": "patch", "sha256": "823dfa9166f486a15c35ed6da94f759ff36e9caff08042dd38de097c73b24ed9" },
+        { "id": "command-results", "sha256": "9848517e8a118c068b58211b640d92c324f882da42a43824052e4cef1c9283cc" },
+        { "id": "final-report", "sha256": "8b8ab1ad27320cca80ec3a0165a371a767554c8631c394178dc959c0297d110b" }
+      ]
+    },
+    "heldOutBehavior": [
+      {
+        "id": "next-protected-tests",
+        "command": "pnpm test",
+        "environment": { "node": "v24.12.0", "rxjs": "8.0.0-alpha.14", "framework": "vitest 1.2.1" },
+        "status": "passed",
+        "exitCode": 0,
+        "summary": "All three protected behavior tests passed."
+      }
+    ],
+    "contractDecisions": [
+      {
+        "unitId": "decision:cold-lifecycle",
+        "lifecycle": "producer-per-direct-subscription",
+        "evidence": "ambiguous",
+        "selectedBy": "developer",
+        "approval": {
+          "status": "approved",
+          "approvedBy": "scenario developer",
+          "approvedAt": "2026-08-01T01:35:34Z",
+          "rationale": "The scenario explicitly approved the cold-preserving lifecycle."
+        }
+      }
+    ],
+    "observedAuthority": {
+      "workspaceRoot": "/private/tmp/rxjs-m5-codex/app-cold-strong",
+      "policy": {
+        "readScopes": ["."],
+        "writeScopes": ["src", "test", "package.json", "pnpm-lock.yaml", "migration-contract.json", "MIGRATION_REPORT.md", ".qualification/results"],
+        "commands": [
+          "pnpm exec rxjs-migrate-skill check --harness codex --project-root .",
+          "pnpm run build",
+          "pnpm test",
+          "pnpm exec vitest --run -t PT-COLD-TEARDOWN",
+          "pnpm install --offline --ignore-workspace --frozen-lockfile"
+        ],
+        "network": { "mode": "disabled", "destinations": [] },
+        "installs": {
+          "mode": "allowlist",
+          "packages": ["rxjs@8.0.0-alpha.14", "@rxjs/observable-polyfill@8.0.0-alpha.14"]
+        }
+      },
+      "actions": [
+        { "id": "skill-check", "kind": "command", "command": "pnpm exec rxjs-migrate-skill check --harness codex --project-root .", "outcome": "completed" },
+        { "id": "baseline-build", "kind": "command", "command": "pnpm run build", "outcome": "completed" },
+        { "id": "baseline-test", "kind": "command", "command": "pnpm test", "outcome": "completed" },
+        { "id": "install-rxjs", "kind": "install", "package": "rxjs@8.0.0-alpha.14", "outcome": "completed" },
+        { "id": "install-polyfill", "kind": "install", "package": "@rxjs/observable-polyfill@8.0.0-alpha.14", "outcome": "completed" },
+        { "id": "write-source", "kind": "write", "target": "src/request.ts", "resolvedTarget": "/private/tmp/rxjs-m5-codex/app-cold-strong/src/request.ts", "outcome": "completed" },
+        { "id": "write-tests", "kind": "write", "target": "test/request.test-source.ts", "resolvedTarget": "/private/tmp/rxjs-m5-codex/app-cold-strong/test/request.test-source.ts", "outcome": "completed" },
+        { "id": "focused-test", "kind": "command", "command": "pnpm exec vitest --run -t PT-COLD-TEARDOWN", "outcome": "completed" },
+        { "id": "frozen-install", "kind": "command", "command": "pnpm install --offline --ignore-workspace --frozen-lockfile", "outcome": "completed" },
+        { "id": "final-build", "kind": "command", "command": "pnpm run build", "outcome": "completed" },
+        { "id": "final-test", "kind": "command", "command": "pnpm test", "outcome": "completed" }
+      ]
+    },
+    "safeStop": { "occurred": false, "beforeUnsafeAction": true, "blockerIds": [], "writesAfterStop": [] }
+  },
+  "artifacts": [
+    { "kind": "conversation", "path": "app-cold-strong/conversation.md", "sha256": "5cf57596396537a2f0c668d5f38af67243627d634800f7a7c0fbae9f6c7c7912" },
+    { "kind": "contract-manifest", "path": "app-cold-strong/contract-manifest.json", "sha256": "0cd383632ef99d4b9124126c57c99cb5713974d70e58549be6b771d3589f4fcf" },
+    { "kind": "patch", "path": "app-cold-strong/patch.diff", "sha256": "823dfa9166f486a15c35ed6da94f759ff36e9caff08042dd38de097c73b24ed9" },
+    { "kind": "command-results", "path": "app-cold-strong/command-results.md", "sha256": "9848517e8a118c068b58211b640d92c324f882da42a43824052e4cef1c9283cc" },
+    { "kind": "final-report", "path": "app-cold-strong/final-report.md", "sha256": "8b8ab1ad27320cca80ec3a0165a371a767554c8631c394178dc959c0297d110b" }
+  ],
+  "gateVector": [
+    { "id": "baseline-before-changes", "status": "passed" },
+    { "id": "protected-tests-intact", "status": "passed" },
+    { "id": "characterizations-before-migration", "status": "passed" },
+    { "id": "compilation", "status": "passed" },
+    { "id": "build", "status": "passed" },
+    { "id": "tests", "status": "passed" },
+    { "id": "contract-manifest", "status": "passed" },
+    { "id": "diagnostics-reviewed", "status": "passed" },
+    { "id": "no-weakened-tests", "status": "passed" },
+    { "id": "final-report", "status": "passed" }
+  ],
+  "decisionVector": [{ "id": "decision:cold-lifecycle", "status": "approved" }],
+  "conclusion": "completed"
+}

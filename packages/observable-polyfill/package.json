@@ -1,0 +1,81 @@
+{
+  "name": "@rxjs/observable-polyfill",
+  "version": "9.0.0-beta.0",
+  "description": "Conditional Web Platform Observable fallback for RxJS 9",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ReactiveX/RxJS/issues"
+  },
+  "homepage": "https://github.com/ReactiveX/rxjs/tree/master/packages/observable-polyfill#readme",
+  "author": "Ben Lesh <ben@benlesh.com>",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tshy && node ../../scripts/finalize-esm-package.mjs --browser",
+    "lint": "eslint ./src",
+    "test": "vitest --run",
+    "test:imports": "node test/import/esm.mjs && node test/import/commonjs.cjs && node test/import/duplicate-install.mjs",
+    "test:lifecycle": "pnpm run build && node test/lifecycle/run.mjs",
+    "test:package": "pnpm run build && pnpm run test:types && pnpm run test:imports",
+    "test:types": "tsc -p test/types/tsconfig.json --noEmit",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReactiveX/rxjs.git",
+    "directory": "packages/observable-polyfill"
+  },
+  "keywords": [
+    "Rx",
+    "RxJS",
+    "ReactiveX",
+    "ReactiveExtensions",
+    "Streams",
+    "Observables",
+    "Observable",
+    "Stream"
+  ],
+  "devDependencies": {
+    "fast-check": "4.9.0"
+  },
+  "tshy": {
+    "selfLink": false,
+    "dialects": [
+      "esm"
+    ],
+    "exclude": [
+      "src/**/*.spec.ts"
+    ],
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "browser": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "webpack": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    }
+  }
+}

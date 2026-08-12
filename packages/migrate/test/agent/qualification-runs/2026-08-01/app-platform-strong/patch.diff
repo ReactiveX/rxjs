@@ -1,0 +1,188 @@
+diff --git a/package.json b/package.json
+index 3cb8cd2..5c54a2c 100644
+--- a/package.json
++++ b/package.json
+@@ -4,10 +4,11 @@
+   "type": "module",
+   "scripts": {
+     "build": "tsc -p tsconfig.json",
+-    "test": "pnpm run build && tsx ./node_modules/mocha/bin/mocha.js test/live-feed.test-source.ts"
++    "test": "pnpm run build && node --import tsx ./node_modules/mocha/bin/mocha.js test/live-feed.test-source.ts"
+   },
+   "dependencies": {
+-    "rxjs": "7.8.1"
++    "@rxjs/observable-polyfill": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz",
++    "rxjs": "file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz"
+   },
+   "devDependencies": {
+     "@rxjs/migrate": "file:.qualification/packages/rxjs-migrate-8.0.0-alpha.14.tgz",
+@@ -16,5 +17,10 @@
+     "mocha": "10.8.2",
+     "tsx": "4.19.2",
+     "typescript": "5.7.3"
++  },
++  "pnpm": {
++    "overrides": {
++      "@rxjs/observable-polyfill@8.0.0-alpha.14": "file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz"
++    }
+   }
+ }
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index da2c27e..8ddcca0 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -4,13 +4,19 @@ settings:
+   autoInstallPeers: true
+   excludeLinksFromLockfile: false
+ 
++overrides:
++  '@rxjs/observable-polyfill@8.0.0-alpha.14': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++
+ importers:
+ 
+   .:
+     dependencies:
++      '@rxjs/observable-polyfill':
++        specifier: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+       rxjs:
+-        specifier: 7.8.1
+-        version: 7.8.1
++        specifier: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
++        version: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz
+     devDependencies:
+       '@rxjs/migrate':
+         specifier: file:.qualification/packages/rxjs-migrate-8.0.0-alpha.14.tgz
+@@ -182,6 +188,10 @@ packages:
+     version: 8.0.0-alpha.14
+     hasBin: true
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz':
++    resolution: {integrity: sha512-IK2uj+dLiY3kplu68HeT8KI8FkKccU18pqSg+SZuRvjad3NrY9TQbAttdhHDAico82p4Y5B6i++cW4xub2jGWw==, tarball: file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
++
+   '@types/mocha@10.0.10':
+     resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
+ 
+@@ -419,8 +429,9 @@ packages:
+   resolve-pkg-maps@1.0.0:
+     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+ 
+-  rxjs@7.8.1:
+-    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
++    resolution: {integrity: sha512-7qiXQw+TgyHRmGTof+TpYlHNZYhrajxZ/DFdj4XYgVkw0KZkyYdq4Vv9oUEDCYJ9zOSn8T7iXX0zWHmUA8m+uQ==, tarball: file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz}
++    version: 8.0.0-alpha.14
+ 
+   safe-buffer@5.2.1:
+     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
+@@ -452,9 +463,6 @@ packages:
+     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
+     engines: {node: '>=8.0'}
+ 
+-  tslib@2.8.1:
+-    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+-
+   tsx@4.19.2:
+     resolution: {integrity: sha512-pOUl6Vo2LUq/bSa8S5q7b91cgNSjctn9ugq/+Mvow99qW6x/UZYwzxy/3NmqoT66eHYfCVvFvACC58UBPFf28g==}
+     engines: {node: '>=18.0.0'}
+@@ -580,6 +588,8 @@ snapshots:
+       typescript: 5.7.3
+       zod: 3.25.76
+ 
++  '@rxjs/observable-polyfill@file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz': {}
++
+   '@types/mocha@10.0.10': {}
+ 
+   '@types/node@20.11.0':
+@@ -824,9 +834,9 @@ snapshots:
+ 
+   resolve-pkg-maps@1.0.0: {}
+ 
+-  rxjs@7.8.1:
++  rxjs@file:.qualification/packages/rxjs-8.0.0-alpha.14.tgz:
+     dependencies:
+-      tslib: 2.8.1
++      '@rxjs/observable-polyfill': file:.qualification/packages/rxjs-observable-polyfill-8.0.0-alpha.14.tgz
+ 
+   safe-buffer@5.2.1: {}
+ 
+@@ -858,8 +868,6 @@ snapshots:
+     dependencies:
+       is-number: 7.0.0
+ 
+-  tslib@2.8.1: {}
+-
+   tsx@4.19.2:
+     dependencies:
+       esbuild: 0.23.1
+diff --git a/src/live-feed.ts b/src/live-feed.ts
+index fe18f82..8b03f1d 100644
+--- a/src/live-feed.ts
++++ b/src/live-feed.ts
+@@ -1,11 +1,12 @@
+-import { BehaviorSubject, Observable, share } from 'rxjs';
++import { behaviorSubject } from 'rxjs';
++import { share } from 'rxjs/share';
+ 
+-export const status = new BehaviorSubject('idle');
++export const status = behaviorSubject('idle');
+ 
+ export function liveFeed(log: string[]): Observable<number> {
+   return new Observable<number>((subscriber) => {
+     log.push('start');
+     subscriber.next(1);
+-    return () => log.push('stop');
+-  }).pipe(share());
++    subscriber.addTeardown(() => log.push('stop'));
++  })[share]();
+ }
+diff --git a/test/live-feed.test-source.ts b/test/live-feed.test-source.ts
+index bc7da86..4a19aff 100644
+--- a/test/live-feed.test-source.ts
++++ b/test/live-feed.test-source.ts
+@@ -5,26 +5,36 @@ describe('shared application state', () => {
+   it('PT-PLATFORM-SHARING shares one active producer and restarts after final unsubscribe', () => {
+     const log: string[] = [];
+     const feed = liveFeed(log);
+-    const first = feed.subscribe();
+-    const second = feed.subscribe();
+-    first.unsubscribe();
+-    second.unsubscribe();
+-    feed.subscribe().unsubscribe();
++    const first = new AbortController();
++    const second = new AbortController();
++    feed.subscribe(null, { signal: first.signal });
++    feed.subscribe(null, { signal: second.signal });
++    first.abort('first observer cancelled');
++    second.abort('final observer cancelled');
++    const restarted = new AbortController();
++    feed.subscribe(null, { signal: restarted.signal });
++    restarted.abort('restarted observer cancelled');
+     assert.deepEqual(log, ['start', 'stop', 'start', 'stop']);
+   });
+ 
+   it('PT-PLATFORM-SUBJECT preserves current and late-observer state', () => {
+     status.next('ready');
+     let observed = '';
+-    status.subscribe((value) => (observed = value)).unsubscribe();
++    const observation = new AbortController();
++    status.subscribe((value) => (observed = value), { signal: observation.signal });
++    observation.abort('late observer cancelled');
+     assert.equal(observed, 'ready');
+   });
+ 
+   it('PT-PLATFORM-REPEAT keeps refresh activation explicit', () => {
+     const log: string[] = [];
+     const feed = liveFeed(log);
+-    feed.subscribe().unsubscribe();
+-    feed.subscribe().unsubscribe();
++    const first = new AbortController();
++    feed.subscribe(null, { signal: first.signal });
++    first.abort('first refresh cancelled');
++    const second = new AbortController();
++    feed.subscribe(null, { signal: second.signal });
++    second.abort('second refresh cancelled');
+     assert.deepEqual(log, ['start', 'stop', 'start', 'stop']);
+   });
+ });

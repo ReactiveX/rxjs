@@ -1,0 +1,123 @@
+name: Release readiness
+
+on:
+  pull_request:
+    types: ['opened', 'reopened', 'synchronize']
+    paths:
+      - '.github/actions/install-dependencies/**'
+      - '.github/workflows/release-readiness.yml'
+      - '.npmrc'
+      - 'nx.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'packages/migrate/**'
+      - 'packages/observable-polyfill/**'
+      - 'packages/rxjs/**'
+      - 'packages/test/**'
+      - 'scripts/check-package-docs.mjs'
+      - 'scripts/check-release-coherence.mjs'
+      - 'scripts/finalize-esm-package.mjs'
+      - 'scripts/prerelease-adoption-lib.mjs'
+      - 'scripts/qualify-prerelease.mjs'
+  push:
+    branches: ['master']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-readiness-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-and-bundle:
+    name: Chrome, Firefox, WebKit, Webpack, and performance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build browser packages
+        run: |
+          pnpm --filter @rxjs/observable-polyfill run build
+          pnpm --filter rxjs run build
+          pnpm --filter @rxjs/test run build
+          pnpm --filter @rxjs/migrate run build
+      - name: Install pinned browser engines
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - name: Run browser contract
+        run: pnpm run test:release:browsers
+      - name: Run Webpack ESM and bundle-budget gate
+        run: pnpm run test:release:webpack
+      - name: Run performance budgets
+        run: pnpm run test:release:performance
+      - name: Run packed prerelease adoption gate
+        run: pnpm run test:release:adoption
+
+  alternate-runtime:
+    name: ${{ matrix.runtime.name }} ${{ matrix.runtime.version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime:
+          - name: Deno
+            version: 2.8.0
+          - name: Bun
+            version: 1.3.14
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install package-build dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build runtime packages
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+      - name: Install Deno
+        if: matrix.runtime.name == 'Deno'
+        uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282 # v2.0.5
+        with:
+          deno-version: v${{ matrix.runtime.version }}
+      - name: Install Bun
+        if: matrix.runtime.name == 'Bun'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ matrix.runtime.version }}
+      - name: Run Deno contract
+        if: matrix.runtime.name == 'Deno'
+        run: deno run --allow-read packages/rxjs/test/release/runtime-contract.mjs
+      - name: Run Bun contract
+        if: matrix.runtime.name == 'Bun'
+        run: bun packages/rxjs/test/release/runtime-contract.mjs
+
+  safari:
+    name: ${{ matrix.target == 'ios' && 'Mobile Safari (iOS simulator)' || 'Desktop Safari' }}
+    runs-on: macos-15
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [desktop, ios]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: '24'
+      - name: Build Safari packages
+        run: pnpm --filter @rxjs/observable-polyfill --filter rxjs run build
+      - name: Enable SafariDriver on the ephemeral runner
+        run: sudo safaridriver --enable
+      - name: Boot an available iOS simulator
+        if: matrix.target == 'ios'
+        run: node packages/rxjs/test/release/boot-ios-simulator.mjs
+      - name: Run Safari contract
+        run: pnpm run test:release:safari:${{ matrix.target }}

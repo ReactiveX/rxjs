@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "8.0.0-alpha.14",
+  "capabilityRegistryVersion": "1.0.0",
+  "skillDigest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa",
+  "sourceRxjsVersion": "7.8.1",
+  "targetRxjsVersion": "8.0.0-alpha.14",
+  "baseline": [
+    {
+      "id": "rxjs7-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript build/type check passed on the unchanged RxJS 7 source."
+    },
+    {
+      "id": "rxjs7-test",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "7.8.1",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "All 3 protected PT-* behavior tests passed on the unchanged RxJS 7 source."
+    }
+  ],
+  "units": [
+    {
+      "id": "platform-live-feed-sharing",
+      "sourceLocations": [
+        {
+          "file": "src/live-feed.ts",
+          "start": { "offset": 112, "line": 5, "column": 1 },
+          "end": { "offset": 327, "line": 11, "column": 2 }
+        },
+        {
+          "file": "test/live-feed.test-source.ts",
+          "start": { "offset": 145, "line": 5, "column": 3 },
+          "end": { "offset": 533, "line": 14, "column": 6 }
+        }
+      ],
+      "lifecycle": "platform-shared",
+      "evidenceClassification": "compatibility-only",
+      "claims": [
+        "PT-PLATFORM-SHARING: the first observer activates one producer, concurrent observers share it, the final cancellation stops it, and a later observer restarts it.",
+        "control:platform-cold-choice=satisfied by intentional platform activation rather than producer-per-direct-subscription construction."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:56Z",
+        "rationale": "decision:platform-sharing=approved in .qualification/scenario.md."
+      }
+    },
+    {
+      "id": "platform-status-current-value",
+      "sourceLocations": [
+        {
+          "file": "src/live-feed.ts",
+          "start": { "offset": 60, "line": 3, "column": 1 },
+          "end": { "offset": 110, "line": 3, "column": 51 }
+        },
+        {
+          "file": "test/live-feed.test-source.ts",
+          "start": { "offset": 537, "line": 16, "column": 3 },
+          "end": { "offset": 771, "line": 21, "column": 6 }
+        }
+      ],
+      "lifecycle": "subject-hot",
+      "evidenceClassification": "portable",
+      "claims": [
+        "PT-PLATFORM-SUBJECT: shared status retains the current value and immediately delivers it to a late observer.",
+        "control:subject-replay-gap=satisfied by preserving current-value delivery."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:56Z",
+        "rationale": "decision:subject-late-observer=approved in .qualification/scenario.md."
+      }
+    },
+    {
+      "id": "platform-live-feed-repeat",
+      "sourceLocations": [
+        {
+          "file": "src/live-feed.ts",
+          "start": { "offset": 112, "line": 5, "column": 1 },
+          "end": { "offset": 327, "line": 11, "column": 2 }
+        },
+        {
+          "file": "test/live-feed.test-source.ts",
+          "start": { "offset": 775, "line": 23, "column": 3 },
+          "end": { "offset": 1044, "line": 29, "column": 6 }
+        }
+      ],
+      "lifecycle": "platform-shared",
+      "evidenceClassification": "compatibility-only",
+      "claims": [
+        "PT-PLATFORM-REPEAT: each new subscription after final cancellation explicitly starts a new producer and final cancellation stops it.",
+        "control:repeat-cache-choice=satisfied by restart rather than retention of an inactive cached producer."
+      ],
+      "approval": {
+        "status": "approved",
+        "approvedBy": "scenario developer",
+        "approvedAt": "2026-08-01T01:35:56Z",
+        "rationale": "decision:repeat-restart=approved in .qualification/scenario.md."
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "missing-capability:src/live-feed.ts:316-323",
+      "code": "missing-capability",
+      "message": "The dry run refused RxJS 7 share() because registry 1.0.0 has no fixture-proved mapping; the approved platform-sharing contract was subsequently implemented and verified as a manual semantic migration.",
+      "severity": "info",
+      "disposition": "informational",
+      "refusalScope": "none",
+      "classification": "compatibility-only",
+      "span": {
+        "file": "src/live-feed.ts",
+        "start": { "offset": 316, "line": 10, "column": 11 },
+        "end": { "offset": 323, "line": 10, "column": 18 }
+      },
+      "nextAction": {
+        "code": "migrate-manually",
+        "message": "Completed: reviewed manual platform Symbol migration preserved PT-PLATFORM-SHARING and PT-PLATFORM-REPEAT."
+      }
+    }
+  ],
+  "intentionalDivergences": [],
+  "verification": [
+    {
+      "id": "next-narrow-build",
+      "command": "pnpm run build",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "8.0.0-alpha.14",
+        "observableImplementation": "@rxjs/observable-polyfill 8.0.0-alpha.14",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "TypeScript parsed and type-checked the migrated source and tests."
+    },
+    {
+      "id": "next-protected-behavior",
+      "command": "pnpm test",
+      "environment": {
+        "node": "v24.12.0",
+        "pnpm": "10.26.0",
+        "rxjs": "8.0.0-alpha.14",
+        "observableImplementation": "@rxjs/observable-polyfill 8.0.0-alpha.14",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "All 3 protected PT-* tests passed, proving sharing, late-observer current value, final abort, and restart."
+    },
+    {
+      "id": "next-engine-repeatability",
+      "command": "run the identical post-edit rxjs-migrate dry run twice in one Node process",
+      "environment": {
+        "node": "v24.12.0",
+        "engine": "8.0.0-alpha.14",
+        "registry": "1.0.0",
+        "mode": "platform",
+        "framework": "preserve"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Both runs exited 0, emitted byte-identical reports, and contained zero diagnostics; no source was written."
+    },
+    {
+      "id": "next-package-identity",
+      "command": "isolated Node package and Observable implementation identity check",
+      "environment": {
+        "node": "v24.12.0",
+        "network": "disabled"
+      },
+      "status": "passed",
+      "exitCode": 0,
+      "summary": "Verified RxJS and observable polyfill 8.0.0-alpha.14; Node had no native Observable before import, and the pinned fallback installed the platform constructor."
+    }
+  ],
+  "blockers": []
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "runId": "app-platform-strong--codex",
+  "scenarioId": "app-platform-strong",
+  "host": { "harness": "codex", "harnessVersion": "0.146.0-alpha.3.1", "model": "gpt-5.6-sol", "modelConfiguration": { "reasoning": "medium" } },
+  "sourceIdentity": { "revision": "npm:rxjs@7.8.1", "seedTreeSha256": "303bb786d24ec3f6498692881b7e36d29ab38658f47471c06d73362743e6597a", "lockPath": "pnpm-lock.yaml", "lockSha256": "9ee6ba4f94a3249d97caec0847081a56223fbd02ebe84a0a2bf8a2ee5a7bb73d" },
+  "skillIdentity": { "version": "8.0.0-alpha.14", "digest": "2b5c6b52bc8060df40c48443cfb5ebb0d55da5687bb74806daf95ac4912594fa" },
+  "engineIdentity": { "version": "8.0.0-alpha.14" },
+  "authority": { "allowedTools": ["read", "write", "exec", "install"], "network": "disabled", "writeScopes": ["src", "test", "package.json", "pnpm-lock.yaml", "migration-contract.json", "MIGRATION_REPORT.md", ".qualification/results"] },
+  "evaluation": {
+    "schemaVersion": 1,
+    "scenarioId": "app-platform-strong",
+    "expectedConclusion": "completed",
+    "compilation": [{ "id": "next-build", "command": "pnpm run build", "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "8.0.0-alpha.14" }, "status": "passed", "exitCode": 0, "summary": "The final migrated TypeScript gate passed." }],
+    "baseline": {
+      "capturedBeforeChanges": true,
+      "results": [
+        { "id": "rxjs7-build", "command": "pnpm run build", "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "7.8.1" }, "status": "passed", "exitCode": 0, "summary": "The unchanged RxJS 7 TypeScript baseline passed." },
+        { "id": "rxjs7-test", "command": "pnpm test", "environment": { "node": "v24.12.0", "pnpm": "10.26.0", "rxjs": "7.8.1", "framework": "mocha" }, "status": "passed", "exitCode": 0, "summary": "All three protected tests passed before migration." }
+      ],
+      "acceptedFailures": []
+    },
+    "chronology": { "baselineCompletedAt": "2026-08-01T01:41:00Z", "characterizationRequired": false, "migrationStartedAt": "2026-08-01T01:46:00Z" },
+    "manifestReadiness": { "state": "ready", "findingCodes": [], "unsupportedUnitIds": [], "acceptedBlockers": [] },
+    "diagnostics": {
+      "requiredIds": ["control:platform-cold-choice", "control:subject-replay-gap", "control:repeat-cache-choice"],
+      "observed": [
+        { "id": "control:platform-cold-choice", "resolution": "resolved" },
+        { "id": "control:subject-replay-gap", "resolution": "resolved" },
+        { "id": "control:repeat-cache-choice", "resolution": "resolved" }
+      ]
+    },
+    "intentionalDivergences": [],
+    "testChanges": [
+      { "testId": "PT-PLATFORM-SHARING", "kind": "equivalent" },
+      { "testId": "PT-PLATFORM-SUBJECT", "kind": "equivalent" },
+      { "testId": "PT-PLATFORM-REPEAT", "kind": "equivalent" }
+    ],
+    "engineActions": [{ "id": "platform-dry-run-refusal", "required": true, "used": true, "expectedOutcome": "refused", "observedOutcome": "refused" }],
+    "manifestConsistency": {
+      "implemented": [
+        { "unitId": "platform-live-feed-sharing", "lifecycle": "platform-shared" },
+        { "unitId": "platform-status-current-value", "lifecycle": "subject-hot" },
+        { "unitId": "platform-live-feed-repeat", "lifecycle": "platform-shared" }
+      ],
+      "declared": [
+        { "unitId": "platform-live-feed-sharing", "lifecycle": "platform-shared" },
+        { "unitId": "platform-status-current-value", "lifecycle": "subject-hot" },
+        { "unitId": "platform-live-feed-repeat", "lifecycle": "platform-shared" }
+      ]
+    },
+    "artifacts": {
+      "requiredIds": ["conversation", "contract-manifest", "patch", "command-results", "final-report"],
+      "captured": [
+        { "id": "conversation", "sha256": "01dc82aaf359adbf179d4df5f30b783be6324d944201f31297948be41a59e515" },
+        { "id": "contract-manifest", "sha256": "8102ab90b8a513cdcae48dfb85ebd54ff50926bac30cb2c2e2bb08e97d29a5be" },
+        { "id": "patch", "sha256": "3f1eabff2c0f2a6ffd23910eee9b63b89446181f7dc1c680d90ac6bc44678f31" },
+        { "id": "command-results", "sha256": "f99b5dbd3b22e32d7c3ce17701cbad3844393d2348ead0d1adb568b6350fa26f" },
+        { "id": "final-report", "sha256": "ecab6bc6be46ce7dfe5819639b73097d5e93f61cce39971f3e32ff7665398397" }
+      ]
+    },
+    "heldOutBehavior": [{ "id": "next-protected-behavior", "command": "pnpm test", "environment": { "node": "v24.12.0", "rxjs": "8.0.0-alpha.14", "framework": "mocha" }, "status": "passed", "exitCode": 0, "summary": "All three protected platform behavior tests passed." }],
+    "contractDecisions": [
+      { "unitId": "decision:platform-sharing", "lifecycle": "platform-shared", "evidence": "ambiguous", "selectedBy": "developer", "approval": { "status": "approved", "approvedBy": "scenario developer", "approvedAt": "2026-08-01T01:35:56Z", "rationale": "The scenario approved platform sharing and ref counting." } },
+      { "unitId": "decision:subject-late-observer", "lifecycle": "subject-hot", "evidence": "ambiguous", "selectedBy": "developer", "approval": { "status": "approved", "approvedBy": "scenario developer", "approvedAt": "2026-08-01T01:35:56Z", "rationale": "The scenario approved current-value delivery to a late observer." } },
+      { "unitId": "decision:repeat-restart", "lifecycle": "platform-shared", "evidence": "ambiguous", "selectedBy": "developer", "approval": { "status": "approved", "approvedBy": "scenario developer", "approvedAt": "2026-08-01T01:35:56Z", "rationale": "The scenario approved producer restart after final cancellation." } }
+    ],
+    "observedAuthority": {
+      "workspaceRoot": "/private/tmp/rxjs-m5-codex/app-platform-strong",
+      "policy": {
+        "readScopes": ["."],
+        "writeScopes": ["src", "test", "package.json", "pnpm-lock.yaml", "migration-contract.json", "MIGRATION_REPORT.md", ".qualification/results"],
+        "commands": ["git status --short", "pnpm exec rxjs-migrate-skill check --harness codex --project-root .", "pnpm run build", "pnpm test", "node --import tsx ./node_modules/mocha/bin/mocha.js test/live-feed.test-source.ts"],
+        "network": { "mode": "disabled", "destinations": [] },
+        "installs": { "mode": "allowlist", "packages": ["rxjs@8.0.0-alpha.14", "@rxjs/observable-polyfill@8.0.0-alpha.14"] }
+      },
+      "actions": [
+        { "id": "initial-status", "kind": "command", "command": "git status --short", "outcome": "completed" },
+        { "id": "skill-check", "kind": "command", "command": "pnpm exec rxjs-migrate-skill check --harness codex --project-root .", "outcome": "completed" },
+        { "id": "baseline-build", "kind": "command", "command": "pnpm run build", "outcome": "completed" },
+        { "id": "baseline-test", "kind": "command", "command": "pnpm test", "outcome": "completed" },
+        { "id": "install-rxjs", "kind": "install", "package": "rxjs@8.0.0-alpha.14", "outcome": "completed" },
+        { "id": "install-polyfill", "kind": "install", "package": "@rxjs/observable-polyfill@8.0.0-alpha.14", "outcome": "completed" },
+        { "id": "write-source", "kind": "write", "target": "src/live-feed.ts", "resolvedTarget": "/private/tmp/rxjs-m5-codex/app-platform-strong/src/live-feed.ts", "outcome": "completed" },
+        { "id": "write-tests", "kind": "write", "target": "test/live-feed.test-source.ts", "resolvedTarget": "/private/tmp/rxjs-m5-codex/app-platform-strong/test/live-feed.test-source.ts", "outcome": "completed" },
+        { "id": "direct-test", "kind": "command", "command": "node --import tsx ./node_modules/mocha/bin/mocha.js test/live-feed.test-source.ts", "outcome": "completed" },
+        { "id": "final-build", "kind": "command", "command": "pnpm run build", "outcome": "completed" },
+        { "id": "final-test", "kind": "command", "command": "pnpm test", "outcome": "completed" }
+      ]
+    },
+    "safeStop": { "occurred": false, "beforeUnsafeAction": true, "blockerIds": [], "writesAfterStop": [] }
+  },
+  "artifacts": [
+    { "kind": "conversation", "path": "app-platform-strong/conversation.md", "sha256": "01dc82aaf359adbf179d4df5f30b783be6324d944201f31297948be41a59e515" },
+    { "kind": "contract-manifest", "path": "app-platform-strong/contract-manifest.json", "sha256": "8102ab90b8a513cdcae48dfb85ebd54ff50926bac30cb2c2e2bb08e97d29a5be" },
+    { "kind": "patch", "path": "app-platform-strong/patch.diff", "sha256": "3f1eabff2c0f2a6ffd23910eee9b63b89446181f7dc1c680d90ac6bc44678f31" },
+    { "kind": "command-results", "path": "app-platform-strong/command-results.md", "sha256": "f99b5dbd3b22e32d7c3ce17701cbad3844393d2348ead0d1adb568b6350fa26f" },
+    { "kind": "final-report", "path": "app-platform-strong/final-report.md", "sha256": "ecab6bc6be46ce7dfe5819639b73097d5e93f61cce39971f3e32ff7665398397" }
+  ],
+  "gateVector": [
+    { "id": "baseline-before-changes", "status": "passed" }, { "id": "protected-tests-intact", "status": "passed" },
+    { "id": "characterizations-before-migration", "status": "passed" }, { "id": "compilation", "status": "passed" },
+    { "id": "build", "status": "passed" }, { "id": "tests", "status": "passed" },
+    { "id": "contract-manifest", "status": "passed" }, { "id": "diagnostics-reviewed", "status": "passed" },
+    { "id": "no-weakened-tests", "status": "passed" }, { "id": "final-report", "status": "passed" }
+  ],
+  "decisionVector": [
+    { "id": "decision:platform-sharing", "status": "approved" },
+    { "id": "decision:subject-late-observer", "status": "approved" },
+    { "id": "decision:repeat-restart", "status": "approved" }
+  ],
+  "conclusion": "completed"
+}
