@@ -14,7 +14,7 @@ const repositoryRoot = fileURLToPath(new URL('../..', import.meta.url));
 export const releasePackages = Object.freeze([
   { name: '@rxjs/observable-polyfill', directory: 'packages/observable-polyfill' },
   { name: '@rxjs/test', directory: 'packages/test' },
-  { name: '@rxjs/migrate', directory: 'packages/migrate' },
+  { name: '@rxjs/agent-plugin', directory: 'packages/agent-plugin' },
   { name: 'rxjs', directory: 'packages/rxjs' },
 ]);
 

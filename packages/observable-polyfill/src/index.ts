@@ -1277,7 +1277,7 @@ export const observablePolyfillInfo = Symbol.for('rxjs.observable.polyfill.info.
 
 const installedObservablePolyfillInfo: ObservablePolyfillInfo = Object.freeze({
   packageName: '@rxjs/observable-polyfill',
-  version: '9.0.0-beta.0',
+  version: '9.0.0-beta.1',
 });
 
 Object.defineProperty(ObservableImpl, observablePolyfillInfo, {

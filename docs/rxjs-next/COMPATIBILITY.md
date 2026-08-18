@@ -13,9 +13,10 @@ contracts. Passing former RxJS 7 tests against those APIs proves the represented
 behavior only; it is not a source, type, import, or lifecycle compatibility
 claim.
 
-Migration guidance and Skills must classify each material difference, identify
-the required source change or semantic review, and keep unsupported behavior
-visible rather than disguising it in the platform layer.
+Migration guidance and version-specific plugin Skills must cover every pinned
+RxJS 7 public surface, classify each material difference, identify the required
+source change or semantic review, and keep unsupported behavior visible rather
+than disguising it in the platform layer.
 
 ## Semantic baseline
 
@@ -47,7 +48,7 @@ The table describes architectural defaults, not every edge case.
 
 | Concern               | RxJS 7 baseline                                                                        | RxJS Next baseline                                                                                 | Migration implication                                                                                                    |
 | --------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Producer execution    | A normal cold Observable creates independent work during each subscription             | Platform Observable shares one active producer; `ColdObservable` is an explicit separate Next type | Audit repeated subscriptions and choose the intended Next lifecycle explicitly                                           |
+| Producer execution    | A normal cold Observable creates independent work during each subscription             | Platform Observable shares one active producer; `ColdObservable` is an explicit separate Next type | Default to `ColdObservable`; promote to platform only with sharing or repository-wide single-subscriber evidence         |
 | Hot/cold terminology  | A cold source creates its producer during subscription; an instantiated Subject is hot | Producer timing, sharing, replay, and ref counting are documented separately                       | Do not infer sharing from “hot” or “cold” alone                                                                          |
 | Subscription return   | `subscribe()` returns a `Subscription`                                                 | Platform `subscribe()` returns `undefined`                                                         | Replace captured subscriptions with `AbortController`/`AbortSignal` ownership                                            |
 | Cancellation          | `Subscription.unsubscribe()` and teardown chains                                       | `AbortSignal`, `Subscriber.signal`, and ref-count closure                                          | Review ownership, abort reasons, and final-observer behavior                                                             |
@@ -442,35 +443,61 @@ platform layer to recover RxJS 7 producer-per-subscription semantics. See
 
 The executable cases are ordinary checked-in Vitest source under `cold/` and
 `platform/`, not generator-owned output. A static `migration-report.json`
-retains file-to-case identity for JSON audits. `@rxjs/migrate` is the reusable
-deterministic authoring engine; its framework adapter is optional, and its
-output becomes source owned by the destination project. The engine does not
-classify lifecycle intent or establish migration completion.
+retains file-to-case identity for JSON audits. The deterministic engine lives
+in `@rxjs/agent-plugin`. Its framework adapter is optional, and candidate output
+becomes source owned by the destination project only after host-agent review.
+The engine selects only the behavior-preserving cold default and does not infer
+platform promotion or establish migration completion.
 
 ## Agent-first migration contract
 
-The canonical migration Skill is the primary product surface. It requires an
+The plugin's `migrate-rxjs-7-to-9` Skill is the primary migration surface. It requires an
 RxJS 7 build-and-test baseline, characterization evidence for affected
-behavior, and a reviewed contract manifest before writes. Every affected
-pipeline receives an explicit lifecycle target; `unsupported` and `unresolved`
-items stop automation and remain visible for maintainer review.
+behavior, and a reviewed contract manifest before writes. Ordinary RxJS 7
+Observable-producing units begin at `producer-per-direct-subscription` with
+`ColdObservable`. A platform target instead requires characterized intentional
+sharing/multicasting or a repository-wide guarantee that only one subscriber
+can exist at a time. `unsupported` and `unresolved` items stop automation and
+remain visible for maintainer review.
 
-The deterministic `@rxjs/migrate` engine performs only bounded, reviewable
-rewrites selected by that workflow. Completion requires both mechanical
-fixture evidence and an explicitly qualified agent-outcome lane. P0.M5
-qualifies Codex/ChatGPT only: four representative runs passed, with three
-approved migrations completed and one required unsupported/weak-coverage safe
-stop. Claude Code and Cursor have P0.M4 Skill installation and discovery
-evidence, not measured migration-outcome parity. There is no accepted
-migration MCP surface. See D-046, D-047, and
-`packages/migrate/docs/MIGRATION_TOOLING_DESIGN.md`.
+The deterministic engine performs only bounded, reviewable rewrites selected
+by that workflow. Four read-only MCP tools expose capabilities, analysis,
+preview, and contract validation from explicit source-content inputs; they
+receive no repository filesystem authority. The server validates each complete
+request before processing, with limits of 25 files, 512 KiB per file, and
+2 MiB total. Applying a preview remains a host-agent edit.
 
-Its default versioned registry currently claims only the ten mappings backed
-by checked-in source/target type evidence and exact mechanical fixtures:
+D-062 requires deterministic schema, package, MCP, fixture, compilation, and
+discovery-only gates. The P0.M5 Codex records remain historical evidence for
+the previous package and Skill and are not rerun or claimed as proof of the
+plugin. No model call, token-consuming evaluation, or paid authentication is a
+release requirement. See D-060 through D-062.
+
+The generated migration surface catalog covers every public export from the
+pinned RxJS 7 `rxjs`, `rxjs/operators`, `rxjs/ajax`, `rxjs/fetch`,
+`rxjs/webSocket`, and `rxjs/testing` declarations. It also carries the
+cross-cutting deep-import, scheduler, interop, type, and deprecated-alias
+categories. Every surface receives a guided, manual-review, replacement, or
+unsupported disposition. Declaration-to-catalog completeness is a blocking,
+deterministic plugin test.
+
+That complete coverage is distinct from the default versioned registry, which
+currently claims only the ten mappings backed by checked-in source/target type
+evidence and exact mechanical fixtures:
 `filter`, `map`, `takeUntil`, `bufferCount`, `concatMap`, `concatAll`,
 `switchAll`, `debounceTime`, `audit`, and `auditTime`. The engine refuses
-unproved overloads, incompatible registries, ambiguous TestScheduler lifecycle
-selection, and transformations whose legacy imports cannot be removed safely.
+unproved overloads, incompatible registries, platform TestScheduler cases with
+unreviewed multi-observer lifecycle, and transformations whose legacy imports
+cannot be removed safely.
+
+Each registry entry records exact-Symbol construction and any eligible platform
+invocation. In cold mode, `map`, `filter`, `concatMap`, `concatAll`, and
+`switchAll` preserve `ColdObservable` results through exact Symbols. In an
+explicitly promoted platform unit, the proved rewrites use native `.map()`,
+`.filter()`, sequential `.flatMap()`, or `.switchMap()` without extension
+imports. Exact `[takeUntil]` remains a Symbol rewrite in either mode because the
+platform method's notifier-error behavior is not RxJS 7-equivalent. The
+registry version is `1.1.0`.
 
 The generated `compatibility-only` label remains stable provenance metadata.
 Under D-039 it means that the claim cannot be made for the shared platform
@@ -629,8 +656,8 @@ ambient declaration visibility.
 
 ## Accepted migration fixtures
 
-The P4.4 fixtures in `packages/migrate/test/contracts` turn the intentional API
-and lifecycle boundaries into executable migration outcomes:
+The plugin-owned accepted-contract fixtures turn the intentional API and
+lifecycle boundaries into executable migration outcomes:
 
 - a `ColdObservable` plus exact Symbol pipeline preserves one producer per
   direct subscription and cancels through `AbortSignal`;
@@ -663,8 +690,12 @@ from semantic audits.
 
 ### Requires semantic review
 
-- code that expects a producer per subscription;
-- pipelines that depend on `share`, `shareReplay`, `publish`, or ref-count timing;
+- any promotion from the cold default to the platform lifecycle;
+- pipelines that depend on `share`, `shareReplay`, `publish`, or ref-count
+  timing, including whether an equivalent sharing layer becomes redundant;
+- a claimed single-subscriber topology, which must include templates,
+  framework adapters, helper functions, retry/repeat paths, exports, and
+  indirect consumers;
 - code that captures the `Subscription` returned by `subscribe()`;
 - subject state and late-subscriber behavior;
 - scheduler-dependent ordering or virtual time;
@@ -673,7 +704,7 @@ from semantic audits.
 - repeated subscriptions used as retries, refreshes, or cache invalidation;
 - custom Observable subclasses and interop protocols.
 
-The canonical Skill and deterministic engine derive their advice and mappings
+The plugin Skills and deterministic engine derive their advice and mappings
 from the migration-evidence ledger and accepted decisions rather than from
 general RxJS knowledge alone.
 
@@ -684,12 +715,11 @@ A release-ready migration story requires:
 - a published migration status for each prioritized RxJS 7 API category;
 - an explicit mapping to a Next import/type surface or an unsupported status;
 - a populated migration-evidence ledger for every mapped public API;
-- a reviewed migration contract manifest with an explicit lifecycle target for
-  every affected pipeline;
+- a reviewed migration contract manifest whose ordinary Observable units use
+  the cold default or record the evidence for platform promotion;
 - passing behavioral tests tied back to RxJS 7 evidence;
 - migration guidance for every intentional divergence;
-- representative mechanical fixtures and agent evaluations that pass build,
-  behavior, idempotence, containment, and the outcome gates claimed for their
-  recorded harness and model configuration;
+- representative mechanical fixtures that pass build, behavior, idempotence,
+  containment, refusal safety, package, and MCP protocol gates;
 - no language that implies an RxJS 7 runtime package, facade, or blanket
   compatibility guarantee.

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "package": "@rxjs/agent-plugin",
+  "version": "9.0.0-beta.1",
+  "rxjs7": {
+    "version": "7.8.2",
+    "commit": "e5351d02e225e275ac0e497c7b66eaa5f0c88791"
+  },
+  "rxjs9": {
+    "version": "9.0.0-beta.1"
+  },
+  "generatedReferences": {
+    "skills/write-rxjs-9/references/api-surface.md": {
+      "sha256": "9e97632e5ec408f5fb55015f3f62ea2e55aaf8cc863246812dead89c8b5a001b",
+      "bytes": 6514
+    },
+    "skills/migrate-rxjs-7-to-9/references/migration-capabilities.md": {
+      "sha256": "415b49674b3338cd0df05b0dbd423a0118ff3999c88c9b2ee0eb9605422d8873",
+      "bytes": 1425
+    },
+    "skills/integrate-rxjs-frameworks/references/framework-versions.md": {
+      "sha256": "e25ccb96ca2a35e429b385f36e3af04130799c0d1446ea52e3875ee8df97bc79",
+      "bytes": 405
+    },
+    "skills/optimize-rxjs-bundles/references/entry-points.md": {
+      "sha256": "20707e5bbb71e1d5ee976fa8017b156223049d2dccf8dc2f08ac19706e7d80b2",
+      "bytes": 2768
+    }
+  },
+  "migrationSurfaceCatalog": {
+    "path": "dist/migration-surface-catalog.json",
+    "sha256": "990e18b5e5ce45b43349573f04d08b4ac3463d68df9fc26f7cf704ce30297707",
+    "bytes": 241699,
+    "counts": {
+      "total": 248,
+      "operators": 114,
+      "functions": 151,
+      "nonOperatorFunctions": 37,
+      "types": 70,
+      "values": 27,
+      "mechanicallyProved": 10
+    }
+  },
+  "sources": {
+    "packages/rxjs/package.json": {
+      "sha256": "09c64afb1b9561207e113398bc9df901e8c5bf31dcea24e88c31d905a7818b9d",
+      "bytes": 69980
+    },
+    "packages/rxjs/src/index.ts": {
+      "sha256": "89f86f7ee9c2d36ac2e73f409aa00eb6eb90e7ebf78f56b05400528a46bbc0ee",
+      "bytes": 1125
+    },
+    "packages/rxjs/MIGRATION.md": {
+      "sha256": "5b4a880521495b8017483da5488aa20dc1cab9e1fa4d18c1f146e549e6aeb66f",
+      "bytes": 12868
+    },
+    "packages/rxjs/docs/MIGRATION_EVIDENCE_LEDGER.md": {
+      "sha256": "3bcb1770931564751da7e8012286e24a0ba3b01175c075c1e80433fae7e2caa4",
+      "bytes": 56367
+    },
+    "packages/rxjs/test/ported/capability-registry.json": {
+      "sha256": "86cf9f345be26f23e80990d494664d28672d36319cba27e5ff236983a4910749",
+      "bytes": 54967
+    },
+    "packages/rxjs/test/ported/unsupported-surface-catalog.json": {
+      "sha256": "1f736a7623c5a7510ffcc2aec62de9b2c8c0a26f4c9da5215d91dd6a8e64df18",
+      "bytes": 14226
+    },
+    "packages/agent-plugin/package.json": {
+      "sha256": "9a41a1b6a1c8503c2bc544c03e7d5961fca6639ef732a784b629f0fe9aa0ad79",
+      "bytes": 2196
+    },
+    "packages/agent-plugin/src/migration/capabilities.ts": {
+      "sha256": "83a65dce25db601e9faec6c736c42608f7cacf1fd09a2d55d55a8078077a130f",
+      "bytes": 5315
+    },
+    "packages/agent-plugin/src/migration/version.ts": {
+      "sha256": "dfb14aa2b55a6159d516938a21ae4ead2f62a40c4da3007acb3e46f47ccd5a99",
+      "bytes": 288
+    }
+  }
+}

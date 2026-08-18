@@ -20,7 +20,7 @@ free of vulnerabilities.
   asking for irreversible confirmation.
 - npm's interactive OTP/WebAuthn flow authorizes each package. Supporting
   packages publish first and `rxjs` publishes last.
-- The command verifies npm's registry integrity and `next` tag for all four
+- The command verifies npm's registry integrity and `next` tag for all five
   packages and confirms that `rxjs@latest` remains on RxJS 7.
 - An interrupted command can skip an already-published package only when the
   registry integrity equals the freshly packed tarball.
@@ -52,12 +52,12 @@ npm audit signatures
 Inspect the registry integrity and channels directly:
 
 ```sh
-npm view rxjs@9.0.0-beta.0 dist.integrity
+npm view rxjs@9.0.0-beta.1 dist.integrity
 npm view rxjs@next version
 npm view rxjs@latest version
 ```
 
-The release operator records all four integrity values and the immutable GitHub
+The release operator records all five integrity values and the immutable GitHub
 Release URL in the project-plan session log.
 
 ## Vulnerability evidence

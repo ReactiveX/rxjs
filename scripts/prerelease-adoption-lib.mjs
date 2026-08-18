@@ -5,7 +5,7 @@ export function auditPackedPackage({ name, files, size }, budgets) {
     rxjs: ['README.md', 'MIGRATION.md', 'CONTRIBUTING.md', 'docs/API.md', 'docs/RELEASE_GATES.md', 'docs/PRERELEASE_APPROVAL.md'],
     '@rxjs/observable-polyfill': ['README.md'],
     '@rxjs/test': ['README.md'],
-    '@rxjs/migrate': ['README.md', 'docs/MIGRATION_TOOLING_DESIGN.md', 'docs/MIGRATION_QUALIFICATION.md', 'skill/SKILL.md'],
+    '@rxjs/agent-plugin': ['README.md', 'plugin.json', 'mcp.json', 'dist/mcp-server.cjs', 'skills/migrate-rxjs-7-to-9/SKILL.md'],
   }[name];
 
   if (!requiredDocs) return [`Unexpected release package ${name}.`];
@@ -18,7 +18,12 @@ export function auditPackedPackage({ name, files, size }, budgets) {
     }
     if (/^dist\/(?:browser|commonjs|webpack)\//.test(filePath)) {
       errors.push(`${name} publishes duplicate dialect ${filePath}.`);
-    } else if (/^dist\//.test(filePath) && !filePath.startsWith('dist/esm/')) {
+    } else if (
+      /^dist\//.test(filePath) &&
+      !filePath.startsWith('dist/esm/') &&
+      !(name === '@rxjs/agent-plugin' &&
+        ['dist/mcp-server.cjs', 'dist/knowledge-digests.json', 'dist/migration-surface-catalog.json'].includes(filePath))
+    ) {
       errors.push(`${name} publishes a non-ESM distribution file ${filePath}.`);
     }
   }

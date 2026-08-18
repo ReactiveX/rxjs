@@ -15,7 +15,7 @@ const packages = [
   ['rxjs', 'packages/rxjs'],
   ['@rxjs/observable-polyfill', 'packages/observable-polyfill'],
   ['@rxjs/test', 'packages/test'],
-  ['@rxjs/migrate', 'packages/migrate'],
+  ['@rxjs/agent-plugin', 'packages/agent-plugin'],
 ];
 const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'rxjs-prerelease-adoption-'));
 
@@ -50,6 +50,7 @@ try {
         type: 'module',
         dependencies: {
           '@rxjs/observable-polyfill': `file:${byName['@rxjs/observable-polyfill'].tarballPath}`,
+          '@rxjs/agent-plugin': `file:${byName['@rxjs/agent-plugin'].tarballPath}`,
           '@rxjs/test': `file:${byName['@rxjs/test'].tarballPath}`,
           rxjs: `file:${byName.rxjs.tarballPath}`,
         },

@@ -23,13 +23,13 @@ for (const result of osv.results ?? []) {
   }
 }
 const reason =
-  'workspace=apps/rxjs.dev; owner=benlesh; tracking=docs/security/LEGACY_DOCS_VULNERABILITIES.md; reviewed=2026-08-03; unreachable=apps/rxjs.dev is excluded from RxJS 9 build, test, qualification, and publication';
+  'workspace=apps/rxjs.dev; owner=benlesh; tracking=docs/security/LEGACY_DOCS_VULNERABILITIES.md; reviewed=2026-08-17; unreachable=apps/rxjs.dev is excluded from RxJS 9 build, test, qualification, and publication';
 const source =
-  '# Generated from the reviewed 2026-08-03 OSV/npm path audit. Do not hand-edit.\n' +
+  '# Generated from the reviewed 2026-08-17 OSV/npm path audit. Do not hand-edit.\n' +
   '# Regenerate only after scripts/security/check-osv-exceptions.mjs proves every path remains isolated.\n\n' +
   [...ids]
     .sort()
-    .map((id) => `[[IgnoredVulns]]\nid = "${id}"\nignoreUntil = 2026-10-31\nreason = "${reason}"\n`)
+    .map((id) => `[[IgnoredVulns]]\nid = "${id}"\nignoreUntil = 2026-11-15\nreason = "${reason}"\n`)
     .join('\n');
 await writeFile(outputPath, source);
 process.stdout.write(`Recorded ${ids.size} reviewed legacy-docs advisory IDs in ${outputPath}.\n`);

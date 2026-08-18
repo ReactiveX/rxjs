@@ -237,7 +237,7 @@ ${markdownTable(['RxJS 7 surface', 'RxJS Next status', 'Current mapping', 'Notes
 
 The machine-readable capability mapping is
 \`packages/rxjs/test/ported/capability-registry.json\`. The checked-in migration
-evidence, generated migration-evidence ledger, and reusable \`@rxjs/migrate\`
+evidence, generated migration-evidence ledger, and plugin migration tooling
 tooling use the import's role:
 
 - an operator import becomes a descriptor that invokes

@@ -24,7 +24,7 @@ checkout, CI, a non-interactive terminal, or an environment containing
 Run the complete local build, package gates, tarball creation, and npm dry runs:
 
 ```sh
-pnpm release:beta 9.0.0-beta.0 --dry-run
+pnpm release:beta 9.0.0-beta.1 --dry-run
 ```
 
 The rehearsal may run from a clean review branch. It creates temporary
@@ -36,24 +36,25 @@ when it finishes. It does not contact npm with a publication request.
 From the clean, synchronized `master` checkout, run:
 
 ```sh
-pnpm release:beta 9.0.0-beta.0
+pnpm release:beta 9.0.0-beta.1
 ```
 
 The command performs these steps in order:
 
 1. validates the exact `9.0.0-beta.N` argument and synchronized package metadata;
 2. runs `pnpm run release:check` and every release package's `test:package` gate;
-3. packs all four packages into a temporary directory;
+3. packs all four beta.1 packages into a temporary directory;
 4. prints each tarball's byte count and SHA-512 integrity;
 5. runs `npm publish --dry-run --tag next --access public` for every tarball;
 6. asks Ben to type the exact version as the irreversible confirmation;
 7. publishes with npm's interactive authentication in this order:
-   `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/migrate`, and `rxjs` last;
+   `@rxjs/observable-polyfill`, `@rxjs/test`, `@rxjs/agent-plugin`, and `rxjs`
+   last;
 8. compares each registry integrity with the local tarball;
 9. verifies every package's `next` tag and confirms `rxjs@latest` remains RxJS 7.
 
 npm may request OTP/WebAuthn once per package. That repetition is deliberate:
-the four packages are independent registry publications. Nothing attempts to
+the packages are independent registry publications. Nothing attempts to
 bypass npm's proof-of-presence requirement.
 
 ## Failure recovery

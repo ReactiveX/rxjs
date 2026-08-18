@@ -22,7 +22,7 @@ if (scenario === 'missing-global-subpath') {
   const info = getObservablePolyfillInfo();
   assert.deepEqual(info, {
     packageName: '@rxjs/observable-polyfill',
-    version: '9.0.0-beta.0',
+    version: '9.0.0-beta.1',
   });
   assert.equal(Object.isFrozen(info), true);
   const markerDescriptor = Object.getOwnPropertyDescriptor(globalThis.Observable, Symbol.for('rxjs.observable.polyfill.info.v1'));
@@ -127,7 +127,7 @@ if (scenario === 'missing-global-subpath') {
     hasMap: true,
     info: {
       packageName: '@rxjs/observable-polyfill',
-      version: '9.0.0-beta.0',
+      version: '9.0.0-beta.1',
     },
   });
   assert.equal(globalThis.Observable, ParentObservable);

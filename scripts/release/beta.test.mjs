@@ -28,7 +28,7 @@ test('accepts one explicit RxJS 9 beta and an optional dry run', () => {
 test('publishes the three scoped packages before rxjs and always uses next', () => {
   assert.deepEqual(
     releasePackages.map(({ name }) => name),
-    ['@rxjs/observable-polyfill', '@rxjs/test', '@rxjs/migrate', 'rxjs']
+    ['@rxjs/observable-polyfill', '@rxjs/test', '@rxjs/agent-plugin', 'rxjs']
   );
   const live = publishArguments('/tmp/rxjs.tgz');
   assert.deepEqual(live, ['publish', '/tmp/rxjs.tgz', '--tag', 'next', '--access', 'public']);
@@ -45,7 +45,7 @@ test('runs repository checks and all four package gates before packing', () => {
     ['pnpm', 'run', 'release:check'],
     ['pnpm', '--filter', '@rxjs/observable-polyfill', 'run', 'test:package'],
     ['pnpm', '--filter', '@rxjs/test', 'run', 'test:package'],
-    ['pnpm', '--filter', '@rxjs/migrate', 'run', 'test:package'],
+    ['pnpm', '--filter', '@rxjs/agent-plugin', 'run', 'test:package'],
     ['pnpm', '--filter', 'rxjs', 'run', 'test:package'],
   ]);
 });

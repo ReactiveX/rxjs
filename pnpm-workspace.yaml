@@ -16,6 +16,38 @@ allowBuilds:
   're2@1.20.9': true
 
 linkWorkspacePackages: true
+overrides:
+  '@babel/core': 7.29.7
+  '@babel/helpers': 7.29.7
+  '@babel/plugin-transform-modules-systemjs': 7.29.8
+  '@babel/runtime': 7.29.7
+  'ajv@6': 6.14.0
+  'ajv@8': 8.18.0
+  axios: 1.18.0
+  'brace-expansion@1': 1.1.18
+  'brace-expansion@2': 2.1.4
+  'brace-expansion@5': 5.0.9
+  braces: 3.0.3
+  cross-spawn: 7.0.6
+  'diff@4': 4.0.4
+  ejs: 3.1.10
+  flatted: 3.4.2
+  follow-redirects: 1.16.0
+  form-data: 4.0.6
+  'glob@10': 10.5.0
+  immutable: 4.3.9
+  'js-yaml@3': 3.15.1
+  'js-yaml@4': 4.3.1
+  less: 4.9.0
+  micromatch: 4.0.8
+  'minimatch@3': 3.1.4
+  'minimatch@5': 5.1.8
+  'minimatch@9': 9.0.7
+  'nanoid@3': 3.3.18
+  'picomatch@2': 2.3.2
+  rollup: 4.59.0
+  tmp: 0.2.7
+  'yaml@1': 1.10.3
 patchedDependencies:
   husky@4.3.8: patches/husky@4.3.8.patch
 
