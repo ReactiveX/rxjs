@@ -23,10 +23,11 @@ export class AsapAction<T> extends AsyncAction<T> {
   }
 
   protected recycleAsyncId(scheduler: AsapScheduler, id?: TimerHandle, delay: number = 0): TimerHandle | undefined {
-    // If delay exists and is greater than 0, or if the delay is null (the
-    // action wasn't rescheduled) but was originally scheduled as an async
-    // action, then recycle as an async action.
-    if (delay != null ? delay > 0 : this.delay > 0) {
+    // Only recycle as an interval action when this action was itself scheduled
+    // with setInterval. Immediate handles share the number space of timer IDs,
+    // so passing them to clearInterval can cancel unrelated intervals
+    // (for example timer(0, period, asapScheduler) rescheduling after the first tick).
+    if (this.delay > 0) {
       return super.recycleAsyncId(scheduler, id, delay);
     }
     // If the scheduler queue has no remaining actions with the same async id,
