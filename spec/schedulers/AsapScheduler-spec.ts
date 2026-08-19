@@ -115,6 +115,28 @@ describe('Scheduler.asap', () => {
     sandbox.restore();
   });
 
+  it('should not pass setImmediate ids to clearInterval when rescheduling with a delay', (done) => {
+    const sandbox = sinon.createSandbox();
+    const setImmediateSpy = sandbox.spy(immediateProvider, 'setImmediate');
+    const clearIntervalSpy = sandbox.spy(intervalProvider, 'clearInterval');
+    const setIntervalSpy = sandbox.spy(intervalProvider, 'setInterval');
+
+    asap.schedule(function () {
+      try {
+        const immediateId = setImmediateSpy.getCall(0).returnValue;
+        this.schedule(undefined, 20);
+        expect(clearIntervalSpy).to.have.not.been.calledWith(immediateId);
+        expect(setIntervalSpy).to.have.been.calledOnce;
+        this.unsubscribe();
+        sandbox.restore();
+        done();
+      } catch (error) {
+        sandbox.restore();
+        done(error);
+      }
+    }, 0);
+  });
+
   it('should schedule an action to happen later', (done) => {
     let actionHappened = false;
     asap.schedule(() => {
