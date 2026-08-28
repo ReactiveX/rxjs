@@ -71,14 +71,16 @@ A "multicasted Observable" passes notifications through a Subject which may have
 
 <span class="informal">A multicasted Observable uses a Subject under the hood to make multiple Observers see the same Observable execution.</span>
 
-Under the hood, this is how the `multicast` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
+Under the hood, this is how the `connectable` operator works: Observers subscribe to an underlying Subject, and the Subject subscribes to the source Observable. The following example is similar to the previous example which used `observable.subscribe(subject)`:
 
 ```ts
-import { from, Subject, multicast } from 'rxjs';
+import { connectable, from, Subject } from 'rxjs';
 
 const source = from([1, 2, 3]);
-const subject = new Subject();
-const multicasted = source.pipe(multicast(subject));
+const subjectFactory = () => new Subject<number>();
+const multicasted = connectable(source, {
+  connector: subjectFactory,
+});
 
 // These are, under the hood, `subject.subscribe({...})`:
 multicasted.subscribe({
@@ -92,7 +94,7 @@ multicasted.subscribe({
 multicasted.connect();
 ```
 
-`multicast` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `multicast` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
+`connectable` returns an Observable that looks like a normal Observable, but works like a Subject when it comes to subscribing. `connectable` returns a `ConnectableObservable`, which is simply an Observable with the `connect()` method.
 
 The `connect()` method is important to determine exactly when the shared Observable execution will start. Because `connect()` does `source.subscribe(subject)` under the hood, `connect()` returns a Subscription, which you can unsubscribe from in order to cancel the shared Observable execution.
 
@@ -116,12 +118,14 @@ Consider the following example where subscriptions occur as outlined by this lis
 To achieve that with explicit calls to `connect()`, we write the following code:
 
 ```ts
-import { interval, Subject, multicast } from 'rxjs';
+import { connectable, interval, Subject, Subscription } from 'rxjs';
 
 const source = interval(500);
-const subject = new Subject();
-const multicasted = source.pipe(multicast(subject));
-let subscription1, subscription2, subscriptionConnect;
+const subjectFactory = () => new Subject<number>();
+const multicasted = connectable(source, {
+  connector: subjectFactory,
+});
+let subscription1, subscription2: Subscription, subscriptionConnect;
 
 subscription1 = multicasted.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
@@ -155,12 +159,12 @@ If we wish to avoid explicit calls to `connect()`, we can use ConnectableObserva
 Below is an example:
 
 ```ts
-import { interval, Subject, multicast, refCount } from 'rxjs';
+import { interval, Subject, Subscription, multicast, refCount } from 'rxjs';
 
 const source = interval(500);
-const subject = new Subject();
+const subject = new Subject<number>();
 const refCounted = source.pipe(multicast(subject), refCount());
-let subscription1, subscription2;
+let subscription1, subscription2: Subscription;
 
 // This calls `connect()`, because
 // it is the first subscriber to `refCounted`
@@ -211,10 +215,10 @@ In the following example, the BehaviorSubject is initialized with the value `0` 
 
 ```ts
 import { BehaviorSubject } from 'rxjs';
-const subject = new BehaviorSubject(0); // 0 is the initial value
+const subject = new BehaviorSubject(0); // 0 is the initial value - and its type is inferred automatically
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -245,10 +249,10 @@ When creating a `ReplaySubject`, you can specify how many values to replay:
 
 ```ts
 import { ReplaySubject } from 'rxjs';
-const subject = new ReplaySubject(3); // buffer 3 values for new subscribers
+const subject = new ReplaySubject<number>(3); // buffer 3 values for new subscribers
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 subject.next(1);
@@ -280,10 +284,10 @@ You can also specify a _window time_ in milliseconds, besides of the buffer size
 
 ```ts
 import { ReplaySubject } from 'rxjs';
-const subject = new ReplaySubject(100, 500 /* windowTime */);
+const subject = new ReplaySubject<number>(100, 500 /* windowTime */);
 
 subject.subscribe({
-  next: (v) => console.log(`observerA: ${v}`),
+  next: (v: number) => console.log(`observerA: ${v}`),
 });
 
 let i = 1;
@@ -313,9 +317,9 @@ setTimeout(() => {
 
 The AsyncSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.
 
-```js
+```ts
 import { AsyncSubject } from 'rxjs';
-const subject = new AsyncSubject();
+const subject = new AsyncSubject<number>();
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`),
@@ -356,16 +360,9 @@ Passing a dummy value this way is clumsy and can confuse users.
 By declaring a _void subject_, you signal that the value is irrelevant. Only the event itself matters.
 
 ```ts
-const subject = new Subject<void>();
-setTimeout(() => subject.next(), 1000);
-```
-
-A complete example with context is shown below:
-
-```ts
 import { Subject } from 'rxjs';
 
-const subject = new Subject(); // Shorthand for Subject<void>
+const subject = new Subject<void>();
 
 subject.subscribe({
   next: () => console.log('One second has passed'),
@@ -374,4 +371,4 @@ subject.subscribe({
 setTimeout(() => subject.next(), 1000);
 ```
 
-<span class="informal">Before version 7, the default type of Subject values was `any`. `Subject<any>` disables type checking of the emitted values, whereas `Subject<void>` prevents accidental access to the emitted value. If you want the old behavior, then replace `Subject` with `Subject<any>`.</span>
+<span class="informal">Before version 7, the default type of Subject values was `any`. In v7+, the default type is `unknown`. `Subject<any>` disables type checking of the emitted values, whereas `Subject<unknown>` forces strict type-checking. Specifying an explicit type instead of the default is generally recommended.</span>
