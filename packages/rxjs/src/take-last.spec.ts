@@ -24,6 +24,27 @@ describe('takeLast', () => {
     expect(subscriptions).toBe(0);
   });
 
+  it('buffers every value for Infinity and emits them on completion', () => {
+    const events: Array<number | 'complete'> = [];
+    const errors: unknown[] = [];
+    const source = new Observable<number>((subscriber) => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.next(3);
+      expect(events).toEqual([]);
+      subscriber.complete();
+    });
+
+    source[takeLast](Infinity).subscribe({
+      next: (value) => events.push(value),
+      error: (error) => errors.push(error),
+      complete: () => events.push('complete'),
+    });
+
+    expect(errors).toEqual([]);
+    expect(events).toEqual([1, 2, 3, 'complete']);
+  });
+
   it('exposes the extension through the exported Symbol only', () => {
     const source = new Observable<number>(() => {});
     type HasStringNamedTakeLast = Observable<number> extends { takeLast: unknown } ? true : false;
