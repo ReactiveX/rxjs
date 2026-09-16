@@ -12,14 +12,15 @@ type CombineLatestArrayValues<Sources extends readonly ObservableValue<any>[]> =
 
 export const combineLatest: unique symbol = Symbol('combineLatest');
 
+// The empty-tuple constraints preserve array-literal positions without requiring `as const`.
 declare global {
   interface ObservableCtor {
     [combineLatest]: {
-      <Sources extends readonly ObservableValue<any>[] | { [key: string]: ObservableValue<any> }>(
+      <Sources extends readonly ObservableValue<any>[] | readonly [] | { [key: string]: ObservableValue<any> }>(
         sources: Sources,
         config?: { requireAllValues?: boolean }
       ): Observable<CombineLatestValues<Sources>>;
-      <Sources extends readonly ObservableValue<any>[], Result>(
+      <Sources extends readonly ObservableValue<any>[] | readonly [], Result>(
         sources: Sources,
         project: (...values: CombineLatestArrayValues<Sources>) => Result
       ): Observable<Result>;
@@ -28,10 +29,11 @@ declare global {
 
   interface Observable<T> {
     [combineLatest]: {
-      <Sources extends readonly ObservableValue<any>[]>(sources: Sources, config?: { requireAllValues?: boolean }): Observable<
-        [T, ...CombineLatestArrayValues<Sources>]
-      >;
-      <Sources extends readonly ObservableValue<any>[], Result>(
+      <Sources extends readonly ObservableValue<any>[] | readonly []>(
+        sources: Sources,
+        config?: { requireAllValues?: boolean }
+      ): Observable<[T, ...CombineLatestArrayValues<Sources>]>;
+      <Sources extends readonly ObservableValue<any>[] | readonly [], Result>(
         sources: Sources,
         project: (value: T, ...values: CombineLatestArrayValues<Sources>) => Result
       ): Observable<Result>;
