@@ -1380,7 +1380,14 @@ function initializeObservablePolyfill(): void {
 
   if (activeObservable === undefined) {
     const AbortControllerCtor = globalThis.AbortController;
-    const abortDescriptor = AbortControllerCtor && Object.getOwnPropertyDescriptor(AbortControllerCtor.prototype, 'abort');
+    const abortDescriptor =
+      AbortControllerCtor &&
+      (Object.getOwnPropertyDescriptor(AbortControllerCtor.prototype, 'abort') ?? {
+        configurable: true,
+        enumerable: false,
+        value: AbortControllerCtor.prototype.abort,
+        writable: true,
+      });
     if (!AbortControllerCtor || !abortDescriptor || typeof abortDescriptor.value !== 'function') {
       throw new TypeError('Cannot initialize @rxjs/observable-polyfill: AbortController.prototype.abort is unavailable');
     }
