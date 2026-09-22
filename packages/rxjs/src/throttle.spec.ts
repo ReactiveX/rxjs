@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest';
 import '@rxjs/observable-polyfill';
-import { throttle } from './throttle.js';
+import { auditConfig, futureDuration, throttle } from './throttle.js';
 
 describe('throttle', () => {
   it('opens a leading window and emits the next value after its duration ends', () => {
@@ -56,6 +56,40 @@ describe('throttle', () => {
 
     expect(results).toEqual([2]);
     expect(durations).toHaveLength(2);
+  });
+
+  it('coalesces a synchronous burst when audit mode uses a future duration signal', async () => {
+    const source = controllable<number>();
+    const results: number[] = [];
+
+    source.observable[throttle](() => futureDuration([undefined]), auditConfig).subscribe((value) => results.push(value));
+
+    source.subscriber.next(1);
+    source.subscriber.next(2);
+    source.subscriber.next(3);
+
+    expect(results).toEqual([]);
+
+    await new Promise<void>((resolve) => globalThis.queueMicrotask(resolve));
+
+    expect(results).toEqual([3]);
+  });
+
+  it('requires a future duration signal for the branded audit configuration', () => {
+    const source = controllable<number>().observable;
+    const audited = source[throttle]((value) => futureDuration(Promise.resolve(value)), auditConfig);
+
+    expectTypeOf(audited).toEqualTypeOf<Observable<number>>();
+
+    // @ts-expect-error Raw synchronous inputs do not prove a future duration.
+    source[throttle](() => [undefined], auditConfig);
+    // @ts-expect-error An unbranded Observable does not prove when it notifies.
+    source[throttle](() => new Observable<void>(() => {}), auditConfig);
+    // @ts-expect-error Even an already-resolved Promise uses the explicit future-duration boundary.
+    source[throttle](() => Promise.resolve(), auditConfig);
+
+    // Ordinary throttle configuration retains the platform ObservableValue boundary.
+    source[throttle](() => [undefined], { leading: false, trailing: true, restartOnTrailing: false });
   });
 
   it('waits for a pending trailing value before completing', () => {
@@ -143,6 +177,46 @@ describe('throttle', () => {
 
     expect(durationErrors).toEqual([durationFailure]);
     expect(durationSource.subscriber.active).toBe(false);
+  });
+});
+
+describe('futureDuration', () => {
+  it('notifies from a host timeout for numeric durations', () => {
+    vi.useFakeTimers();
+    const notifications: string[] = [];
+
+    try {
+      futureDuration(5).subscribe({
+        next: () => notifications.push('next'),
+        complete: () => notifications.push('complete'),
+      });
+
+      vi.advanceTimersByTime(4);
+      expect(notifications).toEqual([]);
+
+      vi.advanceTimersByTime(1);
+      expect(notifications).toEqual(['next', 'complete']);
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not activate an input after cancellation in the scheduling gap', async () => {
+    let subscriptions = 0;
+    const input = new Observable<void>((subscriber) => {
+      subscriptions++;
+      subscriber.next(undefined);
+      subscriber.complete();
+    });
+    const controller = new AbortController();
+
+    futureDuration(input).subscribe(null, { signal: controller.signal });
+    controller.abort();
+
+    await new Promise<void>((resolve) => globalThis.queueMicrotask(resolve));
+
+    expect(subscriptions).toBe(0);
   });
 });
 

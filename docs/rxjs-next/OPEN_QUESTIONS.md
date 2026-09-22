@@ -174,3 +174,23 @@ and Cursor. P0.M5 records a Codex `0.146.0-alpha.3.1` outcome snapshot with
 marketplace distribution, harness support windows, and requalification beyond
 the committed beta evidence remain open. Adding MCP later would require a new
 accepted decision and product contract.
+
+### 10. Should the future-duration contract become the audit migration path?
+
+D-060 proposes a branded `auditConfig` overload and a controlled
+`futureDuration(...)` factory. The exploratory implementation proves that a
+synchronous Observable or Iterable can be converted into a duration that
+cannot close its audit window in the selector's call stack, while ordinary
+throttle configuration keeps the platform `ObservableValue` boundary.
+
+Acceptance still requires a migration policy. RxJS 7 intentionally supported
+immediate and empty duration inputs, and the source-pinned corpus contains both
+behaviors. The project must decide whether an audit migration:
+
+- may use `auditConfig` only when future timing is already evident;
+- may wrap an arbitrary selector after explicit semantic approval;
+- or must stop and ask the developer whenever notification timing is unknown.
+
+The decision must update D-021, the capability registry, deterministic
+migration fixtures, evidence-ledger type status, and package guidance together.
+Merely matching the selector's structural return type is not sufficient.

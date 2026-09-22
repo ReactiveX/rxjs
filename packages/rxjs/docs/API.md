@@ -50,6 +50,35 @@ query, and terminal capabilities. The complete authoritative list is the
 [`exports` map](../package.json); migration status and behavioral evidence are
 in the [generated ledger](MIGRATION_EVIDENCE_LEDGER.md).
 
+## Audit-mode durations
+
+The `throttle` Symbol also owns audit behavior. Use its branded `auditConfig`
+when the duration selector is intended to silence a real interval:
+
+```ts
+import { auditConfig, futureDuration, throttle } from 'rxjs/throttle';
+
+const audited = source[throttle]((value) => futureDuration(value.quietFor), auditConfig);
+```
+
+`auditConfig` requires the selector to return a `FutureDurationSignal`.
+`futureDuration(milliseconds)` creates one with a host timer, while
+`futureDuration(input)` activates an `ObservableValue` in a microtask. Even a
+synchronous Observable or Iterable therefore cannot close the audit window in
+the selector's current call stack.
+
+The nominal type is deliberate: an Observable's structural type cannot prove
+when it will notify. Raw Observables, Promises, AsyncIterables, and Iterables
+must cross `futureDuration(...)` before they can be used with `auditConfig`.
+Numeric durations remain valid directly because `throttle` implements them
+with a host timeout.
+
+Ordinary `ThrottleConfig` continues to accept the platform's full
+`ObservableValue` boundary. Spelling the three audit booleans manually selects
+that generic compatibility path; only the exported `auditConfig` carries the
+future-duration type guarantee. Duration completion without a value still
+reopens the gate without emitting a pending trailing value.
+
 ## Factories and composition
 
 Factories such as `timer` are static Symbols:

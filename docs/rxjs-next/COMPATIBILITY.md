@@ -585,6 +585,22 @@ emit the final value before completion. Selector, duration, and source errors
 cancel the other active work through the result signal. Concurrent platform
 observers still share one source activation and one active duration.
 
+D-060 proposes an explicit typed audit path without deleting that historical
+runtime evidence. Importing `auditConfig` from `rxjs/throttle` selects a
+nominal overload whose selector must return `FutureDurationSignal`.
+`futureDuration(number)` uses a host timer, and
+`futureDuration(ObservableValue)` defers input activation to a microtask. This
+prevents a synchronous Observable or Iterable from collapsing the silence
+window in the selector's call stack. The ordinary `ThrottleConfig` overload
+retains the broad platform conversion boundary, so existing raw configuration
+objects and JavaScript behavior are not silently narrowed.
+
+The current deterministic RxJS 7 migration adapter still emits the historical
+generic configuration because wrapping an arbitrary duration selector changes
+the behavior of deliberately synchronous durations. Whether automated
+migration may select `auditConfig`, must request semantic review, or must stop
+is an open D-060 adoption question rather than an implicit codemod change.
+
 RxJS 7 `takeUntil`, `skipUntil`, `pluck`, `find`, `findIndex`,
 `throwIfEmpty`, `isEmpty`, `startWith`, `pairwise`, and `windowCount` map
 directly to exact instance Symbols. `partition` and `generate` map to exact

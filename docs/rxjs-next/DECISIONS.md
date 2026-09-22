@@ -1513,3 +1513,38 @@ Status meanings:
   construction, and platform string-named methods are unchanged. Historical
   RxJS 7 evidence retains its source identity, while active migrated specs use
   closures or bound functions instead of asserting the removed overload.
+
+## D-060 — Give audit mode an explicit future-duration type
+
+- **Status:** Proposed
+- **Proposal:** Keep D-021's unified `throttle` Symbol and add an opt-in
+  `auditConfig` value whose nominal type selects a stricter overload. A
+  selector used with that value returns only `FutureDurationSignal`; a numeric
+  duration remains valid because `throttle` implements it with a host timeout.
+  `futureDuration(number)` creates a timer-backed signal, while
+  `futureDuration(ObservableValue)` defers input conversion and activation to a
+  microtask. The public factory is the only API that exposes the private
+  branded return type; an explicit unsafe assertion can still bypass any
+  TypeScript contract.
+- **Guarantee:** A branded signal cannot notify before the selector's current
+  synchronous call stack unwinds. It does not promise that the signal will
+  eventually emit or complete, nor does it encode an elapsed-time lower bound
+  for nonnumeric inputs. Duration completion without a value retains D-021's
+  non-emitting cleanup behavior.
+- **Rationale:** `ObservableValue` describes conversion compatibility, not
+  notification timing. `Observable`, `Iterable`, and user implementations can
+  notify synchronously, so structural TypeScript types cannot prove that an
+  audit window represents a future boundary. A controlled nominal factory can
+  establish that temporal invariant while still accepting every platform
+  input explicitly.
+- **Compatibility:** The ordinary `ThrottleConfig` overload continues to
+  accept the full platform `ObservableValue` boundary, including manually
+  written `{ leading: false, trailing: true, restartOnTrailing: false }`
+  objects. Its type deliberately excludes the branded `auditConfig`, so that
+  value cannot fall through to the broad overload. No JavaScript runtime path
+  is narrowed and the existing RxJS 7 evidence remains executable.
+- **Unresolved adoption:** Before acceptance, decide whether the RxJS 7 audit
+  migration adapter should require semantic review, stop on selectors whose
+  timing cannot be established, or emit `futureDuration(...)`. Automatically
+  wrapping every selector would intentionally change the legacy immediate and
+  empty-duration cases and therefore is not part of this proposal.
