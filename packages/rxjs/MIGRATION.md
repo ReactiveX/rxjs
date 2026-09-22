@@ -90,9 +90,11 @@ const offset = 10;
 const closedOver = source[map]((value) => value + offset);
 
 const context = { offset: 10 };
-const bound = source[map](function (value) {
-  return value + this.offset;
-}.bind(context));
+const bound = source[map](
+  function (value) {
+    return value + this.offset;
+  }.bind(context)
+);
 ```
 
 Use the exact `pipe` Symbol only when deliberate multi-step composition is
@@ -154,6 +156,30 @@ Do not assume RxJS 7's broad `ObservableInput` support:
 
 Wrap unsupported inputs explicitly in the active realm only after defining who
 owns cancellation, terminal delivery, and errors.
+
+### Audit duration selectors
+
+RxJS 7 types allow every `ObservableInput` from an `audit` duration selector,
+including synchronous arrays and Iterables. Those inputs are convertible, but
+they do not necessarily represent a silence interval: an immediate value can
+close the window in the same call stack.
+
+The D-060 proposal keeps audit behavior on the unified `throttle` Symbol and
+adds an explicit typed path:
+
+```ts
+import { auditConfig, futureDuration, throttle } from 'rxjs/throttle';
+
+const result = source[throttle]((value) => futureDuration(durationFor(value)), auditConfig);
+```
+
+`auditConfig` accepts selector results only as `FutureDurationSignal`, created
+by `futureDuration(...)`. A numeric input uses a host timer; an
+`ObservableValue` input is activated from a microtask. Do not insert this
+wrapper as a purely mechanical rewrite: it intentionally changes RxJS 7 cases
+whose duration emits or completes synchronously. Establish the desired timing
+with characterization tests first. The ordinary `ThrottleConfig` overload
+retains the broad platform input boundary for reviewed compatibility code.
 
 ## Subjects and producer-per-subscription work
 

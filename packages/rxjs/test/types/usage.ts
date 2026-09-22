@@ -8,6 +8,7 @@ import { partition } from 'rxjs/partition';
 import { pipe } from 'rxjs/pipe';
 import { scan } from 'rxjs/scan';
 import { switchMap } from 'rxjs/switch-map';
+import { auditConfig, futureDuration, throttle, type FutureDurationSignal } from 'rxjs/throttle';
 import { timeout } from 'rxjs/timeout';
 import { timer } from 'rxjs/timer';
 
@@ -22,6 +23,18 @@ const timed: Observable<number | string> = source[timeout]<undefined, string>({ 
 const timerResult: Observable<number> = Observable[timer](10);
 const piped: Observable<string> = source[pipe]((value) => value[map]((item) => String(item)));
 const staticPiped: Observable<string> = Observable[pipe]([1, 2], (value) => value[map]((item) => String(item)));
+const duration: FutureDurationSignal = futureDuration([undefined]);
+const audited: Observable<number> = source[throttle](() => duration, auditConfig);
+const numericallyAudited: Observable<number> = source[throttle](5, auditConfig);
+
+// @ts-expect-error Audit mode requires an explicit future-duration guarantee.
+source[throttle](() => [undefined], auditConfig);
+// @ts-expect-error Observable timing cannot be inferred from its structural type.
+source[throttle](() => new Observable<void>(() => {}), auditConfig);
+// @ts-expect-error Promise inputs also cross the explicit future-duration boundary.
+source[throttle](() => Promise.resolve(), auditConfig);
+// Generic throttle configuration retains the platform ObservableValue boundary.
+source[throttle](() => [undefined], { leading: false, trailing: true, restartOnTrailing: false });
 
 const callbackContext = {};
 // @ts-expect-error RxJS 9 callback APIs do not accept a thisArg.
@@ -48,6 +61,8 @@ void timed;
 void timerResult;
 void piped;
 void staticPiped;
+void audited;
+void numericallyAudited;
 void cold;
 void subject;
 void timeoutError;
