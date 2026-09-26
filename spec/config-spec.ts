@@ -2,6 +2,7 @@
 
 import { config } from '../src/internal/config';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { Observable } from 'rxjs';
 import { timeoutProvider } from 'rxjs/internal/scheduler/timeoutProvider';
 
@@ -76,6 +77,54 @@ describe('config', () => {
 
       source.subscribe();
       expect(called).to.be.false;
+    });
+
+    describe('handler changes before asynchronous delivery', () => {
+      let clock: sinon.SinonFakeTimers;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      it('should call the handler configured when the error occurred', () => {
+        const original = sinon.spy();
+        const replacement = sinon.spy();
+        config.onUnhandledError = original;
+
+        new Observable((subscriber) => subscriber.error('original error')).subscribe();
+        config.onUnhandledError = replacement;
+
+        expect(original).not.to.have.been.called;
+        clock.tick(0);
+        expect(original).to.have.been.calledOnce.and.calledWithExactly('original error');
+        expect(replacement).not.to.have.been.called;
+      });
+
+      it('should still call the original handler after it is cleared', () => {
+        const original = sinon.spy();
+        config.onUnhandledError = original;
+
+        new Observable((subscriber) => subscriber.error('original error')).subscribe();
+        config.onUnhandledError = null;
+
+        clock.tick(0);
+        expect(original).to.have.been.calledOnce.and.calledWithExactly('original error');
+      });
+
+      it('should throw when no handler was configured when the error occurred', () => {
+        const error = new Error('unhandled');
+        const lateHandler = sinon.spy();
+
+        new Observable((subscriber) => subscriber.error(error)).subscribe();
+        config.onUnhandledError = lateHandler;
+
+        expect(() => clock.tick(0)).to.throw(error);
+        expect(lateHandler).not.to.have.been.called;
+      });
     });
 
     /**
