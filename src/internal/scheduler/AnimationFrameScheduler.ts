@@ -4,6 +4,24 @@ import { AsyncScheduler } from './AsyncScheduler';
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
     this._active = true;
+
+    let error: any;
+
+    if (action) {
+      // A flush that receives an action comes from the timer of a delayed
+      // action (see `AsyncAction.requestAsyncId`). That action was never
+      // pushed to the frame queue, so it is the only one to execute here: the
+      // queued actions belong to the pending animation frame and must wait
+      // for it. Their ids cannot tell them apart, because timer handles and
+      // animation frame handles come from independent counters and collide.
+      error = action.execute(action.state, action.delay);
+      this._active = false;
+      if (error) {
+        throw error;
+      }
+      return;
+    }
+
     // The async id that effects a call to flush is stored in _scheduled.
     // Before executing an action, it's necessary to check the action's async
     // id to determine whether it's supposed to be executed in the current
@@ -13,17 +31,11 @@ export class AnimationFrameScheduler extends AsyncScheduler {
     // are removed from the actions array and that can shift actions that are
     // scheduled to be executed in a subsequent flush into positions at which
     // they are executed within the current flush.
-    let flushId;
-    if (action) {
-      flushId = action.id;
-    } else {
-      flushId = this._scheduled;
-      this._scheduled = undefined;
-    }
+    const flushId = this._scheduled;
+    this._scheduled = undefined;
 
     const { actions } = this;
-    let error: any;
-    action = action || actions.shift()!;
+    action = actions.shift()!;
 
     do {
       if ((error = action.execute(action.state, action.delay))) {

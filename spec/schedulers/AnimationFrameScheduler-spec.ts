@@ -187,6 +187,46 @@ describe('Scheduler.animationFrame', () => {
     });
   });
 
+  it('should not execute frame actions from the flush of a delayed action whose timer handle equals the frame handle', () => {
+    // Timer handles and animation frame handles come from independent
+    // counters, so a delayed action's setInterval handle routinely equals the
+    // pending requestAnimationFrame handle. Both providers are stubbed to hand
+    // out the same handle and to let the test fire each callback by hand.
+    const intervals: Array<() => void> = [];
+    const frames: FrameRequestCallback[] = [];
+    intervalProvider.delegate = {
+      setInterval: (handler: () => void) => {
+        intervals.push(handler);
+        return 1;
+      },
+      clearInterval: () => { /* noop */ },
+    };
+    animationFrameProvider.delegate = {
+      requestAnimationFrame: (callback: FrameRequestCallback) => {
+        frames.push(callback);
+        return 1;
+      },
+      cancelAnimationFrame: () => { /* noop */ },
+    };
+
+    try {
+      const order: string[] = [];
+      animationFrame.schedule(() => order.push('delayed'), 1);
+      animationFrame.schedule(() => order.push('frame'));
+
+      // The 1 ms timer fires before the next frame.
+      intervals.shift()!();
+      expect(order).to.deep.equal(['delayed']);
+
+      frames.shift()!(16);
+      expect(order).to.deep.equal(['delayed', 'frame']);
+      expect(animationFrame.actions).to.be.empty;
+    } finally {
+      intervalProvider.delegate = undefined;
+      animationFrameProvider.delegate = undefined;
+    }
+  });
+
   it('should not execute rescheduled actions when flushing', (done) => {
     let flushCount = 0;
     let scheduledIndices: number[] = [];
