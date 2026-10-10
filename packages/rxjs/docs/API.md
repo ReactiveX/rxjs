@@ -50,6 +50,13 @@ query, and terminal capabilities. The complete authoritative list is the
 [`exports` map](../package.json); migration status and behavioral evidence are
 in the [generated ledger](MIGRATION_EVIDENCE_LEDGER.md).
 
+## Count buffering
+
+`source[buffer]({ maxSize, startEvery })` starts count windows according to
+source-value order. It advances that cadence and opens any next window before
+notifying observers of a full buffer, so a synchronous source emission from a
+buffer callback participates in the appropriate next or overlapping window.
+
 ## Factories and composition
 
 Factories such as `timer` are static Symbols:
