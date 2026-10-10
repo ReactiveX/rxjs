@@ -143,12 +143,12 @@ Observable.prototype[buffer] = function <T>(
           if (completedBuffers.length) {
             const completed = new Set(completedBuffers);
             countBuffers = countBuffers.filter((currentBuffer) => !completed.has(currentBuffer));
-            emitCountBuffers(completedBuffers);
           }
           valuesSeen++;
           if (valuesSeen % countWindowInterval === 0) {
             countBuffers.push([]);
           }
+          emitCountBuffers(completedBuffers);
           return;
         }
         buffer ??= [];

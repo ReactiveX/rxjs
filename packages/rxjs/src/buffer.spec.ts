@@ -210,6 +210,48 @@ describe('buffer', () => {
     expect(results).toEqual([['a', 'b', 'c'], ['b', 'c', 'd'], ['c', 'd', 'e'], ['d', 'e'], ['e'], 'complete']);
   });
 
+  it('opens the next count window before delivering a full buffer', () => {
+    const source = controllable<string>();
+    const results: string[][] = [];
+    source.observable[buffer]({ maxSize: 2, startEvery: 2 }).subscribe((value) => {
+      results.push(value);
+      if (results.length === 1) {
+        source.subscriber.next('c');
+      }
+    });
+
+    source.subscriber.next('a');
+    source.subscriber.next('b');
+    source.subscriber.next('d');
+    source.subscriber.complete();
+
+    expect(results).toEqual([
+      ['a', 'b'],
+      ['c', 'd'],
+    ]);
+  });
+
+  it.each([
+    { startEvery: 1, expected: [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d']] },
+    { startEvery: 3, expected: [['a', 'b'], ['d']] },
+  ])('preserves reentrant count cadence with startEvery=$startEvery', ({ startEvery, expected }) => {
+    const source = controllable<string>();
+    const results: string[][] = [];
+    source.observable[buffer]({ maxSize: 2, startEvery }).subscribe((value) => {
+      results.push(value);
+      if (results.length === 1) {
+        source.subscriber.next('c');
+      }
+    });
+
+    source.subscriber.next('a');
+    source.subscriber.next('b');
+    source.subscriber.next('d');
+    source.subscriber.complete();
+
+    expect(results).toEqual(expected);
+  });
+
   it('supports gaps between count windows', () => {
     const results: string[][] = [];
     const source = Observable.from(['a', 'b', 'c', 'd', 'e']);
