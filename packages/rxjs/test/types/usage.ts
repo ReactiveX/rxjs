@@ -1,4 +1,5 @@
-import { ColdObservable, Subject, TimeoutError } from 'rxjs';
+import { ColdObservable, Notification, Subject, TimeoutError, errorNotification } from 'rxjs';
+import { catchError } from 'rxjs/catch-error';
 import { every } from 'rxjs/every';
 import { filter } from 'rxjs/filter';
 import { find } from 'rxjs/find';
@@ -6,8 +7,11 @@ import { findIndex } from 'rxjs/find-index';
 import { map } from 'rxjs/map';
 import { partition } from 'rxjs/partition';
 import { pipe } from 'rxjs/pipe';
+import { retry } from 'rxjs/retry';
+import { retryWhen } from 'rxjs/retry-when';
 import { scan } from 'rxjs/scan';
 import { switchMap } from 'rxjs/switch-map';
+import { tap } from 'rxjs/tap';
 import { timeout } from 'rxjs/timeout';
 import { timer } from 'rxjs/timer';
 
@@ -40,6 +44,79 @@ Observable[partition](source, () => true, callbackContext);
 const cold = new ColdObservable<number>((subscriber) => subscriber.next(1));
 const subject = new Subject<number>();
 const timeoutError = new TimeoutError<number>({ lastValue: 1, meta: undefined, seen: 1 });
+
+source.subscribe({
+  error: (error) => {
+    // @ts-expect-error Error values must be narrowed before property access.
+    error.message;
+    if (error instanceof Error) {
+      error.message;
+    }
+  },
+});
+
+source[catchError]((error) => {
+  // @ts-expect-error Error values must be narrowed before property access.
+  error.message;
+  return [];
+});
+
+source[tap](undefined, (error) => {
+  // @ts-expect-error Positional tap error values must be unknown.
+  error.message;
+});
+
+source[tap]({
+  error: (error) => {
+    // @ts-expect-error Observer-object tap error values must be unknown.
+    error.message;
+  },
+});
+
+source[retry]({
+  delay: (error) => {
+    // @ts-expect-error Retry delay error values must be unknown.
+    error.message;
+    return [];
+  },
+});
+
+source[retryWhen]((errors) =>
+  errors[map]((error) => {
+    // @ts-expect-error RetryWhen error values must be unknown.
+    return error.message;
+  })
+);
+
+source.catch((error) => {
+  // @ts-expect-error Platform catch error values must be unknown.
+  error.message;
+  return [];
+});
+
+cold.catch((error) => {
+  // @ts-expect-error ColdObservable catch error values must be unknown.
+  error.message;
+  return [];
+});
+
+source.inspect({
+  error: (error) => {
+    // @ts-expect-error Inspector error values must be unknown.
+    error.message;
+  },
+  abort: (reason) => {
+    // @ts-expect-error Inspector abort reasons must be unknown.
+    reason.message;
+  },
+});
+
+const errorNotificationResult = errorNotification(new Error('failure'));
+// @ts-expect-error Notification error values must be unknown.
+errorNotificationResult.error.message;
+const createdErrorNotification = Notification.createError(new Error('failure'));
+// @ts-expect-error Created notification error values must be unknown.
+createdErrorNotification.error.message;
 
 void mapped;
 void scanned;

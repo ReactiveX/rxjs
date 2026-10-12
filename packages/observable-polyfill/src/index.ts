@@ -16,7 +16,7 @@ class SafeObserver<T> implements Observer<T> {
     }
   }
 
-  error(error: any, hasSourceLocation = true): void {
+  error(error: unknown, hasSourceLocation = true): void {
     if (!canInvokeRealmCallbacks()) {
       return;
     }
@@ -217,7 +217,7 @@ class Subscriber<T> implements Observer<T> {
     }
   }
 
-  error(error: any): void {
+  error(error: unknown): void {
     this.#assertBrand();
     if (arguments.length === 0) {
       throw new TypeError('Subscriber.error requires an error');
@@ -226,7 +226,7 @@ class Subscriber<T> implements Observer<T> {
     this[errorSubscriber](error, true);
   }
 
-  [errorSubscriber](error: any, hasSourceLocation: boolean): void {
+  [errorSubscriber](error: unknown, hasSourceLocation: boolean): void {
     if (!this.active) {
       reportError(error, hasSourceLocation);
       return;
@@ -926,7 +926,7 @@ class ObservableImpl<T> implements Subscribable<T> {
     });
   }
 
-  catch<R>(handler: (error: any) => ObservableValue<R>): Observable<T | R> {
+  catch<R>(handler: (error: unknown) => ObservableValue<R>): Observable<T | R> {
     const ObservableCtor = instanceCtor<T | R>(this);
     return new ObservableCtor((subscriber) => {
       this.subscribe(
@@ -1445,13 +1445,13 @@ declare global {
 
   interface Observer<T> {
     next: (value: T) => void;
-    error: (error: any) => void;
+    error: (error: unknown) => void;
     complete: () => void;
   }
 
   interface Inspector<T> extends Partial<Observer<T>> {
     subscribe?: () => void;
-    abort?: (reason?: any) => void;
+    abort?: (reason?: unknown) => void;
   }
 
   interface Subscribable<T> {

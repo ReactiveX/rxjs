@@ -1513,3 +1513,19 @@ Status meanings:
   construction, and platform string-named methods are unchanged. Historical
   RxJS 7 evidence retains its source identity, while active migrated specs use
   closures or bound functions instead of asserting the removed overload.
+
+## D-060 — Type RxJS Next error values as `unknown`
+
+- **Status:** Accepted
+- **Decision:** Public error values use `unknown` throughout the platform
+  `Observer`, `Subscriber`, and `Inspector` declarations and the RxJS Next
+  error-bearing APIs: `ColdObservable`, Subjects, `catchError`, `tap`,
+  `retry`, `retryWhen`, `share` reset callbacks, and notifications. Consumers
+  narrow error values before accessing properties.
+- **Rationale:** JavaScript permits throwing arbitrary values and TypeScript
+  already treats strict `catch` bindings as `unknown`. `any` on an error path
+  silently bypasses the type checking that the API should preserve.
+- **Consequence:** This is an intentional public type-only break from RxJS 7.
+  Runtime error propagation, values, and native platform method behavior do
+  not change. Focused declaration tests require narrowing across platform and
+  RxJS callback forms and notification values.

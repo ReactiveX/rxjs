@@ -4,7 +4,7 @@ import type { SubjectLike } from './util/types.js';
 
 export const share: unique symbol = Symbol('share');
 
-type ResetOnError = boolean | ((error: any) => ObservableValue<any>);
+type ResetOnError = boolean | ((error: unknown) => ObservableValue<any>);
 type ResetOnComplete = boolean | (() => ObservableValue<any>);
 type ResetOnRefCountZero = boolean | (() => ObservableValue<any>);
 

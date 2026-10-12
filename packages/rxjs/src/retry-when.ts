@@ -6,18 +6,18 @@ export const retryWhen: unique symbol = Symbol('retryWhen');
 
 declare global {
   interface Observable<T> {
-    [retryWhen](notifier: (errors: Observable<any>) => ObservableValue<any>): Observable<T>;
+    [retryWhen](notifier: (errors: Observable<unknown>) => ObservableValue<any>): Observable<T>;
   }
 }
 
 Observable.prototype[retryWhen] = function <T>(
   this: Observable<T>,
-  notifier: (errors: Observable<any>) => ObservableValue<any>
+  notifier: (errors: Observable<unknown>) => ObservableValue<any>
 ): Observable<T> {
   const source = this;
 
   return source[create]((subscriber) => {
-    let errors: Subject<any> | undefined;
+    let errors: Subject<unknown> | undefined;
     let pendingAttempts = 1;
     let draining = false;
 
@@ -30,8 +30,8 @@ Observable.prototype[retryWhen] = function <T>(
       drainAttempts();
     }
 
-    function startNotifier(): Subject<any> | undefined {
-      const errorStream = new Subject<any>();
+    function startNotifier(): Subject<unknown> | undefined {
+      const errorStream = new Subject<unknown>();
       const notifierSource = Observable.from(notifier(errorStream));
       subscribeToSource(notifierSource, subscriber, { next: requestAttempt });
 
@@ -42,7 +42,7 @@ Observable.prototype[retryWhen] = function <T>(
       const sourceController = new AbortController();
       let sourceTerminated = false;
 
-      const handleSourceError = (error: any): void => {
+      const handleSourceError = (error: unknown): void => {
         if (sourceTerminated) {
           return;
         }

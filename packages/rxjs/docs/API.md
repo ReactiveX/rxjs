@@ -92,6 +92,15 @@ through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
 
+## Error values
+
+Errors are typed as `unknown` across platform observers and RxJS error
+callbacks, including `catchError`, `tap`, `retry`, Subjects, and notifications.
+Narrow an error before accessing its properties. RxJS preserves the thrown
+value at runtime. This is an intentional type-only incompatibility with RxJS 7
+APIs that exposed error values as `any`; it does not change native platform
+runtime behavior.
+
 ## Environment and distribution
 
 The package requires Node 22.13+ and publishes ESM only. Node `require()` uses
