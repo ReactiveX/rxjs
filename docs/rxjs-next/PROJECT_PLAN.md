@@ -3736,19 +3736,20 @@ conformance implementation depends on a runnable harness.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
 
-### 2026-10-12 — Promise rejection delivery for cold Subscribers
+### 2026-10-12 — Public error callback experiment for promise conversion
 
-- At the maintainer's request, fixed #7636 by using the public error contract
-  for custom Subscribers while preserving source-location-free promise error
-  reporting for the fallback's own Subscribers. Amended D-037 and architecture
-  documentation; no AbortController support or publication behavior changed.
-- Before the fix, four new rejection tests failed and Vitest reported eight
-  unhandled rejections. After the fix, all 14 ColdObservable tests and all 53
-  polyfill tests pass, including a zero-line/column reporting regression.
-- Both affected package builds and public type suites pass. Changed-file lint
-  passes with existing warnings only; diff hygiene passes. The Prettier check
-  flags two pre-existing multiline assertions in the polyfill test file; the
-  new code is formatted without rewriting those unrelated assertions.
-- The pinned WPT suite was not rerun in this session. The reporting regression
-  follows WPT `6a009d73f0d315941b90cac13a9523a2a08c631b`; the existing full
-  conformance gate remains unchanged. P6.10 remains the upstream `NEXT` item.
+- At the maintainer's request, tried `(error) => subscriber.error(error)` in
+  promise conversion for #7636, removing the private Symbol call entirely.
+  This is an experiment pending reporting compatibility, not an accepted
+  architecture decision. P6.10 remains the upstream `NEXT` item.
+- The polyfill build and all 14 ColdObservable tests pass with the public
+  callback. The polyfill suite has 52 passing tests and one failing test:
+  the added unhandled-promise reporting regression calls `reportError` rather
+  than dispatching a zero-line/column error event.
+- That regression follows Observable WPT
+  `6a009d73f0d315941b90cac13a9523a2a08c631b` and written-spec revision
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`. The actual browser WPT suite was
+  not rerun; the focused unit failure does not establish a browser result.
+- The earlier conditional implementation passed both affected builds and type
+  suites, all 14 ColdObservable tests, and all 53 polyfill tests. It duplicated
+  #7639 and was replaced with the requested public-callback experiment.

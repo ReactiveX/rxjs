@@ -179,12 +179,6 @@ iterators use explicit protocol loops so the fallback can preserve iterator
 method sampling, `return(reason)`, abort timing, and pending-result behavior
 that `for await...of` intentionally hides.
 
-Promise conversion may construct `ColdObservable`, whose Subscriber implements
-only the public lifecycle contract. Rejections call `subscriber.error()` for
-such Subscribers. The fallback's own Subscribers retain their internal
-source-location-free reporting path, preserving the zero line/column behavior
-required by the pinned `Observable.from` WPT when an error handler is absent.
-
 The structure and behavior pass the pinned Observable WPT revision in window,
 dedicated-worker, same-origin iframe, and Web IDL coverage. D-045 supersedes
 D-042: the fallback again enforces the pinned revision's required-argument rule
