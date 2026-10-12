@@ -3736,20 +3736,41 @@ conformance implementation depends on a runnable harness.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
 
-### 2026-10-12 — Public error callback experiment for promise conversion
+### 2026-10-12 — Public error callback for promise conversion
 
-- At the maintainer's request, tried `(error) => subscriber.error(error)` in
-  promise conversion for #7636, removing the private Symbol call entirely.
-  This is an experiment pending reporting compatibility, not an accepted
-  architecture decision. P6.10 remains the upstream `NEXT` item.
-- The polyfill build and all 14 ColdObservable tests pass with the public
-  callback. The polyfill suite has 52 passing tests and one failing test:
-  the added unhandled-promise reporting regression calls `reportError` rather
-  than dispatching a zero-line/column error event.
-- That regression follows Observable WPT
-  `6a009d73f0d315941b90cac13a9523a2a08c631b` and written-spec revision
-  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`. The actual browser WPT suite was
-  not rerun; the focused unit failure does not establish a browser result.
-- The earlier conditional implementation passed both affected builds and type
-  suites, all 14 ColdObservable tests, and all 53 polyfill tests. It duplicated
-  #7639 and was replaced with the requested public-callback experiment.
+- At the maintainer's request, retained `(error) => subscriber.error(error)`
+  for #7636, removing the polyfill-private Symbol dependency that broke
+  `ColdObservable.from(rejectedPromise)`. P6.10 remains the upstream `NEXT`
+  item; this scoped fix does not complete that release work.
+- Corrected the added reporting unit test to require exactly one global report
+  carrying the original Error, string, or undefined reason. It accepts either
+  `reportError` or the ErrorEvent fallback, without requiring source coordinates.
+  All 55 polyfill tests and all 14 ColdObservable tests pass. Both affected
+  packages build and their public type checks pass.
+- The written Observable reference at
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8` routes promise rejection to
+  `Subscriber.error` (lines 658–675), and its default error algorithm reports
+  an exception (lines 447–450). The
+  [current Observable default error algorithm](https://wicg.github.io/observable/#default-error-algorithm)
+  retains that rule. HTML's
+  [reportError](https://html.spec.whatwg.org/multipage/webappapis.html#dom-reporterror)
+  invokes report-an-exception; its
+  [error-information extraction](https://html.spec.whatwg.org/multipage/webappapis.html#extract-error-information)
+  leaves source coordinates implementation-defined (reviewed 2026-10-12).
+- Contrary to the earlier session entry, the actual browser WPT suite **did**
+  run at `a229d06b8f8e22bc9eadba09ee103af78d983564`:
+  [CI evidence](https://github.com/ReactiveX/rxjs/actions/runs/38283854090/job/114927381530),
+  artifact `11761724197`. It passed 523 of 525 upstream subtests. Window and
+  worker `observable-from.any.js` both failed with
+  `Error lineno is 0 expected 0 but got 266`; the column assertion was not reached.
+- A disposable window/worker probe using pinned Chrome `150.0.7871.126`
+  confirms native `Observable.from(Promise.reject("custom reason"))` reports
+  one error at 0:0. `promise.catch(reason => reportError(reason))` reports the
+  same reason once at 12:34 in that probe. Neither produces an
+  `unhandledrejection` event. This is a native compatibility difference;
+  spec-permitted coordinates alone do not establish pinned WPT conformance.
+- Keep the
+  [pinned WPT assertions](https://github.com/web-platform-tests/wpt/blob/6a009d73f0d315941b90cac13a9523a2a08c631b/dom/observable/tentative/observable-from.any.js#L468-L504)
+  and strict gate unchanged. No allowlist, skip, expectation update, or private
+  Subscriber coupling is introduced to hide the discrepancy. PR #7651 remains
+  draft pending the browser reporting compatibility question.

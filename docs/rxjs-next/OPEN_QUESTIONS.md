@@ -174,3 +174,24 @@ and Cursor. P0.M5 records a Codex `0.146.0-alpha.3.1` outcome snapshot with
 marketplace distribution, harness support windows, and requalification beyond
 the committed beta evidence remain open. Adding MCP later would require a new
 accepted decision and product contract.
+
+### 10. How should promise rejection reporting match native source coordinates?
+
+PR #7651 uses the public `Subscriber.error` contract for promise rejection so
+`ColdObservable.from` works without a polyfill-private Subscriber Symbol.
+Observable's pinned written reference
+`d74bace7cf80200a01c81cfe20961e29ac7fa3d8` prescribes that public call. HTML's
+`reportError` runs the same report-an-exception algorithm, whose source
+coordinates are implementation-defined.
+
+Nevertheless, Chrome `150.0.7871.126` natively reports the string rejection in
+`Observable.from` at 0:0, while an ordinary script's `reportError` supplies its
+call site. Pinned WPT `6a009d73f0d315941b90cac13a9523a2a08c631b` requires 0:0;
+PR #7651's window and worker runs fail that line assertion. This remains an
+unresolved native compatibility and strict conformance issue, even though the
+reporting mechanism is supported by the specification. See the 2026-10-12
+promise-conversion entry in `PROJECT_PLAN.md` for exact evidence.
+
+Resolve this with standards/native implementation evidence and a reviewed
+public-contract design. Keep the strict WPT assertions unchanged while the
+question is open; passing unit tests does not close it.
