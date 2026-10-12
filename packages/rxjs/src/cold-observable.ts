@@ -52,7 +52,7 @@ class ColdSubscriber<T> implements Subscriber<T> {
     }
   }
 
-  error(error: any) {
+  error(error: unknown) {
     if (this.active) {
       this.#abortController.abort();
       try {
@@ -145,7 +145,7 @@ export class ColdObservable<T> extends PlatformObservable<T> {
     return this.#asPlatformObservable().inspect(inspector);
   }
 
-  catch<R>(handler: (error: any) => ObservableValue<R>): Observable<T | R> {
+  catch<R>(handler: (error: unknown) => ObservableValue<R>): Observable<T | R> {
     return this.#asPlatformObservable().catch(handler);
   }
 

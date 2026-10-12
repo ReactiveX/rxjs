@@ -12,7 +12,7 @@ declare global {
   interface Observable<T> {
     [tap]: {
       (observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null): Observable<T>;
-      (next?: ((value: T) => void) | null, error?: ((error: any) => void) | null, complete?: (() => void) | null): Observable<T>;
+      (next?: ((value: T) => void) | null, error?: ((error: unknown) => void) | null, complete?: (() => void) | null): Observable<T>;
     };
   }
 }
@@ -21,13 +21,13 @@ function tapOperator<T>(this: Observable<T>, observerOrNext?: Partial<TapObserve
 function tapOperator<T>(
   this: Observable<T>,
   next?: ((value: T) => void) | null,
-  error?: ((error: any) => void) | null,
+  error?: ((error: unknown) => void) | null,
   complete?: (() => void) | null
 ): Observable<T>;
 function tapOperator<T>(
   this: Observable<T>,
   observerOrNext?: Partial<TapObserver<T>> | ((value: T) => void) | null,
-  error?: ((error: any) => void) | null,
+  error?: ((error: unknown) => void) | null,
   complete?: (() => void) | null
 ): Observable<T> {
   const tapObserver =

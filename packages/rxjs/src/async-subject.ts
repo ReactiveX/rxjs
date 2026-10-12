@@ -6,7 +6,7 @@ const ObservableBase = Observable;
 export class AsyncSubject<T> extends ObservableBase<T> implements SubjectLike<T> {
   #completed = false;
   #hasError = false;
-  #error: any;
+  #error: unknown;
   #hasValue = false;
   #value: T | undefined;
   #subscribers = new Set<Subscriber<T>>();
@@ -50,7 +50,7 @@ export class AsyncSubject<T> extends ObservableBase<T> implements SubjectLike<T>
     }
   }
 
-  error(error: any): void {
+  error(error: unknown): void {
     if (!this.active) {
       return;
     }

@@ -13,7 +13,7 @@ export interface NextNotification<T> {
 
 export interface ErrorNotification {
   readonly kind: 'E';
-  readonly error: any;
+  readonly error: unknown;
 }
 
 export interface CompleteNotification {
@@ -27,9 +27,9 @@ export class Notification<T> {
   readonly hasValue: boolean;
 
   constructor(kind: 'N', value?: T);
-  constructor(kind: 'E', value: undefined, error: any);
+  constructor(kind: 'E', value: undefined, error: unknown);
   constructor(kind: 'C');
-  constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: any) {
+  constructor(public readonly kind: 'N' | 'E' | 'C', public readonly value?: T, public readonly error?: unknown) {
     this.hasValue = kind === 'N';
   }
 
@@ -37,7 +37,7 @@ export class Notification<T> {
     observeNotification(this as ObservableNotification<T>, observer);
   }
 
-  do(next: (value: T) => void, error?: (error: any) => void, complete?: () => void): void {
+  do(next: (value: T) => void, error?: (error: unknown) => void, complete?: () => void): void {
     if (this.kind === 'N') {
       next?.(this.value as T);
     } else if (this.kind === 'E') {
@@ -48,8 +48,8 @@ export class Notification<T> {
   }
 
   accept(observer: Partial<Observer<T>>): void;
-  accept(next: (value: T) => void, error?: (error: any) => void, complete?: () => void): void;
-  accept(nextOrObserver: Partial<Observer<T>> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): void {
+  accept(next: (value: T) => void, error?: (error: unknown) => void, complete?: () => void): void;
+  accept(nextOrObserver: Partial<Observer<T>> | ((value: T) => void), error?: (error: unknown) => void, complete?: () => void): void {
     if (typeof nextOrObserver === 'object' && nextOrObserver !== null) {
       this.observe(nextOrObserver);
     } else {
@@ -81,7 +81,7 @@ export class Notification<T> {
     return new Notification('N', value) as Notification<T> & NextNotification<T>;
   }
 
-  static createError<T = never>(error?: any): Notification<T> & ErrorNotification {
+  static createError<T = never>(error?: unknown): Notification<T> & ErrorNotification {
     return new Notification('E', undefined, error) as Notification<T> & ErrorNotification;
   }
 
@@ -96,7 +96,7 @@ export function nextNotification<T>(value: T): NextNotification<T> {
   return { kind: 'N', value };
 }
 
-export function errorNotification(error: any): ErrorNotification {
+export function errorNotification(error: unknown): ErrorNotification {
   return { kind: 'E', error };
 }
 
