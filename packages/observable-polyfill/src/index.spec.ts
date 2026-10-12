@@ -25,6 +25,37 @@ describe('Observable', () => {
     expect(typeof globalThis.Observable).toBe('function');
   });
 
+  it('reports an unhandled promise rejection without a source location', async () => {
+    const dispatch = vi.fn();
+    const report = vi.fn();
+    class TestErrorEvent extends Event {
+      readonly error: unknown;
+      readonly lineno: number;
+      readonly colno: number;
+
+      constructor(type: string, options: ErrorEventInit) {
+        super(type, options);
+        this.error = options.error;
+        this.lineno = options.lineno ?? 0;
+        this.colno = options.colno ?? 0;
+      }
+    }
+    vi.stubGlobal('ErrorEvent', TestErrorEvent);
+    vi.stubGlobal('dispatchEvent', dispatch);
+    vi.stubGlobal('reportError', report);
+    try {
+      const reason = 'promise failed';
+      Observable.from(Promise.reject(reason)).subscribe();
+      await Promise.resolve();
+
+      expect(report).not.toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledOnce();
+      expect(dispatch.mock.calls[0]?.[0]).toMatchObject({ error: reason, lineno: 0, colno: 0 });
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('does observable things', () => {
     const results: (string | number)[] = [];
 

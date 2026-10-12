@@ -569,7 +569,15 @@ class ObservableImpl<T> implements Subscribable<T> {
             subscriber.next(output);
             subscriber.complete();
           },
-          (error) => (subscriber as Subscriber<T>)[errorSubscriber](error, false)
+          (error) => {
+            // Custom Subscribers expose only the public contract. Keep the
+            // source-location-free reporting path for this polyfill's Subscribers.
+            if (subscriber instanceof Subscriber) {
+              subscriber[errorSubscriber](error, false);
+            } else {
+              subscriber.error(error);
+            }
+          }
         );
       });
     }

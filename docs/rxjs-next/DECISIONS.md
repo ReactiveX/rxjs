@@ -819,6 +819,14 @@ Status meanings:
   directly to a native method when that would change the receiver's
   construction policy.
 
+- **Promise conversion:** A Subscriber supplied by `ColdObservable` or another
+  compatible constructor is accessed through its public `error()` contract,
+  not the fallback's private Symbol. The fallback preserves its internal
+  promise-rejection reporting path for its own Subscribers so errors reported
+  to the global have no source location. This follows Observable WPT
+  `6a009d73f0d315941b90cac13a9523a2a08c631b` and written-spec revision
+  `d74bace7cf80200a01c81cfe20961e29ac7fa3d8`.
+
 ## D-038 — Expose four explicit Observable-to-async-iterator strategies
 
 - **Status:** Accepted
