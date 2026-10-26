@@ -18,30 +18,55 @@ Observable.prototype[debounce] = function <T>(
     let hasValue = false;
     let lastValue: T;
     let index = 0;
+    let sourceComplete = false;
+    let pendingEmissions = 0;
+
+    const completeIfReady = () => {
+      if (sourceComplete && pendingEmissions === 0) {
+        subscriber.complete();
+      }
+    };
 
     const emitPendingValue = () => {
       if (!hasValue) {
         return;
       }
+      const value = lastValue;
+      const controller = innerController;
       hasValue = false;
-      innerController?.abort();
       innerController = null;
-      subscriber.next(lastValue);
+      // Duration teardown can synchronously notify or complete the source.
+      pendingEmissions++;
+      try {
+        controller?.abort();
+      } finally {
+        pendingEmissions--;
+      }
+      subscriber.next(value);
+      completeIfReady();
     };
 
     subscriber.addTeardown(() => innerController?.abort());
 
     subscribeToSource(this, subscriber, {
       next: (value) => {
+        if (!subscriber.active) {
+          return;
+        }
+        const previousController = innerController;
+        const controller = new AbortController();
+        innerController = controller;
         hasValue = true;
         lastValue = value;
 
-        innerController?.abort();
-        innerController = new AbortController();
+        previousController?.abort();
+        if (innerController !== controller || !subscriber.active) {
+          return;
+        }
 
         if (typeof delay === 'number') {
           const id = globalThis.setTimeout(emitPendingValue, delay);
-          innerController.signal.addEventListener(
+          controller.signal.addEventListener(
             'abort',
             () => {
               globalThis.clearTimeout(id);
@@ -49,13 +74,46 @@ Observable.prototype[debounce] = function <T>(
             { once: true }
           );
         } else {
-          const result = Observable.from(delay(value, index++));
-          subscribeToSource(result, subscriber, { next: emitPendingValue, complete: () => void 0 }, innerController.signal);
+          let result: Observable<unknown>;
+          try {
+            const duration = delay(value, index++);
+            if (innerController !== controller || !subscriber.active) {
+              return;
+            }
+            result = Observable.from(duration);
+          } catch (error) {
+            if (innerController === controller && subscriber.active) {
+              subscriber.error(error);
+            }
+            return;
+          }
+          if (innerController !== controller || !subscriber.active) {
+            return;
+          }
+          subscribeToSource(
+            result,
+            subscriber,
+            {
+              next: () => {
+                if (innerController === controller && subscriber.active) {
+                  emitPendingValue();
+                }
+              },
+              error: (error) => {
+                if (innerController === controller && subscriber.active) {
+                  subscriber.error(error);
+                }
+              },
+              complete: () => void 0,
+            },
+            controller.signal
+          );
         }
       },
       complete: () => {
+        sourceComplete = true;
         emitPendingValue();
-        subscriber.complete();
+        completeIfReady();
       },
     });
   });
