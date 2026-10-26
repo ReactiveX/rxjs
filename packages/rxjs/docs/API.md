@@ -92,6 +92,14 @@ through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
 
+`debounce` keeps the value being emitted separate from any new value produced
+by duration teardown. The new value starts its own duration, which subsequent
+source values or cancellation can still cancel. A duration superseded during
+teardown or selection cannot activate or fail the newer pending value. Source
+completion from duration teardown waits for the pending notification before
+completing; an error or cancellation during teardown suppresses it. Notifications
+remain synchronous, including completion requested from a downstream observer.
+
 ## Environment and distribution
 
 The package requires Node 22.13+ and publishes ESM only. Node `require()` uses
