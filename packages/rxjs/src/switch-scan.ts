@@ -33,10 +33,14 @@ function switchScanOperator<T, R, Input extends ObservableValue<any>>(
     };
 
     const startInner = (value: T): void => {
-      innerController?.abort();
-
+      const previousController = innerController;
       const controller = new AbortController();
+      // Cancellation can run teardown that reenters the source.
       innerController = controller;
+      previousController?.abort();
+      if (!subscriber.active || controller.signal.aborted) {
+        return;
+      }
       // RxJS 7 types the accumulator state from the seed even though each
       // emitted inner value becomes the runtime state for the next call.
       const inner = Observable.from(accumulator(state as R, value, index++));

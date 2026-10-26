@@ -23,15 +23,24 @@ function switchMapOperator<T, R>(
 
     subscribeToSource(this, subscriber, {
       next: (value) => {
-        if (active.length >= concurrent) {
-          active.shift()!.abort();
+        const previousController = active.length >= concurrent ? active.shift()! : null;
+        const innerController = new AbortController();
+        // Cancellation can run teardown that reenters the source.
+        active.push(innerController);
+        if (previousController !== null) {
+          previousController.abort();
+        }
+        if (!subscriber.active || innerController.signal.aborted) {
+          return;
         }
 
-        const innerController = new AbortController();
-        active.push(innerController);
+        const inner = convertObservableValue({ value: mapper(value, index++) });
+        if (!subscriber.active || innerController.signal.aborted) {
+          return;
+        }
 
         subscribeToSource(
-          convertObservableValue({ value: mapper(value, index++) }),
+          inner,
           subscriber,
           {
             next: (innerValue) => subscriber.next(innerValue),

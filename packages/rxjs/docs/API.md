@@ -92,6 +92,11 @@ through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
 
+`switchMap` and `switchScan` record a replacement inner before cancelling the
+preceding inner. Teardown may notify the source again; a replacement that is
+superseded or cancelled during teardown is not projected or subscribed.
+Completing the source during teardown still waits for the active replacement.
+
 ## Environment and distribution
 
 The package requires Node 22.13+ and publishes ESM only. Node `require()` uses
