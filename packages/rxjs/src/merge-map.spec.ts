@@ -3,6 +3,116 @@ import '@rxjs/observable-polyfill';
 import { mergeMap } from './merge-map.js';
 
 describe('mergeMap', () => {
+  it('reserves concurrency before a projection reenters the source', () => {
+    const outer = controllable<number>();
+    const first = controllable<number>();
+    const calls: Array<readonly [number, number]> = [];
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[mergeMap](
+      (value, index) => {
+        calls.push([value, index]);
+        if (value === 1) {
+          outer.subscriber.next(2);
+          return first.observable;
+        }
+        return [value];
+      },
+      { concurrent: 1 }
+    ).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    outer.subscriber.next(1);
+    outer.subscriber.complete();
+    expect(calls).toEqual([[1, 0]]);
+    expect(events).toEqual([]);
+
+    first.subscriber.next(1);
+    first.subscriber.complete();
+    expect(calls).toEqual([
+      [1, 0],
+      [2, 1],
+    ]);
+    expect(events).toEqual([1, 2, 'complete']);
+  });
+
+  it('waits for the inner when the projection completes the source', () => {
+    const outer = controllable<number>();
+    const inner = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[mergeMap](() => {
+      outer.subscriber.complete();
+      return inner.observable;
+    }).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    outer.subscriber.next(1);
+    expect(events).toEqual([]);
+    expect(inner.subscriptions).toBe(1);
+
+    inner.subscriber.next(42);
+    inner.subscriber.complete();
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it('waits for the inner when input conversion completes the source', () => {
+    const outer = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+    const input = {
+      get [Symbol.iterator]() {
+        outer.subscriber.complete();
+        return function* () {
+          yield 42;
+        };
+      },
+    };
+
+    outer.observable[mergeMap](() => input).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    outer.subscriber.next(1);
+
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it.each(['projection', 'conversion'])('cancels active work when %s throws', (stage) => {
+    const outer = controllable<number>();
+    const inner = controllable<number>();
+    const failure = new Error(stage);
+    const errors: unknown[] = [];
+    let completed = false;
+
+    outer.observable[mergeMap]((value) => {
+      if (value === 1) {
+        return inner.observable;
+      }
+      if (stage === 'projection') {
+        throw failure;
+      }
+      return {
+        get [Symbol.iterator](): () => Iterator<number> {
+          throw failure;
+        },
+      };
+    }).subscribe({
+      error: (error) => errors.push(error),
+      complete: () => (completed = true),
+    });
+    outer.subscriber.next(1);
+    outer.subscriber.next(2);
+
+    expect(errors).toEqual([failure]);
+    expect(completed).toBe(false);
+    expect(outer.subscriber.active).toBe(false);
+    expect(inner.subscriber.active).toBe(false);
+  });
+
   it('buffers outer values at the concurrency limit and preserves output order', () => {
     const outer = controllable<number>();
     const first = controllable<string>();

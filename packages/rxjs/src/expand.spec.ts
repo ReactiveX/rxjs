@@ -12,6 +12,85 @@ beforeAll(async () => {
 });
 
 describe('expand', () => {
+  it.each(['observer', 'projection'])('waits for the inner when the %s completes the source', (boundary) => {
+    const source = controllable<number>();
+    const inner = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[expand]((value) => {
+      if (value !== 1) {
+        return [];
+      }
+      if (boundary === 'projection') {
+        source.subscriber.complete();
+      }
+      return inner.observable;
+    }).subscribe({
+      next: (value) => {
+        events.push(value);
+        if (boundary === 'observer' && value === 1) {
+          source.subscriber.complete();
+        }
+      },
+      complete: () => events.push('complete'),
+    });
+
+    source.subscriber.next(1);
+    expect(events).toEqual([1]);
+    expect(inner.subscriptions).toBe(1);
+
+    inner.subscriber.next(2);
+    inner.subscriber.complete();
+    expect(events).toEqual([1, 2, 'complete']);
+  });
+
+  it('waits for the inner when input conversion completes the source', () => {
+    const source = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+    const input = {
+      get [Symbol.iterator]() {
+        source.subscriber.complete();
+        return function* () {
+          yield 2;
+        };
+      },
+    };
+
+    source.observable[expand]((value) => (value === 1 ? input : [])).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    source.subscriber.next(1);
+
+    expect(events).toEqual([1, 2, 'complete']);
+  });
+
+  it('does not project a value after the observer cancels', () => {
+    const source = controllable<number>();
+    const controller = new AbortController();
+    const projections: number[] = [];
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[expand]((value) => {
+      projections.push(value);
+      return [];
+    }).subscribe(
+      {
+        next: (value) => {
+          events.push(value);
+          controller.abort();
+        },
+        complete: () => events.push('complete'),
+      },
+      { signal: controller.signal }
+    );
+    source.subscriber.next(1);
+
+    expect(events).toEqual([1]);
+    expect(projections).toEqual([]);
+    expect(source.subscriber.active).toBe(false);
+  });
+
   it('installs only its exact unique Symbol', () => {
     const source = new Observable<number>(() => {});
     const otherKey = Symbol('expand');

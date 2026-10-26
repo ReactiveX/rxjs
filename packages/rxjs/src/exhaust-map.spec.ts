@@ -3,6 +3,117 @@ import '@rxjs/observable-polyfill';
 import { exhaustMap } from './exhaust-map.js';
 
 describe('exhaustMap', () => {
+  it('reserves concurrency before a projection reenters the source', () => {
+    const outer = controllable<number>();
+    const first = controllable<number>();
+    const calls: Array<readonly [number, number]> = [];
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[exhaustMap]((value, index) => {
+      calls.push([value, index]);
+      if (value === 1) {
+        outer.subscriber.next(2);
+        return first.observable;
+      }
+      return [value];
+    }).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    outer.subscriber.next(1);
+    expect(calls).toEqual([[1, 0]]);
+    expect(events).toEqual([]);
+
+    first.subscriber.next(1);
+    first.subscriber.complete();
+    outer.subscriber.next(3);
+    outer.subscriber.complete();
+    expect(calls).toEqual([
+      [1, 0],
+      [3, 1],
+    ]);
+    expect(events).toEqual([1, 3, 'complete']);
+  });
+
+  it('waits for the inner when the projection completes the source', () => {
+    const outer = controllable<number>();
+    const inner = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[exhaustMap](() => {
+      outer.subscriber.complete();
+      return inner.observable;
+    }).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    outer.subscriber.next(1);
+    expect(events).toEqual([]);
+    expect(inner.subscriptions).toBe(1);
+
+    inner.subscriber.next(42);
+    inner.subscriber.complete();
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it('waits for the inner when input conversion completes the source', () => {
+    const outer = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+    const input = {
+      get [Symbol.iterator]() {
+        outer.subscriber.complete();
+        return function* () {
+          yield 42;
+        };
+      },
+    };
+
+    outer.observable[exhaustMap](() => input).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    outer.subscriber.next(1);
+
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it.each(['projection', 'conversion'])('cancels active work when %s throws', (stage) => {
+    const outer = controllable<number>();
+    const inner = controllable<number>();
+    const failure = new Error(stage);
+    const errors: unknown[] = [];
+    let completed = false;
+
+    outer.observable[exhaustMap](
+      (value) => {
+        if (value === 1) {
+          return inner.observable;
+        }
+        if (stage === 'projection') {
+          throw failure;
+        }
+        return {
+          get [Symbol.iterator](): () => Iterator<number> {
+            throw failure;
+          },
+        };
+      },
+      { concurrent: 2 }
+    ).subscribe({
+      error: (error) => errors.push(error),
+      complete: () => (completed = true),
+    });
+    outer.subscriber.next(1);
+    outer.subscriber.next(2);
+
+    expect(errors).toEqual([failure]);
+    expect(completed).toBe(false);
+    expect(outer.subscriber.active).toBe(false);
+    expect(inner.subscriber.active).toBe(false);
+  });
+
   it('ignores outer values until the active inner completes', () => {
     const outer = controllable<Observable<number>>();
     const first = controllable<number>();
