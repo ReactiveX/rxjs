@@ -85,6 +85,17 @@ transparent foreign-realm conversion is not claimed. Review the
 [migration guide](../MIGRATION.md) before translating RxJS 7 inputs or
 lifecycle assumptions.
 
+`mergeMap`, `mergeScan`, `exhaustMap`, and `expand` reserve an inner concurrency
+slot before calling the projection or converting its result. `expand` also
+reserves that slot before notifying observers of the current value. If that
+work emits back into the source, values beyond the limit are queued by
+`mergeMap`, `mergeScan`, and `expand`, or ignored by `exhaustMap`. Completing
+the source during that work still waits for the projected inner to finish.
+
+`merge` also reserves an input slot before reading or converting that input.
+If this completes another active input, the pending input still counts toward
+the concurrency limit and prevents premature completion.
+
 ## Cancellation and teardown
 
 Subscriptions accept `{ signal: AbortSignal }`. Operators own upstream work

@@ -28,8 +28,9 @@ Observable.prototype[exhaustMap] = function <T, R>(
     subscribeToSource(this, subscriber, {
       next: (value) => {
         if (active < concurrent) {
-          const source = Observable.from(mapper(value, index++));
+          // Projection and conversion can reenter the source before subscription.
           active++;
+          const source = Observable.from(mapper(value, index++));
           subscribeToSource(source, subscriber, {
             complete: () => {
               active--;
