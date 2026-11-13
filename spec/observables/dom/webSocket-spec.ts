@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { webSocket } from 'rxjs/webSocket';
-import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
+import { map, retry, take, repeat, takeWhile, timeout } from 'rxjs/operators';
 
 const root: any = (typeof globalThis !== 'undefined' && globalThis)
   || (typeof self !== 'undefined' && self)
@@ -236,6 +236,134 @@ describe('webSocket', () => {
       expect(socket2.readyState).to.equal(WebSocketState.CLOSING);
 
       (<any>socket.close).restore();
+    });
+
+    it('should ignore an error of the previous socket before the new socket opens', () => {
+      const results: string[] = [];
+      const subject = webSocket<string>('ws://mysocket');
+      const subscription = subject.subscribe();
+      const socket = MockWebSocket.lastSocket;
+      subscription.unsubscribe();
+      expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+
+      const subscription2 = subject.subscribe({
+        next: (x) => results.push(x),
+        error: () => results.push('error'),
+        complete: () => results.push('complete'),
+      });
+      subject.next('ping');
+      const socket2 = MockWebSocket.lastSocket;
+      sinon.spy(socket2, 'close');
+
+      // A socket that is closed while it connects fires an error event and then a close event.
+      socket.triggerError({});
+      socket.triggerClose({ wasClean: false });
+
+      socket2.open();
+      expect(socket2.close).have.not.been.called;
+      expect(socket2.readyState).to.equal(WebSocketState.OPEN);
+      expect(socket2.lastMessageSent).to.equal(JSON.stringify('ping'));
+
+      socket2.triggerMessage(JSON.stringify('pong'));
+      expect(results).to.deep.equal(['pong']);
+
+      subscription2.unsubscribe();
+      expect(socket2.close).have.been.called;
+
+      (<any>socket2.close).restore();
+    });
+
+    it('should ignore an error of the previous socket after the new socket has opened', () => {
+      const subject = webSocket<string>('ws://mysocket');
+      const subscription = subject.subscribe();
+      const socket = MockWebSocket.lastSocket;
+      subscription.unsubscribe();
+
+      const subscription2 = subject.subscribe();
+      const socket2 = MockWebSocket.lastSocket;
+      sinon.spy(socket2, 'close');
+      socket2.open();
+
+      socket.triggerError({});
+      socket.triggerClose({ wasClean: false });
+
+      subject.next('ping');
+      expect(socket2.lastMessageSent).to.equal(JSON.stringify('ping'));
+
+      subscription2.unsubscribe();
+      expect(socket2.close).have.been.called;
+      expect(socket2.readyState).to.equal(WebSocketState.CLOSING);
+
+      (<any>socket2.close).restore();
+    });
+
+    it('should close only the previous socket when it opens after a new socket was created', () => {
+      const subject = webSocket<string>('ws://mysocket');
+      const subscription = subject.subscribe();
+      const socket = MockWebSocket.lastSocket;
+      subscription.unsubscribe();
+
+      const subscription2 = subject.subscribe();
+      subject.next('ping');
+      const socket2 = MockWebSocket.lastSocket;
+      sinon.spy(socket, 'close');
+      sinon.spy(socket2, 'close');
+
+      socket.open();
+      expect(socket.close).have.been.called;
+      expect(socket.sent).to.deep.equal([]);
+
+      socket2.open();
+      expect(socket2.close).have.not.been.called;
+      expect(socket2.lastMessageSent).to.equal(JSON.stringify('ping'));
+
+      subscription2.unsubscribe();
+      expect(socket2.close).have.been.called;
+
+      (<any>socket.close).restore();
+      (<any>socket2.close).restore();
+    });
+
+    it('should open the new socket when a connection attempt times out and is retried', () => {
+      const sandbox = sinon.createSandbox();
+      const fakeTimer = sandbox.useFakeTimers();
+      try {
+        let opens = 0;
+        const results: string[] = [];
+        const subject = webSocket<string>(<any>{
+          url: 'ws://mysocket',
+          openObserver: { next: () => opens++ },
+        });
+
+        const subscription = subject.pipe(timeout(20), retry(1)).subscribe({
+          next: (x) => results.push(x),
+          error: (err) => results.push('error ' + err.name),
+          complete: () => results.push('complete'),
+        });
+        const socket = MockWebSocket.lastSocket;
+
+        fakeTimer.tick(20);
+        expect(socket.readyState).to.equal(WebSocketState.CLOSING);
+        const socket2 = MockWebSocket.lastSocket;
+        expect(socket2).not.to.equal(socket);
+        sinon.spy(socket2, 'close');
+
+        socket.triggerError({});
+        socket.triggerClose({ wasClean: false });
+
+        socket2.open();
+        socket2.triggerMessage(JSON.stringify('pong'));
+
+        expect(opens).to.equal(1);
+        expect(socket2.close).have.not.been.called;
+        expect(results).to.deep.equal(['pong']);
+
+        subscription.unsubscribe();
+        expect(socket2.close).have.been.called;
+        (<any>socket2.close).restore();
+      } finally {
+        sandbox.restore();
+      }
     });
 
     it('should close the socket with a code and a reason when errored', () => {
@@ -800,6 +928,11 @@ class MockWebSocket {
   triggerClose(e: Partial<CloseEvent>): void {
     this.readyState = WebSocketState.CLOSED;
     this.trigger('close', e);
+  }
+
+  triggerError(e: any): void {
+    this.readyState = WebSocketState.CLOSED;
+    this.trigger('error', e);
   }
 
   triggerMessage(data: any): void {

@@ -283,10 +283,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     });
 
     socket.onopen = (evt: Event) => {
-      const { _socket } = this;
-      if (!_socket) {
+      if (this._socket !== socket) {
         socket!.close();
-        this._resetState();
         return;
       }
       const { openObserver } = this._config;
@@ -335,7 +333,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
 
     socket.onerror = (e: Event) => {
-      this._resetState();
+      if (socket === this._socket) {
+        this._resetState();
+      }
       observer.error(e);
     };
 
