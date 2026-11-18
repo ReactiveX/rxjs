@@ -139,7 +139,7 @@ export const qualificationRecordSchema: z.ZodType<QualificationRecord> = z
         harness: z.enum(agentHarnesses),
         harnessVersion: nonEmptyString,
         model: nonEmptyString,
-        modelConfiguration: z.record(z.string()),
+        modelConfiguration: z.record(z.string(), z.string()),
       })
       .strict(),
     sourceIdentity: z.object({ revision: nonEmptyString, seedTreeSha256: sha256, lockPath: relativePath, lockSha256: sha256 }).strict(),

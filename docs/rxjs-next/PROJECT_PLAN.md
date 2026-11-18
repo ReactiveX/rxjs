@@ -3744,6 +3744,13 @@ conformance implementation depends on a runnable harness.
 - Fresh pinned-pnpm audit found 59 non-docs advisory paths. Do not renew the
   expired exceptions until dependency remediation and fresh OSV qualification
   establish isolation; see the legacy-docs security tracker.
-- Ten security tests and workflow formatting pass locally. Hosted WPT has not
-  yet run on this change; the security gate remains correctly blocked.
+- Compatible tooling upgrades and the tested Zod 4 migration reduce non-docs
+  audit paths from 59 to 5; remaining upstream-parent migrations are documented
+  in the security tracker. Exceptions remain unchanged.
+- RxJS build and 750 source tests, 43 release/security script tests, and workflow
+  formatting pass locally. Hosted WPT has not run; local doctor reaches browser
+  startup but Chrome exits in this environment. Security remains blocked.
+- Migration build, public types, imports and all 166 tests pass; polyfill build
+  and all 52 tests pass. Nx graph generation and migration lint pass with
+  module-boundary checks enabled.
 - This user-requested CI maintenance does not change the sole NEXT plan item.

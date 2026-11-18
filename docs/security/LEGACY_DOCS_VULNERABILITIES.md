@@ -26,6 +26,33 @@ Remediate and qualify these paths before regenerating exceptions; several
 reported patched ranges cross major versions, so blanket overrides are not an
 acceptable substitute for compatibility testing.
 
+### Remediation on the CI-maintenance branch
+
+Compatible patch/minor dependency updates and the tested Zod 4 migration reduce
+non-docs advisory paths from 59 to **5**. A fresh complete pinned-pnpm audit
+now reports 370 docs-only paths. Remaining non-docs paths are:
+
+- `decode-uri-component@0.2.2` via Vite → Stylus → css → source-map-resolve
+  (two advisories).
+- `glob@10.5.0` via tshy → resolve-import.
+- `minimatch@9.0.7` via the same glob chain.
+- `minimatch@10.2.5` via @nx/eslint-plugin → @nx/devkit.
+
+Patched decode-uri-component 0.5 is ESM-only, incompatible with its CommonJS
+parent. A Stylus update would cross Vite 6's supported optional-peer range.
+Patched glob 14 and minimatch 11 similarly cross their parents' supported
+major ranges. Resolve these through tested parent/toolchain migrations or
+optional-peer isolation, not blanket overrides. The fresh unsuppressed OSV
+scan also retains findings in the legacy docs graph, including the
+install-artifact-from-github/re2 chain, which must be reviewed independently
+before generating a new baseline.
+
+The security gate remains blocked and the old exceptions remain unchanged.
+Local validation passed the RxJS source suite (750 tests), security/release
+script suite (43 tests), and migration/polyfill qualification described in
+the project log. Hosted WPT remains unverified: the cloud doctor downloaded
+the pinned browser but Chrome exited during session creation.
+
 After remediation, run a fresh complete npm path audit and OSV scan, review
 all remaining docs-only findings, then generate with explicit review/expiry:
 
