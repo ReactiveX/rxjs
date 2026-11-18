@@ -3734,3 +3734,16 @@ conformance implementation depends on a runnable harness.
   the release performance floor.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
+
+### 2026-11-18 — requested CI maintenance
+
+- Pin both Observable WPT jobs to Ubuntu 24.04, which supports pinned Python
+  3.11.9; preserve all conformance assertions and browser/spec pins.
+- Replace hardcoded security-baseline dates with explicit validated dates and
+  reject incomplete evidence before writing. Add generator regression tests.
+- Fresh pinned-pnpm audit found 59 non-docs advisory paths. Do not renew the
+  expired exceptions until dependency remediation and fresh OSV qualification
+  establish isolation; see the legacy-docs security tracker.
+- Ten security tests and workflow formatting pass locally. Hosted WPT has not
+  yet run on this change; the security gate remains correctly blocked.
+- This user-requested CI maintenance does not change the sole NEXT plan item.
