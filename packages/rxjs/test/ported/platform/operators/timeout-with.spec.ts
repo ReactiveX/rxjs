@@ -27,7 +27,7 @@ describe('timeoutWith (platform)', () => {
       const switchTo = observable('          --x--y--z--|');
       const switchToSubs = ' ----------^----------!';
       const expected = '     ------------x--y--z--|';
-      // The the current frame is zero.
+      // The current frame is zero.
       const result = source[timeout]({ first: new Date(t), with: () => switchTo, meta: null });
       expectObservable(result).toBe(expected);
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);

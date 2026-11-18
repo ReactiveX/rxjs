@@ -4,7 +4,7 @@ import { generateUniqueId } from './generateUniqueId';
 /**
  * Recursively walks the tree and adds unique ids.
  * It also aggregates nested nodes new unique IDs in an options field.
- * Depth is added to better determine later if it's an inital question
+ * Depth is added to better determine later if it's an initial question
  *
  * @export
  * @param {Tree} tree
