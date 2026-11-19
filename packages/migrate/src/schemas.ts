@@ -118,7 +118,7 @@ export const verificationResultSchema = z
   .object({
     id: nonEmptyString,
     command: nonEmptyString,
-    environment: z.record(z.string()),
+    environment: z.record(z.string(), z.string()),
     status: z.enum(verificationStatuses),
     exitCode: z.number().int().nullable(),
     summary: nonEmptyString,
