@@ -569,7 +569,13 @@ class ObservableImpl<T> implements Subscribable<T> {
             subscriber.next(output);
             subscriber.complete();
           },
-          (error) => (subscriber as Subscriber<T>)[errorSubscriber](error, false)
+          (error) => {
+            if (subscriber instanceof Subscriber) {
+              subscriber[errorSubscriber](error, false);
+            } else {
+              subscriber.error(error);
+            }
+          }
         );
       });
     }

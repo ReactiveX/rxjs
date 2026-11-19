@@ -3718,6 +3718,7 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+
 ### 2026-08-05 — P6.11 callback receiver removal
 
 - Audited the complete RxJS production source and removed callback `thisArg`
@@ -3734,3 +3735,20 @@ conformance implementation depends on a runnable harness.
   the release performance floor.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
+
+### 2026-09-16 — ColdObservable promise rejection fix
+
+- At the user's request, fixed `ColdObservable.from(promise)` rejection
+  delivery. Subclass-provided Subscribers use their public `error()` method;
+  polyfill Subscribers retain the existing source-location reporting behavior.
+- Added regression coverage for multiple direct subscribers, a missing error
+  handler, and cancellation before rejection delivery. The original code
+  failed two assertions and produced four unhandled rejections; the fix passes.
+- Validation passed: 753 RxJS source tests, 52 polyfill tests, both package
+  builds and public type checks, and both lints (existing warnings only).
+  The original reported reproduction now delivers the error without an
+  unhandled rejection.
+- Pinned WPT validation passed all 52 URLs, 525 upstream subtests, and 52 RxJS
+  identity attestations at WPT `6a009d73f0d315941b90cac13a9523a2a08c631b`
+  in Chrome `150.0.7871.126`.
+- P6.10 remains the sole `NEXT` item.

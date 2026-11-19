@@ -179,6 +179,11 @@ iterators use explicit protocol loops so the fallback can preserve iterator
 method sampling, `return(reason)`, abort timing, and pending-result behavior
 that `for await...of` intentionally hides.
 
+For subclasses that supply their own Subscriber implementation, promise
+rejections use the public `subscriber.error()` method. Polyfill Subscribers
+retain the internal error-reporting path that omits source-location information
+for promise rejections.
+
 The structure and behavior pass the pinned Observable WPT revision in window,
 dedicated-worker, same-origin iframe, and Web IDL coverage. D-045 supersedes
 D-042: the fallback again enforces the pinned revision's required-argument rule

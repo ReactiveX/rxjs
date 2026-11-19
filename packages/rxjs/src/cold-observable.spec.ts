@@ -45,6 +45,47 @@ describe('ColdObservable', () => {
     expect(reported).toEqual([expected]);
   });
 
+  it('delivers promise rejections to every direct subscriber', async () => {
+    const expected = new Error('promise failed');
+    const results: unknown[] = [];
+    const source = ColdObservable.from(Promise.reject(expected));
+    const observer = {
+      next: (value: unknown) => results.push(value),
+      error: (error: unknown) => results.push(error),
+      complete: () => results.push('complete'),
+    };
+
+    expect(source).toBeInstanceOf(ColdObservable);
+    source.subscribe(observer);
+    source.subscribe(observer);
+    await Promise.resolve();
+
+    expect(results).toEqual([expected, expected]);
+    expect(reported).toEqual([]);
+  });
+
+  it('reports promise rejections when the observer has no error handler', async () => {
+    const expected = new Error('promise failed');
+
+    ColdObservable.from(Promise.reject(expected)).subscribe();
+    await Promise.resolve();
+
+    expect(reported).toEqual([expected]);
+  });
+
+  it('ignores promise rejections after the observer aborts', async () => {
+    const expected = new Error('promise failed');
+    const errors: unknown[] = [];
+    const controller = new AbortController();
+
+    ColdObservable.from(Promise.reject(expected)).subscribe({ error: (error) => errors.push(error) }, { signal: controller.signal });
+    controller.abort();
+    await Promise.resolve();
+
+    expect(errors).toEqual([]);
+    expect(reported).toEqual([]);
+  });
+
   it('is a platform Observable subclass', () => {
     const source = new ColdObservable<number>(() => {});
 
