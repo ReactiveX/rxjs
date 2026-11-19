@@ -32,7 +32,7 @@ jobs:
   pinned:
     if: github.event_name != 'schedule'
     name: Pinned Chrome 150 Observable WPT (Node 24)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     steps:
@@ -94,7 +94,7 @@ jobs:
   latest-chrome:
     if: github.event_name == 'schedule'
     name: Latest stable Chrome Observable WPT (Node 24, advisory)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     continue-on-error: true
 
