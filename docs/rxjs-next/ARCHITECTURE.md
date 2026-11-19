@@ -190,6 +190,11 @@ JavaScript does not expose the required DOM abort-algorithm hook; controllers
 without registered Observable algorithms delegate directly to the captured
 platform method.
 
+If the realm's `AbortController` inherits its `abort` method, initialization
+captures that callable and installs a configurable, writable, non-enumerable
+bridge on the selected constructor's prototype, leaving the ancestor prototype
+unchanged. Existing own method descriptors retain their attributes.
+
 ### Shared native/fallback lifecycle contract
 
 P0.4 adds one self-contained contract under

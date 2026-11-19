@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 const scenarios = [
   'missing-global-subpath',
   'root-core-only',
+  'inherited-abort',
   'foreign-constructor',
   'earlier-version',
   'event-target-when',

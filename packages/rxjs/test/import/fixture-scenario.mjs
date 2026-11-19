@@ -49,6 +49,37 @@ if (scenario === 'missing-global-subpath') {
   assert.equal('filter' in root, false);
   assert.deepEqual(constructorDescriptions, ['rxjs.observable.polyfill.info.v1', 'rxjs.kernel.create.v1']);
   assert.deepEqual(prototypeDescriptions, ['Symbol.toStringTag', 'rxjs.kernel.create.v1']);
+} else if (scenario === 'inherited-abort') {
+  Reflect.deleteProperty(globalThis, 'Observable');
+  const NativeAbortController = globalThis.AbortController;
+  const nativeAbort = NativeAbortController.prototype.abort;
+  class WindowAbortController extends NativeAbortController {}
+  globalThis.AbortController = WindowAbortController;
+  assert.equal(Object.getOwnPropertyDescriptor(WindowAbortController.prototype, 'abort'), undefined);
+
+  await import('rxjs');
+
+  assert.equal(typeof globalThis.Observable, 'function');
+  assert.equal(NativeAbortController.prototype.abort, nativeAbort);
+
+  const reason = new Error('cancelled');
+  const events = [];
+  const controller = new AbortController();
+  controller.signal.addEventListener('abort', () => events.push('abort'));
+  new Observable((subscriber) => {
+    subscriber.addTeardown(() => events.push(subscriber.signal.reason));
+  }).subscribe(undefined, { signal: controller.signal });
+
+  controller.abort(reason);
+
+  assert.equal(controller.signal.aborted, true);
+  assert.equal(controller.signal.reason, reason);
+  assert.deepEqual(events, [reason, 'abort']);
+
+  const plainController = new AbortController();
+  plainController.abort(reason);
+  assert.equal(plainController.signal.aborted, true);
+  assert.equal(plainController.signal.reason, reason);
 } else if (scenario === 'foreign-constructor') {
   class ForeignObservable {}
   class ForeignSubscriber {}
