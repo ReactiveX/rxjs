@@ -16,7 +16,7 @@ Observable.prototype[takeLast] = function <T>(this: Observable<T>, amount = 1): 
       return;
     }
 
-    let ring = new Array<T>(amount);
+    let ring = amount === Infinity ? [] : new Array<T>(amount);
     let counter = 0;
     subscriber.addTeardown(() => {
       ring = null!;
