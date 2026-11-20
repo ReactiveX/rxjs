@@ -597,6 +597,8 @@ contract through the property key.
 - `replaySubject`
 - `TimeoutError`
 - `zip`
+- proposed D-060 `futureDuration` and `auditConfig` values in the existing
+  `rxjs/throttle` subpath
 - experimental fake timers and `ScheduledObservable`
 
 These APIs remain subject to focused public-contract review, but they belong to
@@ -863,6 +865,17 @@ adapter sets `leading: false`, `trailing: true`, and
 `restartOnTrailing: false` so the next source value starts the next audit
 window. Source completion waits only when an active duration owns a pending
 trailing value.
+
+D-060 proposes a typed audit-mode boundary within the same `rxjs/throttle`
+subpath. The nominal `auditConfig` value selects an overload that accepts a
+selector-created duration only as `FutureDurationSignal`. The
+`futureDuration` factory establishes that guarantee with a host timer for
+numbers or by queuing platform input conversion and activation in a
+microtask. This is an explicit construction guarantee, not an inference from
+`ObservableValue`: the structural platform input type says which values can be
+converted, not when they notify. Ordinary throttle configuration retains the
+existing broad input boundary, and D-060 remains proposed until its RxJS 7
+migration policy is resolved.
 
 Direct identity mappings cover `takeUntil`, `skipUntil`, `pluck`, `find`,
 `findIndex`, `throwIfEmpty`, `isEmpty`, `startWith`, `pairwise`, and

@@ -84,7 +84,10 @@ GitHub results. The user then explicitly prioritized P6.11, which removed
 inherited callback `thisArg` parameters and their hot-path dispatch cost. P6.10
 remains the sole `NEXT` item: one understandable, interactive single-maintainer
 beta publication command with npm two-factor authentication and no CI
-publishing credential.
+publishing credential. The user later prioritized the bounded P4.I2 proposal:
+an opt-in nominal future-duration contract for audit-mode `throttle` now has an
+exploratory implementation, and D-060 records the unresolved adoption choice.
+P6.10 remains the sole `NEXT` item.
 
 RxJS 9 and `9.0.0-beta.0` are selected under D-007. D-053 defines runtime,
 browser, bundler, channel, and RxJS 7 maintenance policy. Dates and staffing
@@ -1344,6 +1347,7 @@ explicit.
 | `DONE` | P4.3  | Record unsupported RxJS 7 imports, types, schedulers, interop, and deprecated aliases        |
 | `DONE` | P4.4  | Add representative migration fixtures for the accepted API and lifecycle boundaries          |
 | `DONE` | P4.I1 | Remove the common public-extension installer and restore direct exact-Symbol assignment      |
+| `DONE` | P4.I2 | Prototype an explicit future-duration type for audit-mode throttle                           |
 
 Phase exit:
 
@@ -1352,7 +1356,9 @@ Phase exit:
 - every migration mapping links behavioral evidence and required source work;
 - unsupported RxJS 7 categories are documented without an emulation promise;
 - public Symbol capabilities install directly without a shared runtime
-  installer or transactional installation contract.
+  installer or transactional installation contract;
+- audit-mode typing can distinguish conversion compatibility from a future
+  notification guarantee without narrowing ordinary throttle inputs.
 
 #### P4.1 completion evidence
 
@@ -1475,6 +1481,26 @@ Phase exit:
   `150.0.7871.126`.
 - Marked P4.I1 `DONE`, completed Phase 4, and advanced P5.1 as the sole
   project-level `NEXT` item.
+
+#### P4.I2 completion evidence
+
+- Added `FutureDurationSignal`, `futureDuration`, and nominal `auditConfig`
+  exports to the existing `rxjs/throttle` subpath without adding another
+  operator Symbol or changing the package map.
+- Made `auditConfig` select a strict overload that cannot fall through to
+  ordinary `ThrottleConfig`. Raw structural Observable values fail the public
+  type gate, while generic throttle configuration retains the platform
+  `ObservableValue` boundary.
+- Deferred converted input activation to a microtask and numeric durations to
+  a host timeout. Focused tests cover synchronous-burst coalescing and
+  cancellation before queued activation while retaining D-021 completion and
+  cancellation behavior.
+- Recorded the design as proposed D-060, documented the public and migration
+  boundaries, and kept automated RxJS 7 migration adoption open because
+  wrapping an immediate selector is a semantic change.
+- Passed the 106-file, 754-test source suite, package build, public type gate,
+  ESM and Node `require(esm)` import fixtures, documentation links, formatting,
+  and diff hygiene. Retained P6.10 as the sole project-level `NEXT` item.
 
 ### Phase 5 — Migration experience and AI enablement
 
@@ -3718,6 +3744,7 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+
 ### 2026-08-05 — P6.11 callback receiver removal
 
 - Audited the complete RxJS production source and removed callback `thisArg`
@@ -3733,4 +3760,20 @@ conformance implementation depends on a runnable harness.
   migration freshness gates, the packaged fallback/native Chrome kernel, and
   the release performance floor.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
+  item.
+
+### 2026-09-22 — P4.I2 future-duration audit proposal
+
+- Temporarily prioritized the user's RxJS 9 audit typing proposal without
+  changing D-021's unified `throttle` Symbol or the package map.
+- Added the opaque `FutureDurationSignal`, its controlled `futureDuration`
+  factory, and a nominal `auditConfig` value whose overload rejects raw
+  structural duration inputs.
+- Kept ordinary throttle configuration and JavaScript runtime behavior broad;
+  a synchronous input becomes a future boundary only through the explicit
+  factory.
+- Recorded proposed D-060 and the unresolved migration choice instead of
+  silently changing the deterministic RxJS 7 audit adapter.
+- Passed focused behavior, public type, build, import, documentation, format,
+  and diff gates. Marked P4.I2 `DONE` and retained P6.10 as the sole `NEXT`
   item.

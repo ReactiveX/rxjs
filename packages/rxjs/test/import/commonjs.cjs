@@ -4,6 +4,7 @@ const { map } = require('rxjs/map');
 const { pipe } = require('rxjs/pipe');
 const { scan } = require('rxjs/scan');
 const { switchMap } = require('rxjs/switch-map');
+const { auditConfig, futureDuration, throttle } = require('rxjs/throttle');
 const { timeout } = require('rxjs/timeout');
 const { timer } = require('rxjs/timer');
 
@@ -13,10 +14,13 @@ assert.equal(typeof Subject, 'function');
 assert.equal(typeof TimeoutError, 'function');
 assert.equal(typeof map, 'symbol');
 assert.equal(typeof globalThis.Observable.prototype[map], 'function');
-for (const symbol of [pipe, scan, switchMap, timeout, timer]) {
+assert.equal(typeof futureDuration, 'function');
+assert.equal(Object.isFrozen(auditConfig), true);
+assert.equal(futureDuration(0) instanceof globalThis.Observable, true);
+for (const symbol of [pipe, scan, switchMap, throttle, timeout, timer]) {
   assert.equal(typeof symbol, 'symbol');
 }
-for (const symbol of [map, pipe, scan, switchMap, timeout]) {
+for (const symbol of [map, pipe, scan, switchMap, throttle, timeout]) {
   assert.equal(typeof globalThis.Observable.prototype[symbol], 'function');
   assert.equal(Object.getOwnPropertyDescriptor(globalThis.Observable.prototype, symbol).enumerable, true);
 }
