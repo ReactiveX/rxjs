@@ -30,7 +30,7 @@ import type { SubjectLike } from './util/types.js';
 export abstract class PerSubscriptionSubjectBase<In, Out = In> extends ColdObservable<Out> implements SubjectLike<In, Out> {
   #completed = false;
   #hasError = false;
-  #error: any = null;
+  #error: unknown = null;
   #observers = new Set<Observer<Out>>();
 
   /**
@@ -131,7 +131,7 @@ export abstract class PerSubscriptionSubjectBase<In, Out = In> extends ColdObser
    * default {@link _subscribe} implementation can deliver it immediately to a
    * late direct subscriber.
    */
-  error(error: any): void {
+  error(error: unknown): void {
     if (this.active) {
       this.#hasError = true;
       this.#error = error;

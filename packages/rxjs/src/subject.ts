@@ -10,7 +10,7 @@ const ObservableBase = Observable;
 export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
   #completed = false;
   #hasError = false;
-  #error: any = null;
+  #error: unknown = null;
 
   get active() {
     return !this.#completed && !this.#hasError;
@@ -45,7 +45,7 @@ export class Subject<T> extends ObservableBase<T> implements SubjectLike<T> {
     }
   }
 
-  error(error: any) {
+  error(error: unknown) {
     if (this.active) {
       this.#hasError = true;
       this.#error = error;

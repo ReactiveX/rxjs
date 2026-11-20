@@ -10,7 +10,7 @@ class ReplaySubject<T> extends PerSubscriptionSubjectBase<T> {
   #bufferTimestamps: number[] = [];
   #completed = false;
   #hasError = false;
-  #error: any;
+  #error: unknown;
 
   readonly #size: number;
   readonly #maxAge: number;
@@ -87,7 +87,7 @@ class ReplaySubject<T> extends PerSubscriptionSubjectBase<T> {
     super.next(value);
   }
 
-  override error(error: any) {
+  override error(error: unknown) {
     if (this.active) {
       this.#hasError = true;
       this.#error = error;

@@ -3718,6 +3718,7 @@ conformance implementation depends on a runnable harness.
   remains the sole `NEXT` item until the command publishes and verifies
   `9.0.0-beta.0`, package access disallows automation tokens, and the immutable
   GitHub Release is recorded.
+
 ### 2026-08-05 — P6.11 callback receiver removal
 
 - Audited the complete RxJS production source and removed callback `thisArg`
@@ -3734,3 +3735,14 @@ conformance implementation depends on a runnable harness.
   the release performance floor.
 - Recorded D-059, marked P6.11 `DONE`, and retained P6.10 as the sole `NEXT`
   item.
+
+### 2026-10-12 — Error values use `unknown`
+
+- Recorded D-060 and changed the public platform and RxJS Next error-value
+  declarations from `any` to `unknown` without changing runtime propagation.
+- Added strict declaration regressions for Observer, Inspector, native and
+  ColdObservable `catch`, `catchError`, both `tap` forms, `retry`, `retryWhen`,
+  Subject variants, and notification error values.
+- Passed both affected package builds, the strict public type suite, all 52
+  observable-polyfill tests, and 86 focused RxJS tests across 11 error-bearing
+  modules.
