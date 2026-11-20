@@ -104,6 +104,9 @@ export class ColdObservable<T> extends PlatformObservable<T> {
 
   subscribe(maybeObserver?: Partial<Observer<T>> | ((value: T) => void) | null, config?: SubscribeOptions): void {
     const subscriber = new ColdSubscriber(maybeObserver, config?.signal);
+    if (!subscriber.active) {
+      return;
+    }
     try {
       this.#init(subscriber);
     } catch (error) {

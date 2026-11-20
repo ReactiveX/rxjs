@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, expectTypeOf, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest';
 import '@rxjs/observable-polyfill';
 import { behaviorSubject } from './behavior-subject.js';
 import { ColdObservable } from './cold-observable.js';
@@ -8,6 +8,7 @@ import { map } from './map.js';
 import { mergeMap } from './merge-map.js';
 import { scan } from './scan.js';
 import { switchMap as rxSwitchMap } from './switch-map.js';
+import { timer } from './timer.js';
 
 describe('ColdObservable', () => {
   let originalReportError: typeof globalThis.reportError;
@@ -23,6 +24,76 @@ describe('ColdObservable', () => {
 
   afterEach(() => {
     globalThis.reportError = originalReportError;
+  });
+
+  it('does not initialize a subscription with an already-aborted signal', () => {
+    const controller = new AbortController();
+    controller.abort();
+    const initialize = vi.fn();
+    const next = vi.fn();
+    const error = vi.fn();
+    const complete = vi.fn();
+    new ColdObservable<number>(initialize).subscribe({ next, error, complete }, { signal: controller.signal });
+    expect(initialize).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+    expect(complete).not.toHaveBeenCalled();
+  });
+
+  it('does not allocate a host timer for an already-aborted subscription', () => {
+    vi.useFakeTimers();
+    try {
+      ColdObservable[timer](5, 5).subscribe(() => {}, { signal: AbortSignal.abort() });
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      vi.clearAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not activate upstream Symbol work for an already-aborted subscription', () => {
+    const initialize = vi.fn();
+    const project = vi.fn((value: number) => value + 1);
+    new ColdObservable<number>(initialize)[map](project).subscribe(() => {}, { signal: AbortSignal.abort() });
+    expect(initialize).not.toHaveBeenCalled();
+    expect(project).not.toHaveBeenCalled();
+  });
+
+  it('keeps a subsequent live direct subscription independent of a rejected one', () => {
+    let activations = 0;
+    let cleanups = 0;
+    const source = new ColdObservable<number>((subscriber) => {
+      activations++;
+      subscriber.addTeardown(() => cleanups++);
+      subscriber.next(activations);
+    });
+    source.subscribe(() => {}, { signal: AbortSignal.abort() });
+    const controller = new AbortController();
+    const values: number[] = [];
+    source.subscribe((value) => values.push(value), { signal: controller.signal });
+    expect(values).toEqual([1]);
+    controller.abort();
+    expect(activations).toBe(1);
+    expect(cleanups).toBe(1);
+  });
+
+  it('preserves live synchronous cancellation during initialization', () => {
+    const controller = new AbortController();
+    const cleanup = vi.fn();
+    const values: number[] = [];
+    new ColdObservable<number>((subscriber) => {
+      subscriber.addTeardown(cleanup);
+      subscriber.next(1);
+      subscriber.next(2);
+    }).subscribe(
+      (value) => {
+        values.push(value);
+        controller.abort();
+      },
+      { signal: controller.signal }
+    );
+    expect(values).toEqual([1]);
+    expect(cleanup).toHaveBeenCalledTimes(1);
   });
 
   it('reports source errors when the observer has no error handler', () => {

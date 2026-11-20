@@ -92,6 +92,10 @@ through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
 
+A direct `ColdObservable.subscribe()` call with an already-aborted signal does
+not invoke its producer initializer or send notifications. Each later live
+direct subscription still owns an independent producer execution.
+
 ## Environment and distribution
 
 The package requires Node 22.13+ and publishes ESM only. Node `require()` uses
