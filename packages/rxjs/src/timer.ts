@@ -18,13 +18,17 @@ function timerFactory(this: ObservableCtor, delay: number, interval?: number): O
     let id = globalThis.setInterval(() => {
       subscriber.next(n++);
 
+      if (subscriber.signal.aborted) {
+        return;
+      }
+
       if (interval == null || interval < 0) {
         subscriber.complete();
       } else if (interval !== delay) {
         globalThis.clearInterval(id);
         id = globalThis.setInterval(() => {
           subscriber.next(n++);
-        });
+        }, interval);
       }
     }, delay);
 

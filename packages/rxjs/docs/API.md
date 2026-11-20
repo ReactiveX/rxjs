@@ -60,6 +60,12 @@ import { timer } from 'rxjs/timer';
 Observable[timer](1000).subscribe(console.log);
 ```
 
+`Observable[timer](delay, interval)` emits its first value after `delay`, then
+uses `interval` for subsequent values even when the two delays differ. Canceling
+the final observer during the first notification does not start new interval
+work. With the platform Observable, canceling only one of multiple observers
+keeps the shared timer running for the remaining observers.
+
 The `pipe` Symbol supports instance and static composition:
 
 ```ts
