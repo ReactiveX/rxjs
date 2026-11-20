@@ -28,7 +28,7 @@ Observable.prototype[takeLast] = function <T>(this: Observable<T>, amount = 1): 
       complete: () => {
         const start = amount <= counter ? counter : 0;
         const total = Math.min(amount, counter);
-        for (let i = 0; i < total; i++) {
+        for (let i = 0; i < total && subscriber.active; i++) {
           subscriber.next(ring[(start + i) % amount]!);
         }
         subscriber.complete();

@@ -92,6 +92,11 @@ through the downstream Subscriber lifecycle, and cancellation does not become
 completion. Teardown functions and `subscriber.addTeardown()` participate in
 the same platform lifecycle.
 
+`takeLast` drains its buffered values only while the result Subscriber is
+active. Aborting the last observer during a buffered notification stops the
+remaining drain without delivering completion. If another observer remains,
+the shared result stays active and drains the remaining values to that observer.
+
 ## Environment and distribution
 
 The package requires Node 22.13+ and publishes ESM only. Node `require()` uses
