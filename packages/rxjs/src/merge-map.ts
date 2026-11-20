@@ -23,9 +23,9 @@ Observable.prototype[mergeMap] = function <T, R>(
     let outerComplete = false;
 
     const innerSub = (value: T) => {
-      const result = Observable.from(mapper(value, index++));
-
+      // Projection and conversion can reenter the source before subscription.
       active++;
+      const result = Observable.from(mapper(value, index++));
 
       subscribeToSource(result, subscriber, {
         complete: () => {

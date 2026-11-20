@@ -41,6 +41,8 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
         return;
       }
 
+      // Input access and conversion can complete another active source.
+      active++;
       const sourceValue = actualSources[sourceIndex++]!;
       let source: Observable<any>;
 
@@ -51,7 +53,6 @@ function mergeImpl<T, Sources extends readonly ObservableValue<any>[]>(
         return;
       }
 
-      active++;
       subscribeToSource(source, subscriber, {
         complete: () => {
           active--;

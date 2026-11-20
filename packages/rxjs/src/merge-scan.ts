@@ -52,13 +52,14 @@ Observable.prototype[mergeScan] = function <T, R>(
     };
 
     const startInner = (value: T): void => {
+      // Projection and conversion can reenter the source before subscription.
+      active++;
       const inner = Observable.from(accumulator(state, value, index++));
 
       if (!subscriber.active) {
         return;
       }
 
-      active++;
       let terminated = false;
 
       subscribeToSource(inner, subscriber, {

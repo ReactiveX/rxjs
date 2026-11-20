@@ -50,6 +50,8 @@ Observable.prototype[expand] = function <T, R>(
       try {
         while (subscriber.active && active < concurrency && queue.length > 0) {
           const value = queue.shift()!;
+          // Observer notification, projection, and conversion can reenter the source.
+          active++;
           subscriber.next(value);
           if (!subscriber.active) {
             break;
@@ -57,7 +59,6 @@ Observable.prototype[expand] = function <T, R>(
 
           const inner = Observable.from(project(value as T, index++));
 
-          active++;
           let innerActive = true;
           subscribeToSource(inner, subscriber, {
             next: (innerValue) => {

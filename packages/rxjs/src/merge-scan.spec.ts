@@ -12,6 +12,117 @@ beforeAll(async () => {
 });
 
 describe('mergeScan', () => {
+  it('reserves concurrency before an accumulator reenters the source', () => {
+    const source = controllable<number>();
+    const first = controllable<number>();
+    const calls: Array<readonly [number, number, number]> = [];
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[mergeScan](
+      (accumulator, value, index) => {
+        calls.push([accumulator, value, index]);
+        if (value === 1) {
+          source.subscriber.next(2);
+          return first.observable;
+        }
+        return [accumulator + value];
+      },
+      0,
+      1
+    ).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    source.subscriber.next(1);
+    source.subscriber.complete();
+    expect(calls).toEqual([[0, 1, 0]]);
+    expect(events).toEqual([]);
+
+    first.subscriber.next(10);
+    first.subscriber.complete();
+    expect(calls).toEqual([
+      [0, 1, 0],
+      [10, 2, 1],
+    ]);
+    expect(events).toEqual([10, 12, 'complete']);
+  });
+
+  it('waits for the inner when the accumulator completes the source', () => {
+    const source = controllable<number>();
+    const inner = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[mergeScan](() => {
+      source.subscriber.complete();
+      return inner.observable;
+    }, 0).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+
+    source.subscriber.next(1);
+    expect(events).toEqual([]);
+    expect(inner.active).toBe(true);
+
+    inner.subscriber.next(42);
+    inner.subscriber.complete();
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it('waits for the inner when input conversion completes the source', () => {
+    const source = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+    const input = {
+      get [Symbol.iterator]() {
+        source.subscriber.complete();
+        return function* () {
+          yield 42;
+        };
+      },
+    };
+
+    source.observable[mergeScan](() => input, 0).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    source.subscriber.next(1);
+
+    expect(events).toEqual([42, 'complete']);
+  });
+
+  it.each(['projection', 'conversion'])('cancels active work when %s throws', (stage) => {
+    const source = controllable<number>();
+    const inner = controllable<number>();
+    const failure = new Error(stage);
+    const errors: unknown[] = [];
+    let completed = false;
+
+    source.observable[mergeScan]((_state, value) => {
+      if (value === 1) {
+        return inner.observable;
+      }
+      if (stage === 'projection') {
+        throw failure;
+      }
+      return {
+        get [Symbol.iterator](): () => Iterator<number> {
+          throw failure;
+        },
+      };
+    }, 0).subscribe({
+      error: (error) => errors.push(error),
+      complete: () => (completed = true),
+    });
+    source.subscriber.next(1);
+    source.subscriber.next(2);
+
+    expect(errors).toEqual([failure]);
+    expect(completed).toBe(false);
+    expect(source.subscriber.active).toBe(false);
+    expect(inner.subscriber.active).toBe(false);
+  });
+
   it('installs only its exact unique Symbol and preserves RxJS 7 inference', () => {
     const calls: Array<readonly [number, number, number]> = [];
     const events: Array<number | 'complete'> = [];
