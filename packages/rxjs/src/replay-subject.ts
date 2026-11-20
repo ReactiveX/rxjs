@@ -23,16 +23,18 @@ class ReplaySubject<T> extends PerSubscriptionSubjectBase<T> {
     this.#maxAge = maxAge;
   }
 
+  #trimExpired() {
+    const tooOld = globalThis.Date.now() - this.#maxAge;
+    const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex((timestamp) => tooOld < timestamp);
+    const amountToTrim = indexOfOldestAllowedItem < 0 ? this.#bufferTimestamps.length : indexOfOldestAllowedItem;
+    if (amountToTrim > 0) {
+      this.#bufferTimestamps.splice(0, amountToTrim);
+      this.#bufferValues.splice(0, amountToTrim);
+    }
+  }
+
   #scheduleAgeFlush() {
-    globalThis.setTimeout(() => {
-      const tooOld = globalThis.Date.now() - this.#maxAge;
-      const indexOfOldestAllowedItem = this.#bufferTimestamps.findIndex((timestamp) => tooOld < timestamp);
-      const amountToTrim = indexOfOldestAllowedItem < 0 ? this.#bufferTimestamps.length : indexOfOldestAllowedItem;
-      if (amountToTrim > 0) {
-        this.#bufferTimestamps.splice(0, amountToTrim);
-        this.#bufferValues.splice(0, amountToTrim);
-      }
-    }, this.#maxAge);
+    globalThis.setTimeout(() => this.#trimExpired(), this.#maxAge);
   }
 
   #checkSize() {
@@ -48,6 +50,9 @@ class ReplaySubject<T> extends PerSubscriptionSubjectBase<T> {
   }
 
   protected override _subscribe(subscriber: Subscriber<T>) {
+    if (this.#maxAge !== Infinity) {
+      this.#trimExpired();
+    }
     const buffer = Array.from(this.#bufferValues);
     if (!this.#hasError && !this.#completed) {
       // Match ReplaySubject's reentrant contract: an active subscriber joins
