@@ -12,6 +12,109 @@ beforeAll(async () => {
 });
 
 describe('switchScan', () => {
+  it('does not invoke a superseded projection after teardown reenters the source', () => {
+    const source = controllable<number>();
+    const first = controllable<number>();
+    const latest = tracked<number>();
+    const failure = new Error('superseded projection');
+    const calls: Array<readonly [number, number]> = [];
+    const events: Array<number | 'complete' | Error> = [];
+
+    source.observable[switchScan]((_state, value, index) => {
+      calls.push([value, index]);
+      if (value === 2) {
+        throw failure;
+      }
+      return value === 1 ? first.observable : latest.observable;
+    }, 0).subscribe({
+      next: (value) => events.push(value),
+      error: (error) => events.push(error),
+      complete: () => events.push('complete'),
+    });
+    source.subscriber.next(1);
+    first.subscriber.addTeardown(() => source.subscriber.next(3));
+    source.subscriber.next(2);
+
+    expect(calls).toEqual([
+      [1, 0],
+      [3, 1],
+    ]);
+    expect(latest.subscribers[0]!.active).toBe(true);
+
+    latest.subscribers[0]!.next(30);
+    source.subscriber.complete();
+    latest.subscribers[0]!.complete();
+    expect(events).toEqual([30, 'complete']);
+  });
+
+  it('does not project a replacement after the preceding teardown cancels the result', () => {
+    const source = controllable<number>();
+    const first = controllable<number>();
+    const controller = new AbortController();
+    const calls: number[] = [];
+
+    source.observable[switchScan]((_state, value) => {
+      calls.push(value);
+      return first.observable;
+    }, 0).subscribe(null, { signal: controller.signal });
+    source.subscriber.next(1);
+    first.subscriber.addTeardown(() => controller.abort());
+    source.subscriber.next(2);
+
+    expect(calls).toEqual([1]);
+    expect(source.subscriber.active).toBe(false);
+    expect(first.subscriber.active).toBe(false);
+  });
+
+  it('keeps the latest inner when the preceding inner teardown reenters the source', () => {
+    const source = controllable<number>();
+    const first = controllable<number>();
+    const second = tracked<number>();
+    const third = tracked<number>();
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[switchScan]((_state, value) => {
+      return [first.observable, second.observable, third.observable][value - 1]!;
+    }, 0).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    source.subscriber.next(1);
+    first.subscriber.addTeardown(() => source.subscriber.next(3));
+    source.subscriber.next(2);
+    source.subscriber.complete();
+
+    expect(second.activations).toBe(0);
+    expect(third.activations).toBe(1);
+    expect(third.subscribers[0]!.active).toBe(true);
+
+    third.subscribers[0]!.next(3);
+    third.subscribers[0]!.complete();
+    expect(events).toEqual([3, 'complete']);
+  });
+
+  it('waits for the replacement when the preceding inner teardown completes the source', () => {
+    const source = controllable<number>();
+    const first = controllable<number>();
+    const second = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    source.observable[switchScan]((_state, value) => (value === 1 ? first.observable : second.observable), 0).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    source.subscriber.next(1);
+    first.subscriber.addTeardown(() => source.subscriber.complete());
+    source.subscriber.next(2);
+
+    expect(events).toEqual([]);
+    expect(second.subscriber.active).toBe(true);
+
+    second.subscriber.next(2);
+    second.subscriber.complete();
+    expect(events).toEqual([2, 'complete']);
+  });
+
   it('installs only its exact unique Symbol and preserves RxJS 7 inference', () => {
     const calls: Array<readonly [number, number, number]> = [];
     const events: Array<number | 'complete'> = [];

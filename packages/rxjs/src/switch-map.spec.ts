@@ -3,6 +3,111 @@ import '@rxjs/observable-polyfill';
 import { switchMap } from './switch-map.js';
 
 describe('switchMap', () => {
+  it('does not invoke a superseded projection after teardown reenters the source', () => {
+    const outer = controllable<number>();
+    const first = controllable<number>();
+    const latest = controllable<number>();
+    const failure = new Error('superseded projection');
+    const calls: Array<readonly [number, number]> = [];
+    const events: Array<number | 'complete' | Error> = [];
+
+    outer.observable[switchMap]((value, index) => {
+      calls.push([value, index]);
+      if (value === 2) {
+        throw failure;
+      }
+      return value === 1 ? first.observable : latest.observable;
+    }).subscribe({
+      next: (value) => events.push(value),
+      error: (error) => events.push(error),
+      complete: () => events.push('complete'),
+    });
+    outer.subscriber.next(1);
+    first.subscriber.addTeardown(() => outer.subscriber.next(3));
+    outer.subscriber.next(2);
+
+    expect(calls).toEqual([
+      [1, 0],
+      [3, 1],
+    ]);
+    expect(latest.subscriber.active).toBe(true);
+
+    latest.subscriber.next(30);
+    outer.subscriber.complete();
+    latest.subscriber.complete();
+    expect(events).toEqual([30, 'complete']);
+  });
+
+  it('does not project a replacement after the preceding teardown cancels the result', () => {
+    const outer = controllable<number>();
+    const first = controllable<number>();
+    const controller = new AbortController();
+    const calls: number[] = [];
+
+    outer.observable[switchMap]((value) => {
+      calls.push(value);
+      return first.observable;
+    }).subscribe(null, { signal: controller.signal });
+    outer.subscriber.next(1);
+    first.subscriber.addTeardown(() => controller.abort());
+    outer.subscriber.next(2);
+
+    expect(calls).toEqual([1]);
+    expect(outer.subscriber.active).toBe(false);
+    expect(first.subscriber.active).toBe(false);
+  });
+
+  it('waits for the replacement when the preceding inner teardown completes the source', () => {
+    const outer = controllable<Observable<number>>();
+    const first = controllable<number>();
+    const second = controllable<number>();
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[switchMap]((inner) => inner).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    outer.subscriber.next(first.observable);
+    first.subscriber.addTeardown(() => outer.subscriber.complete());
+    outer.subscriber.next(second.observable);
+
+    expect(events).toEqual([]);
+    expect(first.teardowns).toBe(1);
+    expect(second.subscriptions).toBe(1);
+
+    second.subscriber.next(2);
+    second.subscriber.complete();
+    expect(events).toEqual([2, 'complete']);
+  });
+
+  it.each([1, 2])('keeps the latest %i inners when teardown reenters the source', (concurrent) => {
+    const outer = controllable<number>();
+    const inners = Array.from({ length: concurrent + 2 }, () => controllable<number>());
+    const events: Array<number | 'complete'> = [];
+
+    outer.observable[switchMap]((value) => inners[value]!.observable, { concurrent }).subscribe({
+      next: (value) => events.push(value),
+      complete: () => events.push('complete'),
+    });
+    for (let i = 0; i < concurrent; i++) {
+      outer.subscriber.next(i);
+    }
+    inners[0]!.subscriber.addTeardown(() => outer.subscriber.next(concurrent + 1));
+    outer.subscriber.next(concurrent);
+    outer.subscriber.complete();
+
+    expect(inners.map((inner) => inner.subscriptions > 0 && inner.subscriber.active)).toEqual(
+      Array.from({ length: concurrent + 2 }, (_, index) => index >= 2)
+    );
+    for (let i = 0; i < inners.length; i++) {
+      if (inners[i]!.subscriptions > 0) {
+        inners[i]!.subscriber.next(i);
+        inners[i]!.subscriber.complete();
+      }
+    }
+    expect(events).toEqual([...Array.from({ length: concurrent }, (_, index) => index + 2), 'complete']);
+  });
+
   it('cancels the preceding inner and waits for the active inner after outer completion', () => {
     const outer = controllable<Observable<string>>();
     const first = controllable<string>();
